@@ -3,7 +3,7 @@
 # Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
 # SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
 #
-# Generated: Wed Jan 17 14:31:10 PST 2018
+# Generated: Sun Jan 21 00:35:16 PST 2018
 
 # DO NOT MODIFY THIS FILE
 #
@@ -45,6 +45,9 @@
 # Define memory regions for each memory connected to the CPU.
 # The cache attribute is specified which improves GDB performance
 # by allowing GDB to cache memory contents on the host.
+
+# Video_Frame_Buffer
+memory 0x0 0x4b000 cache
 
 # sdram
 memory 0x8000000 0xc000000 cache

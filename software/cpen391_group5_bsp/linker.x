@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Wed Jan 17 14:31:10 PST 2018
+ * Generated: Sun Jan 21 00:35:16 PST 2018
  */
 
 /*
@@ -50,11 +50,13 @@
 
 MEMORY
 {
+    Video_Frame_Buffer : ORIGIN = 0x0, LENGTH = 307200
     reset : ORIGIN = 0x8000000, LENGTH = 32
     sdram : ORIGIN = 0x8000020, LENGTH = 67108832
 }
 
 /* Define symbols for each memory base-address */
+__alt_mem_Video_Frame_Buffer = 0x0;
 __alt_mem_sdram = 0x8000000;
 
 OUTPUT_FORMAT( "elf32-littlenios2",
@@ -307,7 +309,24 @@ SECTIONS
      *
      */
 
-    .sdram LOADADDR (.bss) + SIZEOF (.bss) : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
+    .Video_Frame_Buffer : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
+    {
+        PROVIDE (_alt_partition_Video_Frame_Buffer_start = ABSOLUTE(.));
+        *(.Video_Frame_Buffer .Video_Frame_Buffer. Video_Frame_Buffer.*)
+        . = ALIGN(4);
+        PROVIDE (_alt_partition_Video_Frame_Buffer_end = ABSOLUTE(.));
+    } > Video_Frame_Buffer
+
+    PROVIDE (_alt_partition_Video_Frame_Buffer_load_addr = LOADADDR(.Video_Frame_Buffer));
+
+    /*
+     *
+     * This section's LMA is set to the .text region.
+     * crt0 will copy to this section's specified mapped region virtual memory address (VMA)
+     *
+     */
+
+    .sdram LOADADDR (.Video_Frame_Buffer) + SIZEOF (.Video_Frame_Buffer) : AT ( LOADADDR (.Video_Frame_Buffer) + SIZEOF (.Video_Frame_Buffer) )
     {
         PROVIDE (_alt_partition_sdram_start = ABSOLUTE(.));
         *(.sdram .sdram. sdram.*)

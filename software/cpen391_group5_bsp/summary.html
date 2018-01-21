@@ -22,10 +22,10 @@
 <td width="20%" bgcolor="#77BBFF">BSP Version:</td><td>default</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>Jan 17, 2018 2:31:10 PM</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>Jan 21, 2018 2:01:26 AM</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1516228270498</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1516528887100</td>
 </tr>
 <tr mode="wrap">
 <td width="20%" bgcolor="#77BBFF">BSP Generated Location:</td><td>/home/guoj/Documents/Year-3/CPEN-391/repo/software/cpen391_group5_bsp</td>
@@ -41,13 +41,22 @@
 <td>sdram</td><td>0x08000000 - 0x0BFFFFFF</td><td>67108864</td><td class="listing">memory</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>jtag_uart_0</td><td>0x00002020 - 0x00002027</td><td>8</td><td class="listing">printable</td>
+<td>jtag_uart_0</td><td>0x00081440 - 0x00081447</td><td>8</td><td class="listing">printable</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>led_out_pio</td><td>0x00002010 - 0x0000201F</td><td>16</td><td class="listing">&nbsp;</td>
+<td>Video_In_DMA</td><td>0x00081430 - 0x0008143F</td><td>16</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>switch_in_pio</td><td>0x00002000 - 0x0000200F</td><td>16</td><td class="listing">&nbsp;</td>
+<td>Video_Out_DMA</td><td>0x00081420 - 0x0008142F</td><td>16</td><td class="listing">&nbsp;</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>led_out_pio</td><td>0x00081410 - 0x0008141F</td><td>16</td><td class="listing">&nbsp;</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>switch_in_pio</td><td>0x00081400 - 0x0008140F</td><td>16</td><td class="listing">&nbsp;</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>Video_Frame_Buffer</td><td>0x00000000 - 0x0004AFFF</td><td>307200</td><td class="listing">memory</td>
 </tr>
 </table>
 <br>
@@ -1122,7 +1131,7 @@
 <td width="20%">Default Value:</td><td>-O0</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>-O0</td>
+<td width="20%">Value:</td><td>-O3</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>
