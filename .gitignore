@@ -8,3 +8,5 @@ simulation/
 .qsys_edit/
 db/
 *.swp
+*.out
+*.qdf

@@ -28,8 +28,8 @@
 // ------------------------------------------
 // Generation parameters:
 //   output_name:         cpen391_group5_qsys_mm_interconnect_1_cmd_demux
-//   ST_DATA_W:           108
-//   ST_CHANNEL_W:        8
+//   ST_DATA_W:           110
+//   ST_CHANNEL_W:        10
 //   NUM_OUTPUTS:         1
 //   VALID_WIDTH:         1
 // ------------------------------------------
@@ -46,8 +46,8 @@ module cpen391_group5_qsys_mm_interconnect_1_cmd_demux
     // Sink
     // -------------------
     input  [1-1      : 0]   sink_valid,
-    input  [108-1    : 0]   sink_data, // ST_DATA_W=108
-    input  [8-1 : 0]   sink_channel, // ST_CHANNEL_W=8
+    input  [110-1    : 0]   sink_data, // ST_DATA_W=110
+    input  [10-1 : 0]   sink_channel, // ST_CHANNEL_W=10
     input                         sink_startofpacket,
     input                         sink_endofpacket,
     output                        sink_ready,
@@ -56,8 +56,8 @@ module cpen391_group5_qsys_mm_interconnect_1_cmd_demux
     // Sources 
     // -------------------
     output reg                      src0_valid,
-    output reg [108-1    : 0] src0_data, // ST_DATA_W=108
-    output reg [8-1 : 0] src0_channel, // ST_CHANNEL_W=8
+    output reg [110-1    : 0] src0_data, // ST_DATA_W=110
+    output reg [10-1 : 0] src0_channel, // ST_CHANNEL_W=10
     output reg                      src0_startofpacket,
     output reg                      src0_endofpacket,
     input                           src0_ready,
@@ -94,7 +94,7 @@ module cpen391_group5_qsys_mm_interconnect_1_cmd_demux
     // -------------------
     assign ready_vector[0] = src0_ready;
 
-    assign sink_ready = |(sink_channel & {{7{1'b0}},{ready_vector[NUM_OUTPUTS - 1 : 0]}});
+    assign sink_ready = |(sink_channel & {{9{1'b0}},{ready_vector[NUM_OUTPUTS - 1 : 0]}});
 
 endmodule
 

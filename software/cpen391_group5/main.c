@@ -31,8 +31,32 @@
 
 volatile unsigned char *frame_buffer = (volatile unsigned char *) VIDEO_FRAME_BUFFER_BASE;
 
+#define N 300
+
+volatile int a[N][N];
+volatile int b[N][N];
+volatile int c[N][N];
+
 int main()
 {
+    printf("Start\n");
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            int sum = 0;
+
+            for (int k = 0; k < N; k++) {
+                sum = a[i][k] * b[k][j];
+            }
+
+            c[i][j] = sum;
+        }
+    }
+
+    printf("Done %d\n", c[0][0]);
+
+    while (1);
+
     printf("#Waiting...\n\n");
     for (int c = 10; c > 0; c--) {
         for (int i = 0; i < 1000000; i++) {

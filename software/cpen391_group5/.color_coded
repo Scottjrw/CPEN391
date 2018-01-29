@@ -9,4 +9,4 @@ c
 -Wall
 -std=c11
 -include
-ycm.h
+../cpen391_group5/ycm.h

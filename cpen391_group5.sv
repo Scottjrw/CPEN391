@@ -6,6 +6,10 @@ module cpen391_group5(
     input [3:0] KEY,
     output [9:0] LEDR,
 
+    // GPIO
+    inout [35:0] GPIO_0,
+    inout [35:0] GPIO_1,
+
     // SDRAM
     inout [15:0] DRAM_DQ,
     output [12:0] DRAM_ADDR,
@@ -56,6 +60,10 @@ cpen391_group5_qsys sys_inst(
     .sdram_wire_dqm({DRAM_UDQM, DRAM_LDQM}),
     .sdram_wire_ras_n(DRAM_RAS_N),
     .sdram_wire_we_n(DRAM_WE_N),
+
+    // Touchscreen UART
+    .touchscreen_rxd(GPIO_1[33]),
+    .touchscreen_txd(GPIO_1[35]),
 
     // VGA
     .vga_controller_CLK(VGA_CLK),

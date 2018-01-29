@@ -1,0 +1,12 @@
+-x
+c
+-DALT_NO_INSTRUCTION_EMULATION
+-DALT_SINGLE_THREADED
+-D__hal__
+-I../touchscreen_bsp/
+-I../touchscreen_bsp//HAL/inc
+-I../touchscreen_bsp//drivers/inc
+-Wall
+-std=c11
+-include
+../touchscreen/ycm.h
