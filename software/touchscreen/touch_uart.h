@@ -8,6 +8,7 @@
 #define TOUCH_PEN_UP 0x80
 #define TOUCH_PEN_DOWN 0x81
 
+// Command byte
 #define TOUCH_CMND_TOUCH_ENABLE 0x12
 #define TOUCH_CMND_TOUCH_DISABLE 0x13
 #define TOUCH_CMND_CALIBRATE 0x14
@@ -18,6 +19,7 @@
 #define TOUCH_CMND_EE_READ_PARAMS 0x2B
 #define TOUCH_CMND_EE_WRITE_PARAMS 0x23
 
+// Status byte
 #define TOUCH_STATUS_OK 0x0
 #define TOUCH_STATUS_UNRECOGNIZED 0x1
 #define TOUCH_STATUS_TIMEOUT 0x4
@@ -42,7 +44,7 @@ union touch_data {
 };
 
 struct touch_message {
-    uint8_t SYNC; // Always 0x55
+    uint8_t SYNC;
     uint8_t SIZE;
     union touch_data DATA;
 } __attribute__((packed));

@@ -30,7 +30,24 @@ static inline void touch_coord(unsigned int x, unsigned int y, unsigned int *m_x
     *m_y = y * (*m_y) / (TOUCH_Y_MAX - TOUCH_Y_MIN);
 }
 
-// Debounce helper, returns true 
+#define TOUCH_DEBOUNCE_ERR 16
+static inline bool touch_debounce_xy(unsigned int *last_x, unsigned int *last_y,
+        unsigned int x, unsigned int y) {
+    int dif_x = (x - *last_x);
+    dif_x = (dif_x < 0) ? -dif_x : dif_x;
+    int dif_y = (y - *last_y);
+    dif_y = (dif_y < 0) ? -dif_y : dif_y;
+
+    *last_x = x;
+    *last_y = y;
+
+    if (dif_x > TOUCH_DEBOUNCE_ERR || dif_y > TOUCH_DEBOUNCE_ERR) {
+        return true;
+    }
+
+    return false;
+}
+
 static inline bool touch_debounce(uint32_t *timestamp, uint32_t debounce_ms) {
     uint32_t now = alt_nticks();
     uint32_t time_from_last = (1000 * (now - *timestamp)) / alt_ticks_per_second();

@@ -9,7 +9,6 @@
 
 #define DEBOUNCE_MS 100
 
-
 touch_message send_buf;
 touch_message recv_buf;
 
@@ -37,7 +36,7 @@ int main(void) {
         touch_send(ts_uart, &send_buf);
 
         touch_mk_command(&send_buf, TOUCH_CMND_CALIBRATE, 2);
-        send_buf.DATA.command.D[0] = 0x1;
+        send_buf.DATA.command.D[0] = 0x1; // 4 Point Calibration
         touch_send(ts_uart, &send_buf);
         touch_recv(ts_uart, &recv_buf);
         touch_print(&recv_buf);
@@ -81,8 +80,10 @@ void touch_response(touch_message *msg) {
 
 uint32_t last_pen_up_time = 0;
 void touch_pen_up(unsigned int x, unsigned int y) {
+    static unsigned int last_x = 0, last_y = 0;
 
-    if (touch_debounce(&last_pen_up_time, DEBOUNCE_MS)) {
+    //if (touch_debounce(&last_pen_up_time, DEBOUNCE_MS)) {
+    if (touch_debounce_xy(&last_x, &last_y, x, y)) {
         unsigned int nx = SG_MAX_WIDTH, ny = SG_MAX_HEIGHT;
         touch_coord(x, y, &nx, &ny);
 
@@ -93,7 +94,10 @@ unsigned int last_x = 0, last_y = 0;
 
 uint32_t last_pen_down_time = 0;
 void touch_pen_down(unsigned int x, unsigned int y) {
-    if (touch_debounce(&last_pen_down_time, DEBOUNCE_MS)) {
+    static unsigned int last_x = 0, last_y = 0;
+
+    //if (touch_debounce(&last_pen_down_time, DEBOUNCE_MS)) {
+    if (touch_debounce_xy(&last_x, &last_y, x, y)) {
         unsigned int nx = SG_MAX_WIDTH, ny = SG_MAX_HEIGHT;
         touch_coord(x, y, &nx, &ny);
 
