@@ -1,0 +1,4 @@
+set_instance_assignment -name PLL_COMPENSATION_MODE DIRECT -to "*cpen391_group5_qsys_Video_Clock_video_pll*|altera_pll:altera_pll_i*|*"
+ 
+set_instance_assignment -name PLL_AUTO_RESET OFF -to "*cpen391_group5_qsys_Video_Clock_video_pll*|altera_pll:altera_pll_i*|*"
+set_instance_assignment -name PLL_BANDWIDTH_PRESET AUTO -to "*cpen391_group5_qsys_Video_Clock_video_pll*|altera_pll:altera_pll_i*|*"

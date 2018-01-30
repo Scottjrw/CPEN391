@@ -1,0 +1,14 @@
+-DALT_NO_INSTRUCTION_EMULATION
+-DALT_SINGLE_THREADED
+-D__hal__
+-I/home/guoj/Documents/Year-3/CPEN-391/repo/software/touchscreen_bsp
+-I/home/guoj/Documents/Year-3/CPEN-391/repo/software/touchscreen_bsp/HAL/inc
+-I/home/guoj/Documents/Year-3/CPEN-391/repo/software/touchscreen_bsp/drivers/inc
+-Wall
+-std=c11
+-include
+/home/guoj/Documents/Year-3/CPEN-391/repo/software/touchscreen/../ycm.h
+-isystem
+/home/guoj/Documents/Year-3/CPEN-391/repo/software/touchscreen_bsp/HAL/inc
+-isystem
+/home/guoj/altera/15.0/nios2eds/bin/gnu/H-x86_64-pc-linux-gnu/nios2-elf/include
