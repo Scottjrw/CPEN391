@@ -24,6 +24,8 @@ struct point{
 };
 
 void algorithm(void);
+inline double average2Points(double p1, double p2);
+inline double absDistance(double x1, double x2, double y1, double y2);
 
 int main(int argc, const char * argv[]) {
     
@@ -33,7 +35,7 @@ int main(int argc, const char * argv[]) {
 }
 
 void algorithm(void) {
-    unsigned char *data = (unsigned char *) header_data;
+    unsigned char *data = VIDEO_FRAME_BUFFER_BASE;
     unsigned char pixel[3];
     
     struct point slots[NUM_SLOTS];
@@ -59,7 +61,7 @@ void algorithm(void) {
                         // compare with specified range
                         double distance = absDistance(slots[i].x, x, slots[i].y, y);
                         
-                        if(distance < RANGE){
+                        if(distance < (RANGE*RANGE)){
                             
                             slots[i].x = average2Points(slots[i].x, x);
                             slots[i].y = average2Points(slots[i].y, y);
@@ -101,4 +103,11 @@ void algorithm(void) {
     
 }
 
+inline double absDistance(double x1, double x2, double y1, double y2){
+    double distance = (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2);
+    return distance;
+}
 
+inline double average2Points(double p1, double p2){
+    return (p1+p2)/2;
+}
