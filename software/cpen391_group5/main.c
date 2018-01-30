@@ -1,92 +1,104 @@
+//
+//  main.c
+//  PixcelDetection
+//
+//  Created by Chi Liu on 2018/1/28.
+//  Copyright © 2018年 Chi Liu. All rights reserved.
+//
+
 #include <stdio.h>
-#include <io.h>
+#include <stdbool.h>
+#include <assert.h>
+#include "red_test.h"
 #include "system.h"
-#include "altera_avalon_pio_regs.h"
 
-/* A janky program that will capture a portable pixmap format image (.pgm, .ppm)
- * https://en.wikipedia.org/wiki/Netpbm_format
- *
- * Usage:
- *
- * Run program in eclipse or use nios2-download to download ELF into processor
- *
- * If using eclipse, stop the nios terminal by pressing the red box
- *
- * Quickly open a new nios command shell run the following command:
- *
- * nios2-terminal -q | tee myimage.pgm
- *
- * Wait a few minutes for the command to complete... the last line that will print is #END OF IMAGE
- *
- * Stop the nios2-terminal with Ctrl-C
- *
- * Open the file in some image view capable of opening .pgm/.ppm images
- * 
- */
+#define MAX_X 320
+#define MAX_Y 240
+#define NUM_SLOTS 4
+#define RANGE 50
 
-#define VGA_X_DIM 320
-#define VGA_Y_DIM 240
+struct point{
+    unsigned x;
+    unsigned y;
+    unsigned count;
+};
 
-#define SKIP 1
+void algorithm(void);
 
-volatile unsigned char *frame_buffer = (volatile unsigned char *) VIDEO_FRAME_BUFFER_BASE;
-
-#define N 300
-
-volatile int a[N][N];
-volatile int b[N][N];
-volatile int c[N][N];
-
-int main()
-{
-    printf("Start\n");
-
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            int sum = 0;
-
-            for (int k = 0; k < N; k++) {
-                sum = a[i][k] * b[k][j];
-            }
-
-            c[i][j] = sum;
-        }
-    }
-
-    printf("Done %d\n", c[0][0]);
-
-    while (1);
-
-    printf("#Waiting...\n\n");
-    for (int c = 10; c > 0; c--) {
-        for (int i = 0; i < 1000000; i++) {
-            // Put a memory write here to prevent it from being optimized out
-            IOWR_ALTERA_AVALON_PIO_DATA(LED_OUT_PIO_BASE, 0x5);
-        }
-    }
-    printf("P3\n");
-    printf("%d %d 255\n", VGA_X_DIM / SKIP, VGA_Y_DIM / SKIP);
-
-    for (int i = 0; i < 1000000; i++) {
-        IOWR_ALTERA_AVALON_PIO_DATA(LED_OUT_PIO_BASE, 0x5);
-    }
-
-    for (int y = 0; y < VGA_Y_DIM * 4; y += SKIP * 4) {
-        for (int x = 0; x < VGA_X_DIM * 4; x += SKIP * 4) {
-            unsigned int pix = *((unsigned int *) &frame_buffer[y * VGA_X_DIM + x]);
-            unsigned char pix_r = pix >> 16;
-            unsigned char pix_g = pix >> 8;
-            unsigned char pix_b = pix;
-
-            printf("%d %d %d  ", pix_r, pix_g, pix_b);
-        }
-
-        putchar('\n');
-    }
-
-    printf("\n#END OF IMAGE\n");
-
-    while (1) { }
-
+int main(int argc, const char * argv[]) {
+    
+    algorithm();
+    
     return 0;
 }
+
+void algorithm(void) {
+    unsigned char *data = (unsigned char *) header_data;
+    unsigned char pixel[3];
+    
+    struct point slots[NUM_SLOTS];
+    
+    for(int i = 0; i < NUM_SLOTS; i++){
+        slots[i].count = 0;
+    }
+    
+    
+    for(int y = 0; y < MAX_Y; y++){
+        for(int x = 0; x < MAX_X; x++){
+            
+            HEADER_PIXEL(data, pixel);
+            
+            // relatively red
+            if(pixel[0] >= 200 && pixel[1] < 50 && pixel[2] < 50){
+                printf("Red Pixel at %u %u\n", x, y);
+                int free_slot = -1;
+                bool found_slot = false;
+                for(int i = 0; i < NUM_SLOTS; i++){
+                   
+                    if(slots[i].count > 0 ){
+                        // compare with specified range
+                        double distance = absDistance(slots[i].x, x, slots[i].y, y);
+                        
+                        if(distance < RANGE){
+                            
+                            slots[i].x = average2Points(slots[i].x, x);
+                            slots[i].y = average2Points(slots[i].y, y);
+                            slots[i].count += 1;
+                            //printf("%d\n",slots[i].count);
+                            found_slot = true;
+                        }
+                        
+                    } else{
+                        free_slot = i;
+                    }
+                }
+                
+                // if the pixel doesnt get a slot
+                if(!found_slot){
+                    assert(free_slot != -1);
+                    
+                    slots[free_slot].x = x;
+                    slots[free_slot].y = y;
+                    slots[free_slot].count += 1;
+                }
+                
+                // if
+                
+                
+                
+            }
+        }
+        
+        
+    }
+    for(int i = 0; i < SLOT_SIZE; i++){
+        
+        printf("Slot %d: x = %u, y = %u, count= %d.\n", i, slots[i].x, slots[i].y, slots[i].count);
+        
+    }
+    
+    
+    
+}
+
+

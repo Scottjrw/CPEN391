@@ -2,10 +2,10 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>29-Jan-2018 10:44:22 AM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1517251462941</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Jan 29, 2018 8:33:57 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1517286837143</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>/home/guoj/Documents/Year-3/CPEN-391/repo/software/video_capture_bsp</BspGeneratedLocation>
-        <BspSettingsFile>./settings.bsp</BspSettingsFile>
+        <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>../../cpen391_group5_qsys.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>nios2</Cpu>

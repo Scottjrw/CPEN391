@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Thu Jan 25 17:07:30 PST 2018
+ * Generated: Mon Jan 29 23:47:52 PST 2018
  */
 
 /*
@@ -51,12 +51,14 @@
 MEMORY
 {
     Video_Frame_Buffer : ORIGIN = 0x0, LENGTH = 307200
+    Draw_Buffer : ORIGIN = 0x80000, LENGTH = 76800
     reset : ORIGIN = 0x8000000, LENGTH = 32
     sdram : ORIGIN = 0x8000020, LENGTH = 67108832
 }
 
 /* Define symbols for each memory base-address */
 __alt_mem_Video_Frame_Buffer = 0x0;
+__alt_mem_Draw_Buffer = 0x80000;
 __alt_mem_sdram = 0x8000000;
 
 OUTPUT_FORMAT( "elf32-littlenios2",
@@ -326,7 +328,24 @@ SECTIONS
      *
      */
 
-    .sdram LOADADDR (.Video_Frame_Buffer) + SIZEOF (.Video_Frame_Buffer) : AT ( LOADADDR (.Video_Frame_Buffer) + SIZEOF (.Video_Frame_Buffer) )
+    .Draw_Buffer : AT ( LOADADDR (.Video_Frame_Buffer) + SIZEOF (.Video_Frame_Buffer) )
+    {
+        PROVIDE (_alt_partition_Draw_Buffer_start = ABSOLUTE(.));
+        *(.Draw_Buffer .Draw_Buffer. Draw_Buffer.*)
+        . = ALIGN(4);
+        PROVIDE (_alt_partition_Draw_Buffer_end = ABSOLUTE(.));
+    } > Draw_Buffer
+
+    PROVIDE (_alt_partition_Draw_Buffer_load_addr = LOADADDR(.Draw_Buffer));
+
+    /*
+     *
+     * This section's LMA is set to the .text region.
+     * crt0 will copy to this section's specified mapped region virtual memory address (VMA)
+     *
+     */
+
+    .sdram LOADADDR (.Draw_Buffer) + SIZEOF (.Draw_Buffer) : AT ( LOADADDR (.Draw_Buffer) + SIZEOF (.Draw_Buffer) )
     {
         PROVIDE (_alt_partition_sdram_start = ABSOLUTE(.));
         *(.sdram .sdram. sdram.*)

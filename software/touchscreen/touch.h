@@ -15,9 +15,20 @@ static inline void touch_mk_command(touch_message *msg, uint8_t cmnd, uint8_t si
     msg->DATA.command.CMND = cmnd;
 }
 
+
 void touch_send(FILE *uart, touch_message *msg);
 void touch_recv(FILE *uart, touch_message *msg);
 void touch_print(touch_message *msg);
+
+#define TOUCH_X_MIN 0
+#define TOUCH_Y_MIN 275
+#define TOUCH_X_MAX 4095
+#define TOUCH_Y_MAX 4095
+// Convert a touch coordinate to coordinates with range [0, m_x], [0, m_y], the result is stored back into m_x, m_y
+static inline void touch_coord(unsigned int x, unsigned int y, unsigned int *m_x, unsigned int *m_y) {
+    *m_x = x * (*m_x) / (TOUCH_X_MAX - TOUCH_X_MIN);
+    *m_y = y * (*m_y) / (TOUCH_Y_MAX - TOUCH_Y_MIN);
+}
 
 // Debounce helper, returns true 
 static inline bool touch_debounce(uint32_t *timestamp, uint32_t debounce_ms) {

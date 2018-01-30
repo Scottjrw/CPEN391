@@ -3,7 +3,7 @@
 # Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
 # SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
 #
-# Generated: Thu Jan 25 17:07:30 PST 2018
+# Generated: Mon Jan 29 23:47:52 PST 2018
 
 # DO NOT MODIFY THIS FILE
 #
@@ -48,6 +48,9 @@
 
 # Video_Frame_Buffer
 memory 0x0 0x4b000 cache
+
+# Draw_Buffer
+memory 0x80000 0x92c00 cache
 
 # sdram
 memory 0x8000000 0xc000000 cache

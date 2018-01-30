@@ -15,6 +15,7 @@ void touch_send(FILE *uart, touch_message *msg) {
 void touch_recv(FILE *uart, touch_message *msg) {
     while (1) {
         uint8_t sync = fgetc(uart);
+        msg->SYNC = sync;
 
         switch (sync) {
             case TOUCH_SYNC:

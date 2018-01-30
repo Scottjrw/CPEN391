@@ -4157,7 +4157,7 @@ module cpen391_group5_qsys_nios2 (
     2'b11;
 
   assign F_pc_no_crst_nxt = (F_pc_sel_nxt == 2'b00)? 33554440 :
-    (F_pc_sel_nxt == 2'b01)? 131592 :
+    (F_pc_sel_nxt == 2'b01)? 164360 :
     (F_pc_sel_nxt == 2'b10)? E_arith_result[27 : 2] :
     F_pc_plus_one;
 
