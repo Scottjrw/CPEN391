@@ -1,5 +1,5 @@
 **/obj/
-*.elf
-*.map
-*.objdump
-*.a
+**/*.elf
+**/*.map
+**/*.objdump
+**/*.a
