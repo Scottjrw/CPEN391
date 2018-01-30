@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Wed Jan 17 14:31:10 PST 2018
+ * Generated: Sun Jan 21 00:35:16 PST 2018
  */
 
 /*
@@ -69,6 +69,8 @@
 #define RESET_REGION_SPAN 32
 #define SDRAM_REGION_BASE 0x8000020
 #define SDRAM_REGION_SPAN 67108832
+#define VIDEO_FRAME_BUFFER_REGION_BASE 0x0
+#define VIDEO_FRAME_BUFFER_REGION_SPAN 307200
 
 
 /*

@@ -1,5 +1,0 @@
--Wall
--std=c++11
--I../cpen391_group5_bsp
--I../cpen391_group5_bsp/HAL/inc
--I../cpen391_group5_bsp/drivers/inc
