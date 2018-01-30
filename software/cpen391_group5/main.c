@@ -11,12 +11,13 @@
 #include <assert.h>
 #include "red_test.h"
 #include "system.h"
+#include "simple_graphics.h"
 
 #define MAX_X 320
 #define MAX_Y 240
 #define NUM_SLOTS 4
 #define RANGE 50
-
+#define X_SIZE 5
 struct point{
     unsigned x;
     unsigned y;
@@ -99,7 +100,14 @@ void algorithm(void) {
         
     }
     
-    
+    // display blue X on the red spots 
+    for(int i = 0; i < NUM_SLOTS; i++){
+
+	sg_draw_x(slots[i].x, slots[i].y, X_SIZE, sg_rgba(0,0,255,255));
+    }
+
+    // clear the screen
+    sg_clear_screen();    
     
 }
 
