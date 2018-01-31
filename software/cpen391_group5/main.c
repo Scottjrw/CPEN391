@@ -19,6 +19,17 @@
 #define RANGE 50
 #define MARKER_SIZE 5
 
+enum Direction{
+
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    TOPLEFT,
+    TOPRIGHT,
+    BOTTOMLEFT,
+    BOTTOMRIGHT
+}
 struct rgba {
     uint8_t b;
     uint8_t g;
@@ -124,3 +135,26 @@ void algorithm(void) {
     
 }
 
+ getMovement(struct p1, struct p2){
+
+    float slope = (p2.y - p1.y)/(p2.x - p1.x);
+
+    if(-0.5 < slope < 0.5){
+	
+	if(p2.x > p1.x)	return RIGHT;
+	else		return LEFT;
+    }
+    else if (0.5 < slope < 2){
+	
+	if(p2.x > p1.x)	return TOPRIGHT;
+	else		return BOTTOMLEFT;
+    }
+    else if (slope > 2){
+	if(p2.y > p1.y) return UP;
+	else		return DOWN;
+    }
+    else if(-0.5 > slope > -2){
+	if(p2.x > p1.x)	return BOTTOMRIGHT;
+	else		return TOPLEFTl;	
+    }
+}
