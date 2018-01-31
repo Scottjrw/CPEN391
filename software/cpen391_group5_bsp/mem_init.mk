@@ -155,7 +155,7 @@ ACDS_VERSION := 15.0
 
 # This following BUILD_NUMBER comment indicates the build number of the tool 
 # used to generate this makefile. 
-# BUILD_NUMBER: 145
+# BUILD_NUMBER: 153
 
 # Optimize for simulation
 SIM_OPTIMIZE ?= 0
@@ -170,9 +170,9 @@ NIOS2_ELF_FORMAT ?= elf32-littlenios2
 # Pre-Initialized Memory Descriptions
 #-------------------------------------
 
-# Memory: Video_Frame_Buffer
-MEM_0 := cpen391_group5_qsys_Video_Frame_Buffer
-$(MEM_0)_NAME := Video_Frame_Buffer
+# Memory: Draw_Buffer
+MEM_0 := cpen391_group5_qsys_Draw_Buffer
+$(MEM_0)_NAME := Draw_Buffer
 $(MEM_0)_MEM_INIT_FILE_PARAM_NAME := INIT_FILE
 HEX_FILES += $(MEM_INIT_DIR)/$(MEM_0).hex
 MEM_INIT_INSTALL_FILES += $(MEM_INIT_INSTALL_DIR)/$(MEM_0).hex
@@ -180,36 +180,58 @@ DAT_FILES += $(HDL_SIM_DIR)/$(MEM_0).dat
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_0).dat
 SYM_FILES += $(HDL_SIM_DIR)/$(MEM_0).sym
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_0).sym
-$(MEM_0)_START := 0x00000000
-$(MEM_0)_END := 0x0004afff
-$(MEM_0)_SPAN := 0x0004b000
-$(MEM_0)_HIERARCHICAL_PATH := Video_Frame_Buffer
+$(MEM_0)_START := 0x00080000
+$(MEM_0)_END := 0x000895ff
+$(MEM_0)_SPAN := 0x00009600
+$(MEM_0)_HIERARCHICAL_PATH := Draw_Buffer
 $(MEM_0)_WIDTH := 32
 $(MEM_0)_HEX_DATA_WIDTH := 32
 $(MEM_0)_ENDIANNESS := --little-endian-mem
 $(MEM_0)_CREATE_LANES := 0
 
-.PHONY: Video_Frame_Buffer
-Video_Frame_Buffer: check_elf_exists $(MEM_INIT_DIR)/$(MEM_0).hex $(HDL_SIM_DIR)/$(MEM_0).dat $(HDL_SIM_DIR)/$(MEM_0).sym
+.PHONY: Draw_Buffer
+Draw_Buffer: check_elf_exists $(MEM_INIT_DIR)/$(MEM_0).hex $(HDL_SIM_DIR)/$(MEM_0).dat $(HDL_SIM_DIR)/$(MEM_0).sym
 
-# Memory: sdram
-MEM_1 := sdram
-$(MEM_1)_NAME := sdram
+# Memory: Video_Frame_Buffer
+MEM_1 := cpen391_group5_qsys_Video_Frame_Buffer
+$(MEM_1)_NAME := Video_Frame_Buffer
+$(MEM_1)_MEM_INIT_FILE_PARAM_NAME := INIT_FILE
+HEX_FILES += $(MEM_INIT_DIR)/$(MEM_1).hex
+MEM_INIT_INSTALL_FILES += $(MEM_INIT_INSTALL_DIR)/$(MEM_1).hex
 DAT_FILES += $(HDL_SIM_DIR)/$(MEM_1).dat
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_1).dat
 SYM_FILES += $(HDL_SIM_DIR)/$(MEM_1).sym
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_1).sym
-$(MEM_1)_START := 0x08000000
-$(MEM_1)_END := 0x0bffffff
-$(MEM_1)_SPAN := 0x04000000
-$(MEM_1)_HIERARCHICAL_PATH := sdram
-$(MEM_1)_WIDTH := 16
-$(MEM_1)_HEX_DATA_WIDTH := 16
+$(MEM_1)_START := 0x00000000
+$(MEM_1)_END := 0x0004afff
+$(MEM_1)_SPAN := 0x0004b000
+$(MEM_1)_HIERARCHICAL_PATH := Video_Frame_Buffer
+$(MEM_1)_WIDTH := 32
+$(MEM_1)_HEX_DATA_WIDTH := 32
 $(MEM_1)_ENDIANNESS := --little-endian-mem
 $(MEM_1)_CREATE_LANES := 0
 
+.PHONY: Video_Frame_Buffer
+Video_Frame_Buffer: check_elf_exists $(MEM_INIT_DIR)/$(MEM_1).hex $(HDL_SIM_DIR)/$(MEM_1).dat $(HDL_SIM_DIR)/$(MEM_1).sym
+
+# Memory: sdram
+MEM_2 := sdram
+$(MEM_2)_NAME := sdram
+DAT_FILES += $(HDL_SIM_DIR)/$(MEM_2).dat
+HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_2).dat
+SYM_FILES += $(HDL_SIM_DIR)/$(MEM_2).sym
+HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_2).sym
+$(MEM_2)_START := 0x08000000
+$(MEM_2)_END := 0x0bffffff
+$(MEM_2)_SPAN := 0x04000000
+$(MEM_2)_HIERARCHICAL_PATH := sdram
+$(MEM_2)_WIDTH := 16
+$(MEM_2)_HEX_DATA_WIDTH := 16
+$(MEM_2)_ENDIANNESS := --little-endian-mem
+$(MEM_2)_CREATE_LANES := 0
+
 .PHONY: sdram
-sdram: check_elf_exists $(HDL_SIM_DIR)/$(MEM_1).dat $(HDL_SIM_DIR)/$(MEM_1).sym
+sdram: check_elf_exists $(HDL_SIM_DIR)/$(MEM_2).dat $(HDL_SIM_DIR)/$(MEM_2).sym
 
 
 #END OF BSP SPECIFIC

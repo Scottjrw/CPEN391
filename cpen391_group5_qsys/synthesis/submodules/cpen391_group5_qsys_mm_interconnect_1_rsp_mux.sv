@@ -43,9 +43,9 @@
 //   ARBITRATION_SHARES:  1
 //   ARBITRATION_SCHEME   "no-arb"
 //   PIPELINE_ARB:        0
-//   PKT_TRANS_LOCK:      72 (arbitration locking enabled)
-//   ST_DATA_W:           110
-//   ST_CHANNEL_W:        12
+//   PKT_TRANS_LOCK:      54 (arbitration locking enabled)
+//   ST_DATA_W:           84
+//   ST_CHANNEL_W:        1
 // ------------------------------------------
 
 module cpen391_group5_qsys_mm_interconnect_1_rsp_mux
@@ -54,8 +54,8 @@ module cpen391_group5_qsys_mm_interconnect_1_rsp_mux
     // Sinks
     // ----------------------
     input                       sink0_valid,
-    input [110-1   : 0]  sink0_data,
-    input [12-1: 0]  sink0_channel,
+    input [84-1   : 0]  sink0_data,
+    input [1-1: 0]  sink0_channel,
     input                       sink0_startofpacket,
     input                       sink0_endofpacket,
     output                      sink0_ready,
@@ -65,8 +65,8 @@ module cpen391_group5_qsys_mm_interconnect_1_rsp_mux
     // Source
     // ----------------------
     output                      src_valid,
-    output [110-1    : 0] src_data,
-    output [12-1 : 0] src_channel,
+    output [84-1    : 0] src_data,
+    output [1-1 : 0] src_channel,
     output                      src_startofpacket,
     output                      src_endofpacket,
     input                       src_ready,
@@ -77,13 +77,13 @@ module cpen391_group5_qsys_mm_interconnect_1_rsp_mux
     input clk,
     input reset
 );
-    localparam PAYLOAD_W        = 110 + 12 + 2;
+    localparam PAYLOAD_W        = 84 + 1 + 2;
     localparam NUM_INPUTS       = 1;
     localparam SHARE_COUNTER_W  = 1;
     localparam PIPELINE_ARB     = 0;
-    localparam ST_DATA_W        = 110;
-    localparam ST_CHANNEL_W     = 12;
-    localparam PKT_TRANS_LOCK   = 72;
+    localparam ST_DATA_W        = 84;
+    localparam ST_CHANNEL_W     = 1;
+    localparam PKT_TRANS_LOCK   = 54;
 
     assign	src_valid			=  sink0_valid;
     assign	src_data			=  sink0_data;

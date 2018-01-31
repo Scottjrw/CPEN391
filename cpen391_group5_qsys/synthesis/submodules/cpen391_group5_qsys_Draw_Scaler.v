@@ -55,7 +55,7 @@ module cpen391_group5_qsys_Draw_Scaler (
  *                           Parameter Declarations                          *
  *****************************************************************************/
 
-parameter DW					= 31; // Frame's Data Width
+parameter DW					= 15; // Frame's Data Width
 parameter EW					= 1; // Frame's Empty Width
 
 parameter WIW					= 7; // Incoming frame's width's address width

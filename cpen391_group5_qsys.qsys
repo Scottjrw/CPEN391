@@ -21,7 +21,7 @@
    {
       datum _sortIndex
       {
-         value = "16";
+         value = "15";
          type = "int";
       }
    }
@@ -50,7 +50,7 @@
    {
       datum _sortIndex
       {
-         value = "20";
+         value = "19";
          type = "int";
       }
    }
@@ -66,7 +66,7 @@
    {
       datum _sortIndex
       {
-         value = "22";
+         value = "21";
          type = "int";
       }
    }
@@ -74,7 +74,7 @@
    {
       datum _sortIndex
       {
-         value = "21";
+         value = "20";
          type = "int";
       }
    }
@@ -82,7 +82,7 @@
    {
       datum _sortIndex
       {
-         value = "23";
+         value = "22";
          type = "int";
       }
    }
@@ -90,7 +90,7 @@
    {
       datum _sortIndex
       {
-         value = "26";
+         value = "25";
          type = "int";
       }
    }
@@ -98,7 +98,7 @@
    {
       datum _sortIndex
       {
-         value = "15";
+         value = "14";
          type = "int";
       }
    }
@@ -132,7 +132,7 @@
    {
       datum _sortIndex
       {
-         value = "11";
+         value = "10";
          type = "int";
       }
    }
@@ -140,7 +140,7 @@
    {
       datum _sortIndex
       {
-         value = "10";
+         value = "9";
          type = "int";
       }
    }
@@ -148,7 +148,7 @@
    {
       datum _sortIndex
       {
-         value = "12";
+         value = "11";
          type = "int";
       }
    }
@@ -156,7 +156,7 @@
    {
       datum _sortIndex
       {
-         value = "14";
+         value = "13";
          type = "int";
       }
    }
@@ -172,7 +172,7 @@
    {
       datum _sortIndex
       {
-         value = "9";
+         value = "8";
          type = "int";
       }
    }
@@ -180,7 +180,7 @@
    {
       datum _sortIndex
       {
-         value = "13";
+         value = "12";
          type = "int";
       }
       datum sopceditor_expanded
@@ -193,7 +193,7 @@
    {
       datum _sortIndex
       {
-         value = "17";
+         value = "16";
          type = "int";
       }
    }
@@ -209,7 +209,7 @@
    {
       datum _sortIndex
       {
-         value = "24";
+         value = "23";
          type = "int";
       }
    }
@@ -217,7 +217,7 @@
    {
       datum _sortIndex
       {
-         value = "19";
+         value = "18";
          type = "int";
       }
    }
@@ -225,7 +225,7 @@
    {
       datum _sortIndex
       {
-         value = "18";
+         value = "17";
          type = "int";
       }
    }
@@ -233,7 +233,7 @@
    {
       datum _sortIndex
       {
-         value = "25";
+         value = "24";
          type = "int";
       }
    }
@@ -253,11 +253,19 @@
          type = "String";
       }
    }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
    element jtag_uart_0
    {
       datum _sortIndex
       {
-         value = "8";
+         value = "7";
          type = "int";
       }
    }
@@ -273,7 +281,7 @@
    {
       datum _sortIndex
       {
-         value = "6";
+         value = "5";
          type = "int";
       }
    }
@@ -289,7 +297,7 @@
    {
       datum _sortIndex
       {
-         value = "3";
+         value = "2";
          type = "int";
       }
    }
@@ -305,7 +313,7 @@
    {
       datum _sortIndex
       {
-         value = "5";
+         value = "4";
          type = "int";
       }
    }
@@ -326,7 +334,7 @@
    {
       datum _sortIndex
       {
-         value = "7";
+         value = "6";
          type = "int";
       }
    }
@@ -338,27 +346,11 @@
          type = "String";
       }
    }
-   element timer_0
-   {
-      datum _sortIndex
-      {
-         value = "1";
-         type = "int";
-      }
-   }
-   element timer_0.s1
-   {
-      datum baseAddress
-      {
-         value = "528384";
-         type = "String";
-      }
-   }
    element timer_1
    {
       datum _sortIndex
       {
-         value = "2";
+         value = "1";
          type = "int";
       }
    }
@@ -374,7 +366,7 @@
    {
       datum _sortIndex
       {
-         value = "4";
+         value = "3";
          type = "int";
       }
    }
@@ -443,7 +435,7 @@
    enabled="1">
   <parameter name="allowInSystemMemoryContentEditor" value="false" />
   <parameter name="autoInitializationFileName">$${FILENAME}_Draw_Buffer</parameter>
-  <parameter name="blockType" value="M10K" />
+  <parameter name="blockType" value="AUTO" />
   <parameter name="copyInitFile" value="false" />
   <parameter name="dataWidth" value="32" />
   <parameter name="deviceFamily" value="Cyclone V" />
@@ -453,7 +445,7 @@
   <parameter name="initMemContent" value="false" />
   <parameter name="initializationFileName" value="onchip_mem.hex" />
   <parameter name="instanceID" value="NONE" />
-  <parameter name="memorySize" value="76800" />
+  <parameter name="memorySize" value="38400" />
   <parameter name="readDuringWriteMode" value="DONT_CARE" />
   <parameter name="resetrequest_enabled" value="true" />
   <parameter name="simAllowMRAMContentsFile" value="false" />
@@ -474,7 +466,7 @@
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
   <parameter name="addr_mode" value="Consecutive" />
   <parameter name="back_start_address" value="0" />
-  <parameter name="color_bits" value="8" />
+  <parameter name="color_bits" value="4" />
   <parameter name="color_planes" value="4" />
   <parameter name="dma_enabled" value="true" />
   <parameter name="height" value="120" />
@@ -490,7 +482,7 @@
   <parameter name="AUTO_CLK_CLOCK_RATE" value="50000000" />
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
   <parameter name="alpha" value="1023" />
-  <parameter name="input_type" value="32-bit RGBA" />
+  <parameter name="input_type" value="16-bit RGBA" />
   <parameter name="output_type" value="40-bit RGBA" />
  </module>
  <module
@@ -500,7 +492,7 @@
    enabled="1">
   <parameter name="AUTO_CLK_CLOCK_RATE" value="50000000" />
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
-  <parameter name="color_bits" value="8" />
+  <parameter name="color_bits" value="4" />
   <parameter name="color_planes" value="4" />
   <parameter name="height_in" value="120" />
   <parameter name="height_scaling" value="4" />
@@ -771,15 +763,15 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="28" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x92C00' /><slave name='nios2.jtag_debug_module' start='0xA0800' end='0xA1000' /><slave name='timer_1.s1' start='0xA1000' end='0xA1020' /><slave name='touchscreen_uart.s1' start='0xA1020' end='0xA1040' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0xA1040' end='0xA1050' /><slave name='switch_in_pio.s1' start='0xA1050' end='0xA1060' /><slave name='led_out_pio.s1' start='0xA1060' end='0xA1070' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0xA1070' end='0xA1080' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0xA1080' end='0xA1090' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0xA1090' end='0xA1098' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
-  <parameter name="dcache_bursts" value="false" />
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0xA0800' end='0xA1000' /><slave name='timer_1.s1' start='0xA1000' end='0xA1020' /><slave name='touchscreen_uart.s1' start='0xA1020' end='0xA1040' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0xA1040' end='0xA1050' /><slave name='switch_in_pio.s1' start='0xA1050' end='0xA1060' /><slave name='led_out_pio.s1' start='0xA1060' end='0xA1070' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0xA1070' end='0xA1080' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0xA1080' end='0xA1090' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0xA1090' end='0xA1098' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
+  <parameter name="dcache_bursts" value="true" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
   <parameter name="dcache_omitDataMaster" value="false" />
   <parameter name="dcache_ramBlockType" value="Automatic" />
-  <parameter name="dcache_size" value="2048" />
+  <parameter name="dcache_size" value="1024" />
   <parameter name="dcache_tagramBlockType" value="Automatic" />
-  <parameter name="dcache_victim_buf_impl" value="ram" />
+  <parameter name="dcache_victim_buf_impl" value="reg" />
   <parameter name="debug_OCIOnchipTrace" value="_128" />
   <parameter name="debug_assignJtagInstanceID" value="false" />
   <parameter name="debug_debugReqSignals" value="false" />
@@ -794,9 +786,9 @@
   <parameter name="icache_burstType" value="None" />
   <parameter name="icache_numTCIM" value="0" />
   <parameter name="icache_ramBlockType" value="Automatic" />
-  <parameter name="icache_size" value="4096" />
+  <parameter name="icache_size" value="1024" />
   <parameter name="icache_tagramBlockType" value="Automatic" />
-  <parameter name="impl" value="Tiny" />
+  <parameter name="impl" value="Fast" />
   <parameter name="instAddrWidth" value="28" />
   <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='nios2.jtag_debug_module' start='0xA0800' end='0xA1000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
   <parameter name="internalIrqMaskSystemInfo" value="11" />
@@ -935,18 +927,6 @@
   <parameter name="simDrivenValue" value="0" />
   <parameter name="width" value="8" />
  </module>
- <module name="timer_0" kind="altera_avalon_timer" version="15.0" enabled="0">
-  <parameter name="alwaysRun" value="false" />
-  <parameter name="counterSize" value="32" />
-  <parameter name="fixedPeriod" value="false" />
-  <parameter name="period" value="1" />
-  <parameter name="periodUnits" value="MSEC" />
-  <parameter name="resetOutput" value="false" />
-  <parameter name="snapshot" value="true" />
-  <parameter name="systemFrequency" value="50000000" />
-  <parameter name="timeoutPulseOutput" value="false" />
-  <parameter name="watchdogPulse" value="2" />
- </module>
  <module name="timer_1" kind="altera_avalon_timer" version="15.0" enabled="1">
   <parameter name="alwaysRun" value="false" />
   <parameter name="counterSize" value="32" />
@@ -992,7 +972,7 @@
    kind="avalon"
    version="15.0"
    start="Video_Out_DMA.avalon_dma_master"
-   end="Video_Frame_Buffer.s2">
+   end="Video_Frame_Buffer.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
   <parameter name="defaultConnection" value="false" />
@@ -1081,15 +1061,6 @@
    end="touchscreen_uart.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x000a1020" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="15.0"
-   start="nios2.data_master"
-   end="timer_0.s1">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00081000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1269,7 +1240,6 @@
    version="15.0"
    start="clocks.sys_clk"
    end="touchscreen_uart.clk" />
- <connection kind="clock" version="15.0" start="clocks.sys_clk" end="timer_0.clk" />
  <connection kind="clock" version="15.0" start="clocks.sys_clk" end="timer_1.clk" />
  <connection kind="clock" version="15.0" start="clocks.sys_clk" end="Draw_DMA.clk" />
  <connection
@@ -1330,9 +1300,6 @@
    start="nios2.d_irq"
    end="touchscreen_uart.irq">
   <parameter name="irqNumber" value="1" />
- </connection>
- <connection kind="interrupt" version="15.0" start="nios2.d_irq" end="timer_0.irq">
-  <parameter name="irqNumber" value="2" />
  </connection>
  <connection kind="interrupt" version="15.0" start="nios2.d_irq" end="timer_1.irq">
   <parameter name="irqNumber" value="3" />
@@ -1412,11 +1379,6 @@
    version="15.0"
    start="nios2.jtag_debug_module_reset"
    end="touchscreen_uart.reset" />
- <connection
-   kind="reset"
-   version="15.0"
-   start="nios2.jtag_debug_module_reset"
-   end="timer_0.reset" />
  <connection
    kind="reset"
    version="15.0"
@@ -1542,11 +1504,6 @@
    version="15.0"
    start="clocks.reset_source"
    end="touchscreen_uart.reset" />
- <connection
-   kind="reset"
-   version="15.0"
-   start="clocks.reset_source"
-   end="timer_0.reset" />
  <connection
    kind="reset"
    version="15.0"

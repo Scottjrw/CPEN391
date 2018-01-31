@@ -84,8 +84,7 @@ void touch_pen_up(unsigned int x, unsigned int y) {
 
     //if (touch_debounce(&last_pen_up_time, DEBOUNCE_MS)) {
     if (touch_debounce_xy(&last_x, &last_y, x, y)) {
-        unsigned int nx = SG_MAX_WIDTH, ny = SG_MAX_HEIGHT;
-        touch_coord(x, y, &nx, &ny);
+        unsigned int nx = TOUCH_COORD(x, SG_MAX_WIDTH), ny = TOUCH_COORD(y, SG_MAX_HEIGHT);
 
         printf("TOUCH UP %d %d\n", nx, ny);
     }
@@ -98,16 +97,11 @@ void touch_pen_down(unsigned int x, unsigned int y) {
 
     //if (touch_debounce(&last_pen_down_time, DEBOUNCE_MS)) {
     if (touch_debounce_xy(&last_x, &last_y, x, y)) {
-        unsigned int nx = SG_MAX_WIDTH, ny = SG_MAX_HEIGHT;
-        touch_coord(x, y, &nx, &ny);
+        unsigned int nx = TOUCH_COORD(x, SG_MAX_WIDTH), ny = TOUCH_COORD(y, SG_MAX_HEIGHT);
 
         printf("TOUCH DOWN %d %d\n", nx, ny);
 
-        sg_draw_x(last_x, last_y, 2, sg_rgba(0, 0, 0, 0));
         sg_draw_x(nx, ny, 2, sg_rgba(255, 0, 0, 255));
-
-        last_x = nx;
-        last_y = ny;
     }
 }
 

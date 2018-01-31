@@ -28,10 +28,10 @@
 // ------------------------------------------
 // Generation parameters:
 //   output_name:         cpen391_group5_qsys_mm_interconnect_1_cmd_demux_002
-//   ST_DATA_W:           110
+//   ST_DATA_W:           113
 //   ST_CHANNEL_W:        12
 //   NUM_OUTPUTS:         2
-//   VALID_WIDTH:         1
+//   VALID_WIDTH:         12
 // ------------------------------------------
 
 //------------------------------------------
@@ -45,8 +45,8 @@ module cpen391_group5_qsys_mm_interconnect_1_cmd_demux_002
     // -------------------
     // Sink
     // -------------------
-    input  [1-1      : 0]   sink_valid,
-    input  [110-1    : 0]   sink_data, // ST_DATA_W=110
+    input  [12-1      : 0]   sink_valid,
+    input  [113-1    : 0]   sink_data, // ST_DATA_W=113
     input  [12-1 : 0]   sink_channel, // ST_CHANNEL_W=12
     input                         sink_startofpacket,
     input                         sink_endofpacket,
@@ -56,14 +56,14 @@ module cpen391_group5_qsys_mm_interconnect_1_cmd_demux_002
     // Sources 
     // -------------------
     output reg                      src0_valid,
-    output reg [110-1    : 0] src0_data, // ST_DATA_W=110
+    output reg [113-1    : 0] src0_data, // ST_DATA_W=113
     output reg [12-1 : 0] src0_channel, // ST_CHANNEL_W=12
     output reg                      src0_startofpacket,
     output reg                      src0_endofpacket,
     input                           src0_ready,
 
     output reg                      src1_valid,
-    output reg [110-1    : 0] src1_data, // ST_DATA_W=110
+    output reg [113-1    : 0] src1_data, // ST_DATA_W=113
     output reg [12-1 : 0] src1_channel, // ST_CHANNEL_W=12
     output reg                      src1_startofpacket,
     output reg                      src1_endofpacket,
@@ -92,14 +92,14 @@ module cpen391_group5_qsys_mm_interconnect_1_cmd_demux_002
         src0_endofpacket   = sink_endofpacket;
         src0_channel       = sink_channel >> NUM_OUTPUTS;
 
-        src0_valid         = sink_channel[0] && sink_valid;
+        src0_valid         = sink_channel[0] && sink_valid[0];
 
         src1_data          = sink_data;
         src1_startofpacket = sink_startofpacket;
         src1_endofpacket   = sink_endofpacket;
         src1_channel       = sink_channel >> NUM_OUTPUTS;
 
-        src1_valid         = sink_channel[1] && sink_valid;
+        src1_valid         = sink_channel[1] && sink_valid[1];
 
     end
 

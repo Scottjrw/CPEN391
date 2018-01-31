@@ -47,8 +47,8 @@ module cpen391_group5_qsys_Draw_Buffer (
 
   output  [ 31: 0] readdata;
   output  [ 31: 0] readdata2;
-  input   [ 14: 0] address;
-  input   [ 14: 0] address2;
+  input   [ 13: 0] address;
+  input   [ 13: 0] address2;
   input   [  3: 0] byteenable;
   input   [  3: 0] byteenable2;
   input            chipselect;
@@ -99,20 +99,20 @@ module cpen391_group5_qsys_Draw_Buffer (
            the_altsyncram.indata_reg_b = "CLOCK0",
            the_altsyncram.init_file = "UNUSED",
            the_altsyncram.lpm_type = "altsyncram",
-           the_altsyncram.maximum_depth = 19200,
-           the_altsyncram.numwords_a = 19200,
-           the_altsyncram.numwords_b = 19200,
+           the_altsyncram.maximum_depth = 9600,
+           the_altsyncram.numwords_a = 9600,
+           the_altsyncram.numwords_b = 9600,
            the_altsyncram.operation_mode = "BIDIR_DUAL_PORT",
            the_altsyncram.outdata_reg_a = "UNREGISTERED",
            the_altsyncram.outdata_reg_b = "UNREGISTERED",
-           the_altsyncram.ram_block_type = "M10K",
+           the_altsyncram.ram_block_type = "AUTO",
            the_altsyncram.read_during_write_mode_mixed_ports = "DONT_CARE",
            the_altsyncram.width_a = 32,
            the_altsyncram.width_b = 32,
            the_altsyncram.width_byteena_a = 4,
            the_altsyncram.width_byteena_b = 4,
-           the_altsyncram.widthad_a = 15,
-           the_altsyncram.widthad_b = 15,
+           the_altsyncram.widthad_a = 14,
+           the_altsyncram.widthad_b = 14,
            the_altsyncram.wrcontrol_wraddress_reg_b = "CLOCK0";
 
   //s1, which is an e_avalon_slave

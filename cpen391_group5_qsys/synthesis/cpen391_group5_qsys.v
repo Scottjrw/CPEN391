@@ -68,7 +68,7 @@ module cpen391_group5_qsys (
 	wire         video_in_decoder_avalon_decoder_source_startofpacket;                // Video_In_Decoder:stream_out_startofpacket -> Video_In_Chroma:stream_in_startofpacket
 	wire         video_in_decoder_avalon_decoder_source_endofpacket;                  // Video_In_Decoder:stream_out_endofpacket -> Video_In_Chroma:stream_in_endofpacket
 	wire         draw_dma_avalon_pixel_source_valid;                                  // Draw_DMA:stream_valid -> Draw_Scaler:stream_in_valid
-	wire  [31:0] draw_dma_avalon_pixel_source_data;                                   // Draw_DMA:stream_data -> Draw_Scaler:stream_in_data
+	wire  [15:0] draw_dma_avalon_pixel_source_data;                                   // Draw_DMA:stream_data -> Draw_Scaler:stream_in_data
 	wire         draw_dma_avalon_pixel_source_ready;                                  // Draw_Scaler:stream_in_ready -> Draw_DMA:stream_ready
 	wire         draw_dma_avalon_pixel_source_startofpacket;                          // Draw_DMA:stream_startofpacket -> Draw_Scaler:stream_in_startofpacket
 	wire         draw_dma_avalon_pixel_source_endofpacket;                            // Draw_DMA:stream_endofpacket -> Draw_Scaler:stream_in_endofpacket
@@ -98,7 +98,7 @@ module cpen391_group5_qsys (
 	wire         video_out_scaler_avalon_scaler_source_startofpacket;                 // Video_Out_Scaler:stream_out_startofpacket -> Video_Out_Resampler:stream_in_startofpacket
 	wire         video_out_scaler_avalon_scaler_source_endofpacket;                   // Video_Out_Scaler:stream_out_endofpacket -> Video_Out_Resampler:stream_in_endofpacket
 	wire         draw_scaler_avalon_scaler_source_valid;                              // Draw_Scaler:stream_out_valid -> Draw_Resampler:stream_in_valid
-	wire  [31:0] draw_scaler_avalon_scaler_source_data;                               // Draw_Scaler:stream_out_data -> Draw_Resampler:stream_in_data
+	wire  [15:0] draw_scaler_avalon_scaler_source_data;                               // Draw_Scaler:stream_out_data -> Draw_Resampler:stream_in_data
 	wire         draw_scaler_avalon_scaler_source_ready;                              // Draw_Resampler:stream_in_ready -> Draw_Scaler:stream_out_ready
 	wire         draw_scaler_avalon_scaler_source_startofpacket;                      // Draw_Scaler:stream_out_startofpacket -> Draw_Resampler:stream_in_startofpacket
 	wire         draw_scaler_avalon_scaler_source_endofpacket;                        // Draw_Scaler:stream_out_endofpacket -> Draw_Resampler:stream_in_endofpacket
@@ -108,6 +108,12 @@ module cpen391_group5_qsys (
 	wire  [31:0] video_in_dma_avalon_dma_master_address;                              // Video_In_DMA:master_address -> mm_interconnect_0:Video_In_DMA_avalon_dma_master_address
 	wire         video_in_dma_avalon_dma_master_write;                                // Video_In_DMA:master_write -> mm_interconnect_0:Video_In_DMA_avalon_dma_master_write
 	wire  [31:0] video_in_dma_avalon_dma_master_writedata;                            // Video_In_DMA:master_writedata -> mm_interconnect_0:Video_In_DMA_avalon_dma_master_writedata
+	wire         video_out_dma_avalon_dma_master_waitrequest;                         // mm_interconnect_0:Video_Out_DMA_avalon_dma_master_waitrequest -> Video_Out_DMA:master_waitrequest
+	wire  [31:0] video_out_dma_avalon_dma_master_readdata;                            // mm_interconnect_0:Video_Out_DMA_avalon_dma_master_readdata -> Video_Out_DMA:master_readdata
+	wire  [31:0] video_out_dma_avalon_dma_master_address;                             // Video_Out_DMA:master_address -> mm_interconnect_0:Video_Out_DMA_avalon_dma_master_address
+	wire         video_out_dma_avalon_dma_master_read;                                // Video_Out_DMA:master_read -> mm_interconnect_0:Video_Out_DMA_avalon_dma_master_read
+	wire         video_out_dma_avalon_dma_master_readdatavalid;                       // mm_interconnect_0:Video_Out_DMA_avalon_dma_master_readdatavalid -> Video_Out_DMA:master_readdatavalid
+	wire         video_out_dma_avalon_dma_master_lock;                                // Video_Out_DMA:master_arbiterlock -> mm_interconnect_0:Video_Out_DMA_avalon_dma_master_lock
 	wire         mm_interconnect_0_video_frame_buffer_s1_chipselect;                  // mm_interconnect_0:Video_Frame_Buffer_s1_chipselect -> Video_Frame_Buffer:chipselect
 	wire  [31:0] mm_interconnect_0_video_frame_buffer_s1_readdata;                    // Video_Frame_Buffer:readdata -> mm_interconnect_0:Video_Frame_Buffer_s1_readdata
 	wire  [16:0] mm_interconnect_0_video_frame_buffer_s1_address;                     // mm_interconnect_0:Video_Frame_Buffer_s1_address -> Video_Frame_Buffer:address
@@ -115,117 +121,114 @@ module cpen391_group5_qsys (
 	wire         mm_interconnect_0_video_frame_buffer_s1_write;                       // mm_interconnect_0:Video_Frame_Buffer_s1_write -> Video_Frame_Buffer:write
 	wire  [31:0] mm_interconnect_0_video_frame_buffer_s1_writedata;                   // mm_interconnect_0:Video_Frame_Buffer_s1_writedata -> Video_Frame_Buffer:writedata
 	wire         mm_interconnect_0_video_frame_buffer_s1_clken;                       // mm_interconnect_0:Video_Frame_Buffer_s1_clken -> Video_Frame_Buffer:clken
-	wire         video_out_dma_avalon_dma_master_waitrequest;                         // mm_interconnect_1:Video_Out_DMA_avalon_dma_master_waitrequest -> Video_Out_DMA:master_waitrequest
-	wire  [31:0] video_out_dma_avalon_dma_master_readdata;                            // mm_interconnect_1:Video_Out_DMA_avalon_dma_master_readdata -> Video_Out_DMA:master_readdata
-	wire  [31:0] video_out_dma_avalon_dma_master_address;                             // Video_Out_DMA:master_address -> mm_interconnect_1:Video_Out_DMA_avalon_dma_master_address
-	wire         video_out_dma_avalon_dma_master_read;                                // Video_Out_DMA:master_read -> mm_interconnect_1:Video_Out_DMA_avalon_dma_master_read
-	wire         video_out_dma_avalon_dma_master_readdatavalid;                       // mm_interconnect_1:Video_Out_DMA_avalon_dma_master_readdatavalid -> Video_Out_DMA:master_readdatavalid
-	wire         video_out_dma_avalon_dma_master_lock;                                // Video_Out_DMA:master_arbiterlock -> mm_interconnect_1:Video_Out_DMA_avalon_dma_master_lock
-	wire  [31:0] nios2_data_master_readdata;                                          // mm_interconnect_1:nios2_data_master_readdata -> nios2:d_readdata
-	wire         nios2_data_master_waitrequest;                                       // mm_interconnect_1:nios2_data_master_waitrequest -> nios2:d_waitrequest
-	wire         nios2_data_master_debugaccess;                                       // nios2:jtag_debug_module_debugaccess_to_roms -> mm_interconnect_1:nios2_data_master_debugaccess
-	wire  [27:0] nios2_data_master_address;                                           // nios2:d_address -> mm_interconnect_1:nios2_data_master_address
-	wire   [3:0] nios2_data_master_byteenable;                                        // nios2:d_byteenable -> mm_interconnect_1:nios2_data_master_byteenable
-	wire         nios2_data_master_read;                                              // nios2:d_read -> mm_interconnect_1:nios2_data_master_read
-	wire         nios2_data_master_write;                                             // nios2:d_write -> mm_interconnect_1:nios2_data_master_write
-	wire  [31:0] nios2_data_master_writedata;                                         // nios2:d_writedata -> mm_interconnect_1:nios2_data_master_writedata
-	wire  [31:0] nios2_instruction_master_readdata;                                   // mm_interconnect_1:nios2_instruction_master_readdata -> nios2:i_readdata
-	wire         nios2_instruction_master_waitrequest;                                // mm_interconnect_1:nios2_instruction_master_waitrequest -> nios2:i_waitrequest
-	wire  [27:0] nios2_instruction_master_address;                                    // nios2:i_address -> mm_interconnect_1:nios2_instruction_master_address
-	wire         nios2_instruction_master_read;                                       // nios2:i_read -> mm_interconnect_1:nios2_instruction_master_read
-	wire         mm_interconnect_1_video_frame_buffer_s2_chipselect;                  // mm_interconnect_1:Video_Frame_Buffer_s2_chipselect -> Video_Frame_Buffer:chipselect2
-	wire  [31:0] mm_interconnect_1_video_frame_buffer_s2_readdata;                    // Video_Frame_Buffer:readdata2 -> mm_interconnect_1:Video_Frame_Buffer_s2_readdata
-	wire  [16:0] mm_interconnect_1_video_frame_buffer_s2_address;                     // mm_interconnect_1:Video_Frame_Buffer_s2_address -> Video_Frame_Buffer:address2
-	wire   [3:0] mm_interconnect_1_video_frame_buffer_s2_byteenable;                  // mm_interconnect_1:Video_Frame_Buffer_s2_byteenable -> Video_Frame_Buffer:byteenable2
-	wire         mm_interconnect_1_video_frame_buffer_s2_write;                       // mm_interconnect_1:Video_Frame_Buffer_s2_write -> Video_Frame_Buffer:write2
-	wire  [31:0] mm_interconnect_1_video_frame_buffer_s2_writedata;                   // mm_interconnect_1:Video_Frame_Buffer_s2_writedata -> Video_Frame_Buffer:writedata2
-	wire         mm_interconnect_1_video_frame_buffer_s2_clken;                       // mm_interconnect_1:Video_Frame_Buffer_s2_clken -> Video_Frame_Buffer:clken2
-	wire  [31:0] mm_interconnect_1_video_in_dma_avalon_dma_control_slave_readdata;    // Video_In_DMA:slave_readdata -> mm_interconnect_1:Video_In_DMA_avalon_dma_control_slave_readdata
-	wire   [1:0] mm_interconnect_1_video_in_dma_avalon_dma_control_slave_address;     // mm_interconnect_1:Video_In_DMA_avalon_dma_control_slave_address -> Video_In_DMA:slave_address
-	wire         mm_interconnect_1_video_in_dma_avalon_dma_control_slave_read;        // mm_interconnect_1:Video_In_DMA_avalon_dma_control_slave_read -> Video_In_DMA:slave_read
-	wire   [3:0] mm_interconnect_1_video_in_dma_avalon_dma_control_slave_byteenable;  // mm_interconnect_1:Video_In_DMA_avalon_dma_control_slave_byteenable -> Video_In_DMA:slave_byteenable
-	wire         mm_interconnect_1_video_in_dma_avalon_dma_control_slave_write;       // mm_interconnect_1:Video_In_DMA_avalon_dma_control_slave_write -> Video_In_DMA:slave_write
-	wire  [31:0] mm_interconnect_1_video_in_dma_avalon_dma_control_slave_writedata;   // mm_interconnect_1:Video_In_DMA_avalon_dma_control_slave_writedata -> Video_In_DMA:slave_writedata
-	wire  [31:0] mm_interconnect_1_video_out_dma_avalon_dma_control_slave_readdata;   // Video_Out_DMA:slave_readdata -> mm_interconnect_1:Video_Out_DMA_avalon_dma_control_slave_readdata
-	wire   [1:0] mm_interconnect_1_video_out_dma_avalon_dma_control_slave_address;    // mm_interconnect_1:Video_Out_DMA_avalon_dma_control_slave_address -> Video_Out_DMA:slave_address
-	wire         mm_interconnect_1_video_out_dma_avalon_dma_control_slave_read;       // mm_interconnect_1:Video_Out_DMA_avalon_dma_control_slave_read -> Video_Out_DMA:slave_read
-	wire   [3:0] mm_interconnect_1_video_out_dma_avalon_dma_control_slave_byteenable; // mm_interconnect_1:Video_Out_DMA_avalon_dma_control_slave_byteenable -> Video_Out_DMA:slave_byteenable
-	wire         mm_interconnect_1_video_out_dma_avalon_dma_control_slave_write;      // mm_interconnect_1:Video_Out_DMA_avalon_dma_control_slave_write -> Video_Out_DMA:slave_write
-	wire  [31:0] mm_interconnect_1_video_out_dma_avalon_dma_control_slave_writedata;  // mm_interconnect_1:Video_Out_DMA_avalon_dma_control_slave_writedata -> Video_Out_DMA:slave_writedata
-	wire  [31:0] mm_interconnect_1_draw_dma_avalon_dma_control_slave_readdata;        // Draw_DMA:slave_readdata -> mm_interconnect_1:Draw_DMA_avalon_dma_control_slave_readdata
-	wire   [1:0] mm_interconnect_1_draw_dma_avalon_dma_control_slave_address;         // mm_interconnect_1:Draw_DMA_avalon_dma_control_slave_address -> Draw_DMA:slave_address
-	wire         mm_interconnect_1_draw_dma_avalon_dma_control_slave_read;            // mm_interconnect_1:Draw_DMA_avalon_dma_control_slave_read -> Draw_DMA:slave_read
-	wire   [3:0] mm_interconnect_1_draw_dma_avalon_dma_control_slave_byteenable;      // mm_interconnect_1:Draw_DMA_avalon_dma_control_slave_byteenable -> Draw_DMA:slave_byteenable
-	wire         mm_interconnect_1_draw_dma_avalon_dma_control_slave_write;           // mm_interconnect_1:Draw_DMA_avalon_dma_control_slave_write -> Draw_DMA:slave_write
-	wire  [31:0] mm_interconnect_1_draw_dma_avalon_dma_control_slave_writedata;       // mm_interconnect_1:Draw_DMA_avalon_dma_control_slave_writedata -> Draw_DMA:slave_writedata
-	wire         mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_chipselect;          // mm_interconnect_1:jtag_uart_0_avalon_jtag_slave_chipselect -> jtag_uart_0:av_chipselect
-	wire  [31:0] mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_readdata;            // jtag_uart_0:av_readdata -> mm_interconnect_1:jtag_uart_0_avalon_jtag_slave_readdata
-	wire         mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_waitrequest;         // jtag_uart_0:av_waitrequest -> mm_interconnect_1:jtag_uart_0_avalon_jtag_slave_waitrequest
-	wire   [0:0] mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_address;             // mm_interconnect_1:jtag_uart_0_avalon_jtag_slave_address -> jtag_uart_0:av_address
-	wire         mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_read;                // mm_interconnect_1:jtag_uart_0_avalon_jtag_slave_read -> jtag_uart_0:av_read_n
-	wire         mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_write;               // mm_interconnect_1:jtag_uart_0_avalon_jtag_slave_write -> jtag_uart_0:av_write_n
-	wire  [31:0] mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_writedata;           // mm_interconnect_1:jtag_uart_0_avalon_jtag_slave_writedata -> jtag_uart_0:av_writedata
-	wire  [31:0] mm_interconnect_1_nios2_jtag_debug_module_readdata;                  // nios2:jtag_debug_module_readdata -> mm_interconnect_1:nios2_jtag_debug_module_readdata
-	wire         mm_interconnect_1_nios2_jtag_debug_module_waitrequest;               // nios2:jtag_debug_module_waitrequest -> mm_interconnect_1:nios2_jtag_debug_module_waitrequest
-	wire         mm_interconnect_1_nios2_jtag_debug_module_debugaccess;               // mm_interconnect_1:nios2_jtag_debug_module_debugaccess -> nios2:jtag_debug_module_debugaccess
-	wire   [8:0] mm_interconnect_1_nios2_jtag_debug_module_address;                   // mm_interconnect_1:nios2_jtag_debug_module_address -> nios2:jtag_debug_module_address
-	wire         mm_interconnect_1_nios2_jtag_debug_module_read;                      // mm_interconnect_1:nios2_jtag_debug_module_read -> nios2:jtag_debug_module_read
-	wire   [3:0] mm_interconnect_1_nios2_jtag_debug_module_byteenable;                // mm_interconnect_1:nios2_jtag_debug_module_byteenable -> nios2:jtag_debug_module_byteenable
-	wire         mm_interconnect_1_nios2_jtag_debug_module_write;                     // mm_interconnect_1:nios2_jtag_debug_module_write -> nios2:jtag_debug_module_write
-	wire  [31:0] mm_interconnect_1_nios2_jtag_debug_module_writedata;                 // mm_interconnect_1:nios2_jtag_debug_module_writedata -> nios2:jtag_debug_module_writedata
-	wire         mm_interconnect_1_led_out_pio_s1_chipselect;                         // mm_interconnect_1:led_out_pio_s1_chipselect -> led_out_pio:chipselect
-	wire  [31:0] mm_interconnect_1_led_out_pio_s1_readdata;                           // led_out_pio:readdata -> mm_interconnect_1:led_out_pio_s1_readdata
-	wire   [1:0] mm_interconnect_1_led_out_pio_s1_address;                            // mm_interconnect_1:led_out_pio_s1_address -> led_out_pio:address
-	wire         mm_interconnect_1_led_out_pio_s1_write;                              // mm_interconnect_1:led_out_pio_s1_write -> led_out_pio:write_n
-	wire  [31:0] mm_interconnect_1_led_out_pio_s1_writedata;                          // mm_interconnect_1:led_out_pio_s1_writedata -> led_out_pio:writedata
-	wire  [31:0] mm_interconnect_1_switch_in_pio_s1_readdata;                         // switch_in_pio:readdata -> mm_interconnect_1:switch_in_pio_s1_readdata
-	wire   [1:0] mm_interconnect_1_switch_in_pio_s1_address;                          // mm_interconnect_1:switch_in_pio_s1_address -> switch_in_pio:address
-	wire         mm_interconnect_1_sdram_s1_chipselect;                               // mm_interconnect_1:sdram_s1_chipselect -> sdram:az_cs
-	wire  [15:0] mm_interconnect_1_sdram_s1_readdata;                                 // sdram:za_data -> mm_interconnect_1:sdram_s1_readdata
-	wire         mm_interconnect_1_sdram_s1_waitrequest;                              // sdram:za_waitrequest -> mm_interconnect_1:sdram_s1_waitrequest
-	wire  [24:0] mm_interconnect_1_sdram_s1_address;                                  // mm_interconnect_1:sdram_s1_address -> sdram:az_addr
-	wire         mm_interconnect_1_sdram_s1_read;                                     // mm_interconnect_1:sdram_s1_read -> sdram:az_rd_n
-	wire   [1:0] mm_interconnect_1_sdram_s1_byteenable;                               // mm_interconnect_1:sdram_s1_byteenable -> sdram:az_be_n
-	wire         mm_interconnect_1_sdram_s1_readdatavalid;                            // sdram:za_valid -> mm_interconnect_1:sdram_s1_readdatavalid
-	wire         mm_interconnect_1_sdram_s1_write;                                    // mm_interconnect_1:sdram_s1_write -> sdram:az_wr_n
-	wire  [15:0] mm_interconnect_1_sdram_s1_writedata;                                // mm_interconnect_1:sdram_s1_writedata -> sdram:az_data
-	wire         mm_interconnect_1_touchscreen_uart_s1_chipselect;                    // mm_interconnect_1:touchscreen_uart_s1_chipselect -> touchscreen_uart:chipselect
-	wire  [15:0] mm_interconnect_1_touchscreen_uart_s1_readdata;                      // touchscreen_uart:readdata -> mm_interconnect_1:touchscreen_uart_s1_readdata
-	wire   [2:0] mm_interconnect_1_touchscreen_uart_s1_address;                       // mm_interconnect_1:touchscreen_uart_s1_address -> touchscreen_uart:address
-	wire         mm_interconnect_1_touchscreen_uart_s1_read;                          // mm_interconnect_1:touchscreen_uart_s1_read -> touchscreen_uart:read_n
-	wire         mm_interconnect_1_touchscreen_uart_s1_begintransfer;                 // mm_interconnect_1:touchscreen_uart_s1_begintransfer -> touchscreen_uart:begintransfer
-	wire         mm_interconnect_1_touchscreen_uart_s1_write;                         // mm_interconnect_1:touchscreen_uart_s1_write -> touchscreen_uart:write_n
-	wire  [15:0] mm_interconnect_1_touchscreen_uart_s1_writedata;                     // mm_interconnect_1:touchscreen_uart_s1_writedata -> touchscreen_uart:writedata
-	wire         mm_interconnect_1_timer_1_s1_chipselect;                             // mm_interconnect_1:timer_1_s1_chipselect -> timer_1:chipselect
-	wire  [15:0] mm_interconnect_1_timer_1_s1_readdata;                               // timer_1:readdata -> mm_interconnect_1:timer_1_s1_readdata
-	wire   [2:0] mm_interconnect_1_timer_1_s1_address;                                // mm_interconnect_1:timer_1_s1_address -> timer_1:address
-	wire         mm_interconnect_1_timer_1_s1_write;                                  // mm_interconnect_1:timer_1_s1_write -> timer_1:write_n
-	wire  [15:0] mm_interconnect_1_timer_1_s1_writedata;                              // mm_interconnect_1:timer_1_s1_writedata -> timer_1:writedata
-	wire         mm_interconnect_1_draw_buffer_s1_chipselect;                         // mm_interconnect_1:Draw_Buffer_s1_chipselect -> Draw_Buffer:chipselect
-	wire  [31:0] mm_interconnect_1_draw_buffer_s1_readdata;                           // Draw_Buffer:readdata -> mm_interconnect_1:Draw_Buffer_s1_readdata
-	wire  [14:0] mm_interconnect_1_draw_buffer_s1_address;                            // mm_interconnect_1:Draw_Buffer_s1_address -> Draw_Buffer:address
-	wire   [3:0] mm_interconnect_1_draw_buffer_s1_byteenable;                         // mm_interconnect_1:Draw_Buffer_s1_byteenable -> Draw_Buffer:byteenable
-	wire         mm_interconnect_1_draw_buffer_s1_write;                              // mm_interconnect_1:Draw_Buffer_s1_write -> Draw_Buffer:write
-	wire  [31:0] mm_interconnect_1_draw_buffer_s1_writedata;                          // mm_interconnect_1:Draw_Buffer_s1_writedata -> Draw_Buffer:writedata
-	wire         mm_interconnect_1_draw_buffer_s1_clken;                              // mm_interconnect_1:Draw_Buffer_s1_clken -> Draw_Buffer:clken
-	wire         draw_dma_avalon_dma_master_waitrequest;                              // mm_interconnect_2:Draw_DMA_avalon_dma_master_waitrequest -> Draw_DMA:master_waitrequest
-	wire  [31:0] draw_dma_avalon_dma_master_readdata;                                 // mm_interconnect_2:Draw_DMA_avalon_dma_master_readdata -> Draw_DMA:master_readdata
-	wire  [31:0] draw_dma_avalon_dma_master_address;                                  // Draw_DMA:master_address -> mm_interconnect_2:Draw_DMA_avalon_dma_master_address
-	wire         draw_dma_avalon_dma_master_read;                                     // Draw_DMA:master_read -> mm_interconnect_2:Draw_DMA_avalon_dma_master_read
-	wire         draw_dma_avalon_dma_master_readdatavalid;                            // mm_interconnect_2:Draw_DMA_avalon_dma_master_readdatavalid -> Draw_DMA:master_readdatavalid
-	wire         draw_dma_avalon_dma_master_lock;                                     // Draw_DMA:master_arbiterlock -> mm_interconnect_2:Draw_DMA_avalon_dma_master_lock
-	wire         mm_interconnect_2_draw_buffer_s2_chipselect;                         // mm_interconnect_2:Draw_Buffer_s2_chipselect -> Draw_Buffer:chipselect2
-	wire  [31:0] mm_interconnect_2_draw_buffer_s2_readdata;                           // Draw_Buffer:readdata2 -> mm_interconnect_2:Draw_Buffer_s2_readdata
-	wire  [14:0] mm_interconnect_2_draw_buffer_s2_address;                            // mm_interconnect_2:Draw_Buffer_s2_address -> Draw_Buffer:address2
-	wire   [3:0] mm_interconnect_2_draw_buffer_s2_byteenable;                         // mm_interconnect_2:Draw_Buffer_s2_byteenable -> Draw_Buffer:byteenable2
-	wire         mm_interconnect_2_draw_buffer_s2_write;                              // mm_interconnect_2:Draw_Buffer_s2_write -> Draw_Buffer:write2
-	wire  [31:0] mm_interconnect_2_draw_buffer_s2_writedata;                          // mm_interconnect_2:Draw_Buffer_s2_writedata -> Draw_Buffer:writedata2
-	wire         mm_interconnect_2_draw_buffer_s2_clken;                              // mm_interconnect_2:Draw_Buffer_s2_clken -> Draw_Buffer:clken2
+	wire         draw_dma_avalon_dma_master_waitrequest;                              // mm_interconnect_1:Draw_DMA_avalon_dma_master_waitrequest -> Draw_DMA:master_waitrequest
+	wire  [15:0] draw_dma_avalon_dma_master_readdata;                                 // mm_interconnect_1:Draw_DMA_avalon_dma_master_readdata -> Draw_DMA:master_readdata
+	wire  [31:0] draw_dma_avalon_dma_master_address;                                  // Draw_DMA:master_address -> mm_interconnect_1:Draw_DMA_avalon_dma_master_address
+	wire         draw_dma_avalon_dma_master_read;                                     // Draw_DMA:master_read -> mm_interconnect_1:Draw_DMA_avalon_dma_master_read
+	wire         draw_dma_avalon_dma_master_readdatavalid;                            // mm_interconnect_1:Draw_DMA_avalon_dma_master_readdatavalid -> Draw_DMA:master_readdatavalid
+	wire         draw_dma_avalon_dma_master_lock;                                     // Draw_DMA:master_arbiterlock -> mm_interconnect_1:Draw_DMA_avalon_dma_master_lock
+	wire         mm_interconnect_1_draw_buffer_s2_chipselect;                         // mm_interconnect_1:Draw_Buffer_s2_chipselect -> Draw_Buffer:chipselect2
+	wire  [31:0] mm_interconnect_1_draw_buffer_s2_readdata;                           // Draw_Buffer:readdata2 -> mm_interconnect_1:Draw_Buffer_s2_readdata
+	wire  [13:0] mm_interconnect_1_draw_buffer_s2_address;                            // mm_interconnect_1:Draw_Buffer_s2_address -> Draw_Buffer:address2
+	wire   [3:0] mm_interconnect_1_draw_buffer_s2_byteenable;                         // mm_interconnect_1:Draw_Buffer_s2_byteenable -> Draw_Buffer:byteenable2
+	wire         mm_interconnect_1_draw_buffer_s2_write;                              // mm_interconnect_1:Draw_Buffer_s2_write -> Draw_Buffer:write2
+	wire  [31:0] mm_interconnect_1_draw_buffer_s2_writedata;                          // mm_interconnect_1:Draw_Buffer_s2_writedata -> Draw_Buffer:writedata2
+	wire         mm_interconnect_1_draw_buffer_s2_clken;                              // mm_interconnect_1:Draw_Buffer_s2_clken -> Draw_Buffer:clken2
+	wire  [31:0] nios2_data_master_readdata;                                          // mm_interconnect_2:nios2_data_master_readdata -> nios2:d_readdata
+	wire         nios2_data_master_waitrequest;                                       // mm_interconnect_2:nios2_data_master_waitrequest -> nios2:d_waitrequest
+	wire         nios2_data_master_debugaccess;                                       // nios2:jtag_debug_module_debugaccess_to_roms -> mm_interconnect_2:nios2_data_master_debugaccess
+	wire  [27:0] nios2_data_master_address;                                           // nios2:d_address -> mm_interconnect_2:nios2_data_master_address
+	wire   [3:0] nios2_data_master_byteenable;                                        // nios2:d_byteenable -> mm_interconnect_2:nios2_data_master_byteenable
+	wire         nios2_data_master_read;                                              // nios2:d_read -> mm_interconnect_2:nios2_data_master_read
+	wire         nios2_data_master_readdatavalid;                                     // mm_interconnect_2:nios2_data_master_readdatavalid -> nios2:d_readdatavalid
+	wire         nios2_data_master_write;                                             // nios2:d_write -> mm_interconnect_2:nios2_data_master_write
+	wire  [31:0] nios2_data_master_writedata;                                         // nios2:d_writedata -> mm_interconnect_2:nios2_data_master_writedata
+	wire   [3:0] nios2_data_master_burstcount;                                        // nios2:d_burstcount -> mm_interconnect_2:nios2_data_master_burstcount
+	wire  [31:0] nios2_instruction_master_readdata;                                   // mm_interconnect_2:nios2_instruction_master_readdata -> nios2:i_readdata
+	wire         nios2_instruction_master_waitrequest;                                // mm_interconnect_2:nios2_instruction_master_waitrequest -> nios2:i_waitrequest
+	wire  [27:0] nios2_instruction_master_address;                                    // nios2:i_address -> mm_interconnect_2:nios2_instruction_master_address
+	wire         nios2_instruction_master_read;                                       // nios2:i_read -> mm_interconnect_2:nios2_instruction_master_read
+	wire         nios2_instruction_master_readdatavalid;                              // mm_interconnect_2:nios2_instruction_master_readdatavalid -> nios2:i_readdatavalid
+	wire  [31:0] mm_interconnect_2_video_in_dma_avalon_dma_control_slave_readdata;    // Video_In_DMA:slave_readdata -> mm_interconnect_2:Video_In_DMA_avalon_dma_control_slave_readdata
+	wire   [1:0] mm_interconnect_2_video_in_dma_avalon_dma_control_slave_address;     // mm_interconnect_2:Video_In_DMA_avalon_dma_control_slave_address -> Video_In_DMA:slave_address
+	wire         mm_interconnect_2_video_in_dma_avalon_dma_control_slave_read;        // mm_interconnect_2:Video_In_DMA_avalon_dma_control_slave_read -> Video_In_DMA:slave_read
+	wire   [3:0] mm_interconnect_2_video_in_dma_avalon_dma_control_slave_byteenable;  // mm_interconnect_2:Video_In_DMA_avalon_dma_control_slave_byteenable -> Video_In_DMA:slave_byteenable
+	wire         mm_interconnect_2_video_in_dma_avalon_dma_control_slave_write;       // mm_interconnect_2:Video_In_DMA_avalon_dma_control_slave_write -> Video_In_DMA:slave_write
+	wire  [31:0] mm_interconnect_2_video_in_dma_avalon_dma_control_slave_writedata;   // mm_interconnect_2:Video_In_DMA_avalon_dma_control_slave_writedata -> Video_In_DMA:slave_writedata
+	wire  [31:0] mm_interconnect_2_video_out_dma_avalon_dma_control_slave_readdata;   // Video_Out_DMA:slave_readdata -> mm_interconnect_2:Video_Out_DMA_avalon_dma_control_slave_readdata
+	wire   [1:0] mm_interconnect_2_video_out_dma_avalon_dma_control_slave_address;    // mm_interconnect_2:Video_Out_DMA_avalon_dma_control_slave_address -> Video_Out_DMA:slave_address
+	wire         mm_interconnect_2_video_out_dma_avalon_dma_control_slave_read;       // mm_interconnect_2:Video_Out_DMA_avalon_dma_control_slave_read -> Video_Out_DMA:slave_read
+	wire   [3:0] mm_interconnect_2_video_out_dma_avalon_dma_control_slave_byteenable; // mm_interconnect_2:Video_Out_DMA_avalon_dma_control_slave_byteenable -> Video_Out_DMA:slave_byteenable
+	wire         mm_interconnect_2_video_out_dma_avalon_dma_control_slave_write;      // mm_interconnect_2:Video_Out_DMA_avalon_dma_control_slave_write -> Video_Out_DMA:slave_write
+	wire  [31:0] mm_interconnect_2_video_out_dma_avalon_dma_control_slave_writedata;  // mm_interconnect_2:Video_Out_DMA_avalon_dma_control_slave_writedata -> Video_Out_DMA:slave_writedata
+	wire  [31:0] mm_interconnect_2_draw_dma_avalon_dma_control_slave_readdata;        // Draw_DMA:slave_readdata -> mm_interconnect_2:Draw_DMA_avalon_dma_control_slave_readdata
+	wire   [1:0] mm_interconnect_2_draw_dma_avalon_dma_control_slave_address;         // mm_interconnect_2:Draw_DMA_avalon_dma_control_slave_address -> Draw_DMA:slave_address
+	wire         mm_interconnect_2_draw_dma_avalon_dma_control_slave_read;            // mm_interconnect_2:Draw_DMA_avalon_dma_control_slave_read -> Draw_DMA:slave_read
+	wire   [3:0] mm_interconnect_2_draw_dma_avalon_dma_control_slave_byteenable;      // mm_interconnect_2:Draw_DMA_avalon_dma_control_slave_byteenable -> Draw_DMA:slave_byteenable
+	wire         mm_interconnect_2_draw_dma_avalon_dma_control_slave_write;           // mm_interconnect_2:Draw_DMA_avalon_dma_control_slave_write -> Draw_DMA:slave_write
+	wire  [31:0] mm_interconnect_2_draw_dma_avalon_dma_control_slave_writedata;       // mm_interconnect_2:Draw_DMA_avalon_dma_control_slave_writedata -> Draw_DMA:slave_writedata
+	wire         mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_chipselect;          // mm_interconnect_2:jtag_uart_0_avalon_jtag_slave_chipselect -> jtag_uart_0:av_chipselect
+	wire  [31:0] mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_readdata;            // jtag_uart_0:av_readdata -> mm_interconnect_2:jtag_uart_0_avalon_jtag_slave_readdata
+	wire         mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_waitrequest;         // jtag_uart_0:av_waitrequest -> mm_interconnect_2:jtag_uart_0_avalon_jtag_slave_waitrequest
+	wire   [0:0] mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_address;             // mm_interconnect_2:jtag_uart_0_avalon_jtag_slave_address -> jtag_uart_0:av_address
+	wire         mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_read;                // mm_interconnect_2:jtag_uart_0_avalon_jtag_slave_read -> jtag_uart_0:av_read_n
+	wire         mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_write;               // mm_interconnect_2:jtag_uart_0_avalon_jtag_slave_write -> jtag_uart_0:av_write_n
+	wire  [31:0] mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_writedata;           // mm_interconnect_2:jtag_uart_0_avalon_jtag_slave_writedata -> jtag_uart_0:av_writedata
+	wire  [31:0] mm_interconnect_2_nios2_jtag_debug_module_readdata;                  // nios2:jtag_debug_module_readdata -> mm_interconnect_2:nios2_jtag_debug_module_readdata
+	wire         mm_interconnect_2_nios2_jtag_debug_module_waitrequest;               // nios2:jtag_debug_module_waitrequest -> mm_interconnect_2:nios2_jtag_debug_module_waitrequest
+	wire         mm_interconnect_2_nios2_jtag_debug_module_debugaccess;               // mm_interconnect_2:nios2_jtag_debug_module_debugaccess -> nios2:jtag_debug_module_debugaccess
+	wire   [8:0] mm_interconnect_2_nios2_jtag_debug_module_address;                   // mm_interconnect_2:nios2_jtag_debug_module_address -> nios2:jtag_debug_module_address
+	wire         mm_interconnect_2_nios2_jtag_debug_module_read;                      // mm_interconnect_2:nios2_jtag_debug_module_read -> nios2:jtag_debug_module_read
+	wire   [3:0] mm_interconnect_2_nios2_jtag_debug_module_byteenable;                // mm_interconnect_2:nios2_jtag_debug_module_byteenable -> nios2:jtag_debug_module_byteenable
+	wire         mm_interconnect_2_nios2_jtag_debug_module_write;                     // mm_interconnect_2:nios2_jtag_debug_module_write -> nios2:jtag_debug_module_write
+	wire  [31:0] mm_interconnect_2_nios2_jtag_debug_module_writedata;                 // mm_interconnect_2:nios2_jtag_debug_module_writedata -> nios2:jtag_debug_module_writedata
+	wire         mm_interconnect_2_led_out_pio_s1_chipselect;                         // mm_interconnect_2:led_out_pio_s1_chipselect -> led_out_pio:chipselect
+	wire  [31:0] mm_interconnect_2_led_out_pio_s1_readdata;                           // led_out_pio:readdata -> mm_interconnect_2:led_out_pio_s1_readdata
+	wire   [1:0] mm_interconnect_2_led_out_pio_s1_address;                            // mm_interconnect_2:led_out_pio_s1_address -> led_out_pio:address
+	wire         mm_interconnect_2_led_out_pio_s1_write;                              // mm_interconnect_2:led_out_pio_s1_write -> led_out_pio:write_n
+	wire  [31:0] mm_interconnect_2_led_out_pio_s1_writedata;                          // mm_interconnect_2:led_out_pio_s1_writedata -> led_out_pio:writedata
+	wire  [31:0] mm_interconnect_2_switch_in_pio_s1_readdata;                         // switch_in_pio:readdata -> mm_interconnect_2:switch_in_pio_s1_readdata
+	wire   [1:0] mm_interconnect_2_switch_in_pio_s1_address;                          // mm_interconnect_2:switch_in_pio_s1_address -> switch_in_pio:address
+	wire         mm_interconnect_2_sdram_s1_chipselect;                               // mm_interconnect_2:sdram_s1_chipselect -> sdram:az_cs
+	wire  [15:0] mm_interconnect_2_sdram_s1_readdata;                                 // sdram:za_data -> mm_interconnect_2:sdram_s1_readdata
+	wire         mm_interconnect_2_sdram_s1_waitrequest;                              // sdram:za_waitrequest -> mm_interconnect_2:sdram_s1_waitrequest
+	wire  [24:0] mm_interconnect_2_sdram_s1_address;                                  // mm_interconnect_2:sdram_s1_address -> sdram:az_addr
+	wire         mm_interconnect_2_sdram_s1_read;                                     // mm_interconnect_2:sdram_s1_read -> sdram:az_rd_n
+	wire   [1:0] mm_interconnect_2_sdram_s1_byteenable;                               // mm_interconnect_2:sdram_s1_byteenable -> sdram:az_be_n
+	wire         mm_interconnect_2_sdram_s1_readdatavalid;                            // sdram:za_valid -> mm_interconnect_2:sdram_s1_readdatavalid
+	wire         mm_interconnect_2_sdram_s1_write;                                    // mm_interconnect_2:sdram_s1_write -> sdram:az_wr_n
+	wire  [15:0] mm_interconnect_2_sdram_s1_writedata;                                // mm_interconnect_2:sdram_s1_writedata -> sdram:az_data
+	wire         mm_interconnect_2_touchscreen_uart_s1_chipselect;                    // mm_interconnect_2:touchscreen_uart_s1_chipselect -> touchscreen_uart:chipselect
+	wire  [15:0] mm_interconnect_2_touchscreen_uart_s1_readdata;                      // touchscreen_uart:readdata -> mm_interconnect_2:touchscreen_uart_s1_readdata
+	wire   [2:0] mm_interconnect_2_touchscreen_uart_s1_address;                       // mm_interconnect_2:touchscreen_uart_s1_address -> touchscreen_uart:address
+	wire         mm_interconnect_2_touchscreen_uart_s1_read;                          // mm_interconnect_2:touchscreen_uart_s1_read -> touchscreen_uart:read_n
+	wire         mm_interconnect_2_touchscreen_uart_s1_begintransfer;                 // mm_interconnect_2:touchscreen_uart_s1_begintransfer -> touchscreen_uart:begintransfer
+	wire         mm_interconnect_2_touchscreen_uart_s1_write;                         // mm_interconnect_2:touchscreen_uart_s1_write -> touchscreen_uart:write_n
+	wire  [15:0] mm_interconnect_2_touchscreen_uart_s1_writedata;                     // mm_interconnect_2:touchscreen_uart_s1_writedata -> touchscreen_uart:writedata
+	wire         mm_interconnect_2_timer_1_s1_chipselect;                             // mm_interconnect_2:timer_1_s1_chipselect -> timer_1:chipselect
+	wire  [15:0] mm_interconnect_2_timer_1_s1_readdata;                               // timer_1:readdata -> mm_interconnect_2:timer_1_s1_readdata
+	wire   [2:0] mm_interconnect_2_timer_1_s1_address;                                // mm_interconnect_2:timer_1_s1_address -> timer_1:address
+	wire         mm_interconnect_2_timer_1_s1_write;                                  // mm_interconnect_2:timer_1_s1_write -> timer_1:write_n
+	wire  [15:0] mm_interconnect_2_timer_1_s1_writedata;                              // mm_interconnect_2:timer_1_s1_writedata -> timer_1:writedata
+	wire         mm_interconnect_2_draw_buffer_s1_chipselect;                         // mm_interconnect_2:Draw_Buffer_s1_chipselect -> Draw_Buffer:chipselect
+	wire  [31:0] mm_interconnect_2_draw_buffer_s1_readdata;                           // Draw_Buffer:readdata -> mm_interconnect_2:Draw_Buffer_s1_readdata
+	wire  [13:0] mm_interconnect_2_draw_buffer_s1_address;                            // mm_interconnect_2:Draw_Buffer_s1_address -> Draw_Buffer:address
+	wire   [3:0] mm_interconnect_2_draw_buffer_s1_byteenable;                         // mm_interconnect_2:Draw_Buffer_s1_byteenable -> Draw_Buffer:byteenable
+	wire         mm_interconnect_2_draw_buffer_s1_write;                              // mm_interconnect_2:Draw_Buffer_s1_write -> Draw_Buffer:write
+	wire  [31:0] mm_interconnect_2_draw_buffer_s1_writedata;                          // mm_interconnect_2:Draw_Buffer_s1_writedata -> Draw_Buffer:writedata
+	wire         mm_interconnect_2_draw_buffer_s1_clken;                              // mm_interconnect_2:Draw_Buffer_s1_clken -> Draw_Buffer:clken
+	wire         mm_interconnect_2_video_frame_buffer_s2_chipselect;                  // mm_interconnect_2:Video_Frame_Buffer_s2_chipselect -> Video_Frame_Buffer:chipselect2
+	wire  [31:0] mm_interconnect_2_video_frame_buffer_s2_readdata;                    // Video_Frame_Buffer:readdata2 -> mm_interconnect_2:Video_Frame_Buffer_s2_readdata
+	wire  [16:0] mm_interconnect_2_video_frame_buffer_s2_address;                     // mm_interconnect_2:Video_Frame_Buffer_s2_address -> Video_Frame_Buffer:address2
+	wire   [3:0] mm_interconnect_2_video_frame_buffer_s2_byteenable;                  // mm_interconnect_2:Video_Frame_Buffer_s2_byteenable -> Video_Frame_Buffer:byteenable2
+	wire         mm_interconnect_2_video_frame_buffer_s2_write;                       // mm_interconnect_2:Video_Frame_Buffer_s2_write -> Video_Frame_Buffer:write2
+	wire  [31:0] mm_interconnect_2_video_frame_buffer_s2_writedata;                   // mm_interconnect_2:Video_Frame_Buffer_s2_writedata -> Video_Frame_Buffer:writedata2
+	wire         mm_interconnect_2_video_frame_buffer_s2_clken;                       // mm_interconnect_2:Video_Frame_Buffer_s2_clken -> Video_Frame_Buffer:clken2
 	wire         irq_mapper_receiver0_irq;                                            // jtag_uart_0:av_irq -> irq_mapper:receiver0_irq
 	wire         irq_mapper_receiver1_irq;                                            // touchscreen_uart:irq -> irq_mapper:receiver1_irq
 	wire         irq_mapper_receiver2_irq;                                            // timer_1:irq -> irq_mapper:receiver2_irq
 	wire  [31:0] nios2_d_irq_irq;                                                     // irq_mapper:sender_irq -> nios2:d_irq
-	wire         rst_controller_reset_out_reset;                                      // rst_controller:reset_out -> [Draw_Buffer:reset, Draw_DMA:reset, Draw_Resampler:reset, Draw_Scaler:reset, Video_Blender:reset, Video_Frame_Buffer:reset, Video_In_CSC:reset, Video_In_Chroma:reset, Video_In_Clipper:reset, Video_In_DMA:reset, Video_In_Decoder:reset, Video_In_Scaler:reset, Video_Out_DMA:reset, Video_Out_FIFO:reset_stream_in, Video_Out_Resampler:reset, Video_Out_Scaler:reset, irq_mapper:reset, jtag_uart_0:rst_n, led_out_pio:reset_n, mm_interconnect_0:Video_In_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_1:Video_Out_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_2:Draw_DMA_reset_reset_bridge_in_reset_reset, nios2:reset_n, rst_translator:in_reset, sdram:reset_n, switch_in_pio:reset_n, timer_1:reset_n, touchscreen_uart:reset_n]
+	wire         rst_controller_reset_out_reset;                                      // rst_controller:reset_out -> [Draw_Buffer:reset, Draw_DMA:reset, Draw_Resampler:reset, Draw_Scaler:reset, Video_Blender:reset, Video_Frame_Buffer:reset, Video_In_CSC:reset, Video_In_Chroma:reset, Video_In_Clipper:reset, Video_In_DMA:reset, Video_In_Decoder:reset, Video_In_Scaler:reset, Video_Out_DMA:reset, Video_Out_FIFO:reset_stream_in, Video_Out_Resampler:reset, Video_Out_Scaler:reset, irq_mapper:reset, jtag_uart_0:rst_n, led_out_pio:reset_n, mm_interconnect_0:Video_In_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_1:Draw_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_2:nios2_reset_n_reset_bridge_in_reset_reset, nios2:reset_n, rst_translator:in_reset, sdram:reset_n, switch_in_pio:reset_n, timer_1:reset_n, touchscreen_uart:reset_n]
 	wire         rst_controller_reset_out_reset_req;                                  // rst_controller:reset_req -> [Draw_Buffer:reset_req, Video_Frame_Buffer:reset_req, nios2:reset_req, rst_translator:reset_req_in]
 	wire         nios2_jtag_debug_module_reset_reset;                                 // nios2:jtag_debug_module_resetrequest -> [rst_controller:reset_in0, rst_controller_001:reset_in0]
 	wire         clocks_reset_source_reset;                                           // clocks:reset_source_reset -> [rst_controller:reset_in1, rst_controller_001:reset_in1]
@@ -234,20 +237,20 @@ module cpen391_group5_qsys (
 	wire         video_clock_reset_source_reset;                                      // Video_Clock:reset_source_reset -> rst_controller_002:reset_in0
 
 	cpen391_group5_qsys_Draw_Buffer draw_buffer (
-		.address     (mm_interconnect_1_draw_buffer_s1_address),    //     s1.address
-		.clken       (mm_interconnect_1_draw_buffer_s1_clken),      //       .clken
-		.chipselect  (mm_interconnect_1_draw_buffer_s1_chipselect), //       .chipselect
-		.write       (mm_interconnect_1_draw_buffer_s1_write),      //       .write
-		.readdata    (mm_interconnect_1_draw_buffer_s1_readdata),   //       .readdata
-		.writedata   (mm_interconnect_1_draw_buffer_s1_writedata),  //       .writedata
-		.byteenable  (mm_interconnect_1_draw_buffer_s1_byteenable), //       .byteenable
-		.address2    (mm_interconnect_2_draw_buffer_s2_address),    //     s2.address
-		.chipselect2 (mm_interconnect_2_draw_buffer_s2_chipselect), //       .chipselect
-		.clken2      (mm_interconnect_2_draw_buffer_s2_clken),      //       .clken
-		.write2      (mm_interconnect_2_draw_buffer_s2_write),      //       .write
-		.readdata2   (mm_interconnect_2_draw_buffer_s2_readdata),   //       .readdata
-		.writedata2  (mm_interconnect_2_draw_buffer_s2_writedata),  //       .writedata
-		.byteenable2 (mm_interconnect_2_draw_buffer_s2_byteenable), //       .byteenable
+		.address     (mm_interconnect_2_draw_buffer_s1_address),    //     s1.address
+		.clken       (mm_interconnect_2_draw_buffer_s1_clken),      //       .clken
+		.chipselect  (mm_interconnect_2_draw_buffer_s1_chipselect), //       .chipselect
+		.write       (mm_interconnect_2_draw_buffer_s1_write),      //       .write
+		.readdata    (mm_interconnect_2_draw_buffer_s1_readdata),   //       .readdata
+		.writedata   (mm_interconnect_2_draw_buffer_s1_writedata),  //       .writedata
+		.byteenable  (mm_interconnect_2_draw_buffer_s1_byteenable), //       .byteenable
+		.address2    (mm_interconnect_1_draw_buffer_s2_address),    //     s2.address
+		.chipselect2 (mm_interconnect_1_draw_buffer_s2_chipselect), //       .chipselect
+		.clken2      (mm_interconnect_1_draw_buffer_s2_clken),      //       .clken
+		.write2      (mm_interconnect_1_draw_buffer_s2_write),      //       .write
+		.readdata2   (mm_interconnect_1_draw_buffer_s2_readdata),   //       .readdata
+		.writedata2  (mm_interconnect_1_draw_buffer_s2_writedata),  //       .writedata
+		.byteenable2 (mm_interconnect_1_draw_buffer_s2_byteenable), //       .byteenable
 		.clk         (clocks_sys_clk_clk),                          //   clk1.clk
 		.reset       (rst_controller_reset_out_reset),              // reset1.reset
 		.reset_req   (rst_controller_reset_out_reset_req)           //       .reset_req
@@ -262,12 +265,12 @@ module cpen391_group5_qsys (
 		.master_read          (draw_dma_avalon_dma_master_read),                                //                         .read
 		.master_readdata      (draw_dma_avalon_dma_master_readdata),                            //                         .readdata
 		.master_readdatavalid (draw_dma_avalon_dma_master_readdatavalid),                       //                         .readdatavalid
-		.slave_address        (mm_interconnect_1_draw_dma_avalon_dma_control_slave_address),    // avalon_dma_control_slave.address
-		.slave_byteenable     (mm_interconnect_1_draw_dma_avalon_dma_control_slave_byteenable), //                         .byteenable
-		.slave_read           (mm_interconnect_1_draw_dma_avalon_dma_control_slave_read),       //                         .read
-		.slave_write          (mm_interconnect_1_draw_dma_avalon_dma_control_slave_write),      //                         .write
-		.slave_writedata      (mm_interconnect_1_draw_dma_avalon_dma_control_slave_writedata),  //                         .writedata
-		.slave_readdata       (mm_interconnect_1_draw_dma_avalon_dma_control_slave_readdata),   //                         .readdata
+		.slave_address        (mm_interconnect_2_draw_dma_avalon_dma_control_slave_address),    // avalon_dma_control_slave.address
+		.slave_byteenable     (mm_interconnect_2_draw_dma_avalon_dma_control_slave_byteenable), //                         .byteenable
+		.slave_read           (mm_interconnect_2_draw_dma_avalon_dma_control_slave_read),       //                         .read
+		.slave_write          (mm_interconnect_2_draw_dma_avalon_dma_control_slave_write),      //                         .write
+		.slave_writedata      (mm_interconnect_2_draw_dma_avalon_dma_control_slave_writedata),  //                         .writedata
+		.slave_readdata       (mm_interconnect_2_draw_dma_avalon_dma_control_slave_readdata),   //                         .readdata
 		.stream_ready         (draw_dma_avalon_pixel_source_ready),                             //      avalon_pixel_source.ready
 		.stream_data          (draw_dma_avalon_pixel_source_data),                              //                         .data
 		.stream_startofpacket (draw_dma_avalon_pixel_source_startofpacket),                     //                         .startofpacket
@@ -340,13 +343,13 @@ module cpen391_group5_qsys (
 		.readdata    (mm_interconnect_0_video_frame_buffer_s1_readdata),   //       .readdata
 		.writedata   (mm_interconnect_0_video_frame_buffer_s1_writedata),  //       .writedata
 		.byteenable  (mm_interconnect_0_video_frame_buffer_s1_byteenable), //       .byteenable
-		.address2    (mm_interconnect_1_video_frame_buffer_s2_address),    //     s2.address
-		.chipselect2 (mm_interconnect_1_video_frame_buffer_s2_chipselect), //       .chipselect
-		.clken2      (mm_interconnect_1_video_frame_buffer_s2_clken),      //       .clken
-		.write2      (mm_interconnect_1_video_frame_buffer_s2_write),      //       .write
-		.readdata2   (mm_interconnect_1_video_frame_buffer_s2_readdata),   //       .readdata
-		.writedata2  (mm_interconnect_1_video_frame_buffer_s2_writedata),  //       .writedata
-		.byteenable2 (mm_interconnect_1_video_frame_buffer_s2_byteenable), //       .byteenable
+		.address2    (mm_interconnect_2_video_frame_buffer_s2_address),    //     s2.address
+		.chipselect2 (mm_interconnect_2_video_frame_buffer_s2_chipselect), //       .chipselect
+		.clken2      (mm_interconnect_2_video_frame_buffer_s2_clken),      //       .clken
+		.write2      (mm_interconnect_2_video_frame_buffer_s2_write),      //       .write
+		.readdata2   (mm_interconnect_2_video_frame_buffer_s2_readdata),   //       .readdata
+		.writedata2  (mm_interconnect_2_video_frame_buffer_s2_writedata),  //       .writedata
+		.byteenable2 (mm_interconnect_2_video_frame_buffer_s2_byteenable), //       .byteenable
 		.clk         (clocks_sys_clk_clk),                                 //   clk1.clk
 		.reset       (rst_controller_reset_out_reset),                     // reset1.reset
 		.reset_req   (rst_controller_reset_out_reset_req)                  //       .reset_req
@@ -405,12 +408,12 @@ module cpen391_group5_qsys (
 		.stream_endofpacket   (video_in_scaler_avalon_scaler_source_endofpacket),                   //                         .endofpacket
 		.stream_valid         (video_in_scaler_avalon_scaler_source_valid),                         //                         .valid
 		.stream_ready         (video_in_scaler_avalon_scaler_source_ready),                         //                         .ready
-		.slave_address        (mm_interconnect_1_video_in_dma_avalon_dma_control_slave_address),    // avalon_dma_control_slave.address
-		.slave_byteenable     (mm_interconnect_1_video_in_dma_avalon_dma_control_slave_byteenable), //                         .byteenable
-		.slave_read           (mm_interconnect_1_video_in_dma_avalon_dma_control_slave_read),       //                         .read
-		.slave_write          (mm_interconnect_1_video_in_dma_avalon_dma_control_slave_write),      //                         .write
-		.slave_writedata      (mm_interconnect_1_video_in_dma_avalon_dma_control_slave_writedata),  //                         .writedata
-		.slave_readdata       (mm_interconnect_1_video_in_dma_avalon_dma_control_slave_readdata),   //                         .readdata
+		.slave_address        (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_address),    // avalon_dma_control_slave.address
+		.slave_byteenable     (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_byteenable), //                         .byteenable
+		.slave_read           (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_read),       //                         .read
+		.slave_write          (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_write),      //                         .write
+		.slave_writedata      (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_writedata),  //                         .writedata
+		.slave_readdata       (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_readdata),   //                         .readdata
 		.master_address       (video_in_dma_avalon_dma_master_address),                             //        avalon_dma_master.address
 		.master_waitrequest   (video_in_dma_avalon_dma_master_waitrequest),                         //                         .waitrequest
 		.master_write         (video_in_dma_avalon_dma_master_write),                               //                         .write
@@ -458,12 +461,12 @@ module cpen391_group5_qsys (
 		.master_read          (video_out_dma_avalon_dma_master_read),                                //                         .read
 		.master_readdata      (video_out_dma_avalon_dma_master_readdata),                            //                         .readdata
 		.master_readdatavalid (video_out_dma_avalon_dma_master_readdatavalid),                       //                         .readdatavalid
-		.slave_address        (mm_interconnect_1_video_out_dma_avalon_dma_control_slave_address),    // avalon_dma_control_slave.address
-		.slave_byteenable     (mm_interconnect_1_video_out_dma_avalon_dma_control_slave_byteenable), //                         .byteenable
-		.slave_read           (mm_interconnect_1_video_out_dma_avalon_dma_control_slave_read),       //                         .read
-		.slave_write          (mm_interconnect_1_video_out_dma_avalon_dma_control_slave_write),      //                         .write
-		.slave_writedata      (mm_interconnect_1_video_out_dma_avalon_dma_control_slave_writedata),  //                         .writedata
-		.slave_readdata       (mm_interconnect_1_video_out_dma_avalon_dma_control_slave_readdata),   //                         .readdata
+		.slave_address        (mm_interconnect_2_video_out_dma_avalon_dma_control_slave_address),    // avalon_dma_control_slave.address
+		.slave_byteenable     (mm_interconnect_2_video_out_dma_avalon_dma_control_slave_byteenable), //                         .byteenable
+		.slave_read           (mm_interconnect_2_video_out_dma_avalon_dma_control_slave_read),       //                         .read
+		.slave_write          (mm_interconnect_2_video_out_dma_avalon_dma_control_slave_write),      //                         .write
+		.slave_writedata      (mm_interconnect_2_video_out_dma_avalon_dma_control_slave_writedata),  //                         .writedata
+		.slave_readdata       (mm_interconnect_2_video_out_dma_avalon_dma_control_slave_readdata),   //                         .readdata
 		.stream_ready         (video_out_dma_avalon_pixel_source_ready),                             //      avalon_pixel_source.ready
 		.stream_data          (video_out_dma_avalon_pixel_source_data),                              //                         .data
 		.stream_startofpacket (video_out_dma_avalon_pixel_source_startofpacket),                     //                         .startofpacket
@@ -547,24 +550,24 @@ module cpen391_group5_qsys (
 	cpen391_group5_qsys_jtag_uart_0 jtag_uart_0 (
 		.clk            (clocks_sys_clk_clk),                                          //               clk.clk
 		.rst_n          (~rst_controller_reset_out_reset),                             //             reset.reset_n
-		.av_chipselect  (mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_chipselect),  // avalon_jtag_slave.chipselect
-		.av_address     (mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_address),     //                  .address
-		.av_read_n      (~mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_read),       //                  .read_n
-		.av_readdata    (mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_readdata),    //                  .readdata
-		.av_write_n     (~mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_write),      //                  .write_n
-		.av_writedata   (mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_writedata),   //                  .writedata
-		.av_waitrequest (mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_waitrequest), //                  .waitrequest
+		.av_chipselect  (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_chipselect),  // avalon_jtag_slave.chipselect
+		.av_address     (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_address),     //                  .address
+		.av_read_n      (~mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_read),       //                  .read_n
+		.av_readdata    (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_readdata),    //                  .readdata
+		.av_write_n     (~mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_write),      //                  .write_n
+		.av_writedata   (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_writedata),   //                  .writedata
+		.av_waitrequest (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_waitrequest), //                  .waitrequest
 		.av_irq         (irq_mapper_receiver0_irq)                                     //               irq.irq
 	);
 
 	cpen391_group5_qsys_led_out_pio led_out_pio (
 		.clk        (clocks_sys_clk_clk),                          //                 clk.clk
 		.reset_n    (~rst_controller_reset_out_reset),             //               reset.reset_n
-		.address    (mm_interconnect_1_led_out_pio_s1_address),    //                  s1.address
-		.write_n    (~mm_interconnect_1_led_out_pio_s1_write),     //                    .write_n
-		.writedata  (mm_interconnect_1_led_out_pio_s1_writedata),  //                    .writedata
-		.chipselect (mm_interconnect_1_led_out_pio_s1_chipselect), //                    .chipselect
-		.readdata   (mm_interconnect_1_led_out_pio_s1_readdata),   //                    .readdata
+		.address    (mm_interconnect_2_led_out_pio_s1_address),    //                  s1.address
+		.write_n    (~mm_interconnect_2_led_out_pio_s1_write),     //                    .write_n
+		.writedata  (mm_interconnect_2_led_out_pio_s1_writedata),  //                    .writedata
+		.chipselect (mm_interconnect_2_led_out_pio_s1_chipselect), //                    .chipselect
+		.readdata   (mm_interconnect_2_led_out_pio_s1_readdata),   //                    .readdata
 		.out_port   (led_out_export)                               // external_connection.export
 	);
 
@@ -579,36 +582,39 @@ module cpen391_group5_qsys (
 		.d_waitrequest                         (nios2_data_master_waitrequest),                         //                          .waitrequest
 		.d_write                               (nios2_data_master_write),                               //                          .write
 		.d_writedata                           (nios2_data_master_writedata),                           //                          .writedata
+		.d_burstcount                          (nios2_data_master_burstcount),                          //                          .burstcount
+		.d_readdatavalid                       (nios2_data_master_readdatavalid),                       //                          .readdatavalid
 		.jtag_debug_module_debugaccess_to_roms (nios2_data_master_debugaccess),                         //                          .debugaccess
 		.i_address                             (nios2_instruction_master_address),                      //        instruction_master.address
 		.i_read                                (nios2_instruction_master_read),                         //                          .read
 		.i_readdata                            (nios2_instruction_master_readdata),                     //                          .readdata
 		.i_waitrequest                         (nios2_instruction_master_waitrequest),                  //                          .waitrequest
+		.i_readdatavalid                       (nios2_instruction_master_readdatavalid),                //                          .readdatavalid
 		.d_irq                                 (nios2_d_irq_irq),                                       //                     d_irq.irq
 		.jtag_debug_module_resetrequest        (nios2_jtag_debug_module_reset_reset),                   //   jtag_debug_module_reset.reset
-		.jtag_debug_module_address             (mm_interconnect_1_nios2_jtag_debug_module_address),     //         jtag_debug_module.address
-		.jtag_debug_module_byteenable          (mm_interconnect_1_nios2_jtag_debug_module_byteenable),  //                          .byteenable
-		.jtag_debug_module_debugaccess         (mm_interconnect_1_nios2_jtag_debug_module_debugaccess), //                          .debugaccess
-		.jtag_debug_module_read                (mm_interconnect_1_nios2_jtag_debug_module_read),        //                          .read
-		.jtag_debug_module_readdata            (mm_interconnect_1_nios2_jtag_debug_module_readdata),    //                          .readdata
-		.jtag_debug_module_waitrequest         (mm_interconnect_1_nios2_jtag_debug_module_waitrequest), //                          .waitrequest
-		.jtag_debug_module_write               (mm_interconnect_1_nios2_jtag_debug_module_write),       //                          .write
-		.jtag_debug_module_writedata           (mm_interconnect_1_nios2_jtag_debug_module_writedata),   //                          .writedata
+		.jtag_debug_module_address             (mm_interconnect_2_nios2_jtag_debug_module_address),     //         jtag_debug_module.address
+		.jtag_debug_module_byteenable          (mm_interconnect_2_nios2_jtag_debug_module_byteenable),  //                          .byteenable
+		.jtag_debug_module_debugaccess         (mm_interconnect_2_nios2_jtag_debug_module_debugaccess), //                          .debugaccess
+		.jtag_debug_module_read                (mm_interconnect_2_nios2_jtag_debug_module_read),        //                          .read
+		.jtag_debug_module_readdata            (mm_interconnect_2_nios2_jtag_debug_module_readdata),    //                          .readdata
+		.jtag_debug_module_waitrequest         (mm_interconnect_2_nios2_jtag_debug_module_waitrequest), //                          .waitrequest
+		.jtag_debug_module_write               (mm_interconnect_2_nios2_jtag_debug_module_write),       //                          .write
+		.jtag_debug_module_writedata           (mm_interconnect_2_nios2_jtag_debug_module_writedata),   //                          .writedata
 		.no_ci_readra                          ()                                                       // custom_instruction_master.readra
 	);
 
 	cpen391_group5_qsys_sdram sdram (
 		.clk            (clocks_sys_clk_clk),                       //   clk.clk
 		.reset_n        (~rst_controller_reset_out_reset),          // reset.reset_n
-		.az_addr        (mm_interconnect_1_sdram_s1_address),       //    s1.address
-		.az_be_n        (~mm_interconnect_1_sdram_s1_byteenable),   //      .byteenable_n
-		.az_cs          (mm_interconnect_1_sdram_s1_chipselect),    //      .chipselect
-		.az_data        (mm_interconnect_1_sdram_s1_writedata),     //      .writedata
-		.az_rd_n        (~mm_interconnect_1_sdram_s1_read),         //      .read_n
-		.az_wr_n        (~mm_interconnect_1_sdram_s1_write),        //      .write_n
-		.za_data        (mm_interconnect_1_sdram_s1_readdata),      //      .readdata
-		.za_valid       (mm_interconnect_1_sdram_s1_readdatavalid), //      .readdatavalid
-		.za_waitrequest (mm_interconnect_1_sdram_s1_waitrequest),   //      .waitrequest
+		.az_addr        (mm_interconnect_2_sdram_s1_address),       //    s1.address
+		.az_be_n        (~mm_interconnect_2_sdram_s1_byteenable),   //      .byteenable_n
+		.az_cs          (mm_interconnect_2_sdram_s1_chipselect),    //      .chipselect
+		.az_data        (mm_interconnect_2_sdram_s1_writedata),     //      .writedata
+		.az_rd_n        (~mm_interconnect_2_sdram_s1_read),         //      .read_n
+		.az_wr_n        (~mm_interconnect_2_sdram_s1_write),        //      .write_n
+		.za_data        (mm_interconnect_2_sdram_s1_readdata),      //      .readdata
+		.za_valid       (mm_interconnect_2_sdram_s1_readdatavalid), //      .readdatavalid
+		.za_waitrequest (mm_interconnect_2_sdram_s1_waitrequest),   //      .waitrequest
 		.zs_addr        (sdram_wire_addr),                          //  wire.export
 		.zs_ba          (sdram_wire_ba),                            //      .export
 		.zs_cas_n       (sdram_wire_cas_n),                         //      .export
@@ -623,32 +629,32 @@ module cpen391_group5_qsys (
 	cpen391_group5_qsys_switch_in_pio switch_in_pio (
 		.clk      (clocks_sys_clk_clk),                          //                 clk.clk
 		.reset_n  (~rst_controller_reset_out_reset),             //               reset.reset_n
-		.address  (mm_interconnect_1_switch_in_pio_s1_address),  //                  s1.address
-		.readdata (mm_interconnect_1_switch_in_pio_s1_readdata), //                    .readdata
+		.address  (mm_interconnect_2_switch_in_pio_s1_address),  //                  s1.address
+		.readdata (mm_interconnect_2_switch_in_pio_s1_readdata), //                    .readdata
 		.in_port  (switch_in_export)                             // external_connection.export
 	);
 
 	cpen391_group5_qsys_timer_1 timer_1 (
 		.clk        (clocks_sys_clk_clk),                      //   clk.clk
 		.reset_n    (~rst_controller_reset_out_reset),         // reset.reset_n
-		.address    (mm_interconnect_1_timer_1_s1_address),    //    s1.address
-		.writedata  (mm_interconnect_1_timer_1_s1_writedata),  //      .writedata
-		.readdata   (mm_interconnect_1_timer_1_s1_readdata),   //      .readdata
-		.chipselect (mm_interconnect_1_timer_1_s1_chipselect), //      .chipselect
-		.write_n    (~mm_interconnect_1_timer_1_s1_write),     //      .write_n
+		.address    (mm_interconnect_2_timer_1_s1_address),    //    s1.address
+		.writedata  (mm_interconnect_2_timer_1_s1_writedata),  //      .writedata
+		.readdata   (mm_interconnect_2_timer_1_s1_readdata),   //      .readdata
+		.chipselect (mm_interconnect_2_timer_1_s1_chipselect), //      .chipselect
+		.write_n    (~mm_interconnect_2_timer_1_s1_write),     //      .write_n
 		.irq        (irq_mapper_receiver2_irq)                 //   irq.irq
 	);
 
 	cpen391_group5_qsys_touchscreen_uart touchscreen_uart (
 		.clk           (clocks_sys_clk_clk),                                  //                 clk.clk
 		.reset_n       (~rst_controller_reset_out_reset),                     //               reset.reset_n
-		.address       (mm_interconnect_1_touchscreen_uart_s1_address),       //                  s1.address
-		.begintransfer (mm_interconnect_1_touchscreen_uart_s1_begintransfer), //                    .begintransfer
-		.chipselect    (mm_interconnect_1_touchscreen_uart_s1_chipselect),    //                    .chipselect
-		.read_n        (~mm_interconnect_1_touchscreen_uart_s1_read),         //                    .read_n
-		.write_n       (~mm_interconnect_1_touchscreen_uart_s1_write),        //                    .write_n
-		.writedata     (mm_interconnect_1_touchscreen_uart_s1_writedata),     //                    .writedata
-		.readdata      (mm_interconnect_1_touchscreen_uart_s1_readdata),      //                    .readdata
+		.address       (mm_interconnect_2_touchscreen_uart_s1_address),       //                  s1.address
+		.begintransfer (mm_interconnect_2_touchscreen_uart_s1_begintransfer), //                    .begintransfer
+		.chipselect    (mm_interconnect_2_touchscreen_uart_s1_chipselect),    //                    .chipselect
+		.read_n        (~mm_interconnect_2_touchscreen_uart_s1_read),         //                    .read_n
+		.write_n       (~mm_interconnect_2_touchscreen_uart_s1_write),        //                    .write_n
+		.writedata     (mm_interconnect_2_touchscreen_uart_s1_writedata),     //                    .writedata
+		.readdata      (mm_interconnect_2_touchscreen_uart_s1_readdata),      //                    .readdata
 		.dataavailable (),                                                    //                    .dataavailable
 		.readyfordata  (),                                                    //                    .readyfordata
 		.rxd           (touchscreen_rxd),                                     // external_connection.export
@@ -663,6 +669,12 @@ module cpen391_group5_qsys (
 		.Video_In_DMA_avalon_dma_master_waitrequest     (video_in_dma_avalon_dma_master_waitrequest),         //                                         .waitrequest
 		.Video_In_DMA_avalon_dma_master_write           (video_in_dma_avalon_dma_master_write),               //                                         .write
 		.Video_In_DMA_avalon_dma_master_writedata       (video_in_dma_avalon_dma_master_writedata),           //                                         .writedata
+		.Video_Out_DMA_avalon_dma_master_address        (video_out_dma_avalon_dma_master_address),            //          Video_Out_DMA_avalon_dma_master.address
+		.Video_Out_DMA_avalon_dma_master_waitrequest    (video_out_dma_avalon_dma_master_waitrequest),        //                                         .waitrequest
+		.Video_Out_DMA_avalon_dma_master_read           (video_out_dma_avalon_dma_master_read),               //                                         .read
+		.Video_Out_DMA_avalon_dma_master_readdata       (video_out_dma_avalon_dma_master_readdata),           //                                         .readdata
+		.Video_Out_DMA_avalon_dma_master_readdatavalid  (video_out_dma_avalon_dma_master_readdatavalid),      //                                         .readdatavalid
+		.Video_Out_DMA_avalon_dma_master_lock           (video_out_dma_avalon_dma_master_lock),               //                                         .lock
 		.Video_Frame_Buffer_s1_address                  (mm_interconnect_0_video_frame_buffer_s1_address),    //                    Video_Frame_Buffer_s1.address
 		.Video_Frame_Buffer_s1_write                    (mm_interconnect_0_video_frame_buffer_s1_write),      //                                         .write
 		.Video_Frame_Buffer_s1_readdata                 (mm_interconnect_0_video_frame_buffer_s1_readdata),   //                                         .readdata
@@ -673,104 +685,6 @@ module cpen391_group5_qsys (
 	);
 
 	cpen391_group5_qsys_mm_interconnect_1 mm_interconnect_1 (
-		.clocks_sys_clk_clk                                (clocks_sys_clk_clk),                                                  //                            clocks_sys_clk.clk
-		.Video_Out_DMA_reset_reset_bridge_in_reset_reset   (rst_controller_reset_out_reset),                                      // Video_Out_DMA_reset_reset_bridge_in_reset.reset
-		.nios2_data_master_address                         (nios2_data_master_address),                                           //                         nios2_data_master.address
-		.nios2_data_master_waitrequest                     (nios2_data_master_waitrequest),                                       //                                          .waitrequest
-		.nios2_data_master_byteenable                      (nios2_data_master_byteenable),                                        //                                          .byteenable
-		.nios2_data_master_read                            (nios2_data_master_read),                                              //                                          .read
-		.nios2_data_master_readdata                        (nios2_data_master_readdata),                                          //                                          .readdata
-		.nios2_data_master_write                           (nios2_data_master_write),                                             //                                          .write
-		.nios2_data_master_writedata                       (nios2_data_master_writedata),                                         //                                          .writedata
-		.nios2_data_master_debugaccess                     (nios2_data_master_debugaccess),                                       //                                          .debugaccess
-		.nios2_instruction_master_address                  (nios2_instruction_master_address),                                    //                  nios2_instruction_master.address
-		.nios2_instruction_master_waitrequest              (nios2_instruction_master_waitrequest),                                //                                          .waitrequest
-		.nios2_instruction_master_read                     (nios2_instruction_master_read),                                       //                                          .read
-		.nios2_instruction_master_readdata                 (nios2_instruction_master_readdata),                                   //                                          .readdata
-		.Video_Out_DMA_avalon_dma_master_address           (video_out_dma_avalon_dma_master_address),                             //           Video_Out_DMA_avalon_dma_master.address
-		.Video_Out_DMA_avalon_dma_master_waitrequest       (video_out_dma_avalon_dma_master_waitrequest),                         //                                          .waitrequest
-		.Video_Out_DMA_avalon_dma_master_read              (video_out_dma_avalon_dma_master_read),                                //                                          .read
-		.Video_Out_DMA_avalon_dma_master_readdata          (video_out_dma_avalon_dma_master_readdata),                            //                                          .readdata
-		.Video_Out_DMA_avalon_dma_master_readdatavalid     (video_out_dma_avalon_dma_master_readdatavalid),                       //                                          .readdatavalid
-		.Video_Out_DMA_avalon_dma_master_lock              (video_out_dma_avalon_dma_master_lock),                                //                                          .lock
-		.Draw_Buffer_s1_address                            (mm_interconnect_1_draw_buffer_s1_address),                            //                            Draw_Buffer_s1.address
-		.Draw_Buffer_s1_write                              (mm_interconnect_1_draw_buffer_s1_write),                              //                                          .write
-		.Draw_Buffer_s1_readdata                           (mm_interconnect_1_draw_buffer_s1_readdata),                           //                                          .readdata
-		.Draw_Buffer_s1_writedata                          (mm_interconnect_1_draw_buffer_s1_writedata),                          //                                          .writedata
-		.Draw_Buffer_s1_byteenable                         (mm_interconnect_1_draw_buffer_s1_byteenable),                         //                                          .byteenable
-		.Draw_Buffer_s1_chipselect                         (mm_interconnect_1_draw_buffer_s1_chipselect),                         //                                          .chipselect
-		.Draw_Buffer_s1_clken                              (mm_interconnect_1_draw_buffer_s1_clken),                              //                                          .clken
-		.Draw_DMA_avalon_dma_control_slave_address         (mm_interconnect_1_draw_dma_avalon_dma_control_slave_address),         //         Draw_DMA_avalon_dma_control_slave.address
-		.Draw_DMA_avalon_dma_control_slave_write           (mm_interconnect_1_draw_dma_avalon_dma_control_slave_write),           //                                          .write
-		.Draw_DMA_avalon_dma_control_slave_read            (mm_interconnect_1_draw_dma_avalon_dma_control_slave_read),            //                                          .read
-		.Draw_DMA_avalon_dma_control_slave_readdata        (mm_interconnect_1_draw_dma_avalon_dma_control_slave_readdata),        //                                          .readdata
-		.Draw_DMA_avalon_dma_control_slave_writedata       (mm_interconnect_1_draw_dma_avalon_dma_control_slave_writedata),       //                                          .writedata
-		.Draw_DMA_avalon_dma_control_slave_byteenable      (mm_interconnect_1_draw_dma_avalon_dma_control_slave_byteenable),      //                                          .byteenable
-		.jtag_uart_0_avalon_jtag_slave_address             (mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_address),             //             jtag_uart_0_avalon_jtag_slave.address
-		.jtag_uart_0_avalon_jtag_slave_write               (mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_write),               //                                          .write
-		.jtag_uart_0_avalon_jtag_slave_read                (mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_read),                //                                          .read
-		.jtag_uart_0_avalon_jtag_slave_readdata            (mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_readdata),            //                                          .readdata
-		.jtag_uart_0_avalon_jtag_slave_writedata           (mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_writedata),           //                                          .writedata
-		.jtag_uart_0_avalon_jtag_slave_waitrequest         (mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_waitrequest),         //                                          .waitrequest
-		.jtag_uart_0_avalon_jtag_slave_chipselect          (mm_interconnect_1_jtag_uart_0_avalon_jtag_slave_chipselect),          //                                          .chipselect
-		.led_out_pio_s1_address                            (mm_interconnect_1_led_out_pio_s1_address),                            //                            led_out_pio_s1.address
-		.led_out_pio_s1_write                              (mm_interconnect_1_led_out_pio_s1_write),                              //                                          .write
-		.led_out_pio_s1_readdata                           (mm_interconnect_1_led_out_pio_s1_readdata),                           //                                          .readdata
-		.led_out_pio_s1_writedata                          (mm_interconnect_1_led_out_pio_s1_writedata),                          //                                          .writedata
-		.led_out_pio_s1_chipselect                         (mm_interconnect_1_led_out_pio_s1_chipselect),                         //                                          .chipselect
-		.nios2_jtag_debug_module_address                   (mm_interconnect_1_nios2_jtag_debug_module_address),                   //                   nios2_jtag_debug_module.address
-		.nios2_jtag_debug_module_write                     (mm_interconnect_1_nios2_jtag_debug_module_write),                     //                                          .write
-		.nios2_jtag_debug_module_read                      (mm_interconnect_1_nios2_jtag_debug_module_read),                      //                                          .read
-		.nios2_jtag_debug_module_readdata                  (mm_interconnect_1_nios2_jtag_debug_module_readdata),                  //                                          .readdata
-		.nios2_jtag_debug_module_writedata                 (mm_interconnect_1_nios2_jtag_debug_module_writedata),                 //                                          .writedata
-		.nios2_jtag_debug_module_byteenable                (mm_interconnect_1_nios2_jtag_debug_module_byteenable),                //                                          .byteenable
-		.nios2_jtag_debug_module_waitrequest               (mm_interconnect_1_nios2_jtag_debug_module_waitrequest),               //                                          .waitrequest
-		.nios2_jtag_debug_module_debugaccess               (mm_interconnect_1_nios2_jtag_debug_module_debugaccess),               //                                          .debugaccess
-		.sdram_s1_address                                  (mm_interconnect_1_sdram_s1_address),                                  //                                  sdram_s1.address
-		.sdram_s1_write                                    (mm_interconnect_1_sdram_s1_write),                                    //                                          .write
-		.sdram_s1_read                                     (mm_interconnect_1_sdram_s1_read),                                     //                                          .read
-		.sdram_s1_readdata                                 (mm_interconnect_1_sdram_s1_readdata),                                 //                                          .readdata
-		.sdram_s1_writedata                                (mm_interconnect_1_sdram_s1_writedata),                                //                                          .writedata
-		.sdram_s1_byteenable                               (mm_interconnect_1_sdram_s1_byteenable),                               //                                          .byteenable
-		.sdram_s1_readdatavalid                            (mm_interconnect_1_sdram_s1_readdatavalid),                            //                                          .readdatavalid
-		.sdram_s1_waitrequest                              (mm_interconnect_1_sdram_s1_waitrequest),                              //                                          .waitrequest
-		.sdram_s1_chipselect                               (mm_interconnect_1_sdram_s1_chipselect),                               //                                          .chipselect
-		.switch_in_pio_s1_address                          (mm_interconnect_1_switch_in_pio_s1_address),                          //                          switch_in_pio_s1.address
-		.switch_in_pio_s1_readdata                         (mm_interconnect_1_switch_in_pio_s1_readdata),                         //                                          .readdata
-		.timer_1_s1_address                                (mm_interconnect_1_timer_1_s1_address),                                //                                timer_1_s1.address
-		.timer_1_s1_write                                  (mm_interconnect_1_timer_1_s1_write),                                  //                                          .write
-		.timer_1_s1_readdata                               (mm_interconnect_1_timer_1_s1_readdata),                               //                                          .readdata
-		.timer_1_s1_writedata                              (mm_interconnect_1_timer_1_s1_writedata),                              //                                          .writedata
-		.timer_1_s1_chipselect                             (mm_interconnect_1_timer_1_s1_chipselect),                             //                                          .chipselect
-		.touchscreen_uart_s1_address                       (mm_interconnect_1_touchscreen_uart_s1_address),                       //                       touchscreen_uart_s1.address
-		.touchscreen_uart_s1_write                         (mm_interconnect_1_touchscreen_uart_s1_write),                         //                                          .write
-		.touchscreen_uart_s1_read                          (mm_interconnect_1_touchscreen_uart_s1_read),                          //                                          .read
-		.touchscreen_uart_s1_readdata                      (mm_interconnect_1_touchscreen_uart_s1_readdata),                      //                                          .readdata
-		.touchscreen_uart_s1_writedata                     (mm_interconnect_1_touchscreen_uart_s1_writedata),                     //                                          .writedata
-		.touchscreen_uart_s1_begintransfer                 (mm_interconnect_1_touchscreen_uart_s1_begintransfer),                 //                                          .begintransfer
-		.touchscreen_uart_s1_chipselect                    (mm_interconnect_1_touchscreen_uart_s1_chipselect),                    //                                          .chipselect
-		.Video_Frame_Buffer_s2_address                     (mm_interconnect_1_video_frame_buffer_s2_address),                     //                     Video_Frame_Buffer_s2.address
-		.Video_Frame_Buffer_s2_write                       (mm_interconnect_1_video_frame_buffer_s2_write),                       //                                          .write
-		.Video_Frame_Buffer_s2_readdata                    (mm_interconnect_1_video_frame_buffer_s2_readdata),                    //                                          .readdata
-		.Video_Frame_Buffer_s2_writedata                   (mm_interconnect_1_video_frame_buffer_s2_writedata),                   //                                          .writedata
-		.Video_Frame_Buffer_s2_byteenable                  (mm_interconnect_1_video_frame_buffer_s2_byteenable),                  //                                          .byteenable
-		.Video_Frame_Buffer_s2_chipselect                  (mm_interconnect_1_video_frame_buffer_s2_chipselect),                  //                                          .chipselect
-		.Video_Frame_Buffer_s2_clken                       (mm_interconnect_1_video_frame_buffer_s2_clken),                       //                                          .clken
-		.Video_In_DMA_avalon_dma_control_slave_address     (mm_interconnect_1_video_in_dma_avalon_dma_control_slave_address),     //     Video_In_DMA_avalon_dma_control_slave.address
-		.Video_In_DMA_avalon_dma_control_slave_write       (mm_interconnect_1_video_in_dma_avalon_dma_control_slave_write),       //                                          .write
-		.Video_In_DMA_avalon_dma_control_slave_read        (mm_interconnect_1_video_in_dma_avalon_dma_control_slave_read),        //                                          .read
-		.Video_In_DMA_avalon_dma_control_slave_readdata    (mm_interconnect_1_video_in_dma_avalon_dma_control_slave_readdata),    //                                          .readdata
-		.Video_In_DMA_avalon_dma_control_slave_writedata   (mm_interconnect_1_video_in_dma_avalon_dma_control_slave_writedata),   //                                          .writedata
-		.Video_In_DMA_avalon_dma_control_slave_byteenable  (mm_interconnect_1_video_in_dma_avalon_dma_control_slave_byteenable),  //                                          .byteenable
-		.Video_Out_DMA_avalon_dma_control_slave_address    (mm_interconnect_1_video_out_dma_avalon_dma_control_slave_address),    //    Video_Out_DMA_avalon_dma_control_slave.address
-		.Video_Out_DMA_avalon_dma_control_slave_write      (mm_interconnect_1_video_out_dma_avalon_dma_control_slave_write),      //                                          .write
-		.Video_Out_DMA_avalon_dma_control_slave_read       (mm_interconnect_1_video_out_dma_avalon_dma_control_slave_read),       //                                          .read
-		.Video_Out_DMA_avalon_dma_control_slave_readdata   (mm_interconnect_1_video_out_dma_avalon_dma_control_slave_readdata),   //                                          .readdata
-		.Video_Out_DMA_avalon_dma_control_slave_writedata  (mm_interconnect_1_video_out_dma_avalon_dma_control_slave_writedata),  //                                          .writedata
-		.Video_Out_DMA_avalon_dma_control_slave_byteenable (mm_interconnect_1_video_out_dma_avalon_dma_control_slave_byteenable)  //                                          .byteenable
-	);
-
-	cpen391_group5_qsys_mm_interconnect_2 mm_interconnect_2 (
 		.clocks_sys_clk_clk                         (clocks_sys_clk_clk),                          //                       clocks_sys_clk.clk
 		.Draw_DMA_reset_reset_bridge_in_reset_reset (rst_controller_reset_out_reset),              // Draw_DMA_reset_reset_bridge_in_reset.reset
 		.Draw_DMA_avalon_dma_master_address         (draw_dma_avalon_dma_master_address),          //           Draw_DMA_avalon_dma_master.address
@@ -779,13 +693,108 @@ module cpen391_group5_qsys (
 		.Draw_DMA_avalon_dma_master_readdata        (draw_dma_avalon_dma_master_readdata),         //                                     .readdata
 		.Draw_DMA_avalon_dma_master_readdatavalid   (draw_dma_avalon_dma_master_readdatavalid),    //                                     .readdatavalid
 		.Draw_DMA_avalon_dma_master_lock            (draw_dma_avalon_dma_master_lock),             //                                     .lock
-		.Draw_Buffer_s2_address                     (mm_interconnect_2_draw_buffer_s2_address),    //                       Draw_Buffer_s2.address
-		.Draw_Buffer_s2_write                       (mm_interconnect_2_draw_buffer_s2_write),      //                                     .write
-		.Draw_Buffer_s2_readdata                    (mm_interconnect_2_draw_buffer_s2_readdata),   //                                     .readdata
-		.Draw_Buffer_s2_writedata                   (mm_interconnect_2_draw_buffer_s2_writedata),  //                                     .writedata
-		.Draw_Buffer_s2_byteenable                  (mm_interconnect_2_draw_buffer_s2_byteenable), //                                     .byteenable
-		.Draw_Buffer_s2_chipselect                  (mm_interconnect_2_draw_buffer_s2_chipselect), //                                     .chipselect
-		.Draw_Buffer_s2_clken                       (mm_interconnect_2_draw_buffer_s2_clken)       //                                     .clken
+		.Draw_Buffer_s2_address                     (mm_interconnect_1_draw_buffer_s2_address),    //                       Draw_Buffer_s2.address
+		.Draw_Buffer_s2_write                       (mm_interconnect_1_draw_buffer_s2_write),      //                                     .write
+		.Draw_Buffer_s2_readdata                    (mm_interconnect_1_draw_buffer_s2_readdata),   //                                     .readdata
+		.Draw_Buffer_s2_writedata                   (mm_interconnect_1_draw_buffer_s2_writedata),  //                                     .writedata
+		.Draw_Buffer_s2_byteenable                  (mm_interconnect_1_draw_buffer_s2_byteenable), //                                     .byteenable
+		.Draw_Buffer_s2_chipselect                  (mm_interconnect_1_draw_buffer_s2_chipselect), //                                     .chipselect
+		.Draw_Buffer_s2_clken                       (mm_interconnect_1_draw_buffer_s2_clken)       //                                     .clken
+	);
+
+	cpen391_group5_qsys_mm_interconnect_2 mm_interconnect_2 (
+		.clocks_sys_clk_clk                                (clocks_sys_clk_clk),                                                  //                         clocks_sys_clk.clk
+		.nios2_reset_n_reset_bridge_in_reset_reset         (rst_controller_reset_out_reset),                                      //    nios2_reset_n_reset_bridge_in_reset.reset
+		.nios2_data_master_address                         (nios2_data_master_address),                                           //                      nios2_data_master.address
+		.nios2_data_master_waitrequest                     (nios2_data_master_waitrequest),                                       //                                       .waitrequest
+		.nios2_data_master_burstcount                      (nios2_data_master_burstcount),                                        //                                       .burstcount
+		.nios2_data_master_byteenable                      (nios2_data_master_byteenable),                                        //                                       .byteenable
+		.nios2_data_master_read                            (nios2_data_master_read),                                              //                                       .read
+		.nios2_data_master_readdata                        (nios2_data_master_readdata),                                          //                                       .readdata
+		.nios2_data_master_readdatavalid                   (nios2_data_master_readdatavalid),                                     //                                       .readdatavalid
+		.nios2_data_master_write                           (nios2_data_master_write),                                             //                                       .write
+		.nios2_data_master_writedata                       (nios2_data_master_writedata),                                         //                                       .writedata
+		.nios2_data_master_debugaccess                     (nios2_data_master_debugaccess),                                       //                                       .debugaccess
+		.nios2_instruction_master_address                  (nios2_instruction_master_address),                                    //               nios2_instruction_master.address
+		.nios2_instruction_master_waitrequest              (nios2_instruction_master_waitrequest),                                //                                       .waitrequest
+		.nios2_instruction_master_read                     (nios2_instruction_master_read),                                       //                                       .read
+		.nios2_instruction_master_readdata                 (nios2_instruction_master_readdata),                                   //                                       .readdata
+		.nios2_instruction_master_readdatavalid            (nios2_instruction_master_readdatavalid),                              //                                       .readdatavalid
+		.Draw_Buffer_s1_address                            (mm_interconnect_2_draw_buffer_s1_address),                            //                         Draw_Buffer_s1.address
+		.Draw_Buffer_s1_write                              (mm_interconnect_2_draw_buffer_s1_write),                              //                                       .write
+		.Draw_Buffer_s1_readdata                           (mm_interconnect_2_draw_buffer_s1_readdata),                           //                                       .readdata
+		.Draw_Buffer_s1_writedata                          (mm_interconnect_2_draw_buffer_s1_writedata),                          //                                       .writedata
+		.Draw_Buffer_s1_byteenable                         (mm_interconnect_2_draw_buffer_s1_byteenable),                         //                                       .byteenable
+		.Draw_Buffer_s1_chipselect                         (mm_interconnect_2_draw_buffer_s1_chipselect),                         //                                       .chipselect
+		.Draw_Buffer_s1_clken                              (mm_interconnect_2_draw_buffer_s1_clken),                              //                                       .clken
+		.Draw_DMA_avalon_dma_control_slave_address         (mm_interconnect_2_draw_dma_avalon_dma_control_slave_address),         //      Draw_DMA_avalon_dma_control_slave.address
+		.Draw_DMA_avalon_dma_control_slave_write           (mm_interconnect_2_draw_dma_avalon_dma_control_slave_write),           //                                       .write
+		.Draw_DMA_avalon_dma_control_slave_read            (mm_interconnect_2_draw_dma_avalon_dma_control_slave_read),            //                                       .read
+		.Draw_DMA_avalon_dma_control_slave_readdata        (mm_interconnect_2_draw_dma_avalon_dma_control_slave_readdata),        //                                       .readdata
+		.Draw_DMA_avalon_dma_control_slave_writedata       (mm_interconnect_2_draw_dma_avalon_dma_control_slave_writedata),       //                                       .writedata
+		.Draw_DMA_avalon_dma_control_slave_byteenable      (mm_interconnect_2_draw_dma_avalon_dma_control_slave_byteenable),      //                                       .byteenable
+		.jtag_uart_0_avalon_jtag_slave_address             (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_address),             //          jtag_uart_0_avalon_jtag_slave.address
+		.jtag_uart_0_avalon_jtag_slave_write               (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_write),               //                                       .write
+		.jtag_uart_0_avalon_jtag_slave_read                (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_read),                //                                       .read
+		.jtag_uart_0_avalon_jtag_slave_readdata            (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_readdata),            //                                       .readdata
+		.jtag_uart_0_avalon_jtag_slave_writedata           (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_writedata),           //                                       .writedata
+		.jtag_uart_0_avalon_jtag_slave_waitrequest         (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_waitrequest),         //                                       .waitrequest
+		.jtag_uart_0_avalon_jtag_slave_chipselect          (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_chipselect),          //                                       .chipselect
+		.led_out_pio_s1_address                            (mm_interconnect_2_led_out_pio_s1_address),                            //                         led_out_pio_s1.address
+		.led_out_pio_s1_write                              (mm_interconnect_2_led_out_pio_s1_write),                              //                                       .write
+		.led_out_pio_s1_readdata                           (mm_interconnect_2_led_out_pio_s1_readdata),                           //                                       .readdata
+		.led_out_pio_s1_writedata                          (mm_interconnect_2_led_out_pio_s1_writedata),                          //                                       .writedata
+		.led_out_pio_s1_chipselect                         (mm_interconnect_2_led_out_pio_s1_chipselect),                         //                                       .chipselect
+		.nios2_jtag_debug_module_address                   (mm_interconnect_2_nios2_jtag_debug_module_address),                   //                nios2_jtag_debug_module.address
+		.nios2_jtag_debug_module_write                     (mm_interconnect_2_nios2_jtag_debug_module_write),                     //                                       .write
+		.nios2_jtag_debug_module_read                      (mm_interconnect_2_nios2_jtag_debug_module_read),                      //                                       .read
+		.nios2_jtag_debug_module_readdata                  (mm_interconnect_2_nios2_jtag_debug_module_readdata),                  //                                       .readdata
+		.nios2_jtag_debug_module_writedata                 (mm_interconnect_2_nios2_jtag_debug_module_writedata),                 //                                       .writedata
+		.nios2_jtag_debug_module_byteenable                (mm_interconnect_2_nios2_jtag_debug_module_byteenable),                //                                       .byteenable
+		.nios2_jtag_debug_module_waitrequest               (mm_interconnect_2_nios2_jtag_debug_module_waitrequest),               //                                       .waitrequest
+		.nios2_jtag_debug_module_debugaccess               (mm_interconnect_2_nios2_jtag_debug_module_debugaccess),               //                                       .debugaccess
+		.sdram_s1_address                                  (mm_interconnect_2_sdram_s1_address),                                  //                               sdram_s1.address
+		.sdram_s1_write                                    (mm_interconnect_2_sdram_s1_write),                                    //                                       .write
+		.sdram_s1_read                                     (mm_interconnect_2_sdram_s1_read),                                     //                                       .read
+		.sdram_s1_readdata                                 (mm_interconnect_2_sdram_s1_readdata),                                 //                                       .readdata
+		.sdram_s1_writedata                                (mm_interconnect_2_sdram_s1_writedata),                                //                                       .writedata
+		.sdram_s1_byteenable                               (mm_interconnect_2_sdram_s1_byteenable),                               //                                       .byteenable
+		.sdram_s1_readdatavalid                            (mm_interconnect_2_sdram_s1_readdatavalid),                            //                                       .readdatavalid
+		.sdram_s1_waitrequest                              (mm_interconnect_2_sdram_s1_waitrequest),                              //                                       .waitrequest
+		.sdram_s1_chipselect                               (mm_interconnect_2_sdram_s1_chipselect),                               //                                       .chipselect
+		.switch_in_pio_s1_address                          (mm_interconnect_2_switch_in_pio_s1_address),                          //                       switch_in_pio_s1.address
+		.switch_in_pio_s1_readdata                         (mm_interconnect_2_switch_in_pio_s1_readdata),                         //                                       .readdata
+		.timer_1_s1_address                                (mm_interconnect_2_timer_1_s1_address),                                //                             timer_1_s1.address
+		.timer_1_s1_write                                  (mm_interconnect_2_timer_1_s1_write),                                  //                                       .write
+		.timer_1_s1_readdata                               (mm_interconnect_2_timer_1_s1_readdata),                               //                                       .readdata
+		.timer_1_s1_writedata                              (mm_interconnect_2_timer_1_s1_writedata),                              //                                       .writedata
+		.timer_1_s1_chipselect                             (mm_interconnect_2_timer_1_s1_chipselect),                             //                                       .chipselect
+		.touchscreen_uart_s1_address                       (mm_interconnect_2_touchscreen_uart_s1_address),                       //                    touchscreen_uart_s1.address
+		.touchscreen_uart_s1_write                         (mm_interconnect_2_touchscreen_uart_s1_write),                         //                                       .write
+		.touchscreen_uart_s1_read                          (mm_interconnect_2_touchscreen_uart_s1_read),                          //                                       .read
+		.touchscreen_uart_s1_readdata                      (mm_interconnect_2_touchscreen_uart_s1_readdata),                      //                                       .readdata
+		.touchscreen_uart_s1_writedata                     (mm_interconnect_2_touchscreen_uart_s1_writedata),                     //                                       .writedata
+		.touchscreen_uart_s1_begintransfer                 (mm_interconnect_2_touchscreen_uart_s1_begintransfer),                 //                                       .begintransfer
+		.touchscreen_uart_s1_chipselect                    (mm_interconnect_2_touchscreen_uart_s1_chipselect),                    //                                       .chipselect
+		.Video_Frame_Buffer_s2_address                     (mm_interconnect_2_video_frame_buffer_s2_address),                     //                  Video_Frame_Buffer_s2.address
+		.Video_Frame_Buffer_s2_write                       (mm_interconnect_2_video_frame_buffer_s2_write),                       //                                       .write
+		.Video_Frame_Buffer_s2_readdata                    (mm_interconnect_2_video_frame_buffer_s2_readdata),                    //                                       .readdata
+		.Video_Frame_Buffer_s2_writedata                   (mm_interconnect_2_video_frame_buffer_s2_writedata),                   //                                       .writedata
+		.Video_Frame_Buffer_s2_byteenable                  (mm_interconnect_2_video_frame_buffer_s2_byteenable),                  //                                       .byteenable
+		.Video_Frame_Buffer_s2_chipselect                  (mm_interconnect_2_video_frame_buffer_s2_chipselect),                  //                                       .chipselect
+		.Video_Frame_Buffer_s2_clken                       (mm_interconnect_2_video_frame_buffer_s2_clken),                       //                                       .clken
+		.Video_In_DMA_avalon_dma_control_slave_address     (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_address),     //  Video_In_DMA_avalon_dma_control_slave.address
+		.Video_In_DMA_avalon_dma_control_slave_write       (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_write),       //                                       .write
+		.Video_In_DMA_avalon_dma_control_slave_read        (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_read),        //                                       .read
+		.Video_In_DMA_avalon_dma_control_slave_readdata    (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_readdata),    //                                       .readdata
+		.Video_In_DMA_avalon_dma_control_slave_writedata   (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_writedata),   //                                       .writedata
+		.Video_In_DMA_avalon_dma_control_slave_byteenable  (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_byteenable),  //                                       .byteenable
+		.Video_Out_DMA_avalon_dma_control_slave_address    (mm_interconnect_2_video_out_dma_avalon_dma_control_slave_address),    // Video_Out_DMA_avalon_dma_control_slave.address
+		.Video_Out_DMA_avalon_dma_control_slave_write      (mm_interconnect_2_video_out_dma_avalon_dma_control_slave_write),      //                                       .write
+		.Video_Out_DMA_avalon_dma_control_slave_read       (mm_interconnect_2_video_out_dma_avalon_dma_control_slave_read),       //                                       .read
+		.Video_Out_DMA_avalon_dma_control_slave_readdata   (mm_interconnect_2_video_out_dma_avalon_dma_control_slave_readdata),   //                                       .readdata
+		.Video_Out_DMA_avalon_dma_control_slave_writedata  (mm_interconnect_2_video_out_dma_avalon_dma_control_slave_writedata),  //                                       .writedata
+		.Video_Out_DMA_avalon_dma_control_slave_byteenable (mm_interconnect_2_video_out_dma_avalon_dma_control_slave_byteenable)  //                                       .byteenable
 	);
 
 	cpen391_group5_qsys_irq_mapper irq_mapper (

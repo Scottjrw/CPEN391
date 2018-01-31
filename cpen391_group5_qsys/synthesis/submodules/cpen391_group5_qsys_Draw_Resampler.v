@@ -55,7 +55,7 @@ module cpen391_group5_qsys_Draw_Resampler (
  *                           Parameter Declarations                          *
  *****************************************************************************/
 
-parameter IDW		= 31;
+parameter IDW		= 15;
 parameter ODW		= 39;
 
 parameter IEW		= 1;
@@ -154,11 +154,11 @@ end
 assign stream_in_ready = stream_out_ready | ~stream_out_valid;
 
 // Internal Assignments
-assign r = {stream_in_data[23:16], stream_in_data[23:22]};
-assign g = {stream_in_data[15: 8], stream_in_data[15:14]};
-assign b = {stream_in_data[ 7: 0], stream_in_data[ 7: 6]};
+assign r = {{2{stream_in_data[11: 8]}}, stream_in_data[11:10]};
+assign g = {{2{stream_in_data[ 7: 4]}}, stream_in_data[ 7: 6]};
+assign b = {{2{stream_in_data[ 3: 0]}}, stream_in_data[ 3: 2]};
 
-assign a = {stream_in_data[31:24], stream_in_data[31:30]};
+assign a = {{2{stream_in_data[15:12]}}, stream_in_data[15:14]};
 
 assign converted_data[39:30] = a[ 9: 0];
 assign converted_data[29:20] = r[ 9: 0];

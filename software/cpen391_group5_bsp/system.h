@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Tue Jan 23 23:40:48 PST 2018
+ * Generated: Wed Jan 31 12:12:37 PST 2018
  */
 
 /*
@@ -62,7 +62,7 @@
 
 #define ALT_CPU_ARCHITECTURE "altera_nios2_qsys"
 #define ALT_CPU_BIG_ENDIAN 0
-#define ALT_CPU_BREAK_ADDR 0x00080820
+#define ALT_CPU_BREAK_ADDR 0x000a0820
 #define ALT_CPU_CPU_FREQ 50000000u
 #define ALT_CPU_CPU_ID_SIZE 1
 #define ALT_CPU_CPU_ID_VALUE 0x00000000
@@ -70,7 +70,7 @@
 #define ALT_CPU_DATA_ADDR_WIDTH 0x1c
 #define ALT_CPU_DCACHE_LINE_SIZE 32
 #define ALT_CPU_DCACHE_LINE_SIZE_LOG2 5
-#define ALT_CPU_DCACHE_SIZE 2048
+#define ALT_CPU_DCACHE_SIZE 1024
 #define ALT_CPU_EXCEPTION_ADDR 0x08000020
 #define ALT_CPU_FLUSHDA_SUPPORTED
 #define ALT_CPU_FREQ 50000000
@@ -82,7 +82,7 @@
 #define ALT_CPU_HAS_JMPI_INSTRUCTION
 #define ALT_CPU_ICACHE_LINE_SIZE 32
 #define ALT_CPU_ICACHE_LINE_SIZE_LOG2 5
-#define ALT_CPU_ICACHE_SIZE 4096
+#define ALT_CPU_ICACHE_SIZE 1024
 #define ALT_CPU_INITDA_SUPPORTED
 #define ALT_CPU_INST_ADDR_WIDTH 0x1c
 #define ALT_CPU_NAME "nios2"
@@ -96,7 +96,7 @@
  */
 
 #define NIOS2_BIG_ENDIAN 0
-#define NIOS2_BREAK_ADDR 0x00080820
+#define NIOS2_BREAK_ADDR 0x000a0820
 #define NIOS2_CPU_FREQ 50000000u
 #define NIOS2_CPU_ID_SIZE 1
 #define NIOS2_CPU_ID_VALUE 0x00000000
@@ -104,7 +104,7 @@
 #define NIOS2_DATA_ADDR_WIDTH 0x1c
 #define NIOS2_DCACHE_LINE_SIZE 32
 #define NIOS2_DCACHE_LINE_SIZE_LOG2 5
-#define NIOS2_DCACHE_SIZE 2048
+#define NIOS2_DCACHE_SIZE 1024
 #define NIOS2_EXCEPTION_ADDR 0x08000020
 #define NIOS2_FLUSHDA_SUPPORTED
 #define NIOS2_HARDWARE_DIVIDE_PRESENT 0
@@ -115,7 +115,7 @@
 #define NIOS2_HAS_JMPI_INSTRUCTION
 #define NIOS2_ICACHE_LINE_SIZE 32
 #define NIOS2_ICACHE_LINE_SIZE_LOG2 5
-#define NIOS2_ICACHE_SIZE 4096
+#define NIOS2_ICACHE_SIZE 1024
 #define NIOS2_INITDA_SUPPORTED
 #define NIOS2_INST_ADDR_WIDTH 0x1c
 #define NIOS2_NUM_OF_SHADOW_REG_SETS 0
@@ -131,8 +131,53 @@
 #define __ALTERA_AVALON_NEW_SDRAM_CONTROLLER
 #define __ALTERA_AVALON_ONCHIP_MEMORY2
 #define __ALTERA_AVALON_PIO
+#define __ALTERA_AVALON_TIMER
+#define __ALTERA_AVALON_UART
 #define __ALTERA_NIOS2_QSYS
 #define __ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER
+
+
+/*
+ * Draw_Buffer configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_Draw_Buffer altera_avalon_onchip_memory2
+#define DRAW_BUFFER_ALLOW_IN_SYSTEM_MEMORY_CONTENT_EDITOR 0
+#define DRAW_BUFFER_ALLOW_MRAM_SIM_CONTENTS_ONLY_FILE 0
+#define DRAW_BUFFER_BASE 0x80000
+#define DRAW_BUFFER_CONTENTS_INFO ""
+#define DRAW_BUFFER_DUAL_PORT 1
+#define DRAW_BUFFER_GUI_RAM_BLOCK_TYPE "AUTO"
+#define DRAW_BUFFER_INIT_CONTENTS_FILE "cpen391_group5_qsys_Draw_Buffer"
+#define DRAW_BUFFER_INIT_MEM_CONTENT 0
+#define DRAW_BUFFER_INSTANCE_ID "NONE"
+#define DRAW_BUFFER_IRQ -1
+#define DRAW_BUFFER_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define DRAW_BUFFER_NAME "/dev/Draw_Buffer"
+#define DRAW_BUFFER_NON_DEFAULT_INIT_FILE_ENABLED 0
+#define DRAW_BUFFER_RAM_BLOCK_TYPE "AUTO"
+#define DRAW_BUFFER_READ_DURING_WRITE_MODE "DONT_CARE"
+#define DRAW_BUFFER_SINGLE_CLOCK_OP 1
+#define DRAW_BUFFER_SIZE_MULTIPLE 1
+#define DRAW_BUFFER_SIZE_VALUE 38400
+#define DRAW_BUFFER_SPAN 38400
+#define DRAW_BUFFER_TYPE "altera_avalon_onchip_memory2"
+#define DRAW_BUFFER_WRITABLE 1
+
+
+/*
+ * Draw_DMA configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_Draw_DMA altera_up_avalon_video_dma_controller
+#define DRAW_DMA_BASE 0xa1040
+#define DRAW_DMA_IRQ -1
+#define DRAW_DMA_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define DRAW_DMA_NAME "/dev/Draw_DMA"
+#define DRAW_DMA_SPAN 16
+#define DRAW_DMA_TYPE "altera_up_avalon_video_dma_controller"
 
 
 /*
@@ -151,19 +196,19 @@
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
 #define ALT_STDERR "/dev/jtag_uart_0"
-#define ALT_STDERR_BASE 0x81440
+#define ALT_STDERR_BASE 0xa1090
 #define ALT_STDERR_DEV jtag_uart_0
 #define ALT_STDERR_IS_JTAG_UART
 #define ALT_STDERR_PRESENT
 #define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDIN "/dev/jtag_uart_0"
-#define ALT_STDIN_BASE 0x81440
+#define ALT_STDIN_BASE 0xa1090
 #define ALT_STDIN_DEV jtag_uart_0
 #define ALT_STDIN_IS_JTAG_UART
 #define ALT_STDIN_PRESENT
 #define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDOUT "/dev/jtag_uart_0"
-#define ALT_STDOUT_BASE 0x81440
+#define ALT_STDOUT_BASE 0xa1090
 #define ALT_STDOUT_DEV jtag_uart_0
 #define ALT_STDOUT_IS_JTAG_UART
 #define ALT_STDOUT_PRESENT
@@ -206,7 +251,7 @@
  */
 
 #define ALT_MODULE_CLASS_Video_In_DMA altera_up_avalon_video_dma_controller
-#define VIDEO_IN_DMA_BASE 0x81430
+#define VIDEO_IN_DMA_BASE 0xa1080
 #define VIDEO_IN_DMA_IRQ -1
 #define VIDEO_IN_DMA_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define VIDEO_IN_DMA_NAME "/dev/Video_In_DMA"
@@ -220,7 +265,7 @@
  */
 
 #define ALT_MODULE_CLASS_Video_Out_DMA altera_up_avalon_video_dma_controller
-#define VIDEO_OUT_DMA_BASE 0x81420
+#define VIDEO_OUT_DMA_BASE 0xa1070
 #define VIDEO_OUT_DMA_IRQ -1
 #define VIDEO_OUT_DMA_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define VIDEO_OUT_DMA_NAME "/dev/Video_Out_DMA"
@@ -234,8 +279,8 @@
  */
 
 #define ALT_MAX_FD 32
-#define ALT_SYS_CLK none
-#define ALT_TIMESTAMP_CLK none
+#define ALT_SYS_CLK TIMER_1
+#define ALT_TIMESTAMP_CLK TIMER_1
 
 
 /*
@@ -244,7 +289,7 @@
  */
 
 #define ALT_MODULE_CLASS_jtag_uart_0 altera_avalon_jtag_uart
-#define JTAG_UART_0_BASE 0x81440
+#define JTAG_UART_0_BASE 0xa1090
 #define JTAG_UART_0_IRQ 0
 #define JTAG_UART_0_IRQ_INTERRUPT_CONTROLLER_ID 0
 #define JTAG_UART_0_NAME "/dev/jtag_uart_0"
@@ -262,7 +307,7 @@
  */
 
 #define ALT_MODULE_CLASS_led_out_pio altera_avalon_pio
-#define LED_OUT_PIO_BASE 0x81410
+#define LED_OUT_PIO_BASE 0xa1060
 #define LED_OUT_PIO_BIT_CLEARING_EDGE_REGISTER 0
 #define LED_OUT_PIO_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define LED_OUT_PIO_CAPTURE 0
@@ -328,7 +373,7 @@
  */
 
 #define ALT_MODULE_CLASS_switch_in_pio altera_avalon_pio
-#define SWITCH_IN_PIO_BASE 0x81400
+#define SWITCH_IN_PIO_BASE 0xa1050
 #define SWITCH_IN_PIO_BIT_CLEARING_EDGE_REGISTER 0
 #define SWITCH_IN_PIO_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define SWITCH_IN_PIO_CAPTURE 0
@@ -347,5 +392,56 @@
 #define SWITCH_IN_PIO_RESET_VALUE 0
 #define SWITCH_IN_PIO_SPAN 16
 #define SWITCH_IN_PIO_TYPE "altera_avalon_pio"
+
+
+/*
+ * timer_1 configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_timer_1 altera_avalon_timer
+#define TIMER_1_ALWAYS_RUN 0
+#define TIMER_1_BASE 0xa1000
+#define TIMER_1_COUNTER_SIZE 32
+#define TIMER_1_FIXED_PERIOD 0
+#define TIMER_1_FREQ 50000000
+#define TIMER_1_IRQ 3
+#define TIMER_1_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define TIMER_1_LOAD_VALUE 49999
+#define TIMER_1_MULT 0.001
+#define TIMER_1_NAME "/dev/timer_1"
+#define TIMER_1_PERIOD 1
+#define TIMER_1_PERIOD_UNITS "ms"
+#define TIMER_1_RESET_OUTPUT 0
+#define TIMER_1_SNAPSHOT 1
+#define TIMER_1_SPAN 32
+#define TIMER_1_TICKS_PER_SEC 1000
+#define TIMER_1_TIMEOUT_PULSE_OUTPUT 0
+#define TIMER_1_TYPE "altera_avalon_timer"
+
+
+/*
+ * touchscreen_uart configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_touchscreen_uart altera_avalon_uart
+#define TOUCHSCREEN_UART_BASE 0xa1020
+#define TOUCHSCREEN_UART_BAUD 9600
+#define TOUCHSCREEN_UART_DATA_BITS 8
+#define TOUCHSCREEN_UART_FIXED_BAUD 1
+#define TOUCHSCREEN_UART_FREQ 50000000
+#define TOUCHSCREEN_UART_IRQ 1
+#define TOUCHSCREEN_UART_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define TOUCHSCREEN_UART_NAME "/dev/touchscreen_uart"
+#define TOUCHSCREEN_UART_PARITY 'N'
+#define TOUCHSCREEN_UART_SIM_CHAR_STREAM ""
+#define TOUCHSCREEN_UART_SIM_TRUE_BAUD 0
+#define TOUCHSCREEN_UART_SPAN 32
+#define TOUCHSCREEN_UART_STOP_BITS 1
+#define TOUCHSCREEN_UART_SYNC_REG_DEPTH 2
+#define TOUCHSCREEN_UART_TYPE "altera_avalon_uart"
+#define TOUCHSCREEN_UART_USE_CTS_RTS 0
+#define TOUCHSCREEN_UART_USE_EOP_REGISTER 0
 
 #endif /* __SYSTEM_H_ */

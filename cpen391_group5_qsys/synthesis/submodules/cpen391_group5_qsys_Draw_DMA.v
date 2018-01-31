@@ -65,7 +65,7 @@ module cpen391_group5_qsys_Draw_DMA (
  *                           Parameter Declarations                          *
  *****************************************************************************/
 
-parameter DW								= 31; // Frame's datawidth
+parameter DW								= 15; // Frame's datawidth
 parameter EW								= 1; // Frame's empty width
 parameter WIDTH							= 160; // Frame's width in pixels
 parameter HEIGHT							= 120; // Frame's height in lines
@@ -74,13 +74,13 @@ parameter AW								= 14; // Frame's address width
 parameter WW								= 7; // Frame width's address width
 parameter HW								= 6; // Frame height's address width
 
-parameter MDW								= 31; // Avalon master's datawidth
+parameter MDW								= 15; // Avalon master's datawidth
 
 parameter DEFAULT_BUFFER_ADDRESS		= 32'd0;
 parameter DEFAULT_BACK_BUF_ADDRESS	= 32'd0;
 
 parameter ADDRESSING_BITS				= 16'd15;
-parameter COLOR_BITS						= 4'd7;
+parameter COLOR_BITS						= 4'd3;
 parameter COLOR_PLANES					= 2'd3;
 
 parameter DEFAULT_DMA_ENABLED			= 1'b1; // 0: OFF or 1: ON
@@ -171,7 +171,7 @@ end
 
 // Output Assignments
 assign master_address		= buffer_start_address +
-								{pixel_address, 2'h0};
+						 		{pixel_address, 1'b0};
 
 // Internal Assignments
 
