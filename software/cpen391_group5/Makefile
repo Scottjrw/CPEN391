@@ -142,7 +142,7 @@ ACDS_VERSION := 15.0
 ELF := cpen391_group5.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS := main.c
+C_SRCS := main.c vision.c
 CXX_SRCS :=
 ASM_SRCS :=
 
