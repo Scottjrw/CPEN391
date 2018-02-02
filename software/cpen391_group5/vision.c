@@ -90,7 +90,7 @@ void find_dots(struct point *cur) {
             *((uint32_t *) &pixel) = *data;
             data++;
 
-            if (pixel.r > 120 && pixel.g < 60 && pixel.b < 60) {
+            if (pixel.r > 110 && pixel.g < 60 && pixel.b < 60) {
                 int free_slot = -1;
                 bool found_slot = false;
 
@@ -200,6 +200,7 @@ void gesture_detect(struct point *prev, struct point *cur) {
                     printf("Got Gesture: ");
                     print_gesture(cur_gesture);
                     state = WAIT_START;
+                    usleep(500000);
                 }
                 break;
             } else {

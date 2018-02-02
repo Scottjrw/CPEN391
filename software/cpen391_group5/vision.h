@@ -39,7 +39,7 @@ void print_gesture(Direction g);
 
 void find_dots(struct point *cur);
 
-#define GESTURE_JITTER_RANGE 15
+#define GESTURE_JITTER_RANGE 20
 #define GESTURE_STOP_MS 1000
 #define GESTURE_START_MAX 0
 #define GESTURE_ERR_MAX 10
