@@ -5,6 +5,7 @@
 #include "sys/alt_alarm.h"
 #include "vision.h"
 #include "system.h"
+#include "main.h"
 
 inline static unsigned absDistanceSq(unsigned x1, unsigned x2, unsigned y1, unsigned y2){
     return (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2);
@@ -123,21 +124,19 @@ void find_dots(struct point *cur) {
     }
 
     unsigned int max_count = 0;
-    unsigned int max_index = -1;
+    int max_index = -1;
 
     for (int i = 0; i < DOTS_NUM_SLOTS; i++) {
         //printf("Slot %d: x = %u, y = %u, count= %d\n", i, slots[i].x, slots[i].y, slots[i].count);
 
         // Undraw previous X
         if (prev_slots[i].count > 0) {
-            sg_draw_x(SG_X_COORD(prev_slots[i].x, DOTS_MAX_X), SG_Y_COORD(prev_slots[i].y, DOTS_MAX_Y),
-                    DOTS_MARKER_SIZE, sg_rgba(0,0,0,0));
+            graphics.draw_x(prev_slots[i].x, prev_slots[i].y, DOTS_MARKER_SIZE, graphics.rgba(0, 0, 0, 0));
         }
 
         // Draw the new X and record the draw
         if (slots[i].count > 0) {
-            sg_draw_x(SG_X_COORD(slots[i].x, DOTS_MAX_X), SG_Y_COORD(slots[i].y, DOTS_MAX_Y),
-                    DOTS_MARKER_SIZE, sg_rgba(0,255,0,255));
+            graphics.draw_x(slots[i].x, slots[i].y, DOTS_MARKER_SIZE, graphics.rgba(0, 255, 0, 255));
 
             // Find max
             if (slots[i].count > max_count) {
@@ -200,7 +199,7 @@ void gesture_detect(struct point *prev, struct point *cur) {
                     printf("Got Gesture: ");
                     print_gesture(cur_gesture);
                     state = WAIT_START;
-                    usleep(500000);
+                    // TODO Sleep
                 }
                 break;
             } else {

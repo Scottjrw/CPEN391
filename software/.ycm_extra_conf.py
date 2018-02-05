@@ -17,13 +17,15 @@ def CreateFlags(project_folder, project_bsp_folder):
         '-I'+os.path.join(project_bsp_folder,'HAL/inc'),
         '-I'+os.path.join(project_bsp_folder,'drivers/inc'),
         '-Wall',
-        '-std=c11',
+        '-std=c++11',
         '-include',
         os.path.join(project_folder,'../ycm.h'),
         '-isystem',
         os.path.join(project_bsp_folder,'HAL/inc'),
-         '-isystem',
-        '/home/guoj/altera/15.0/nios2eds/bin/gnu/H-x86_64-pc-linux-gnu/nios2-elf/include'
+        '-isystem',
+        '/home/guoj/altera/15.0/nios2eds/bin/gnu/H-x86_64-pc-linux-gnu/nios2-elf/include',
+        '-isystem',
+        '/home/guoj/altera/15.0/nios2eds/bin/gnu/nios2-elf/include/c++/4.9.1'
     ]
 
     return flags

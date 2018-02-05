@@ -6,56 +6,84 @@
 #include "system.h"
 #include "io.h"
 
+namespace SG_Pixel_Conversions {
+    constexpr uint32_t convert_8bit(uint8_t val, unsigned int pixel_bits) {
+        return ((val >> (8 - pixel_bits / 4)) & ((1 << pixel_bits / 4) - 1));
+    }
 
-#define SG_MAX_WIDTH 160
-#define SG_MAX_HEIGHT 120
-// Bits per pixel
-#define SG_PIXEL_BITS 16
+    template <typename T>
+    inline T rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
-// Writes to graphics should be in the range [GRAPHICS_BASE, GRAPHICS_MAX) (not including MAX)
-#define GRAPHICS_BASE ((uint16_t *) DRAW_BUFFER_BASE)
-#define GRAPHICS_MAX (GRAPHICS_BASE + SG_MAX_HEIGHT * SG_MAX_WIDTH)
+    template <>
+    inline uint16_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+        const unsigned int pixel_bits = 16;
+        return (convert_8bit(b, pixel_bits))
+            | (convert_8bit(g, pixel_bits) << pixel_bits / 4)
+            | (convert_8bit(r, pixel_bits) << (2 * pixel_bits / 4))
+            | (convert_8bit(a, pixel_bits) << (3 * pixel_bits / 4));
+    }
 
-// Convert from a coordinate in range [0, xy_max] to graphics coordinate
-#define SG_X_COORD(x, x_max) ((x * SG_MAX_WIDTH) / x_max)
-#define SG_Y_COORD(y, y_max) ((y * SG_MAX_HEIGHT) / y_max)
-
-#define _SG_COLOR_BITS (SG_PIXEL_BITS / 4)
-#define _SG_SHIFT_BITS (8 - _SG_COLOR_BITS)
-#define _SG_SHIFT_MASK ((1 << _SG_COLOR_BITS) - 1)
-#define _SG_CONV_8BIT(val) ((val >> _SG_SHIFT_BITS) & _SG_SHIFT_MASK)
-
-typedef uint16_t sg_rgba_t;
-
-static inline sg_rgba_t sg_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-    return (_SG_CONV_8BIT(b))
-        | (_SG_CONV_8BIT(g) << _SG_COLOR_BITS)
-        | (_SG_CONV_8BIT(r) << (2 * _SG_COLOR_BITS))
-        | (_SG_CONV_8BIT(a) << (3 * _SG_COLOR_BITS));
+    template <>
+    inline uint32_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+        const unsigned int pixel_bits = 32;
+        return (convert_8bit(b, pixel_bits))
+            | (convert_8bit(g, pixel_bits) << pixel_bits / 4)
+            | (convert_8bit(r, pixel_bits) << (2 * pixel_bits / 4))
+            | (convert_8bit(a, pixel_bits) << (3 * pixel_bits / 4));
+    }
 }
 
-static inline void sg_set_pixel(unsigned int x, unsigned int y, sg_rgba_t rgba) {
-    sg_rgba_t *addr = GRAPHICS_BASE + (y * SG_MAX_WIDTH + x);
+template <typename rgba_t,
+         // Width and Height of the draw buffer
+         unsigned int WIDTH, unsigned int HEIGHT, 
+         // If input is from a different resolution do conversion
+         unsigned int INPUT_WIDTH = WIDTH, unsigned int INPUT_HEIGHT = HEIGHT>
+class SimpleGraphics {
+    public:
 
-    // Ignore invalid writes
-    if (addr < GRAPHICS_MAX)
-        IOWR_16DIRECT(addr, 0, rgba);
-}
+    inline rgba_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+        return SG_Pixel_Conversions::rgba<rgba_t>(r, g, b, a);
+    }
 
-static inline void sg_clear_screen() {
-    for (int i = 0; i < SG_MAX_WIDTH; i++)
-        for (int j = 0; j < SG_MAX_HEIGHT; j++)
-            sg_set_pixel(i, j, sg_rgba(0, 0, 0, 0));
-}
+    inline void draw_pixel(unsigned int x, unsigned int y, rgba_t color) {
+        convert_coord(x, y);
+        rgba_t *addr = m_buffer_base + (y * WIDTH + x);
 
-static inline void sg_draw_x(unsigned int x, unsigned int y, int size, sg_rgba_t rgba) {
-    for (int i = -size; i <= size; i++) {
-        for (int j = -size; j <= size; j++) {
-            if (i == j || -i == j) {
-                sg_set_pixel(x + i, y + j, rgba);
+        // Ignore invalid writes
+        if (addr < m_max_addr)
+            IOWR_16DIRECT(addr, 0, color);
+    }
+
+    void fill(rgba_t color) {
+        for (int i = 0; i < WIDTH; i++)
+            for (int j = 0; j < HEIGHT; j++)
+                set_pixel(i, j, color);
+    }
+
+    void draw_x(unsigned int x, unsigned int y, int size, rgba_t color) {
+        for (int i = -size; i <= size; i++) {
+            for (int j = -size; j <= size; j++) {
+                if (i == j || -i == j) {
+                    draw_pixel(x + i, y + j, color);
+                }
             }
         }
     }
-}
+
+    SimpleGraphics(rgba_t *buffer_base) :
+        m_buffer_base(buffer_base),
+        m_max_addr(buffer_base + WIDTH * HEIGHT)
+    { }
+
+    private:
+    rgba_t *const m_buffer_base;
+    rgba_t *const m_max_addr;
+
+    inline void convert_coord(unsigned int &x, unsigned int &y) {
+        x = (x * WIDTH) / INPUT_WIDTH;
+        y = (y * HEIGHT) / INPUT_HEIGHT;
+    }
+};
+
 
 #endif
