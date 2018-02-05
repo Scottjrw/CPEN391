@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Mon Jan 29 23:47:52 PST 2018
+ * Generated: Sun Feb 04 17:09:29 PST 2018
  */
 
 /*
@@ -51,7 +51,7 @@
 MEMORY
 {
     Video_Frame_Buffer : ORIGIN = 0x0, LENGTH = 307200
-    Draw_Buffer : ORIGIN = 0x80000, LENGTH = 76800
+    Draw_Buffer : ORIGIN = 0x80000, LENGTH = 38400
     reset : ORIGIN = 0x8000000, LENGTH = 32
     sdram : ORIGIN = 0x8000020, LENGTH = 67108832
 }

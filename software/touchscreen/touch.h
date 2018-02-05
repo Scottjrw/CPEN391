@@ -6,6 +6,9 @@
 #include "touch_uart.h"
 #include "sys/alt_alarm.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 typedef struct touch_message touch_message;
 
 // Convenience function to make a command message
@@ -60,5 +63,9 @@ extern void touch_pen_up(unsigned int x, unsigned int y);
 extern void touch_pen_down(unsigned int x, unsigned int y);
 // Callback for a response to a command, msg is the same one passed to touch_recv
 extern void touch_response(touch_message *msg);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

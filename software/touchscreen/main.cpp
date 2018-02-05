@@ -9,6 +9,11 @@
 
 #define DEBOUNCE_MS 100
 
+#define SG_MAX_WIDTH 160
+#define SG_MAX_HEIGHT 120
+
+SimpleGraphics<uint16_t, SG_MAX_WIDTH, SG_MAX_HEIGHT, TOUCH_MAX, TOUCH_MAX> graphics(reinterpret_cast<uint16_t *>(DRAW_BUFFER_BASE));
+
 touch_message send_buf;
 touch_message recv_buf;
 
@@ -26,7 +31,7 @@ int main(void) {
         while (1);
     }
 
-    sg_clear_screen();
+    graphics.fill(graphics.rgba(0, 0, 0, 0));
 
     // Setting switch 0 will go into calibration mode
     if (IORD_8DIRECT(SWITCH_IN_PIO_BASE, 0) & 0x1) {
@@ -83,7 +88,7 @@ void touch_pen_up(unsigned int x, unsigned int y) {
     static unsigned int last_x = 0, last_y = 0;
 
     //if (touch_debounce(&last_pen_up_time, DEBOUNCE_MS)) {
-    if (touch_debounce_xy(&last_x, &last_y, x, y)) {
+    if (touch_debounce(&last_pen_up_time, 100)) {
         unsigned int nx = TOUCH_COORD(x, SG_MAX_WIDTH), ny = TOUCH_COORD(y, SG_MAX_HEIGHT);
 
         printf("TOUCH UP %d %d\n", nx, ny);
@@ -96,12 +101,11 @@ void touch_pen_down(unsigned int x, unsigned int y) {
     static unsigned int last_x = 0, last_y = 0;
 
     //if (touch_debounce(&last_pen_down_time, DEBOUNCE_MS)) {
-    if (touch_debounce_xy(&last_x, &last_y, x, y)) {
+    if (touch_debounce(&last_pen_down_time, 100)) {
+        graphics.draw_x(x, y, 3, graphics.rgba(255, 0, 0, 255));
         unsigned int nx = TOUCH_COORD(x, SG_MAX_WIDTH), ny = TOUCH_COORD(y, SG_MAX_HEIGHT);
 
         printf("TOUCH DOWN %d %d\n", nx, ny);
-
-        sg_draw_x(nx, ny, 2, sg_rgba(255, 0, 0, 255));
     }
 }
 

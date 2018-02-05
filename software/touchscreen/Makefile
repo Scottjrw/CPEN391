@@ -30,7 +30,7 @@ MAKEABLE_LIBRARY_ROOT_DIRS :=
 
 # Generic flags passed to the compiler for different types of input files.
 ALT_CFLAGS := -std=c11
-ALT_CXXFLAGS :=
+ALT_CXXFLAGS := -std=c++11
 ALT_CPPFLAGS :=
 ALT_ASFLAGS :=
 ALT_LDFLAGS :=
@@ -142,9 +142,8 @@ ACDS_VERSION := 15.0
 ELF := touchscreen.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS += main.c
-C_SRCS += touch.c
-CXX_SRCS :=
+C_SRCS := touch.c
+CXX_SRCS := main.cpp
 ASM_SRCS :=
 
 # Path to root of object file tree.

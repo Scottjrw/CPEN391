@@ -2,10 +2,10 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>15.0</BspVersion>
-        <BspGeneratedTimeStamp>Jan 30, 2018 12:39:09 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1517344749360</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>/home/guoj/Documents/Year-3/CPEN-391/repo/software/touchscreen_bsp</BspGeneratedLocation>
-        <BspSettingsFile>settings.bsp</BspSettingsFile>
+        <BspGeneratedTimeStamp>4-Feb-2018 5:09:29 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1517792969131</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>./</BspGeneratedLocation>
+        <BspSettingsFile>../touchscreen_bsp/settings.bsp</BspSettingsFile>
         <SopcDesignFile>../../cpen391_group5_qsys.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>nios2</Cpu>
@@ -918,8 +918,8 @@
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>Draw_Buffer</slaveDescriptor>
-                <addressRange>0x00080000 - 0x00092BFF</addressRange>
-                <addressSpan>76800</addressSpan>
+                <addressRange>0x00080000 - 0x000895FF</addressRange>
+                <addressSpan>38400</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
