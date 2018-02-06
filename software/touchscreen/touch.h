@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include "touch_uart.h"
+#include "touch_uart.hpp"
 #include "sys/alt_alarm.h"
 
 #ifdef __cplusplus
@@ -19,11 +19,7 @@ static inline void touch_mk_command(touch_message *msg, uint8_t cmnd, uint8_t si
 }
 
 
-void touch_send(FILE *uart, touch_message *msg);
-void touch_recv(FILE *uart, touch_message *msg);
-void touch_print(touch_message *msg);
 
-#define TOUCH_MAX 4095
 
 // Convert coord from the touch controller to coordinates with range [0, max]
 #define TOUCH_COORD(coord, max) ((coord * max) / TOUCH_MAX)

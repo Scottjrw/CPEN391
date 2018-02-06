@@ -5,7 +5,7 @@
 #include "sys/alt_timestamp.h"
 #include "touch.h"
 #include "io.h"
-#include "simple_graphics.h"
+#include "SimpleGraphics.hpp"
 
 #define DEBOUNCE_MS 100
 
@@ -31,7 +31,7 @@ int main(void) {
         while (1);
     }
 
-    graphics.fill(graphics.rgba(0, 0, 0, 0));
+    graphics.draw_rect(graphics.rgba(0, 0, 0, 0));
 
     // Setting switch 0 will go into calibration mode
     if (IORD_8DIRECT(SWITCH_IN_PIO_BASE, 0) & 0x1) {
@@ -102,7 +102,7 @@ void touch_pen_down(unsigned int x, unsigned int y) {
 
     //if (touch_debounce(&last_pen_down_time, DEBOUNCE_MS)) {
     if (touch_debounce(&last_pen_down_time, 100)) {
-        graphics.draw_x(x, y, 3, graphics.rgba(255, 0, 0, 255));
+        graphics.draw_cross(graphics.rgba(255, 0, 0, 255), x, y, 3);
         unsigned int nx = TOUCH_COORD(x, SG_MAX_WIDTH), ny = TOUCH_COORD(y, SG_MAX_HEIGHT);
 
         printf("TOUCH DOWN %d %d\n", nx, ny);
