@@ -1,5 +1,5 @@
-#ifndef SIMPLE_GRAPHICS_H
-#define SIMPLE_GRAPHICS_H
+#ifndef SIMPLE_GRAPHICS_HPP
+#define SIMPLE_GRAPHICS_HPP
 
 #include <stdint.h>
 #include <stdio.h>
