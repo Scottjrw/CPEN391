@@ -30,7 +30,9 @@
 			video_in_decoder_TD_VS         : in    std_logic                     := 'X';             -- TD_VS
 			video_in_decoder_clk27_reset   : in    std_logic                     := 'X';             -- clk27_reset
 			video_in_decoder_TD_RESET      : out   std_logic;                                        -- TD_RESET
-			video_in_decoder_overflow_flag : out   std_logic                                         -- overflow_flag
+			video_in_decoder_overflow_flag : out   std_logic;                                        -- overflow_flag
+			wifi_rxd                       : in    std_logic                     := 'X';             -- rxd
+			wifi_txd                       : out   std_logic                                         -- txd
 		);
 	end component cpen391_group5_qsys;
 

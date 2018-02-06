@@ -58,7 +58,7 @@
    {
       datum baseAddress
       {
-         value = "659520";
+         value = "594048";
          type = "String";
       }
    }
@@ -164,7 +164,7 @@
    {
       datum baseAddress
       {
-         value = "659584";
+         value = "594080";
          type = "String";
       }
    }
@@ -201,7 +201,7 @@
    {
       datum baseAddress
       {
-         value = "659568";
+         value = "594064";
          type = "String";
       }
    }
@@ -273,7 +273,7 @@
    {
       datum baseAddress
       {
-         value = "659600";
+         value = "594096";
          type = "String";
       }
    }
@@ -289,7 +289,7 @@
    {
       datum baseAddress
       {
-         value = "659552";
+         value = "594032";
          type = "String";
       }
    }
@@ -305,7 +305,7 @@
    {
       datum baseAddress
       {
-         value = "657408";
+         value = "591872";
          type = "String";
       }
    }
@@ -342,7 +342,7 @@
    {
       datum baseAddress
       {
-         value = "659536";
+         value = "594016";
          type = "String";
       }
    }
@@ -358,7 +358,7 @@
    {
       datum baseAddress
       {
-         value = "659456";
+         value = "593952";
          type = "String";
       }
    }
@@ -374,7 +374,23 @@
    {
       datum baseAddress
       {
-         value = "659488";
+         value = "593984";
+         type = "String";
+      }
+   }
+   element wifi_uart
+   {
+      datum _sortIndex
+      {
+         value = "26";
+         type = "int";
+      }
+   }
+   element wifi_uart.s1
+   {
+      datum baseAddress
+      {
+         value = "593920";
          type = "String";
       }
    }
@@ -426,6 +442,11 @@
  <interface
    name="video_in_decoder"
    internal="Video_In_Decoder.external_interface"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="wifi"
+   internal="wifi_uart.external_connection"
    type="conduit"
    dir="end" />
  <module
@@ -763,7 +784,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="28" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0xA0800' end='0xA1000' /><slave name='timer_1.s1' start='0xA1000' end='0xA1020' /><slave name='touchscreen_uart.s1' start='0xA1020' end='0xA1040' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0xA1040' end='0xA1050' /><slave name='switch_in_pio.s1' start='0xA1050' end='0xA1060' /><slave name='led_out_pio.s1' start='0xA1060' end='0xA1070' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0xA1070' end='0xA1080' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0xA1080' end='0xA1090' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0xA1090' end='0xA1098' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='wifi_uart.s1' start='0x91000' end='0x91020' /><slave name='timer_1.s1' start='0x91020' end='0x91040' /><slave name='touchscreen_uart.s1' start='0x91040' end='0x91060' /><slave name='switch_in_pio.s1' start='0x91060' end='0x91070' /><slave name='led_out_pio.s1' start='0x91070' end='0x91080' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91090' end='0x910A0' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0x910A0' end='0x910B0' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x910B0' end='0x910B8' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="true" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -790,8 +811,8 @@
   <parameter name="icache_tagramBlockType" value="Automatic" />
   <parameter name="impl" value="Fast" />
   <parameter name="instAddrWidth" value="28" />
-  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='nios2.jtag_debug_module' start='0xA0800' end='0xA1000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
-  <parameter name="internalIrqMaskSystemInfo" value="11" />
+  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
+  <parameter name="internalIrqMaskSystemInfo" value="15" />
   <parameter name="manuallyAssignCpuID" value="true" />
   <parameter name="mmu_TLBMissExcOffset" value="0" />
   <parameter name="mmu_TLBMissExcSlave" value="None" />
@@ -959,6 +980,22 @@
   <parameter name="useEopRegister" value="false" />
   <parameter name="useRelativePathForSimFile" value="false" />
  </module>
+ <module name="wifi_uart" kind="altera_avalon_uart" version="15.0" enabled="1">
+  <parameter name="baud" value="115200" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="dataBits" value="8" />
+  <parameter name="fixedBaud" value="true" />
+  <parameter name="parity" value="NONE" />
+  <parameter name="simCharStream" value="" />
+  <parameter name="simInteractiveInputEnable" value="false" />
+  <parameter name="simInteractiveOutputEnable" value="false" />
+  <parameter name="simTrueBaud" value="false" />
+  <parameter name="stopBits" value="1" />
+  <parameter name="syncRegDepth" value="2" />
+  <parameter name="useCtsRts" value="false" />
+  <parameter name="useEopRegister" value="false" />
+  <parameter name="useRelativePathForSimFile" value="false" />
+ </module>
  <connection
    kind="avalon"
    version="15.0"
@@ -992,7 +1029,7 @@
    start="nios2.data_master"
    end="Video_In_DMA.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000a1080" />
+  <parameter name="baseAddress" value="0x000910a0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1001,7 +1038,7 @@
    start="nios2.data_master"
    end="Video_Out_DMA.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000a1070" />
+  <parameter name="baseAddress" value="0x00091090" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1010,7 +1047,7 @@
    start="nios2.data_master"
    end="Draw_DMA.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000a1040" />
+  <parameter name="baseAddress" value="0x00091080" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1019,7 +1056,7 @@
    start="nios2.data_master"
    end="jtag_uart_0.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000a1090" />
+  <parameter name="baseAddress" value="0x000910b0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1028,7 +1065,7 @@
    start="nios2.data_master"
    end="nios2.jtag_debug_module">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000a0800" />
+  <parameter name="baseAddress" value="0x00090800" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1037,7 +1074,7 @@
    start="nios2.data_master"
    end="led_out_pio.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000a1060" />
+  <parameter name="baseAddress" value="0x00091070" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1046,7 +1083,7 @@
    start="nios2.data_master"
    end="switch_in_pio.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000a1050" />
+  <parameter name="baseAddress" value="0x00091060" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="avalon" version="15.0" start="nios2.data_master" end="sdram.s1">
@@ -1060,7 +1097,7 @@
    start="nios2.data_master"
    end="touchscreen_uart.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000a1020" />
+  <parameter name="baseAddress" value="0x00091040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1069,7 +1106,7 @@
    start="nios2.data_master"
    end="timer_1.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000a1000" />
+  <parameter name="baseAddress" value="0x00091020" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1079,6 +1116,15 @@
    end="Draw_Buffer.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00080000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="15.0"
+   start="nios2.data_master"
+   end="wifi_uart.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00091000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1096,7 +1142,7 @@
    start="nios2.instruction_master"
    end="nios2.jtag_debug_module">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000a0800" />
+  <parameter name="baseAddress" value="0x00090800" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1261,6 +1307,11 @@
    kind="clock"
    version="15.0"
    start="clocks.sys_clk"
+   end="wifi_uart.clk" />
+ <connection
+   kind="clock"
+   version="15.0"
+   start="clocks.sys_clk"
    end="Video_Frame_Buffer.clk1" />
  <connection
    kind="clock"
@@ -1303,6 +1354,13 @@
  </connection>
  <connection kind="interrupt" version="15.0" start="nios2.d_irq" end="timer_1.irq">
   <parameter name="irqNumber" value="3" />
+ </connection>
+ <connection
+   kind="interrupt"
+   version="15.0"
+   start="nios2.d_irq"
+   end="wifi_uart.irq">
+  <parameter name="irqNumber" value="2" />
  </connection>
  <connection
    kind="reset"
@@ -1404,6 +1462,11 @@
    version="15.0"
    start="nios2.jtag_debug_module_reset"
    end="Draw_Resampler.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
+   end="wifi_uart.reset" />
  <connection
    kind="reset"
    version="15.0"
@@ -1529,6 +1592,11 @@
    version="15.0"
    start="clocks.reset_source"
    end="Draw_Resampler.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="clocks.reset_source"
+   end="wifi_uart.reset" />
  <connection
    kind="reset"
    version="15.0"

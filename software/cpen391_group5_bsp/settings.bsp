@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Feb 1, 2018 4:23:35 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1517531015183</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Feb 6, 2018 3:10:19 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1517958619715</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\Jingrui\Desktop\cpen391\CPEN391\software\cpen391_group5_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\cpen391_group5_qsys.sopcinfo</SopcDesignFile>
@@ -923,50 +923,56 @@
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
+                <slaveDescriptor>wifi_uart</slaveDescriptor>
+                <addressRange>0x00091000 - 0x0009101F</addressRange>
+                <addressSpan>32</addressSpan>
+                <attributes>printable</attributes>
+        </MemoryMap>
+        <MemoryMap>
                 <slaveDescriptor>timer_1</slaveDescriptor>
-                <addressRange>0x000A1000 - 0x000A101F</addressRange>
+                <addressRange>0x00091020 - 0x0009103F</addressRange>
                 <addressSpan>32</addressSpan>
                 <attributes>timer</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>touchscreen_uart</slaveDescriptor>
-                <addressRange>0x000A1020 - 0x000A103F</addressRange>
+                <addressRange>0x00091040 - 0x0009105F</addressRange>
                 <addressSpan>32</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>Draw_DMA</slaveDescriptor>
-                <addressRange>0x000A1040 - 0x000A104F</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
                 <slaveDescriptor>switch_in_pio</slaveDescriptor>
-                <addressRange>0x000A1050 - 0x000A105F</addressRange>
+                <addressRange>0x00091060 - 0x0009106F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>led_out_pio</slaveDescriptor>
-                <addressRange>0x000A1060 - 0x000A106F</addressRange>
+                <addressRange>0x00091070 - 0x0009107F</addressRange>
+                <addressSpan>16</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>Draw_DMA</slaveDescriptor>
+                <addressRange>0x00091080 - 0x0009108F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>Video_Out_DMA</slaveDescriptor>
-                <addressRange>0x000A1070 - 0x000A107F</addressRange>
+                <addressRange>0x00091090 - 0x0009109F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>Video_In_DMA</slaveDescriptor>
-                <addressRange>0x000A1080 - 0x000A108F</addressRange>
+                <addressRange>0x000910A0 - 0x000910AF</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>jtag_uart_0</slaveDescriptor>
-                <addressRange>0x000A1090 - 0x000A1097</addressRange>
+                <addressRange>0x000910B0 - 0x000910B7</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>

@@ -145,6 +145,7 @@ ELF := cpen391_group5.elf
 C_SRCS += main.c vision.c
 C_SRCS += main.c
 C_SRCS += vision.c
+C_SRCS += wifi.c
 CXX_SRCS :=
 ASM_SRCS :=
 

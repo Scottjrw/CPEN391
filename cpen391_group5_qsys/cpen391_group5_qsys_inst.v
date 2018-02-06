@@ -29,6 +29,8 @@
 		.video_in_decoder_TD_VS         (<connected-to-video_in_decoder_TD_VS>),         //                 .TD_VS
 		.video_in_decoder_clk27_reset   (<connected-to-video_in_decoder_clk27_reset>),   //                 .clk27_reset
 		.video_in_decoder_TD_RESET      (<connected-to-video_in_decoder_TD_RESET>),      //                 .TD_RESET
-		.video_in_decoder_overflow_flag (<connected-to-video_in_decoder_overflow_flag>)  //                 .overflow_flag
+		.video_in_decoder_overflow_flag (<connected-to-video_in_decoder_overflow_flag>), //                 .overflow_flag
+		.wifi_rxd                       (<connected-to-wifi_rxd>),                       //             wifi.rxd
+		.wifi_txd                       (<connected-to-wifi_txd>)                        //                 .txd
 	);
 

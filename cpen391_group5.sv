@@ -82,7 +82,11 @@ cpen391_group5_qsys sys_inst(
     .video_in_decoder_TD_VS(TD_VS),
     .video_in_decoder_clk27_reset(reset),
     .video_in_decoder_TD_RESET(TD_RESET_N),
-    .video_in_decoder_overflow_flag(LEDR[9])
+    .video_in_decoder_overflow_flag(LEDR[9]),
+	 
+	 // wifi
+	 .wifi_rxd(GPIO_1[32]),
+	 .wifi_txd(GPIO_1[34])
 );
 
 endmodule
