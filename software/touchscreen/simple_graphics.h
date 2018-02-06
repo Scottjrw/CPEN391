@@ -1,1 +1,0 @@
-../libs/simple_graphics.h

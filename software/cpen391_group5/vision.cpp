@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include "simple_graphics.h"
 #include "sys/alt_alarm.h"
-#include "vision.h"
+#include "vision.hpp"
 #include "system.h"
-#include "main.h"
+#include "main.hpp"
 
 inline static unsigned absDistanceSq(unsigned x1, unsigned x2, unsigned y1, unsigned y2){
     return (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2);
@@ -131,12 +130,12 @@ void find_dots(struct point *cur) {
 
         // Undraw previous X
         if (prev_slots[i].count > 0) {
-            graphics.draw_x(prev_slots[i].x, prev_slots[i].y, DOTS_MARKER_SIZE, graphics.rgba(0, 0, 0, 0));
+            graphics.draw_cross(graphics.rgba(0, 0, 0, 0), prev_slots[i].x, prev_slots[i].y, DOTS_MARKER_SIZE);
         }
 
         // Draw the new X and record the draw
         if (slots[i].count > 0) {
-            graphics.draw_x(slots[i].x, slots[i].y, DOTS_MARKER_SIZE, graphics.rgba(0, 255, 0, 255));
+            graphics.draw_cross(graphics.rgba(0, 255, 0, 255), slots[i].x, slots[i].y, DOTS_MARKER_SIZE);
 
             // Find max
             if (slots[i].count > max_count) {

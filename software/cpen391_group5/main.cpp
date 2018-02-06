@@ -3,9 +3,9 @@
 #include <string.h>
 #include "system.h"
 #include "sys/alt_alarm.h"
-#include "simple_graphics.h"
-#include "vision.h"
-#include "main.h"
+#include "vision.hpp"
+#include "main.hpp"
+#include "SimpleGraphics.hpp"
 
 SimpleGraphics<uint16_t, GRAPHICS_WIDTH, GRAPHICS_HEIGHT, DOTS_MAX_X, DOTS_MAX_Y>
 graphics(reinterpret_cast<uint16_t *>(DRAW_BUFFER_BASE));

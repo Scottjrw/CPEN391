@@ -6,6 +6,7 @@
 #include "system.h"
 #include "io.h"
 
+// Bit shifts for RGBA format, no need to call these directly outside SimpleGraphics
 namespace SG_Pixel_Conversions {
     constexpr uint32_t convert_8bit(uint8_t val, unsigned int pixel_bits) {
         return ((val >> (8 - pixel_bits / 4)) & ((1 << pixel_bits / 4) - 1));
@@ -47,23 +48,24 @@ class SimpleGraphics {
         return SG_Pixel_Conversions::rgba<rgba_t>(r, g, b, a);
     }
 
-    inline void draw_pixel(unsigned int x, unsigned int y, rgba_t color) {
+    inline void draw_pixel(rgba_t color, unsigned int x, unsigned int y) {
         convert_coord(x, y);
-        draw_converted_pixel(x, y, color);
+        draw_converted_pixel(color, x, y);
     }
 
-    void fill(rgba_t color) {
-        for (unsigned int i = 0; i < WIDTH; i++)
-            for (unsigned int j = 0; j < HEIGHT; j++)
-                draw_pixel(i, j, color);
+    void draw_rect(rgba_t color, unsigned int x1=0, unsigned int y1=0, unsigned int x2=WIDTH, unsigned int y2=HEIGHT) {
+        convert_coord(x1, y1); convert_coord(x2, y2);
+        for (unsigned int i = x1; i < x2; i++)
+            for (unsigned int j = y1; j < y2; j++)
+                draw_converted_pixel(color, i, j);
     }
 
-    void draw_x(unsigned int x, unsigned int y, int size, rgba_t color) {
+    void draw_cross(rgba_t color, unsigned int x, unsigned int y, int radius) {
         convert_coord(x, y);
-        for (int i = -size; i <= size; i++) {
-            for (int j = -size; j <= size; j++) {
+        for (int i = -radius; i <= radius; i++) {
+            for (int j = -radius; j <= radius; j++) {
                 if (i == j || -i == j) {
-                    draw_converted_pixel(x + i, y + j, color);
+                    draw_converted_pixel(color, x + i, y + j);
                 }
             }
         }
@@ -83,7 +85,7 @@ class SimpleGraphics {
         y = (y * HEIGHT) / INPUT_HEIGHT;
     }
 
-    inline void draw_converted_pixel(unsigned int x, unsigned int y, rgba_t color) {
+    inline void draw_converted_pixel(rgba_t color, unsigned int x, unsigned int y) {
         rgba_t *addr = m_buffer_base + (y * WIDTH + x);
 
         // Ignore invalid writes
