@@ -57,7 +57,10 @@ protected:
  */
 class Touchable {
 public:
-    typedef std::function<void(Touchable &)> TouchCB;
+    /* Callback called everytime the object is touched
+     * The object itself is provided along with the exact point of touch
+     */
+    typedef std::function<void(Touchable *, Point)> TouchCB;
 
     /* Check if object is touched
      * 
@@ -147,10 +150,12 @@ public:
      */
     virtual void newItem(std::string text, TouchCB callback);
 
+    enum Expand { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
     DropdownMenu(SimpleGraphics &graphics, TouchControl &touch,
-            Point p1, Point p2, std::string text);
+            Expand direction, Point p1, Point p2, std::string text);
 
 private:
+    Expand m_expandDir;
     // Button which shows the menu
     Button m_expander;
     // List of buttons in the menu

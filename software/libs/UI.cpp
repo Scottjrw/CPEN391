@@ -26,9 +26,10 @@ Button::Button(SimpleGraphics &graphics, TouchControl &touch,
 
 
 DropdownMenu::DropdownMenu(SimpleGraphics &graphics, TouchControl &touch,
-        Point p1, Point p2, std::string text):
+        Expand direction, Point p1, Point p2, std::string text):
     Drawable(graphics),
     Touchable(touch),
+    m_expandDir(direction),
     m_expander(graphics, touch, p1, p2, text),
     m_buttons()
 {}
