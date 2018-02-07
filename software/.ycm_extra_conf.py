@@ -50,7 +50,7 @@ def FlagsForFile( filename, **kwargs ):
             f.write('\n'.join(flags) + '\n')
 
     bsp_color_coded = os.path.join(project_bsp_folder, '.color_coded')
-    if not os.path.isfile(bsp_color_coded):
+    if project_name != 'libs' and not os.path.isfile(bsp_color_coded):
         with open(bsp_color_coded, 'w') as f:
             f.write('\n'.join(flags) + '\n')
 
