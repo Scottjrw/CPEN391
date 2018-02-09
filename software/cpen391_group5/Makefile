@@ -4,7 +4,7 @@
 
 # List of include directories for -I compiler option (-I added when used).
 # Includes the BSP.
-ALT_INCLUDE_DIRS := -I libs
+ALT_INCLUDE_DIRS := libs
 
 # List of library directories for -L linker option (-L added when used).
 # Includes the BSP.
@@ -146,6 +146,7 @@ C_SRCS :=
 CXX_SRCS :=
 CXX_SRCS += main.cpp
 CXX_SRCS += vision.cpp
+CXX_SRCS += libs/SimpleGraphics.cpp
 ASM_SRCS :=
 
 
