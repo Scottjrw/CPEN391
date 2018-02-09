@@ -8,6 +8,11 @@ Rectangle::Rectangle(SimpleGraphics &graphics, Point p1, Point p2):
     m_p2(p2)
 {}
 
+void Rectangle::draw() {
+    m_graphics.draw_rect()
+    m_p1.first
+    m_p1.second
+}
 
 
 Circle::Circle(SimpleGraphics &graphics, Point center, unsigned radius):

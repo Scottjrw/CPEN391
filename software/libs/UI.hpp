@@ -17,7 +17,7 @@ namespace UI {
 /* Represents a x,y coordinate
  * first is x, second is y
  */
-typedef std::pair<unsigned, unsigned> Point;
+typedef struct {unsigned x, unsigned y} Point;
 
 /* ------------------------------------------------------------------
  * An abstract class which represents anything that can be drawn
