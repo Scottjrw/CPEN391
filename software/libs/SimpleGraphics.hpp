@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "system.h"
 #include "io.h"
-
+    
 class SimpleGraphics {
 public:
     typedef uint16_t rgba_t;

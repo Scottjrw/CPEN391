@@ -10,6 +10,7 @@
 #define FONT_HEIGHT		7
 #define FONT_SPACE		1
 
+// how to define a namespace for header file 
 
 class UI_Manager
 {
@@ -37,7 +38,7 @@ public:
 
 		draw_rect(backgroundcolor, x1, y1, BUTTON_WIDTH, BUTTON_HEIGHT);
 
-		int header_Length = FONT_WIDTH * strlen(header) + FONT_SPACE * (strlen(header) - 1);
+		//int header_Length = FONT_WIDTH * strlen(header) + FONT_SPACE * (strlen(header) - 1);
 
 		for(int i = 0; header[i] != '\0'; ++i.){
 
@@ -60,6 +61,21 @@ public:
 	
 };
 
+class Menu_Item:
+{
+public:
+
+	Menu_Item();
+	~Menu_Item();
+
+	void createItem(){
+
+	}
+private:
+	std::string Item_Name;
+	
+
+}
 class Dropdown_Menu:
 {
 public:
