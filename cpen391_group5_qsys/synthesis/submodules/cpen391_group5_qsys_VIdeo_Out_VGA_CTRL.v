@@ -25,7 +25,7 @@
  *                                                                            *
  ******************************************************************************/
 
-module cpen391_group5_qsys_VIdeo_Out_VGA_CTRL (
+module cpen391_group5_qsys_Video_Out_VGA_CTRL (
 	// Inputs
 	clk,
 	reset,
