@@ -1,11 +1,11 @@
 #ifndef SIMPLE_GRAPHICS_HPP
 #define SIMPLE_GRAPHICS_HPP
 
-#include <stdint.h>
-#include <stdio.h>
+#include <string>
+#include <cstdint>
 #include "system.h"
 #include "io.h"
-    
+
 class SimpleGraphics {
 public:
     typedef uint16_t rgba_t;
@@ -18,7 +18,7 @@ public:
             | (convert_8bit(a, pixel_bits) << (3 * pixel_bits / 4));
     }
 
-    inline void draw_pixel(rgba_t color, unsigned int x, unsigned int y) {
+    inline void draw_pixel(rgba_t color, unsigned x, unsigned y) {
         rgba_t *addr = m_buffer_base + (y * m_width + x);
 
         // Ignore invalid writes
@@ -26,11 +26,13 @@ public:
             IOWR_16DIRECT(addr, 0, color);
     }
 
-    void draw_rect(rgba_t color, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2);
+    void draw_rect(rgba_t color, unsigned x1, unsigned y1, unsigned x2, unsigned y2);
 
-    void draw_x(rgba_t color, unsigned int x, unsigned int y, int radius);
+    void draw_x(rgba_t color, unsigned x, unsigned y, int radius);
 
-    void draw_text(unsigned x, unsigned y, rgba_t fontcolour, rgba_t backgroundcolour, int c, int Erase);
+    void draw_char(rgba_t color, unsigned x, unsigned y, char c);
+
+    void draw_string(rgba_t color, unsigned x, unsigned y, std::string str);
 
     SimpleGraphics(rgba_t *buffer_base, unsigned int width, unsigned int height) :
         m_buffer_base(buffer_base),

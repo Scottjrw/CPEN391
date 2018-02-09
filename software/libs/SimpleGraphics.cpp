@@ -1,4 +1,5 @@
 #include "SimpleGraphics.hpp"
+#include "Fonts.c"
 
 void SimpleGraphics::draw_rect(rgba_t color, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2) {
     for (unsigned int i = x1; i < x2; i++)
@@ -16,43 +17,29 @@ void SimpleGraphics::draw_x(rgba_t color, unsigned int x, unsigned int y, int ra
     }
 }
 
-void SimpleGraphics::draw_text(unsigned x, unsigned y, rgba_t fontcolour, rgba_t backgroundcolour, int c, int Erase) {
-    unsigned row, column, theX = x, theY = y ;
-    int pixels ;
-    char theColour = fontcolour  ;
-    int BitMask, theC = c ;
+void SimpleGraphics::draw_char(rgba_t color, unsigned x, unsigned y, char c) {
+    if (x >= m_width - 5 || y >= m_height - 7)
+        return;
 
-    // if x,y coord off edge of screen don't bother
+    if (c >= ' ' && c <= '~') {
+        unsigned font_index = c - ' ';
+        for (unsigned row = 0; row < 7; row ++) {
+            unsigned pixels = Font5x7[font_index][row] ;
+            unsigned bit = 0b10000;
 
-    if ((x > m_width-1) || (y > m_height-1))
-        return ;
+            for (unsigned column = 0; column < 5; column++)  {
+                if (pixels & bit)
+                    draw_pixel(color, x+column, y+row) ;
 
-
-    if (((short)(theC) >= (short)(' ')) && ((short)(theC) <= (short)('~'))) {
-        theC = theC - 0x20 ;
-        for(row = 0; (char)(row) < (char)(7); row ++)   {
-
-            pixels = Font5x7[theC][row] ;
-            BitMask = 16 ;
-
-            for(column = 0; (char)(column) < (char)(5); column ++)  {
-
-                // if a pixel in the character display it
-                if((pixels & BitMask))
-                    draw_converted_pixel(theColour，theX+column, theY+row) ;
-
-                else {
-                    if(Erase == TRUE)
-
-                        // if pixel is part of background (not part of character)
-                        // erase the background to value of variable BackGroundColour
-
-                        draw_converted_pixel(backgroundcolour，theX+column, theY+row) ;
-                }
-                BitMask = BitMask >> 1 ;
+                bit >>= 1;
             }
         }
     }
+}
 
-
+void SimpleGraphics::draw_string(rgba_t color, unsigned x, unsigned y, std::string str) {
+    for (unsigned i = 0; i < str.length(); i++) {
+        draw_char(color, x, y, str[i]);
+        x += 5;
+    }
 }
