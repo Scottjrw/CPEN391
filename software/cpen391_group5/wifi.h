@@ -13,6 +13,8 @@
 
 #define LED_ON "led_on()\r\n"
 #define LED_OFF "led_off()\r\n"
+#define LIGHT_ON "light_on()\r\n"
+#define LIGHT_OFF "light_off()\r\n"
 
 void WIFISendCommand(char command[], FILE *f);
 
