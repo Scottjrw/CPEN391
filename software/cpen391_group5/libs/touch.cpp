@@ -1,13 +1,12 @@
 #include <assert.h>
 #include "touch.hpp"
-#include "altera_up_avalon_rs232.h"
 #include "os/alt_syscall.h"
 
 using namespace TouchUart;
 
 TouchControl::TouchControl(const char *uart_name, alt_u32 alt_irq_id, alt_u32 alt_ic_id,
         unsigned x_max, unsigned y_max, bool debounce):
-    m_uart(alt_up_rs232_open_dev(uart_name)),
+    m_uart(open(uart_name, O_RDWR | O_APPEND | O_NONBLOCK)),
     m_irq_id(alt_irq_id),
     m_ic_id(alt_ic_id),
     m_recv_buf(),
@@ -19,7 +18,7 @@ TouchControl::TouchControl(const char *uart_name, alt_u32 alt_irq_id, alt_u32 al
     m_debounce(debounce)
 {
     m_recv_buf.TYPE = INVALID;
-    assert(m_uart != NULL);
+    assert(m_uart >= 0);
 }
 
 void TouchControl::touch_enable() {
@@ -53,6 +52,7 @@ void TouchControl::calibrate(unsigned int mode) {
     send(msg);
 }
 
+#ifdef TOUCH_UP_RS232
 void TouchControl::startIRQ() {
     // Enable Interrupt on CPU
 #ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
@@ -65,9 +65,11 @@ void TouchControl::startIRQ() {
     // Enable interrupt on UART module
     alt_up_rs232_enable_read_interrupt(m_uart);
 }
+#endif
 
 void TouchControl::poll() {
     do {
+#ifdef TOUCH_UP_RS232
         if (alt_up_rs232_get_used_space_in_read_FIFO(m_uart) > 0) {
             uint8_t val, parity_error;
 
@@ -76,20 +78,44 @@ void TouchControl::poll() {
 
             recv(val);
         }
+#else
+        char val;
+        int num_rd = read(m_uart, &val, 1);
+
+        if (num_rd == 1)
+            recv(val);
+#endif
     } while (m_recv_index != 0);
 }
+
+#ifndef TOUCH_UP_RS232
+void TouchControl::trypoll() {
+    int num_rd;
+    char buf[RECV_BYTES];
+
+    while ((num_rd = read(m_uart, buf, RECV_BYTES)) > 0) {
+        for (int i = 0 ; i < num_rd; i++)
+            recv(buf[i]);
+    }
+}
+#endif
 
 void TouchControl::send(const message &msg) {
     assert(msg.body.command.SIZE >= 1);
 
     const char *msg_arr = reinterpret_cast<const char *>(&msg);
 
+#ifdef TOUCH_UP_RS232
     for (unsigned i = 0; i < msg.body.command.SIZE + 2; i++) {
         while (alt_up_rs232_get_available_space_in_write_FIFO(m_uart) == 0);
 
         int status = alt_up_rs232_write_data(m_uart, msg_arr[i]);
         assert(status == 0);
     }
+#else
+    int status = write(m_uart, msg_arr, msg.body.command.SIZE + 2);
+    assert(status == msg.body.command.SIZE + 2);
+#endif
 }
 
 void TouchControl::recv(uint8_t val) {
@@ -108,7 +134,7 @@ void TouchControl::recv(uint8_t val) {
                 if (m_recv_index > 1) { 
                     m_recv_buf.body.RAW[m_recv_index - 1] = val;
 
-                    if (m_recv_index >= resp.SIZE + 1) {
+                    if (m_recv_index >= resp.SIZE + 1u) {
                         // Done receiving the message
                         if (m_messageCB != nullptr) 
                             m_messageCB(this, &m_recv_buf);
@@ -153,7 +179,7 @@ void TouchControl::recv(uint8_t val) {
                 break;
             }
         default:
-            //std::cout << "Touch: bad sync: " << sync << std::endl;
+            std::cout << "Touch: bad sync: " << sync << std::endl;
             m_recv_buf.TYPE = INVALID;
             m_recv_index = 0;
             return;
@@ -169,7 +195,14 @@ void TouchControl::uart_interrupt(void *touchctrl) {
 void TouchControl::uart_interrupt(void *touchctrl, alt_u32 irq_id) {
     (void) irq_id;
 #endif
+#ifdef TOUCH_UP_RS232
     TouchControl *controller = static_cast<TouchControl *>(touchctrl);
+
+#ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
+    alt_ic_irq_disable(controller->m_ic_id, controller->m_irq_id);
+#else
+    alt_irq_disable(controller->m_irq_id);
+#endif
 
     while (alt_up_rs232_get_used_space_in_read_FIFO(controller->m_uart) > 0) {
         uint8_t val, parity_error;
@@ -179,6 +212,13 @@ void TouchControl::uart_interrupt(void *touchctrl, alt_u32 irq_id) {
 
         controller->recv(val);
     }
+
+#ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
+    alt_ic_irq_enable(controller->m_ic_id, controller->m_irq_id);
+#else
+    alt_irq_enable(controller->m_irq_id);
+#endif
+#endif
 }
 
 
@@ -274,7 +314,7 @@ static void touch_print(response *response) {
         std::cout << "BODY:\n";
 
         for (int i = 0; i < response->SIZE - 2; i++) {
-            std::cout << response->D[i] << ' ';
+            std::cout << static_cast<int>(response->D[i]) << ' ';
         }
         std::cout << '\n';
     }

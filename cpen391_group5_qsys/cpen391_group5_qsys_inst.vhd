@@ -14,8 +14,6 @@
 			sdram_wire_ras_n               : out   std_logic;                                        -- ras_n
 			sdram_wire_we_n                : out   std_logic;                                        -- we_n
 			switch_in_export               : in    std_logic_vector(7 downto 0)  := (others => 'X'); -- export
-			touchscreen_RXD                : in    std_logic                     := 'X';             -- RXD
-			touchscreen_TXD                : out   std_logic;                                        -- TXD
 			vga_controller_CLK             : out   std_logic;                                        -- CLK
 			vga_controller_HS              : out   std_logic;                                        -- HS
 			vga_controller_VS              : out   std_logic;                                        -- VS
@@ -30,7 +28,9 @@
 			video_in_decoder_TD_VS         : in    std_logic                     := 'X';             -- TD_VS
 			video_in_decoder_clk27_reset   : in    std_logic                     := 'X';             -- clk27_reset
 			video_in_decoder_TD_RESET      : out   std_logic;                                        -- TD_RESET
-			video_in_decoder_overflow_flag : out   std_logic                                         -- overflow_flag
+			video_in_decoder_overflow_flag : out   std_logic;                                        -- overflow_flag
+			touchscreen_rxd                : in    std_logic                     := 'X';             -- rxd
+			touchscreen_txd                : out   std_logic                                         -- txd
 		);
 	end component cpen391_group5_qsys;
 
@@ -50,8 +50,6 @@
 			sdram_wire_ras_n               => CONNECTED_TO_sdram_wire_ras_n,               --                 .ras_n
 			sdram_wire_we_n                => CONNECTED_TO_sdram_wire_we_n,                --                 .we_n
 			switch_in_export               => CONNECTED_TO_switch_in_export,               --        switch_in.export
-			touchscreen_RXD                => CONNECTED_TO_touchscreen_RXD,                --      touchscreen.RXD
-			touchscreen_TXD                => CONNECTED_TO_touchscreen_TXD,                --                 .TXD
 			vga_controller_CLK             => CONNECTED_TO_vga_controller_CLK,             --   vga_controller.CLK
 			vga_controller_HS              => CONNECTED_TO_vga_controller_HS,              --                 .HS
 			vga_controller_VS              => CONNECTED_TO_vga_controller_VS,              --                 .VS
@@ -66,6 +64,8 @@
 			video_in_decoder_TD_VS         => CONNECTED_TO_video_in_decoder_TD_VS,         --                 .TD_VS
 			video_in_decoder_clk27_reset   => CONNECTED_TO_video_in_decoder_clk27_reset,   --                 .clk27_reset
 			video_in_decoder_TD_RESET      => CONNECTED_TO_video_in_decoder_TD_RESET,      --                 .TD_RESET
-			video_in_decoder_overflow_flag => CONNECTED_TO_video_in_decoder_overflow_flag  --                 .overflow_flag
+			video_in_decoder_overflow_flag => CONNECTED_TO_video_in_decoder_overflow_flag, --                 .overflow_flag
+			touchscreen_rxd                => CONNECTED_TO_touchscreen_rxd,                --      touchscreen.rxd
+			touchscreen_txd                => CONNECTED_TO_touchscreen_txd                 --                 .txd
 		);
 

@@ -8,9 +8,8 @@
 #include <stdexcept>
 #include <utility>
 #include "SimpleGraphics.hpp"
+#include "touch.hpp"
 
-// TODO: Finish touch
-class TouchControl;
 
 namespace UI {
 
@@ -103,6 +102,7 @@ public:
 protected:
     Point m_p1, m_p2;
     SimpleGraphics::rgba_t m_color;
+<<<<<<< HEAD
 };
 
 /* ------------------------------------------------------------------
@@ -120,6 +120,8 @@ private:
     unsigned m_radius;
     SimpleGraphics::rgba_t m_color;
 
+=======
+>>>>>>> 2c8313571cc1301bf8f0dc9dac083f6fabb92c49
 };
 
 
@@ -141,6 +143,10 @@ public:
 private:
     std::string m_text;
     SimpleGraphics::rgba_t m_text_color;
+<<<<<<< HEAD
+=======
+    TouchCB m_cb;
+>>>>>>> 2c8313571cc1301bf8f0dc9dac083f6fabb92c49
 };
 
 /* ------------------------------------------------------------------
@@ -179,6 +185,8 @@ private:
     std::vector<Button> m_buttons;
     // Points that define m_expander
     Point m_p1, m_p2;
+
+    bool m_is_open;
 };
 
 } // namespace UI

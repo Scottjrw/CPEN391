@@ -2,10 +2,14 @@
 #define TOUCH_HPP
 #include <functional>
 #include <iostream>
+#include <unistd.h>
+#include <fcntl.h>
 #include <sys/alt_irq.h>
 #include <sys/alt_alarm.h>
 #include "touch_uart.hpp"
-#include "altera_up_avalon_rs232.h"
+
+// University program RS232 supports interrupts, but seems really unreliable
+//#define TOUCH_UP_RS232
 
 class TouchControl {
 public:
@@ -17,11 +21,18 @@ public:
     void touch_disable();
     void calibrate(unsigned int mode=0x0);
 
-    // Start interrupt based receiving
+#ifdef TOUCH_UP_RS232
+    // Start interrupt based receiving, only possible with UP Uart module
     void startIRQ();
+#endif
 
     // Wait until a message is received (or failed to receive)
     void poll();
+
+#ifndef TOUCH_UP_RS232
+    // Non-blocking receive, only possible with the unix-like interface
+    void trypoll();
+#endif
 
     // Setup callbacks
     void setMessageCB(MessageCB cb) { m_messageCB = cb; }
@@ -36,18 +47,24 @@ public:
             unsigned x_max=TOUCH_MAX, unsigned y_max=TOUCH_MAX, bool debounce=true);
 
 private:
-    alt_up_rs232_dev *m_uart;
+    int m_uart; // Uart FD
     alt_u32 m_irq_id;
     alt_u32 m_ic_id;
     TouchUart::message m_recv_buf;
-    unsigned int m_recv_index;
+    unsigned m_recv_index;
     MessageCB m_messageCB;
     TouchCB m_touchCB;
     unsigned m_x_max, m_y_max;
     unsigned m_last_touch;
     bool m_debounce;
 
+    // Number of bytes to read at once for trypoll
+    static constexpr unsigned RECV_BYTES = 16;
+
+    // Highest value returned for x/y value, min is 0
     static constexpr unsigned TOUCH_MAX = 4095;
+
+    // Number of ms to debounce
     static constexpr unsigned TOUCH_DEBOUNCE_MS = 300;
 
     inline bool debounce_ok() {
