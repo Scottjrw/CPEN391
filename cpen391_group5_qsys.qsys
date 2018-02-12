@@ -506,7 +506,7 @@
    enabled="1">
   <parameter name="AUTO_CLK_CLOCK_RATE" value="50000000" />
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
-  <parameter name="mode" value="Simple" />
+  <parameter name="mode" value="Normal" />
  </module>
  <module
    name="Video_Clock"
