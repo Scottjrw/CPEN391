@@ -69,6 +69,27 @@ void Button::draw(){
 
 void Button::undraw(){
 	Rectangle::undraw();
+
+	unsigned remaining_space_x;
+	unsigned text_width = 5*m_text.length();
+
+	if ((m_p2.x - m_p1.x) > text_width) {
+		remaining_space_x = (m_p2.x - m_p1.x) - text_width;
+	} else
+		remaining_space_x = 4;
+
+	unsigned strStartXPos = (remaining_space_x/2) + m_p1.x;
+
+	unsigned remaining_space_y;
+
+	if ((m_p2.y - m_p1.y) > CHAR_HEIGHT) {
+		remaining_space_y = (m_p2.y - m_p1.y) - CHAR_HEIGHT;
+	} else
+		remaining_space_y = 4;
+
+	unsigned strStartYPos = (remaining_space_y/2) +  m_p1.y;
+
+	m_graphics.draw_string(m_graphics.rgba(0,0,0,0), strStartXPos, strStartYPos, m_text);
 }
 
 bool Button::touch(Point P){
@@ -94,10 +115,12 @@ DropdownMenu::DropdownMenu(SimpleGraphics &graphics, TouchControl &touch,
     m_expander(graphics, touch, p1, p2, text, text_color, background_color),
     m_buttons(),
     m_p1(p1),
-    m_p2(p2)
+    m_p2(p2),
+    m_is_open(false)
 {
 	auto cb = [this] (Touchable *, Point) {
-		this->expand();
+		if (m_is_open) this->close();
+		else this->expand();
 	};
 	m_expander.onTouch(cb);
 }
@@ -113,7 +136,11 @@ void DropdownMenu::undraw(){
 }
 
 bool DropdownMenu::touch(Point p){
-    return m_expander.touch(p);
+	for (Button temp : m_buttons) {
+		if (temp.touch(p)) return true;
+	}
+	if (m_expander.touch(p)) return true;
+	return false;
 }
 
 void DropdownMenu::expand(){
@@ -131,6 +158,7 @@ void DropdownMenu::expand(){
                 m_buttons[i].draw();
             }
     }
+    m_is_open = true;
 }
 
 void DropdownMenu::close(){
@@ -138,18 +166,21 @@ void DropdownMenu::close(){
     for(int i = 0; i < (int)m_buttons.size(); i++){
         m_buttons[i].undraw();
     }
+    m_is_open = false;
 }
 
 void DropdownMenu::newItem(SimpleGraphics &graphics, TouchControl &touch, std::string text, SimpleGraphics::rgba_t text_color,
         SimpleGraphics::rgba_t background_color, TouchCB callback){
 	int size = m_buttons.size();
 	Point new_p1;
+	int height = m_p2.y - m_p1.y;
 	new_p1.x = m_p1.x;
-	new_p1.y = m_p1.y + ((size+1)*MENU_ITEM_HEIGHT);
+	new_p1.y = m_p1.y + ((size+1)*height);
 	Point new_p2;
 	new_p2.x = m_p2.x;
-	new_p2.y = m_p2.y + ((size+1)*MENU_ITEM_HEIGHT);
+	new_p2.y = m_p2.y + ((size+1)*height);
 
 	Button button = Button(graphics, touch, new_p1, new_p2, text, text_color, background_color);
+	button.onTouch(callback);
 	m_buttons.push_back(button);
 }

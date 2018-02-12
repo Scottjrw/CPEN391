@@ -161,6 +161,8 @@ private:
 
     // Points that define m_expander
     Point m_p1, m_p2;
+
+    bool m_is_open;
 };
 
 } // namespace UI

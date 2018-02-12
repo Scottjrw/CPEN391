@@ -18,6 +18,9 @@ Screen::Screen(SimpleGraphics &graphics, TouchControl &touch):
 	{}
 
 void Screen::draw() {
+	Rectangle clear_rect(m_graphics, {0, 0}, {160, 120}, SimpleGraphics::rgba(0, 0, 0, 0));
+	clear_rect.draw();
+
 	for (int i = 0; i < (int)drawables.size(); i++) {
 		drawables[i]->draw();
 	}
