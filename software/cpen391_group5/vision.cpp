@@ -130,12 +130,12 @@ void find_dots(struct point *cur) {
 
         // Undraw previous X
         if (prev_slots[i].count > 0) {
-            graphics.draw_cross(graphics.rgba(0, 0, 0, 0), prev_slots[i].x, prev_slots[i].y, DOTS_MARKER_SIZE);
+//            graphics.draw_cross(graphics.rgba(0, 0, 0, 0), prev_slots[i].x, prev_slots[i].y, DOTS_MARKER_SIZE);
         }
 
         // Draw the new X and record the draw
         if (slots[i].count > 0) {
-            graphics.draw_cross(graphics.rgba(0, 255, 0, 255), slots[i].x, slots[i].y, DOTS_MARKER_SIZE);
+//            graphics.draw_cross(graphics.rgba(0, 255, 0, 255), slots[i].x, slots[i].y, DOTS_MARKER_SIZE);
 
             // Find max
             if (slots[i].count > max_count) {

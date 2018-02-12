@@ -7,8 +7,6 @@
 #include "main.hpp"
 #include "SimpleGraphics.hpp"
 
-SimpleGraphics<uint16_t, GRAPHICS_WIDTH, GRAPHICS_HEIGHT, DOTS_MAX_X, DOTS_MAX_Y>
-graphics(reinterpret_cast<uint16_t *>(DRAW_BUFFER_BASE));
 
 int main(int argc, const char * argv[]) {
     struct point prev, cur;

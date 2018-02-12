@@ -1,10 +1,10 @@
 #ifndef SIMPLE_GRAPHICS_HPP
 #define SIMPLE_GRAPHICS_HPP
 
+#include "system.h"
 #include <string>
 #include <cstdint>
-#include "system.h"
-#include "io.h"
+#include <io.h>
 
 class SimpleGraphics {
 public:

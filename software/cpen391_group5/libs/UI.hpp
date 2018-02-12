@@ -1,9 +1,9 @@
 #ifndef UI_HPP
 #define UI_HPP
 
+#include <functional>
 #include <string>
 #include <vector>
-#include <functional>
 #include <exception>
 #include <stdexcept>
 #include <utility>
@@ -30,6 +30,8 @@ public:
      */
     virtual void draw() = 0;
     
+    virtual ~Drawable(){};
+
     /*
      * Undraw the object efficiently, so we don't need to clear the entire screen
      * Only implement this on classes where it makes sense to undraw
@@ -69,6 +71,8 @@ public:
      */
     virtual bool touch(Point p) = 0;
 
+    virtual ~Touchable(){};
+
     /* 
      * Set the function to be called when touched
      *
@@ -92,11 +96,13 @@ public:
     virtual void draw();
     virtual void undraw();
 
-    Rectangle(SimpleGraphics &graphics, Point p1, Point p2);
+    virtual ~Rectangle(){};
 
-private:
+    Rectangle(SimpleGraphics &graphics, Point p1, Point p2, SimpleGraphics::rgba_t color);
+
+protected:
     Point m_p1, m_p2;
-
+    SimpleGraphics::rgba_t m_color;
 };
 
 /* ------------------------------------------------------------------
@@ -107,11 +113,12 @@ public:
     virtual void draw();
     virtual void undraw();
 
-    Circle(SimpleGraphics &graphics, Point center, unsigned radius);
+    Circle(SimpleGraphics &graphics, Point center, unsigned radius, SimpleGraphics::rgba_t color);
 
 private:
     Point m_center;
     unsigned m_radius;
+    SimpleGraphics::rgba_t m_color;
 
 };
 
@@ -126,11 +133,12 @@ public:
     virtual void onTouch(TouchCB callback);
 
     Button(SimpleGraphics &graphics, TouchControl &touch,
-            Point p1, Point p2, std::string text);
+            Point p1, Point p2, std::string text, SimpleGraphics::rgba_t text_color,
+            SimpleGraphics::rgba_t background_color);
 
 private:
     std::string m_text;
-
+    SimpleGraphics::rgba_t m_text_color;
 };
 
 /* ------------------------------------------------------------------
@@ -145,14 +153,21 @@ public:
     virtual void undraw();
     virtual bool touch(Point p);
 
+    // expand the dropdown menu when m_expander is pressed
+    void expand();
+
+    void close();
+
     /* 
      * Add a new button to the dropdown menu with text
      */
-    virtual void newItem(std::string text, TouchCB callback);
+    void newItem(SimpleGraphics &graphics, TouchControl &touch, std::string text, SimpleGraphics::rgba_t text_color,
+            SimpleGraphics::rgba_t background_color, TouchCB callback);
 
-    enum Expand { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
+    enum Expand { TOP, BOTTOM };
     DropdownMenu(SimpleGraphics &graphics, TouchControl &touch,
-            Expand direction, Point p1, Point p2, std::string text);
+            Expand direction, Point p1, Point p2, std::string text, SimpleGraphics::rgba_t text_color,
+            SimpleGraphics::rgba_t background_color);
 
 private:
     Expand m_expandDir;
@@ -160,6 +175,9 @@ private:
     Button m_expander;
     // List of buttons in the menu
     std::vector<Button> m_buttons;
+
+    // Points that define m_expander
+    Point m_p1, m_p2;
 };
 
 } // namespace UI

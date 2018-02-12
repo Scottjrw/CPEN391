@@ -3,7 +3,7 @@
 # Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
 # SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
 #
-# Generated: Tue Jan 30 17:51:22 PST 2018
+# Generated: Sun Feb 11 17:59:40 PST 2018
 
 # DO NOT MODIFY THIS FILE
 #
