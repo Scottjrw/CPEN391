@@ -140,6 +140,7 @@ public:
 private:
     std::string m_text;
     SimpleGraphics::rgba_t m_text_color;
+    TouchCB m_cb;
     bool m_is_Touchable;
 };
 

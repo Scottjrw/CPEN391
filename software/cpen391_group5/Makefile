@@ -148,6 +148,7 @@ CXX_SRCS += vision.cpp
 CXX_SRCS += libs/SimpleGraphics.cpp
 CXX_SRCS += libs/UI.cpp
 CXX_SRCS += libs/touch.cpp
+CXX_SRCS += libs/screen.cpp
 ASM_SRCS :=
 
 

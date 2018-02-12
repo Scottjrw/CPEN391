@@ -54,7 +54,8 @@ Button::Button(SimpleGraphics &graphics, TouchControl &touch,
 	Rectangle(graphics, p1, p2, background_color),
     Touchable(touch),
     m_text(text),
-    m_text_color(text_color)
+    m_text_color(text_color),
+    m_cb(nullptr)
 {
     m_is_Touchable = 1;
 }
@@ -77,14 +78,15 @@ void Button::undraw(){
 
 bool Button::touch(Point P){
 
-    if(P.x > m_p1.x && P.x < m_p2.x && P.y > m_p1.y && P.y < m_p2.y)
+    if(P.x > m_p1.x && P.x < m_p2.x && P.y > m_p1.y && P.y < m_p2.y) {
+    	if (m_cb != nullptr) m_cb(this, P);
         return true;
-    else
+    } else
         return false;
 }
 
 void Button::onTouch(TouchCB callback){
-
+	m_cb = callback;
 }
 
 
