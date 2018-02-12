@@ -31,13 +31,15 @@ int main(void) {
         volatile bool done = false;
 
         auto cb = [&cal_count, &done] (TouchControl *, TouchUart::message *msg) -> void {
-            assert(msg->TYPE == TouchUart::MESSAGE);
-            assert(msg->body.response.CMND == TouchUart::CALIBRATE);
-            assert(msg->body.response.STATUS = TouchUart::OK);
+            //assert(msg->TYPE == TouchUart::MESSAGE);
+            //assert(msg->body.response.CMND == TouchUart::CALIBRATE);
+            //assert(msg->body.response.STATUS = TouchUart::OK);
+            std:: cout << "Hello" << std::endl;
 
             if (cal_count == 0) {
                 TouchControl::print(msg);
             } else if (cal_count <= 4) {
+                TouchControl::print(msg);
                 std::cout << "Got Point #" << cal_count << std::endl;
             } else {
                 done = true;
@@ -45,24 +47,27 @@ int main(void) {
         };
 
         touch.setMessageCB(cb);
+        touch.touch_disable();
+        touch.poll();
+        touch.calibrate();
         while (!done) {
             touch.poll();
         }
         std::cout << "Done Calibration" << std::endl;
     }
 
-    auto touchCB = [] (TouchControl *, unsigned x, unsigned y) -> void {
+    auto touchCB = [&graphics] (TouchControl *, unsigned x, unsigned y) -> void {
         std::cout << "TOUCH X: " << x << " Y: " << y << std::endl;;
+        graphics.draw_x(SimpleGraphics::rgba(0, 255, 0, 255), x, y, 4);
     };
 
     touch.setMessageCB(TouchControl::printCB);
     touch.setTouchCB(touchCB);
     touch.touch_enable();
-    touch.startIRQ();
     std::cout << "Running" << std::endl;
 
     while (1) { 
-        //touch.poll();
+        touch.poll();
     }
 
     return 0;

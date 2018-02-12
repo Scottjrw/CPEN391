@@ -2,10 +2,12 @@
 #define TOUCH_HPP
 #include <functional>
 #include <iostream>
+#include <stdio.h>
 #include <sys/alt_irq.h>
 #include <sys/alt_alarm.h>
 #include "touch_uart.hpp"
-#include "altera_up_avalon_rs232.h"
+
+//#define TOUCH_UP_RS232
 
 class TouchControl {
 public:
@@ -36,11 +38,11 @@ public:
             unsigned x_max=TOUCH_MAX, unsigned y_max=TOUCH_MAX, bool debounce=true);
 
 private:
-    alt_up_rs232_dev *m_uart;
+    FILE *m_uart;
     alt_u32 m_irq_id;
     alt_u32 m_ic_id;
     TouchUart::message m_recv_buf;
-    unsigned int m_recv_index;
+    unsigned m_recv_index;
     MessageCB m_messageCB;
     TouchCB m_touchCB;
     unsigned m_x_max, m_y_max;

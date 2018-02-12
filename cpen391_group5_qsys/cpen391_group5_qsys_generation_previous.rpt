@@ -44,16 +44,16 @@ Progress: Adding jtag_uart_0 [altera_avalon_jtag_uart 15.0]
 Progress: Parameterizing module jtag_uart_0
 Progress: Adding led_out_pio [altera_avalon_pio 15.0]
 Progress: Parameterizing module led_out_pio
+Progress: Adding main_timer [altera_avalon_timer 15.0]
+Progress: Parameterizing module main_timer
 Progress: Adding nios2 [altera_nios2_qsys 15.0]
 Progress: Parameterizing module nios2
-Progress: Adding rs232_0 [altera_up_avalon_rs232 15.0]
-Progress: Parameterizing module rs232_0
 Progress: Adding sdram [altera_avalon_new_sdram_controller 15.0]
 Progress: Parameterizing module sdram
 Progress: Adding switch_in_pio [altera_avalon_pio 15.0]
 Progress: Parameterizing module switch_in_pio
-Progress: Adding timer_1 [altera_avalon_timer 15.0]
-Progress: Parameterizing module timer_1
+Progress: Adding touchscreen_uart [altera_up_avalon_rs232 15.0]
+Progress: Parameterizing module touchscreen_uart
 Progress: Building connections
 Progress: Parameterizing connections
 Progress: Validating
@@ -119,16 +119,16 @@ Progress: Adding jtag_uart_0 [altera_avalon_jtag_uart 15.0]
 Progress: Parameterizing module jtag_uart_0
 Progress: Adding led_out_pio [altera_avalon_pio 15.0]
 Progress: Parameterizing module led_out_pio
+Progress: Adding main_timer [altera_avalon_timer 15.0]
+Progress: Parameterizing module main_timer
 Progress: Adding nios2 [altera_nios2_qsys 15.0]
 Progress: Parameterizing module nios2
-Progress: Adding rs232_0 [altera_up_avalon_rs232 15.0]
-Progress: Parameterizing module rs232_0
 Progress: Adding sdram [altera_avalon_new_sdram_controller 15.0]
 Progress: Parameterizing module sdram
 Progress: Adding switch_in_pio [altera_avalon_pio 15.0]
 Progress: Parameterizing module switch_in_pio
-Progress: Adding timer_1 [altera_avalon_timer 15.0]
-Progress: Parameterizing module timer_1
+Progress: Adding touchscreen_uart [altera_up_avalon_rs232 15.0]
+Progress: Parameterizing module touchscreen_uart
 Progress: Building connections
 Progress: Parameterizing connections
 Progress: Validating
@@ -153,7 +153,7 @@ Info: Interconnect is inserted between master Draw_DMA.avalon_dma_master and sla
 Info: Interconnect is inserted between master Draw_DMA.avalon_dma_master and slave Draw_Buffer.s2 because the master has readdata signal 16 bit wide, but the slave is 32 bit wide.
 Info: Interconnect is inserted between master Draw_DMA.avalon_dma_master and slave Draw_Buffer.s2 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
 Info: Draw_Buffer: Starting RTL generation for module 'cpen391_group5_qsys_Draw_Buffer'
-Info: Draw_Buffer:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=cpen391_group5_qsys_Draw_Buffer --dir=/tmp/alt7573_8970790256237147180.dir/0021_Draw_Buffer_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_8970790256237147180.dir/0021_Draw_Buffer_gen//cpen391_group5_qsys_Draw_Buffer_component_configuration.pl  --do_build_sim=0  ]
+Info: Draw_Buffer:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=cpen391_group5_qsys_Draw_Buffer --dir=/tmp/alt7573_6995476028004228099.dir/0001_Draw_Buffer_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_6995476028004228099.dir/0001_Draw_Buffer_gen//cpen391_group5_qsys_Draw_Buffer_component_configuration.pl  --do_build_sim=0  ]
 Info: Draw_Buffer: Done RTL generation for module 'cpen391_group5_qsys_Draw_Buffer'
 Info: Draw_Buffer: "cpen391_group5_qsys" instantiated altera_avalon_onchip_memory2 "Draw_Buffer"
 Info: Draw_DMA: Starting Generation of Video DMA Controller
@@ -166,7 +166,7 @@ Info: Video_Blender: Starting Generation of the Alpha Blender
 Info: Video_Blender: "cpen391_group5_qsys" instantiated altera_up_avalon_video_alpha_blender "Video_Blender"
 Info: Video_Clock: "cpen391_group5_qsys" instantiated altera_up_avalon_video_pll "Video_Clock"
 Info: Video_Frame_Buffer: Starting RTL generation for module 'cpen391_group5_qsys_Video_Frame_Buffer'
-Info: Video_Frame_Buffer:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=cpen391_group5_qsys_Video_Frame_Buffer --dir=/tmp/alt7573_8970790256237147180.dir/0026_Video_Frame_Buffer_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_8970790256237147180.dir/0026_Video_Frame_Buffer_gen//cpen391_group5_qsys_Video_Frame_Buffer_component_configuration.pl  --do_build_sim=0  ]
+Info: Video_Frame_Buffer:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=cpen391_group5_qsys_Video_Frame_Buffer --dir=/tmp/alt7573_6995476028004228099.dir/0006_Video_Frame_Buffer_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_6995476028004228099.dir/0006_Video_Frame_Buffer_gen//cpen391_group5_qsys_Video_Frame_Buffer_component_configuration.pl  --do_build_sim=0  ]
 Info: Video_Frame_Buffer: Done RTL generation for module 'cpen391_group5_qsys_Video_Frame_Buffer'
 Info: Video_Frame_Buffer: "cpen391_group5_qsys" instantiated altera_avalon_onchip_memory2 "Video_Frame_Buffer"
 Info: Video_In_CSC: Starting Generation of Colour Space Converter
@@ -205,49 +205,49 @@ Info: Video_Out_VGA_CTRL: Starting Generation of VGA Controller
 Info: Video_Out_VGA_CTRL: "cpen391_group5_qsys" instantiated altera_up_avalon_video_vga_controller "Video_Out_VGA_CTRL"
 Info: clocks: "cpen391_group5_qsys" instantiated altera_up_avalon_sys_sdram_pll "clocks"
 Info: jtag_uart_0: Starting RTL generation for module 'cpen391_group5_qsys_jtag_uart_0'
-Info: jtag_uart_0:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=cpen391_group5_qsys_jtag_uart_0 --dir=/tmp/alt7573_8970790256237147180.dir/0038_jtag_uart_0_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_8970790256237147180.dir/0038_jtag_uart_0_gen//cpen391_group5_qsys_jtag_uart_0_component_configuration.pl  --do_build_sim=0  ]
+Info: jtag_uart_0:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=cpen391_group5_qsys_jtag_uart_0 --dir=/tmp/alt7573_6995476028004228099.dir/0018_jtag_uart_0_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_6995476028004228099.dir/0018_jtag_uart_0_gen//cpen391_group5_qsys_jtag_uart_0_component_configuration.pl  --do_build_sim=0  ]
 Info: jtag_uart_0: Done RTL generation for module 'cpen391_group5_qsys_jtag_uart_0'
 Info: jtag_uart_0: "cpen391_group5_qsys" instantiated altera_avalon_jtag_uart "jtag_uart_0"
 Info: led_out_pio: Starting RTL generation for module 'cpen391_group5_qsys_led_out_pio'
-Info: led_out_pio:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=cpen391_group5_qsys_led_out_pio --dir=/tmp/alt7573_8970790256237147180.dir/0039_led_out_pio_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_8970790256237147180.dir/0039_led_out_pio_gen//cpen391_group5_qsys_led_out_pio_component_configuration.pl  --do_build_sim=0  ]
+Info: led_out_pio:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=cpen391_group5_qsys_led_out_pio --dir=/tmp/alt7573_6995476028004228099.dir/0019_led_out_pio_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_6995476028004228099.dir/0019_led_out_pio_gen//cpen391_group5_qsys_led_out_pio_component_configuration.pl  --do_build_sim=0  ]
 Info: led_out_pio: Done RTL generation for module 'cpen391_group5_qsys_led_out_pio'
 Info: led_out_pio: "cpen391_group5_qsys" instantiated altera_avalon_pio "led_out_pio"
+Info: main_timer: Starting RTL generation for module 'cpen391_group5_qsys_main_timer'
+Info: main_timer:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64//perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64//perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer/generate_rtl.pl --name=cpen391_group5_qsys_main_timer --dir=/tmp/alt7573_6995476028004228099.dir/0020_main_timer_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_6995476028004228099.dir/0020_main_timer_gen//cpen391_group5_qsys_main_timer_component_configuration.pl  --do_build_sim=0  ]
+Info: main_timer: Done RTL generation for module 'cpen391_group5_qsys_main_timer'
+Info: main_timer: "cpen391_group5_qsys" instantiated altera_avalon_timer "main_timer"
 Info: nios2: Starting RTL generation for module 'cpen391_group5_qsys_nios2'
-Info: nios2:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/eperlcmd -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2/cpu_lib -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2/nios_lib -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2 -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2 -- /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2/generate_rtl.epl --name=cpen391_group5_qsys_nios2 --dir=/tmp/alt7573_8970790256237147180.dir/0040_nios2_gen/ --quartus_bindir=/home/guoj/altera/15.0/quartus/linux64 --verilog --config=/tmp/alt7573_8970790256237147180.dir/0040_nios2_gen//cpen391_group5_qsys_nios2_processor_configuration.pl  --do_build_sim=0  ]
-Info: nios2: # 2018.02.11 01:45:29 (*) Starting Nios II generation
-Info: nios2: # 2018.02.11 01:45:29 (*)   Checking for plaintext license.
-Info: nios2: # 2018.02.11 01:45:31 (*)   Plaintext license not found.
-Info: nios2: # 2018.02.11 01:45:31 (*)   Checking for encrypted license (non-evaluation).
-Info: nios2: # 2018.02.11 01:45:34 (*)   Encrypted license not found.  Defaulting to OCP evaluation license (produces a time-limited SOF)
-Info: nios2: # 2018.02.11 01:45:34 (*)   Elaborating CPU configuration settings
-Info: nios2: # 2018.02.11 01:45:34 (*)   Creating all objects for CPU
-Info: nios2: # 2018.02.11 01:45:34 (*)     Testbench
-Info: nios2: # 2018.02.11 01:45:34 (*)     Instruction decoding
-Info: nios2: # 2018.02.11 01:45:34 (*)       Instruction fields
-Info: nios2: # 2018.02.11 01:45:34 (*)       Instruction decodes
-Info: nios2: # 2018.02.11 01:45:35 (*)       Signals for RTL simulation waveforms
-Info: nios2: # 2018.02.11 01:45:35 (*)       Instruction controls
-Info: nios2: # 2018.02.11 01:45:35 (*)     Pipeline frontend
-Info: nios2: # 2018.02.11 01:45:36 (*)     Pipeline backend
-Info: nios2: # 2018.02.11 01:45:38 (*)   Generating RTL from CPU objects
-Info: nios2: # 2018.02.11 01:45:41 (*)   Creating encrypted RTL
-Info: nios2: # 2018.02.11 01:45:42 (*) Done Nios II generation
+Info: nios2:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/eperlcmd -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2/cpu_lib -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2/nios_lib -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2 -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2 -- /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2/generate_rtl.epl --name=cpen391_group5_qsys_nios2 --dir=/tmp/alt7573_6995476028004228099.dir/0021_nios2_gen/ --quartus_bindir=/home/guoj/altera/15.0/quartus/linux64 --verilog --config=/tmp/alt7573_6995476028004228099.dir/0021_nios2_gen//cpen391_group5_qsys_nios2_processor_configuration.pl  --do_build_sim=0  ]
+Info: nios2: # 2018.02.11 14:31:32 (*) Starting Nios II generation
+Info: nios2: # 2018.02.11 14:31:32 (*)   Checking for plaintext license.
+Info: nios2: # 2018.02.11 14:31:34 (*)   Plaintext license not found.
+Info: nios2: # 2018.02.11 14:31:34 (*)   Checking for encrypted license (non-evaluation).
+Info: nios2: # 2018.02.11 14:31:36 (*)   Encrypted license not found.  Defaulting to OCP evaluation license (produces a time-limited SOF)
+Info: nios2: # 2018.02.11 14:31:36 (*)   Elaborating CPU configuration settings
+Info: nios2: # 2018.02.11 14:31:36 (*)   Creating all objects for CPU
+Info: nios2: # 2018.02.11 14:31:36 (*)     Testbench
+Info: nios2: # 2018.02.11 14:31:36 (*)     Instruction decoding
+Info: nios2: # 2018.02.11 14:31:36 (*)       Instruction fields
+Info: nios2: # 2018.02.11 14:31:36 (*)       Instruction decodes
+Info: nios2: # 2018.02.11 14:31:37 (*)       Signals for RTL simulation waveforms
+Info: nios2: # 2018.02.11 14:31:37 (*)       Instruction controls
+Info: nios2: # 2018.02.11 14:31:37 (*)     Pipeline frontend
+Info: nios2: # 2018.02.11 14:31:37 (*)     Pipeline backend
+Info: nios2: # 2018.02.11 14:31:38 (*)   Generating RTL from CPU objects
+Info: nios2: # 2018.02.11 14:31:40 (*)   Creating encrypted RTL
+Info: nios2: # 2018.02.11 14:31:41 (*) Done Nios II generation
 Info: nios2: Done RTL generation for module 'cpen391_group5_qsys_nios2'
 Info: nios2: "cpen391_group5_qsys" instantiated altera_nios2_qsys "nios2"
-Info: rs232_0: Starting Generation of RS232 UART
-Info: rs232_0: "cpen391_group5_qsys" instantiated altera_up_avalon_rs232 "rs232_0"
 Info: sdram: Starting RTL generation for module 'cpen391_group5_qsys_sdram'
-Info: sdram:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_new_sdram_controller -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_new_sdram_controller/generate_rtl.pl --name=cpen391_group5_qsys_sdram --dir=/tmp/alt7573_8970790256237147180.dir/0042_sdram_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_8970790256237147180.dir/0042_sdram_gen//cpen391_group5_qsys_sdram_component_configuration.pl  --do_build_sim=0  ]
+Info: sdram:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_new_sdram_controller -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_new_sdram_controller/generate_rtl.pl --name=cpen391_group5_qsys_sdram --dir=/tmp/alt7573_6995476028004228099.dir/0022_sdram_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_6995476028004228099.dir/0022_sdram_gen//cpen391_group5_qsys_sdram_component_configuration.pl  --do_build_sim=0  ]
 Info: sdram: Done RTL generation for module 'cpen391_group5_qsys_sdram'
 Info: sdram: "cpen391_group5_qsys" instantiated altera_avalon_new_sdram_controller "sdram"
 Info: switch_in_pio: Starting RTL generation for module 'cpen391_group5_qsys_switch_in_pio'
-Info: switch_in_pio:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=cpen391_group5_qsys_switch_in_pio --dir=/tmp/alt7573_8970790256237147180.dir/0043_switch_in_pio_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_8970790256237147180.dir/0043_switch_in_pio_gen//cpen391_group5_qsys_switch_in_pio_component_configuration.pl  --do_build_sim=0  ]
+Info: switch_in_pio:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=cpen391_group5_qsys_switch_in_pio --dir=/tmp/alt7573_6995476028004228099.dir/0023_switch_in_pio_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_6995476028004228099.dir/0023_switch_in_pio_gen//cpen391_group5_qsys_switch_in_pio_component_configuration.pl  --do_build_sim=0  ]
 Info: switch_in_pio: Done RTL generation for module 'cpen391_group5_qsys_switch_in_pio'
 Info: switch_in_pio: "cpen391_group5_qsys" instantiated altera_avalon_pio "switch_in_pio"
-Info: timer_1: Starting RTL generation for module 'cpen391_group5_qsys_timer_1'
-Info: timer_1:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64//perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64//perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer/generate_rtl.pl --name=cpen391_group5_qsys_timer_1 --dir=/tmp/alt7573_8970790256237147180.dir/0044_timer_1_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7573_8970790256237147180.dir/0044_timer_1_gen//cpen391_group5_qsys_timer_1_component_configuration.pl  --do_build_sim=0  ]
-Info: timer_1: Done RTL generation for module 'cpen391_group5_qsys_timer_1'
-Info: timer_1: "cpen391_group5_qsys" instantiated altera_avalon_timer "timer_1"
+Info: touchscreen_uart: Starting Generation of RS232 UART
+Info: touchscreen_uart: "cpen391_group5_qsys" instantiated altera_up_avalon_rs232 "touchscreen_uart"
 Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
 Info: mm_interconnect_0: "cpen391_group5_qsys" instantiated altera_mm_interconnect "mm_interconnect_0"
 Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0

@@ -18,8 +18,8 @@ module cpen391_group5_qsys (
 		output wire        sdram_wire_ras_n,               //                 .ras_n
 		output wire        sdram_wire_we_n,                //                 .we_n
 		input  wire [7:0]  switch_in_export,               //        switch_in.export
-		input  wire        touchscreen_RXD,                //      touchscreen.RXD
-		output wire        touchscreen_TXD,                //                 .TXD
+		input  wire        touchscreen_rxd,                //      touchscreen.rxd
+		output wire        touchscreen_txd,                //                 .txd
 		output wire        vga_controller_CLK,             //   vga_controller.CLK
 		output wire        vga_controller_HS,              //                 .HS
 		output wire        vga_controller_VS,              //                 .VS
@@ -174,13 +174,6 @@ module cpen391_group5_qsys (
 	wire         mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_read;                // mm_interconnect_2:jtag_uart_0_avalon_jtag_slave_read -> jtag_uart_0:av_read_n
 	wire         mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_write;               // mm_interconnect_2:jtag_uart_0_avalon_jtag_slave_write -> jtag_uart_0:av_write_n
 	wire  [31:0] mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_writedata;           // mm_interconnect_2:jtag_uart_0_avalon_jtag_slave_writedata -> jtag_uart_0:av_writedata
-	wire         mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_chipselect;    // mm_interconnect_2:touchscreen_uart_avalon_rs232_slave_chipselect -> touchscreen_uart:chipselect
-	wire  [31:0] mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_readdata;      // touchscreen_uart:readdata -> mm_interconnect_2:touchscreen_uart_avalon_rs232_slave_readdata
-	wire   [0:0] mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_address;       // mm_interconnect_2:touchscreen_uart_avalon_rs232_slave_address -> touchscreen_uart:address
-	wire         mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_read;          // mm_interconnect_2:touchscreen_uart_avalon_rs232_slave_read -> touchscreen_uart:read
-	wire   [3:0] mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_byteenable;    // mm_interconnect_2:touchscreen_uart_avalon_rs232_slave_byteenable -> touchscreen_uart:byteenable
-	wire         mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_write;         // mm_interconnect_2:touchscreen_uart_avalon_rs232_slave_write -> touchscreen_uart:write
-	wire  [31:0] mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_writedata;     // mm_interconnect_2:touchscreen_uart_avalon_rs232_slave_writedata -> touchscreen_uart:writedata
 	wire  [31:0] mm_interconnect_2_nios2_jtag_debug_module_readdata;                  // nios2:jtag_debug_module_readdata -> mm_interconnect_2:nios2_jtag_debug_module_readdata
 	wire         mm_interconnect_2_nios2_jtag_debug_module_waitrequest;               // nios2:jtag_debug_module_waitrequest -> mm_interconnect_2:nios2_jtag_debug_module_waitrequest
 	wire         mm_interconnect_2_nios2_jtag_debug_module_debugaccess;               // mm_interconnect_2:nios2_jtag_debug_module_debugaccess -> nios2:jtag_debug_module_debugaccess
@@ -217,6 +210,13 @@ module cpen391_group5_qsys (
 	wire         mm_interconnect_2_draw_buffer_s1_write;                              // mm_interconnect_2:Draw_Buffer_s1_write -> Draw_Buffer:write
 	wire  [31:0] mm_interconnect_2_draw_buffer_s1_writedata;                          // mm_interconnect_2:Draw_Buffer_s1_writedata -> Draw_Buffer:writedata
 	wire         mm_interconnect_2_draw_buffer_s1_clken;                              // mm_interconnect_2:Draw_Buffer_s1_clken -> Draw_Buffer:clken
+	wire         mm_interconnect_2_touchscreen_uart_s1_chipselect;                    // mm_interconnect_2:touchscreen_uart_s1_chipselect -> touchscreen_uart:chipselect
+	wire  [15:0] mm_interconnect_2_touchscreen_uart_s1_readdata;                      // touchscreen_uart:readdata -> mm_interconnect_2:touchscreen_uart_s1_readdata
+	wire   [2:0] mm_interconnect_2_touchscreen_uart_s1_address;                       // mm_interconnect_2:touchscreen_uart_s1_address -> touchscreen_uart:address
+	wire         mm_interconnect_2_touchscreen_uart_s1_read;                          // mm_interconnect_2:touchscreen_uart_s1_read -> touchscreen_uart:read_n
+	wire         mm_interconnect_2_touchscreen_uart_s1_begintransfer;                 // mm_interconnect_2:touchscreen_uart_s1_begintransfer -> touchscreen_uart:begintransfer
+	wire         mm_interconnect_2_touchscreen_uart_s1_write;                         // mm_interconnect_2:touchscreen_uart_s1_write -> touchscreen_uart:write_n
+	wire  [15:0] mm_interconnect_2_touchscreen_uart_s1_writedata;                     // mm_interconnect_2:touchscreen_uart_s1_writedata -> touchscreen_uart:writedata
 	wire         mm_interconnect_2_video_frame_buffer_s2_chipselect;                  // mm_interconnect_2:Video_Frame_Buffer_s2_chipselect -> Video_Frame_Buffer:chipselect2
 	wire  [31:0] mm_interconnect_2_video_frame_buffer_s2_readdata;                    // Video_Frame_Buffer:readdata2 -> mm_interconnect_2:Video_Frame_Buffer_s2_readdata
 	wire  [16:0] mm_interconnect_2_video_frame_buffer_s2_address;                     // mm_interconnect_2:Video_Frame_Buffer_s2_address -> Video_Frame_Buffer:address2
@@ -224,11 +224,11 @@ module cpen391_group5_qsys (
 	wire         mm_interconnect_2_video_frame_buffer_s2_write;                       // mm_interconnect_2:Video_Frame_Buffer_s2_write -> Video_Frame_Buffer:write2
 	wire  [31:0] mm_interconnect_2_video_frame_buffer_s2_writedata;                   // mm_interconnect_2:Video_Frame_Buffer_s2_writedata -> Video_Frame_Buffer:writedata2
 	wire         mm_interconnect_2_video_frame_buffer_s2_clken;                       // mm_interconnect_2:Video_Frame_Buffer_s2_clken -> Video_Frame_Buffer:clken2
-	wire         irq_mapper_receiver0_irq;                                            // touchscreen_uart:irq -> irq_mapper:receiver0_irq
-	wire         irq_mapper_receiver1_irq;                                            // jtag_uart_0:av_irq -> irq_mapper:receiver1_irq
-	wire         irq_mapper_receiver2_irq;                                            // main_timer:irq -> irq_mapper:receiver2_irq
+	wire         irq_mapper_receiver0_irq;                                            // jtag_uart_0:av_irq -> irq_mapper:receiver0_irq
+	wire         irq_mapper_receiver1_irq;                                            // main_timer:irq -> irq_mapper:receiver1_irq
+	wire         irq_mapper_receiver2_irq;                                            // touchscreen_uart:irq -> irq_mapper:receiver2_irq
 	wire  [31:0] nios2_d_irq_irq;                                                     // irq_mapper:sender_irq -> nios2:d_irq
-	wire         rst_controller_reset_out_reset;                                      // rst_controller:reset_out -> [Draw_Buffer:reset, Draw_DMA:reset, Draw_Resampler:reset, Draw_Scaler:reset, Video_Blender:reset, Video_Frame_Buffer:reset, Video_In_CSC:reset, Video_In_Chroma:reset, Video_In_Clipper:reset, Video_In_DMA:reset, Video_In_Decoder:reset, Video_In_Scaler:reset, Video_Out_DMA:reset, Video_Out_FIFO:reset_stream_in, Video_Out_Resampler:reset, Video_Out_Scaler:reset, irq_mapper:reset, jtag_uart_0:rst_n, led_out_pio:reset_n, main_timer:reset_n, mm_interconnect_0:Video_In_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_1:Draw_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_2:nios2_reset_n_reset_bridge_in_reset_reset, nios2:reset_n, rst_translator:in_reset, sdram:reset_n, switch_in_pio:reset_n, touchscreen_uart:reset]
+	wire         rst_controller_reset_out_reset;                                      // rst_controller:reset_out -> [Draw_Buffer:reset, Draw_DMA:reset, Draw_Resampler:reset, Draw_Scaler:reset, Video_Blender:reset, Video_Frame_Buffer:reset, Video_In_CSC:reset, Video_In_Chroma:reset, Video_In_Clipper:reset, Video_In_DMA:reset, Video_In_Decoder:reset, Video_In_Scaler:reset, Video_Out_DMA:reset, Video_Out_FIFO:reset_stream_in, Video_Out_Resampler:reset, Video_Out_Scaler:reset, irq_mapper:reset, jtag_uart_0:rst_n, led_out_pio:reset_n, main_timer:reset_n, mm_interconnect_0:Video_In_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_1:Draw_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_2:nios2_reset_n_reset_bridge_in_reset_reset, nios2:reset_n, rst_translator:in_reset, sdram:reset_n, switch_in_pio:reset_n, touchscreen_uart:reset_n]
 	wire         rst_controller_reset_out_reset_req;                                  // rst_controller:reset_req -> [Draw_Buffer:reset_req, Video_Frame_Buffer:reset_req, nios2:reset_req, rst_translator:reset_req_in]
 	wire         nios2_jtag_debug_module_reset_reset;                                 // nios2:jtag_debug_module_resetrequest -> [rst_controller:reset_in0, rst_controller_001:reset_in0]
 	wire         clocks_reset_source_reset;                                           // clocks:reset_source_reset -> [rst_controller:reset_in1, rst_controller_001:reset_in1]
@@ -557,7 +557,7 @@ module cpen391_group5_qsys (
 		.av_write_n     (~mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_write),      //                  .write_n
 		.av_writedata   (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_writedata),   //                  .writedata
 		.av_waitrequest (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_waitrequest), //                  .waitrequest
-		.av_irq         (irq_mapper_receiver1_irq)                                     //               irq.irq
+		.av_irq         (irq_mapper_receiver0_irq)                                     //               irq.irq
 	);
 
 	cpen391_group5_qsys_led_out_pio led_out_pio (
@@ -579,7 +579,7 @@ module cpen391_group5_qsys (
 		.readdata   (mm_interconnect_2_main_timer_s1_readdata),   //      .readdata
 		.chipselect (mm_interconnect_2_main_timer_s1_chipselect), //      .chipselect
 		.write_n    (~mm_interconnect_2_main_timer_s1_write),     //      .write_n
-		.irq        (irq_mapper_receiver2_irq)                    //   irq.irq
+		.irq        (irq_mapper_receiver1_irq)                    //   irq.irq
 	);
 
 	cpen391_group5_qsys_nios2 nios2 (
@@ -646,18 +646,20 @@ module cpen391_group5_qsys (
 	);
 
 	cpen391_group5_qsys_touchscreen_uart touchscreen_uart (
-		.clk        (clocks_sys_clk_clk),                                               //                clk.clk
-		.reset      (rst_controller_reset_out_reset),                                   //              reset.reset
-		.address    (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_address),    // avalon_rs232_slave.address
-		.chipselect (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_chipselect), //                   .chipselect
-		.byteenable (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_byteenable), //                   .byteenable
-		.read       (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_read),       //                   .read
-		.write      (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_write),      //                   .write
-		.writedata  (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_writedata),  //                   .writedata
-		.readdata   (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_readdata),   //                   .readdata
-		.irq        (irq_mapper_receiver0_irq),                                         //          interrupt.irq
-		.UART_RXD   (touchscreen_RXD),                                                  // external_interface.export
-		.UART_TXD   (touchscreen_TXD)                                                   //                   .export
+		.clk           (clocks_sys_clk_clk),                                  //                 clk.clk
+		.reset_n       (~rst_controller_reset_out_reset),                     //               reset.reset_n
+		.address       (mm_interconnect_2_touchscreen_uart_s1_address),       //                  s1.address
+		.begintransfer (mm_interconnect_2_touchscreen_uart_s1_begintransfer), //                    .begintransfer
+		.chipselect    (mm_interconnect_2_touchscreen_uart_s1_chipselect),    //                    .chipselect
+		.read_n        (~mm_interconnect_2_touchscreen_uart_s1_read),         //                    .read_n
+		.write_n       (~mm_interconnect_2_touchscreen_uart_s1_write),        //                    .write_n
+		.writedata     (mm_interconnect_2_touchscreen_uart_s1_writedata),     //                    .writedata
+		.readdata      (mm_interconnect_2_touchscreen_uart_s1_readdata),      //                    .readdata
+		.dataavailable (),                                                    //                    .dataavailable
+		.readyfordata  (),                                                    //                    .readyfordata
+		.rxd           (touchscreen_rxd),                                     // external_connection.export
+		.txd           (touchscreen_txd),                                     //                    .export
+		.irq           (irq_mapper_receiver2_irq)                             //                 irq.irq
 	);
 
 	cpen391_group5_qsys_mm_interconnect_0 mm_interconnect_0 (
@@ -767,13 +769,13 @@ module cpen391_group5_qsys (
 		.sdram_s1_chipselect                               (mm_interconnect_2_sdram_s1_chipselect),                               //                                       .chipselect
 		.switch_in_pio_s1_address                          (mm_interconnect_2_switch_in_pio_s1_address),                          //                       switch_in_pio_s1.address
 		.switch_in_pio_s1_readdata                         (mm_interconnect_2_switch_in_pio_s1_readdata),                         //                                       .readdata
-		.touchscreen_uart_avalon_rs232_slave_address       (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_address),       //    touchscreen_uart_avalon_rs232_slave.address
-		.touchscreen_uart_avalon_rs232_slave_write         (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_write),         //                                       .write
-		.touchscreen_uart_avalon_rs232_slave_read          (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_read),          //                                       .read
-		.touchscreen_uart_avalon_rs232_slave_readdata      (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_readdata),      //                                       .readdata
-		.touchscreen_uart_avalon_rs232_slave_writedata     (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_writedata),     //                                       .writedata
-		.touchscreen_uart_avalon_rs232_slave_byteenable    (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_byteenable),    //                                       .byteenable
-		.touchscreen_uart_avalon_rs232_slave_chipselect    (mm_interconnect_2_touchscreen_uart_avalon_rs232_slave_chipselect),    //                                       .chipselect
+		.touchscreen_uart_s1_address                       (mm_interconnect_2_touchscreen_uart_s1_address),                       //                    touchscreen_uart_s1.address
+		.touchscreen_uart_s1_write                         (mm_interconnect_2_touchscreen_uart_s1_write),                         //                                       .write
+		.touchscreen_uart_s1_read                          (mm_interconnect_2_touchscreen_uart_s1_read),                          //                                       .read
+		.touchscreen_uart_s1_readdata                      (mm_interconnect_2_touchscreen_uart_s1_readdata),                      //                                       .readdata
+		.touchscreen_uart_s1_writedata                     (mm_interconnect_2_touchscreen_uart_s1_writedata),                     //                                       .writedata
+		.touchscreen_uart_s1_begintransfer                 (mm_interconnect_2_touchscreen_uart_s1_begintransfer),                 //                                       .begintransfer
+		.touchscreen_uart_s1_chipselect                    (mm_interconnect_2_touchscreen_uart_s1_chipselect),                    //                                       .chipselect
 		.Video_Frame_Buffer_s2_address                     (mm_interconnect_2_video_frame_buffer_s2_address),                     //                  Video_Frame_Buffer_s2.address
 		.Video_Frame_Buffer_s2_write                       (mm_interconnect_2_video_frame_buffer_s2_write),                       //                                       .write
 		.Video_Frame_Buffer_s2_readdata                    (mm_interconnect_2_video_frame_buffer_s2_readdata),                    //                                       .readdata
