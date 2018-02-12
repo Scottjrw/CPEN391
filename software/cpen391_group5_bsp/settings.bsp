@@ -2,11 +2,11 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Feb 11, 2018 2:32:23 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1518388343113</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>./</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>11-Feb-2018 5:59:39 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1518400779524</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>C:\Users\Daniel\Desktop\CPEN391\software\cpen391_group5_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
-        <SopcDesignFile>../../cpen391_group5_qsys.sopcinfo</SopcDesignFile>
+        <SopcDesignFile>..\..\cpen391_group5_qsys.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>nios2</Cpu>
         <SchemaVersion>1.9</SchemaVersion>

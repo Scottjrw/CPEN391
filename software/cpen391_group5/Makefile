@@ -29,7 +29,7 @@ ALT_LDDEPS :=
 MAKEABLE_LIBRARY_ROOT_DIRS :=
 
 # Generic flags passed to the compiler for different types of input files.
-ALT_CFLAGS :=
+ALT_CFLAGS := -std=c++11
 ALT_CXXFLAGS := -std=c++11
 ALT_CPPFLAGS :=
 ALT_ASFLAGS :=
@@ -142,11 +142,12 @@ ACDS_VERSION := 15.0
 ELF := cpen391_group5.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS :=
-CXX_SRCS :=
+C_SRCS := libs/Fonts.c
 CXX_SRCS += main.cpp
 CXX_SRCS += vision.cpp
 CXX_SRCS += libs/SimpleGraphics.cpp
+CXX_SRCS += libs/UI.cpp
+CXX_SRCS += libs/touch.cpp
 ASM_SRCS :=
 
 
