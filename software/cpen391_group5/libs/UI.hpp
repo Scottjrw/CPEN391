@@ -103,6 +103,7 @@ public:
 protected:
     Point m_p1, m_p2;
     SimpleGraphics::rgba_t m_color;
+    bool m_is_Touchable;
 };
 
 /* ------------------------------------------------------------------
@@ -139,6 +140,7 @@ public:
 private:
     std::string m_text;
     SimpleGraphics::rgba_t m_text_color;
+    bool m_is_Touchable;
 };
 
 /* ------------------------------------------------------------------

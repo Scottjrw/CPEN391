@@ -12,7 +12,9 @@ Rectangle::Rectangle(SimpleGraphics &graphics, Point p1, Point p2, SimpleGraphic
     m_p1(p1),
     m_p2(p2),
     m_color(color)
-{}
+{
+    m_is_Touchable = 0;
+}
 
 void Rectangle::draw() {
 
@@ -53,7 +55,9 @@ Button::Button(SimpleGraphics &graphics, TouchControl &touch,
     Touchable(touch),
     m_text(text),
     m_text_color(text_color)
-{}
+{
+    m_is_Touchable = 1;
+}
 
 
 void Button::draw(){
