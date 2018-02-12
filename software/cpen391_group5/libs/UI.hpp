@@ -71,7 +71,7 @@ public:
      */
     virtual bool touch(Point p) = 0;
 
-    virtual ~Touchable(){};
+    virtual ~Touchable();
 
     /* 
      * Set the function to be called when touched
@@ -96,19 +96,18 @@ public:
     virtual void draw();
     virtual void undraw();
 
-    virtual ~Rectangle(){};
+    virtual ~Rectangle();
 
     Rectangle(SimpleGraphics &graphics, Point p1, Point p2, SimpleGraphics::rgba_t color);
 
 protected:
     Point m_p1, m_p2;
     SimpleGraphics::rgba_t m_color;
-    bool m_is_Touchable;
 };
 
 /* ------------------------------------------------------------------
  * Simple circle class
- */
+
 class Circle : public Drawable {
 public:
     virtual void draw();
@@ -123,6 +122,8 @@ private:
 
 };
 
+
+ */
 /* ------------------------------------------------------------------
  * Simple button class
  */
@@ -134,13 +135,12 @@ public:
     virtual void onTouch(TouchCB callback);
 
     Button(SimpleGraphics &graphics, TouchControl &touch,
-            Point p1, Point p2, std::string text, SimpleGraphics::rgba_t text_color,
+            Point p1, Point p2, std::string text, SimpleGraphics::rgba_t text_color, 
             SimpleGraphics::rgba_t background_color);
 
 private:
     std::string m_text;
     SimpleGraphics::rgba_t m_text_color;
-    bool m_is_Touchable;
 };
 
 /* ------------------------------------------------------------------
@@ -157,7 +157,7 @@ public:
 
     // expand the dropdown menu when m_expander is pressed
     void expand();
-
+    // close the dropdown menu when close button is clicked
     void close();
 
     /* 
@@ -166,7 +166,7 @@ public:
     void newItem(SimpleGraphics &graphics, TouchControl &touch, std::string text, SimpleGraphics::rgba_t text_color,
             SimpleGraphics::rgba_t background_color, TouchCB callback);
 
-    enum Expand { TOP, BOTTOM };
+    enum Expand { TOP, BOTTOM};
     DropdownMenu(SimpleGraphics &graphics, TouchControl &touch,
             Expand direction, Point p1, Point p2, std::string text, SimpleGraphics::rgba_t text_color,
             SimpleGraphics::rgba_t background_color);
@@ -177,7 +177,6 @@ private:
     Button m_expander;
     // List of buttons in the menu
     std::vector<Button> m_buttons;
-
     // Points that define m_expander
     Point m_p1, m_p2;
 };
