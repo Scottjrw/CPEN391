@@ -2,11 +2,11 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Feb 1, 2018 4:23:35 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1517531015183</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>C:\Users\Jingrui\Desktop\cpen391\CPEN391\software\cpen391_group5_bsp</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>Feb 11, 2018 2:32:23 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1518388343113</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>./</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
-        <SopcDesignFile>..\..\cpen391_group5_qsys.sopcinfo</SopcDesignFile>
+        <SopcDesignFile>../../cpen391_group5_qsys.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>nios2</Cpu>
         <SchemaVersion>1.9</SchemaVersion>
@@ -14,7 +14,7 @@
                 <SettingName>hal.sys_clk_timer</SettingName>
                 <Identifier>ALT_SYS_CLK</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>timer_1</Value>
+                <Value>main_timer</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of the system clock timer device. This device provides a periodic interrupt ("tick") and is typically required for RTOS use. This setting defines the value of ALT_SYS_CLK in system.h.</Description>
@@ -26,7 +26,7 @@
                 <SettingName>hal.timestamp_timer</SettingName>
                 <Identifier>ALT_TIMESTAMP_CLK</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>timer_1</Value>
+                <Value>main_timer</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of timestamp timer device. This device is used by Altera HAL timestamp drivers for high-resolution time measurement. This setting defines the value of ALT_TIMESTAMP_CLK in system.h.</Description>
@@ -863,30 +863,6 @@
                 <Group>none</Group>
         </Setting>
         <Setting>
-                <SettingName>altera_avalon_uart_driver.enable_small_driver</SettingName>
-                <Identifier>ALTERA_AVALON_UART_SMALL</Identifier>
-                <Type>BooleanDefineOnly</Type>
-                <Value>false</Value>
-                <DefaultValue>false</DefaultValue>
-                <DestinationFile>public_mk_define</DestinationFile>
-                <Description>Small-footprint (polled mode) driver</Description>
-                <Restrictions>none</Restrictions>
-                <Enabled>false</Enabled>
-                <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
-        </Setting>
-        <Setting>
-                <SettingName>altera_avalon_uart_driver.enable_ioctl</SettingName>
-                <Identifier>ALTERA_AVALON_UART_USE_IOCTL</Identifier>
-                <Type>BooleanDefineOnly</Type>
-                <Value>false</Value>
-                <DefaultValue>false</DefaultValue>
-                <DestinationFile>public_mk_define</DestinationFile>
-                <Description>Enable driver ioctl() support. This feature is not compatible with the 'small' driver; ioctl() support will not be compiled if either the UART 'enable_small_driver' or HAL 'enable_reduced_device_drivers' settings are enabled.</Description>
-                <Restrictions>none</Restrictions>
-                <Enabled>false</Enabled>
-                <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
-        </Setting>
-        <Setting>
                 <SettingName>altera_avalon_jtag_uart_driver.enable_small_driver</SettingName>
                 <Identifier>ALTERA_AVALON_JTAG_UART_SMALL</Identifier>
                 <Type>BooleanDefineOnly</Type>
@@ -923,50 +899,50 @@
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>timer_1</slaveDescriptor>
-                <addressRange>0x000A1000 - 0x000A101F</addressRange>
+                <slaveDescriptor>main_timer</slaveDescriptor>
+                <addressRange>0x00091000 - 0x0009101F</addressRange>
                 <addressSpan>32</addressSpan>
                 <attributes>timer</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>touchscreen_uart</slaveDescriptor>
-                <addressRange>0x000A1020 - 0x000A103F</addressRange>
-                <addressSpan>32</addressSpan>
-                <attributes>printable</attributes>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>Draw_DMA</slaveDescriptor>
-                <addressRange>0x000A1040 - 0x000A104F</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
                 <slaveDescriptor>switch_in_pio</slaveDescriptor>
-                <addressRange>0x000A1050 - 0x000A105F</addressRange>
+                <addressRange>0x00091020 - 0x0009102F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>led_out_pio</slaveDescriptor>
-                <addressRange>0x000A1060 - 0x000A106F</addressRange>
+                <addressRange>0x00091030 - 0x0009103F</addressRange>
+                <addressSpan>16</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>Draw_DMA</slaveDescriptor>
+                <addressRange>0x00091040 - 0x0009104F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>Video_Out_DMA</slaveDescriptor>
-                <addressRange>0x000A1070 - 0x000A107F</addressRange>
+                <addressRange>0x00091050 - 0x0009105F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>Video_In_DMA</slaveDescriptor>
-                <addressRange>0x000A1080 - 0x000A108F</addressRange>
+                <addressRange>0x00091060 - 0x0009106F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
+                <slaveDescriptor>touchscreen_uart</slaveDescriptor>
+                <addressRange>0x00091070 - 0x00091077</addressRange>
+                <addressSpan>8</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
                 <slaveDescriptor>jtag_uart_0</slaveDescriptor>
-                <addressRange>0x000A1090 - 0x000A1097</addressRange>
+                <addressRange>0x00091078 - 0x0009107F</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>

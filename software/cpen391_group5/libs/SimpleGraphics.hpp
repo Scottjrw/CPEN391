@@ -10,8 +10,7 @@ class SimpleGraphics {
 public:
     typedef uint16_t rgba_t;
     
-    inline rgba_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-        const unsigned int pixel_bits = 16;
+    static constexpr rgba_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
         return (convert_8bit(b, pixel_bits))
             | (convert_8bit(g, pixel_bits) << pixel_bits / 4)
             | (convert_8bit(r, pixel_bits) << (2 * pixel_bits / 4))
@@ -46,6 +45,7 @@ private:
     rgba_t *const m_max_addr;
     const unsigned int m_width, m_height;
 
+    static constexpr unsigned pixel_bits = sizeof(rgba_t) * 8;
     static constexpr uint32_t convert_8bit(uint8_t val, unsigned int pixel_bits) {
         return ((val >> (8 - pixel_bits / 4)) & ((1 << pixel_bits / 4) - 1));
     }

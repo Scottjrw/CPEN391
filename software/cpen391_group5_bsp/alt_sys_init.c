@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Tue Jan 30 14:44:44 PST 2018
+ * Generated: Sun Feb 11 14:32:06 PST 2018
  */
 
 /*
@@ -61,7 +61,7 @@
 #include "altera_nios2_qsys_irq.h"
 #include "altera_avalon_jtag_uart.h"
 #include "altera_avalon_timer.h"
-#include "altera_avalon_uart.h"
+#include "altera_up_avalon_rs232.h"
 
 /*
  * Allocate the device storage
@@ -69,8 +69,8 @@
 
 ALTERA_NIOS2_QSYS_IRQ_INSTANCE ( NIOS2, nios2);
 ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG_UART_0, jtag_uart_0);
-ALTERA_AVALON_TIMER_INSTANCE ( TIMER_1, timer_1);
-ALTERA_AVALON_UART_INSTANCE ( TOUCHSCREEN_UART, touchscreen_uart);
+ALTERA_AVALON_TIMER_INSTANCE ( MAIN_TIMER, main_timer);
+ALTERA_UP_AVALON_RS232_INSTANCE ( TOUCHSCREEN_UART, touchscreen_uart);
 
 /*
  * Initialize the interrupt controller devices
@@ -93,7 +93,7 @@ void alt_irq_init ( const void* base )
 
 void alt_sys_init( void )
 {
-    ALTERA_AVALON_TIMER_INIT ( TIMER_1, timer_1);
+    ALTERA_AVALON_TIMER_INIT ( MAIN_TIMER, main_timer);
     ALTERA_AVALON_JTAG_UART_INIT ( JTAG_UART_0, jtag_uart_0);
-    ALTERA_AVALON_UART_INIT ( TOUCHSCREEN_UART, touchscreen_uart);
+    ALTERA_UP_AVALON_RS232_INIT ( TOUCHSCREEN_UART, touchscreen_uart);
 }

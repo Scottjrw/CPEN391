@@ -1,9 +1,10 @@
-#include <stdio.h>
+#include <functional>
+#include <iostream>
 #include <assert.h>
 #include "system.h"
 #include "sys/alt_alarm.h"
 #include "sys/alt_timestamp.h"
-#include "touch.h"
+#include "touch.hpp"
 #include "io.h"
 #include "SimpleGraphics.hpp"
 
@@ -12,100 +13,57 @@
 #define SG_MAX_WIDTH 160
 #define SG_MAX_HEIGHT 120
 
-SimpleGraphics<uint16_t, SG_MAX_WIDTH, SG_MAX_HEIGHT, TOUCH_MAX, TOUCH_MAX> graphics(reinterpret_cast<uint16_t *>(DRAW_BUFFER_BASE));
-
-touch_message send_buf;
-touch_message recv_buf;
-
-FILE *ts_uart = NULL;
-
-void print_response(touch_message *response);
 
 int main(void) {
-    printf("Starting\n");
+    SimpleGraphics graphics(reinterpret_cast<SimpleGraphics::rgba_t *>(DRAW_BUFFER_BASE), 
+            SG_MAX_WIDTH, SG_MAX_HEIGHT);
 
-    ts_uart = fopen(TOUCHSCREEN_UART_NAME, "r+");
+    TouchControl touch(TOUCHSCREEN_UART_NAME, TOUCHSCREEN_UART_IRQ, TOUCHSCREEN_UART_IRQ_INTERRUPT_CONTROLLER_ID,
+            SG_MAX_WIDTH, SG_MAX_HEIGHT, true);
 
-    if (ts_uart == NULL) {
-        printf("Failed to open UART device\n");
-        while (1);
-    }
+    std::cout << "Starting" << std::endl;
 
-    graphics.draw_rect(graphics.rgba(0, 0, 0, 0));
+    graphics.draw_rect(graphics.rgba(0, 0, 0, 255), 0, 0, SG_MAX_WIDTH, SG_MAX_HEIGHT);
 
     // Setting switch 0 will go into calibration mode
     if (IORD_8DIRECT(SWITCH_IN_PIO_BASE, 0) & 0x1) {
-        printf("Calibration Mode\n");
-        printf("Touch the 4 dots in order\n");
-        touch_mk_command(&send_buf, TOUCH_CMND_TOUCH_DISABLE, 1);
-        touch_send(ts_uart, &send_buf);
+        unsigned cal_count = 0;
+        volatile bool done = false;
 
-        touch_mk_command(&send_buf, TOUCH_CMND_CALIBRATE, 2);
-        send_buf.DATA.command.D[0] = 0x1; // 4 Point Calibration
-        touch_send(ts_uart, &send_buf);
-        touch_recv(ts_uart, &recv_buf);
-        touch_print(&recv_buf);
+        auto cb = [&cal_count, &done] (TouchControl *, TouchUart::message *msg) -> void {
+            assert(msg->TYPE == TouchUart::MESSAGE);
+            assert(msg->body.response.CMND == TouchUart::CALIBRATE);
+            assert(msg->body.response.STATUS = TouchUart::OK);
 
-        if (recv_buf.DATA.response.STATUS == TOUCH_STATUS_CAL_CANCEL) {
-            touch_recv(ts_uart, &recv_buf);
-            touch_print(&recv_buf);
-        }
-
-        for (int i = 0; i < 4; i++) {
-            touch_recv(ts_uart, &recv_buf);
-
-            if (recv_buf.DATA.response.CMND == TOUCH_CMND_CALIBRATE &&
-                    recv_buf.DATA.response.STATUS == TOUCH_STATUS_OK) {
-
-                printf("Received Point %d / 4\n", i + 1);
+            if (cal_count == 0) {
+                TouchControl::print(msg);
+            } else if (cal_count <= 4) {
+                std::cout << "Got Point #" << cal_count << std::endl;
             } else {
-                printf("Bad Response:\n");
+                done = true;
             }
-            touch_print(&recv_buf);
-        }
+        };
 
-        printf("Calibration Done\n");
+        touch.setMessageCB(cb);
+        while (!done) {
+            touch.poll();
+        }
+        std::cout << "Done Calibration" << std::endl;
     }
 
-    touch_mk_command(&send_buf, TOUCH_CMND_TOUCH_ENABLE, 1);
-    touch_send(ts_uart, &send_buf);
+    auto touchCB = [] (TouchControl *, unsigned x, unsigned y) -> void {
+        std::cout << "TOUCH X: " << x << " Y: " << y << std::endl;;
+    };
 
-    while (1) {
-        touch_recv(ts_uart, &recv_buf);
-        if (recv_buf.SYNC == TOUCH_SYNC)
-            touch_print(&recv_buf);
+    touch.setMessageCB(TouchControl::printCB);
+    touch.setTouchCB(touchCB);
+    touch.touch_enable();
+    touch.startIRQ();
+    std::cout << "Running" << std::endl;
+
+    while (1) { 
+        //touch.poll();
     }
 
     return 0;
 }
-
-void touch_response(touch_message *msg) {
-
-}
-
-uint32_t last_pen_up_time = 0;
-void touch_pen_up(unsigned int x, unsigned int y) {
-    static unsigned int last_x = 0, last_y = 0;
-
-    //if (touch_debounce(&last_pen_up_time, DEBOUNCE_MS)) {
-    if (touch_debounce(&last_pen_up_time, 100)) {
-        unsigned int nx = TOUCH_COORD(x, SG_MAX_WIDTH), ny = TOUCH_COORD(y, SG_MAX_HEIGHT);
-
-        printf("TOUCH UP %d %d\n", nx, ny);
-    }
-}
-unsigned int last_x = 0, last_y = 0;
-
-uint32_t last_pen_down_time = 0;
-void touch_pen_down(unsigned int x, unsigned int y) {
-    static unsigned int last_x = 0, last_y = 0;
-
-    //if (touch_debounce(&last_pen_down_time, DEBOUNCE_MS)) {
-    if (touch_debounce(&last_pen_down_time, 100)) {
-        graphics.draw_cross(graphics.rgba(255, 0, 0, 255), x, y, 3);
-        unsigned int nx = TOUCH_COORD(x, SG_MAX_WIDTH), ny = TOUCH_COORD(y, SG_MAX_HEIGHT);
-
-        printf("TOUCH DOWN %d %d\n", nx, ny);
-    }
-}
-

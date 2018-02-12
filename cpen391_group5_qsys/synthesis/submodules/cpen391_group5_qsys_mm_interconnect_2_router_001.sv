@@ -47,7 +47,7 @@ module cpen391_group5_qsys_mm_interconnect_2_router_001_default_decode
      parameter DEFAULT_CHANNEL = 1,
                DEFAULT_WR_CHANNEL = -1,
                DEFAULT_RD_CHANNEL = -1,
-               DEFAULT_DESTID = 8 
+               DEFAULT_DESTID = 9 
    )
   (output [95 - 92 : 0] default_destination_id,
    output [12-1 : 0] default_wr_channel,
@@ -134,7 +134,7 @@ module cpen391_group5_qsys_mm_interconnect_2_router_001
     // Figure out the number of bits to mask off for each slave span
     // during address decoding
     // -------------------------------------------------------
-    localparam PAD0 = log2ceil(64'ha1000 - 64'ha0800); 
+    localparam PAD0 = log2ceil(64'h91000 - 64'h90800); 
     localparam PAD1 = log2ceil(64'hc000000 - 64'h8000000); 
     // -------------------------------------------------------
     // Work out which address bits are significant based on the
@@ -189,16 +189,16 @@ module cpen391_group5_qsys_mm_interconnect_2_router_001
         // Sets the channel and destination ID based on the address
         // --------------------------------------------------
 
-    // ( 0xa0800 .. 0xa1000 )
-    if ( {address[RG:PAD0],{PAD0{1'b0}}} == 28'ha0800   ) begin
+    // ( 0x90800 .. 0x91000 )
+    if ( {address[RG:PAD0],{PAD0{1'b0}}} == 28'h90800   ) begin
             src_channel = 12'b01;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 7;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 8;
     end
 
     // ( 0x8000000 .. 0xc000000 )
     if ( {address[RG:PAD1],{PAD1{1'b0}}} == 28'h8000000   ) begin
             src_channel = 12'b10;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 8;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 9;
     end
 
 end

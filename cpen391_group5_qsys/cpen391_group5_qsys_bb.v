@@ -14,8 +14,8 @@ module cpen391_group5_qsys (
 	sdram_wire_ras_n,
 	sdram_wire_we_n,
 	switch_in_export,
-	touchscreen_rxd,
-	touchscreen_txd,
+	touchscreen_RXD,
+	touchscreen_TXD,
 	vga_controller_CLK,
 	vga_controller_HS,
 	vga_controller_VS,
@@ -46,8 +46,8 @@ module cpen391_group5_qsys (
 	output		sdram_wire_ras_n;
 	output		sdram_wire_we_n;
 	input	[7:0]	switch_in_export;
-	input		touchscreen_rxd;
-	output		touchscreen_txd;
+	input		touchscreen_RXD;
+	output		touchscreen_TXD;
 	output		vga_controller_CLK;
 	output		vga_controller_HS;
 	output		vga_controller_VS;

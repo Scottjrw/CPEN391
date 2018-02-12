@@ -98,7 +98,7 @@ ACDS_VERSION := 15.0
 
 # This following BUILD_NUMBER comment indicates the build number of the tool 
 # used to generate this makefile. 
-# BUILD_NUMBER: 145
+# BUILD_NUMBER: 153
 
 SETTINGS_FILE := settings.bsp
 SOPC_FILE := ../../cpen391_group5_qsys.sopcinfo
@@ -232,17 +232,6 @@ altera_avalon_timer_driver_C_LIB_SRCS := \
 	$(altera_avalon_timer_driver_SRCS_ROOT)/src/altera_avalon_timer_ts.c \
 	$(altera_avalon_timer_driver_SRCS_ROOT)/src/altera_avalon_timer_vars.c
 
-# altera_avalon_uart_driver sources root 
-altera_avalon_uart_driver_SRCS_ROOT := drivers
-
-# altera_avalon_uart_driver sources 
-altera_avalon_uart_driver_C_LIB_SRCS := \
-	$(altera_avalon_uart_driver_SRCS_ROOT)/src/altera_avalon_uart_fd.c \
-	$(altera_avalon_uart_driver_SRCS_ROOT)/src/altera_avalon_uart_init.c \
-	$(altera_avalon_uart_driver_SRCS_ROOT)/src/altera_avalon_uart_ioctl.c \
-	$(altera_avalon_uart_driver_SRCS_ROOT)/src/altera_avalon_uart_read.c \
-	$(altera_avalon_uart_driver_SRCS_ROOT)/src/altera_avalon_uart_write.c
-
 # altera_nios2_qsys_hal_driver sources root 
 altera_nios2_qsys_hal_driver_SRCS_ROOT := HAL
 
@@ -338,14 +327,21 @@ hal_C_LIB_SRCS := \
 	$(hal_SRCS_ROOT)/src/alt_wait.c \
 	$(hal_SRCS_ROOT)/src/alt_write.c
 
+# up_avalon_rs232_driver sources root 
+up_avalon_rs232_driver_SRCS_ROOT := drivers
+
+# up_avalon_rs232_driver sources 
+up_avalon_rs232_driver_C_LIB_SRCS := \
+	$(up_avalon_rs232_driver_SRCS_ROOT)/src/altera_up_avalon_rs232.c
+
 
 # Assemble all component C source files 
 COMPONENT_C_LIB_SRCS += \
 	$(altera_avalon_jtag_uart_driver_C_LIB_SRCS) \
 	$(altera_avalon_timer_driver_C_LIB_SRCS) \
-	$(altera_avalon_uart_driver_C_LIB_SRCS) \
 	$(altera_nios2_qsys_hal_driver_C_LIB_SRCS) \
-	$(hal_C_LIB_SRCS)
+	$(hal_C_LIB_SRCS) \
+	$(up_avalon_rs232_driver_C_LIB_SRCS)
 
 # Assemble all component assembly source files 
 COMPONENT_ASM_LIB_SRCS += \

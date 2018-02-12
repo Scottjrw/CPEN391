@@ -48,8 +48,8 @@ agreement for further details.
 	(port
 		(pt 0 400)
 		(input)
-		(text "touchscreen_rxd" (rect 0 0 67 12)(font "Arial" (font_size 8)))
-		(text "touchscreen_rxd" (rect 4 389 94 400)(font "Arial" (font_size 8)))
+		(text "touchscreen_RXD" (rect 0 0 75 12)(font "Arial" (font_size 8)))
+		(text "touchscreen_RXD" (rect 4 389 94 400)(font "Arial" (font_size 8)))
 		(line (pt 0 400)(pt 176 400)(line_width 1))
 	)
 	(port
@@ -160,8 +160,8 @@ agreement for further details.
 	(port
 		(pt 0 416)
 		(output)
-		(text "touchscreen_txd" (rect 0 0 66 12)(font "Arial" (font_size 8)))
-		(text "touchscreen_txd" (rect 4 405 94 416)(font "Arial" (font_size 8)))
+		(text "touchscreen_TXD" (rect 0 0 73 12)(font "Arial" (font_size 8)))
+		(text "touchscreen_TXD" (rect 4 405 94 416)(font "Arial" (font_size 8)))
 		(line (pt 0 416)(pt 176 416)(line_width 1))
 	)
 	(port
@@ -263,8 +263,8 @@ agreement for further details.
 		(text "switch_in" (rect 122 331 298 675)(font "Arial" (color 128 0 0)(font_size 9)))
 		(text "export" (rect 181 355 398 720)(font "Arial" (color 0 0 0)))
 		(text "touchscreen" (rect 107 371 280 755)(font "Arial" (color 128 0 0)(font_size 9)))
-		(text "rxd" (rect 181 395 380 800)(font "Arial" (color 0 0 0)))
-		(text "txd" (rect 181 411 380 832)(font "Arial" (color 0 0 0)))
+		(text "RXD" (rect 181 395 380 800)(font "Arial" (color 0 0 0)))
+		(text "TXD" (rect 181 411 380 832)(font "Arial" (color 0 0 0)))
 		(text "vga_controller" (rect 95 427 274 867)(font "Arial" (color 128 0 0)(font_size 9)))
 		(text "CLK" (rect 181 451 380 912)(font "Arial" (color 0 0 0)))
 		(text "HS" (rect 181 467 374 944)(font "Arial" (color 0 0 0)))

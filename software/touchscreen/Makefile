@@ -4,7 +4,7 @@
 
 # List of include directories for -I compiler option (-I added when used).
 # Includes the BSP.
-ALT_INCLUDE_DIRS :=
+ALT_INCLUDE_DIRS := libs
 
 # List of library directories for -L linker option (-L added when used).
 # Includes the BSP.
@@ -142,8 +142,10 @@ ACDS_VERSION := 15.0
 ELF := touchscreen.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS := touch.c
+C_SRCS :=
 CXX_SRCS := main.cpp
+CXX_SRCS += ./libs/SimpleGraphics.cpp
+CXX_SRCS += ./libs/touch.cpp
 ASM_SRCS :=
 
 # Path to root of object file tree.
@@ -161,7 +163,7 @@ CREATE_LINKER_MAP := 1
 # Common arguments for ALT_CFLAGSs
 APP_CFLAGS_DEFINED_SYMBOLS :=
 APP_CFLAGS_UNDEFINED_SYMBOLS :=
-APP_CFLAGS_OPTIMIZATION := -O1
+APP_CFLAGS_OPTIMIZATION := -O3
 APP_CFLAGS_DEBUG_LEVEL := -g
 APP_CFLAGS_WARNINGS := -Wall
 APP_CFLAGS_USER_FLAGS :=
