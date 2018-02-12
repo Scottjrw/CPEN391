@@ -1,9 +1,12 @@
 #include <functional>
+#include <fstream>
 #include <iostream>
 #include <assert.h>
 #include "system.h"
 #include <sys/alt_alarm.h>
-#include "sys/alt_timestamp.h"
+#include <sys/alt_timestamp.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include "touch.hpp"
 #include "io.h"
 #include "SimpleGraphics.hpp"
@@ -53,30 +56,31 @@ int main(void) {
 
     std::cout << "Starting" << std::endl;
 
-    graphics.draw_rect(graphics.rgba(0, 0, 0, 255), 0, 0, SG_MAX_WIDTH, SG_MAX_HEIGHT);
-
-    screen.enable_touch();
-
-    screen.draw();
-
-    while (1) { 
-        touch.poll();
-    }
-#if 0
-    // Setting switch 0 will go into calibration mode
+        // Setting switch 0 will go into calibration mode
     if (IORD_8DIRECT(SWITCH_IN_PIO_BASE, 0) & 0x1) {
-        unsigned cal_count = 0;
+        std::cout << "Calibrating" << std::endl;
+        constexpr unsigned FROM_EDGE_X = 18;
+        constexpr unsigned FROM_EDGE_Y = 22;
+        constexpr unsigned FROM_EDGE_X_2 = SG_MAX_WIDTH - FROM_EDGE_X;
+        constexpr unsigned FROM_EDGE_Y_2 = SG_MAX_HEIGHT - FROM_EDGE_X;
+        graphics.draw_rect(SimpleGraphics::rgba(0, 0, 0, 255), 0, 0, SG_MAX_WIDTH, SG_MAX_HEIGHT);
+        graphics.draw_x(SimpleGraphics::rgba(255, 255, 255 ,255), FROM_EDGE_X, FROM_EDGE_Y, 2);
+        graphics.draw_char(SimpleGraphics::rgba(255, 255, 255 ,255), FROM_EDGE_X + 2, FROM_EDGE_Y + 2, '1');
+        graphics.draw_x(SimpleGraphics::rgba(255, 255, 255 ,255), FROM_EDGE_X_2, FROM_EDGE_Y, 2);
+        graphics.draw_char(SimpleGraphics::rgba(255, 255, 255 ,255), FROM_EDGE_X_2 + 2, FROM_EDGE_Y + 2, '2');
+        graphics.draw_x(SimpleGraphics::rgba(255, 255, 255 ,255), FROM_EDGE_X, FROM_EDGE_Y_2, 2);
+        graphics.draw_char(SimpleGraphics::rgba(255, 255, 255 ,255), FROM_EDGE_X + 2, FROM_EDGE_Y_2 + 2, '3');
+        graphics.draw_x(SimpleGraphics::rgba(255, 255, 255 ,255), FROM_EDGE_X_2, FROM_EDGE_Y_2, 2);
+        graphics.draw_char(SimpleGraphics::rgba(255, 255, 255 ,255), FROM_EDGE_X_2 + 2, FROM_EDGE_Y_2 + 2, '4');
+        unsigned cal_count = 1;
         volatile bool done = false;
 
         auto cb = [&cal_count, &done] (TouchControl *, TouchUart::message *msg) -> void {
             //assert(msg->TYPE == TouchUart::MESSAGE);
             //assert(msg->body.response.CMND == TouchUart::CALIBRATE);
             //assert(msg->body.response.STATUS = TouchUart::OK);
-            std:: cout << "Hello" << std::endl;
 
-            if (cal_count == 0) {
-                TouchControl::print(msg);
-            } else if (cal_count <= 4) {
+            if (cal_count <= 4) {
                 TouchControl::print(msg);
                 std::cout << "Got Point #" << cal_count << std::endl;
             } else {
@@ -84,30 +88,33 @@ int main(void) {
             }
         };
 
-        touch.setMessageCB(cb);
+        touch.setMessageCB(touch.printCB);
         touch.touch_disable();
         touch.poll();
+
         touch.calibrate();
+        touch.poll();
+
+        touch.setMessageCB(cb);
         while (!done) {
             touch.poll();
         }
         std::cout << "Done Calibration" << std::endl;
     }
+    
+    graphics.draw_rect(graphics.rgba(0, 0, 0, 255), 0, 0, SG_MAX_WIDTH, SG_MAX_HEIGHT);
 
-    auto touchCB = [&graphics] (TouchControl *, unsigned x, unsigned y) -> void {
-        std::cout << "TOUCH X: " << x << " Y: " << y << std::endl;;
-        graphics.draw_x(SimpleGraphics::rgba(0, 255, 0, 255), x, y, 4);
-    };
+    screen.draw();
 
-    touch.setMessageCB(TouchControl::printCB);
-    touch.setTouchCB(touchCB);
+    screen.enable_touch();
+
     touch.touch_enable();
+
     std::cout << "Running" << std::endl;
 
     while (1) { 
-        touch.poll();
+        touch.trypoll();
     }
-#endif
 
     return 0;
 }

@@ -6,7 +6,7 @@ using namespace TouchUart;
 
 TouchControl::TouchControl(const char *uart_name, alt_u32 alt_irq_id, alt_u32 alt_ic_id,
         unsigned x_max, unsigned y_max, bool debounce):
-    m_uart(fopen(uart_name, "r+")),
+    m_uart(open(uart_name, O_RDWR | O_APPEND | O_NONBLOCK)),
     m_irq_id(alt_irq_id),
     m_ic_id(alt_ic_id),
     m_recv_buf(),
@@ -18,7 +18,7 @@ TouchControl::TouchControl(const char *uart_name, alt_u32 alt_irq_id, alt_u32 al
     m_debounce(debounce)
 {
     m_recv_buf.TYPE = INVALID;
-    assert(m_uart != NULL);
+    assert(m_uart >= 0);
 }
 
 void TouchControl::touch_enable() {
@@ -52,8 +52,8 @@ void TouchControl::calibrate(unsigned int mode) {
     send(msg);
 }
 
-void TouchControl::startIRQ() {
 #ifdef TOUCH_UP_RS232
+void TouchControl::startIRQ() {
     // Enable Interrupt on CPU
 #ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
     assert(m_ic_id != -1);
@@ -64,10 +64,8 @@ void TouchControl::startIRQ() {
 
     // Enable interrupt on UART module
     alt_up_rs232_enable_read_interrupt(m_uart);
-#else
-    throw std::logic_error("No IRQ Available");
-#endif
 }
+#endif
 
 void TouchControl::poll() {
     do {
@@ -81,10 +79,26 @@ void TouchControl::poll() {
             recv(val);
         }
 #else
-        recv(fgetc(m_uart));
+        char val;
+        int num_rd = read(m_uart, &val, 1);
+
+        if (num_rd == 1)
+            recv(val);
 #endif
     } while (m_recv_index != 0);
 }
+
+#ifndef TOUCH_UP_RS232
+void TouchControl::trypoll() {
+    int num_rd;
+    char buf[RECV_BYTES];
+
+    while ((num_rd = read(m_uart, buf, RECV_BYTES)) > 0) {
+        for (int i = 0 ; i < num_rd; i++)
+            recv(buf[i]);
+    }
+}
+#endif
 
 void TouchControl::send(const message &msg) {
     assert(msg.body.command.SIZE >= 1);
@@ -99,8 +113,8 @@ void TouchControl::send(const message &msg) {
         assert(status == 0);
     }
 #else
-    int status = fwrite(msg_arr, msg.body.command.SIZE + 2, 1, m_uart);
-    assert(status == 1);
+    int status = write(m_uart, msg_arr, msg.body.command.SIZE + 2);
+    assert(status == msg.body.command.SIZE + 2);
 #endif
 }
 
