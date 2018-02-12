@@ -21,11 +21,10 @@ void Screen::draw() {
 	for (int i = 0; i < (int)drawables.size(); i++) {
 		drawables[i]->draw();
 	}
-
 }
 
 void Screen::enable_touch() {
-	m_touch.setTouchCB([](TouchControl *, unsigned x, unsigned y) {
+	m_touch.setTouchCB([this](TouchControl *, unsigned x, unsigned y) {
 		Point p = {x, y};
 		for (auto touch : touchables) {
 			if (touch->touch(p)) break;
@@ -40,10 +39,10 @@ void Screen::clear() {
 }
 
 
-void Screen::addElement(Drawable* element) {
+void Screen::addDrawable(Drawable* element) {
 	drawables.push_back(element);
 }
 
-void Screen::addElement(Touchable* element) {
+void Screen::addTouchable(Touchable* element) {
 	touchables.push_back(element);
 }

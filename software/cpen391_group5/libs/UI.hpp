@@ -8,9 +8,8 @@
 #include <stdexcept>
 #include <utility>
 #include "SimpleGraphics.hpp"
+#include "touch.hpp"
 
-// TODO: Finish touch
-class TouchControl;
 
 namespace UI {
 
@@ -103,24 +102,6 @@ public:
 protected:
     Point m_p1, m_p2;
     SimpleGraphics::rgba_t m_color;
-    bool m_is_Touchable;
-};
-
-/* ------------------------------------------------------------------
- * Simple circle class
- */
-class Circle : public Drawable {
-public:
-    virtual void draw();
-    virtual void undraw();
-
-    Circle(SimpleGraphics &graphics, Point center, unsigned radius, SimpleGraphics::rgba_t color);
-
-private:
-    Point m_center;
-    unsigned m_radius;
-    SimpleGraphics::rgba_t m_color;
-
 };
 
 /* ------------------------------------------------------------------
@@ -141,7 +122,6 @@ private:
     std::string m_text;
     SimpleGraphics::rgba_t m_text_color;
     TouchCB m_cb;
-    bool m_is_Touchable;
 };
 
 /* ------------------------------------------------------------------

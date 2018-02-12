@@ -1,3 +1,5 @@
+#ifndef SCREEN_HPP
+#define SCREEN_HPP
 /*
  * screen.hpp
  *
@@ -21,35 +23,28 @@ public:
 	/*
 	 * draw all elements part of the screen
 	 */
-	void draw();
+	virtual void draw();
 
 	/*
 	 * clear all the elements part of the screen
 	 */
 	void clear();
 
+    virtual bool touch(Point p) { throw std::logic_error("Cannot Touch Screen"); }
 
 	void enable_touch();
 	/*
 	 * add an element to the screen
 	 */
-	void addElement(Drawable* element);
+	void addDrawable(Drawable* element);
 
-	/*
-	 * add an element to the screen
-	 */
-	void addElement(Touchable* element);
+	void addTouchable(Touchable* element);
 
 	Screen(SimpleGraphics &graphics, TouchControl &touch);
-
-
-
 
 private:
 	std::vector<Drawable*> drawables;
 	std::vector<Touchable*> touchables;
-
-
 
 };
 

@@ -12,9 +12,7 @@ Rectangle::Rectangle(SimpleGraphics &graphics, Point p1, Point p2, SimpleGraphic
     m_p1(p1),
     m_p2(p2),
     m_color(color)
-{
-    m_is_Touchable = 0;
-}
+{}
 
 void Rectangle::draw() {
 
@@ -31,22 +29,6 @@ void Rectangle::undraw() {
 
 
 
-Circle::Circle(SimpleGraphics &graphics, Point center, unsigned radius, SimpleGraphics::rgba_t color):
-    Drawable(graphics),
-    m_center(center),
-    m_radius(radius),
-    m_color(color)
-{}
-
-void Circle::draw() {
-
-}
-
-void Circle::undraw() {
-
-}
-
-
 
 Button::Button(SimpleGraphics &graphics, TouchControl &touch,
         Point p1, Point p2, std::string text, SimpleGraphics::rgba_t text_color,
@@ -56,17 +38,30 @@ Button::Button(SimpleGraphics &graphics, TouchControl &touch,
     m_text(text),
     m_text_color(text_color),
     m_cb(nullptr)
-{
-    m_is_Touchable = 1;
-}
+{ }
 
 
 void Button::draw(){
 	Rectangle::draw();
     // display the name of the button
+	unsigned remaining_space_x;
+	unsigned text_width = 5*m_text.length();
 
-    unsigned strStartXPos = (((m_p2.x - m_p1.x) - m_text.length())/2) + m_p1.x;
-    unsigned strStartYPos = (((m_p2.y - m_p1.y) - CHAR_HEIGHT)/2) +  m_p1.y;
+	if ((m_p2.x - m_p1.x) > text_width) {
+		remaining_space_x = (m_p2.x - m_p1.x) - text_width;
+	} else
+		remaining_space_x = 4;
+
+    unsigned strStartXPos = (remaining_space_x/2) + m_p1.x;
+
+	unsigned remaining_space_y;
+
+	if ((m_p2.y - m_p1.y) > CHAR_HEIGHT) {
+		remaining_space_y = (m_p2.y - m_p1.y) - CHAR_HEIGHT;
+	} else
+		remaining_space_y = 4;
+
+    unsigned strStartYPos = (remaining_space_y/2) +  m_p1.y;
 
     m_graphics.draw_string(m_text_color, strStartXPos, strStartYPos, m_text);
 

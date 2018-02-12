@@ -146,6 +146,8 @@ C_SRCS :=
 CXX_SRCS := main.cpp
 CXX_SRCS += ./libs/SimpleGraphics.cpp
 CXX_SRCS += ./libs/touch.cpp
+CXX_SRCS += ./libs/screen.cpp
+CXX_SRCS += ./libs/UI.cpp
 ASM_SRCS :=
 
 # Path to root of object file tree.
