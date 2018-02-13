@@ -7,10 +7,9 @@
 #include "main.hpp"
 #include "SimpleGraphics.hpp"
 
-
 int main(int argc, const char * argv[]) {
     struct point prev, cur;
-    
+
     while(1) {
         //unsigned start = alt_nticks();
         find_dots(&cur);

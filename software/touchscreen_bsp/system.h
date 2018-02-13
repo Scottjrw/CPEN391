@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Sun Feb 11 18:49:06 PST 2018
+ * Generated: Mon Feb 12 16:37:10 PST 2018
  */
 
 /*
@@ -135,6 +135,7 @@
 #define __ALTERA_AVALON_UART
 #define __ALTERA_NIOS2_QSYS
 #define __ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER
+#define __NEW_COMPONENT
 
 
 /*
@@ -352,6 +353,20 @@
 #define MAIN_TIMER_TICKS_PER_SEC 1000
 #define MAIN_TIMER_TIMEOUT_PULSE_OUTPUT 0
 #define MAIN_TIMER_TYPE "altera_avalon_timer"
+
+
+/*
+ * new_component_0 configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_new_component_0 new_component
+#define NEW_COMPONENT_0_BASE 0x4000000
+#define NEW_COMPONENT_0_IRQ -1
+#define NEW_COMPONENT_0_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define NEW_COMPONENT_0_NAME "/dev/new_component_0"
+#define NEW_COMPONENT_0_SPAN 67108864
+#define NEW_COMPONENT_0_TYPE "new_component"
 
 
 /*

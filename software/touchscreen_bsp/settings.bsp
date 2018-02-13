@@ -2,11 +2,11 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>15.0</BspVersion>
-        <BspGeneratedTimeStamp>Feb 12, 2018 1:14:10 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1518470050026</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>./</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>2018-2-12 18:53:48</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1518490429014</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>C:\Users\Jingrui\Desktop\cpen391\CPEN391\software\touchscreen_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
-        <SopcDesignFile>../../cpen391_group5_qsys.sopcinfo</SopcDesignFile>
+        <SopcDesignFile>..\..\cpen391_group5_qsys.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>nios2</Cpu>
         <SchemaVersion>1.9</SchemaVersion>
@@ -969,6 +969,12 @@
                 <addressRange>0x00091090 - 0x00091097</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>new_component_0</slaveDescriptor>
+                <addressRange>0x04000000 - 0x07FFFFFF</addressRange>
+                <addressSpan>67108864</addressSpan>
+                <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>sdram</slaveDescriptor>

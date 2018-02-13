@@ -17,13 +17,20 @@ public:
             | (convert_8bit(a, pixel_bits) << (3 * pixel_bits / 4));
     }
 
-    inline void draw_pixel(rgba_t color, unsigned x, unsigned y) {
+    /*inline void draw_pixel(rgba_t color, unsigned x, unsigned y) {
         rgba_t *addr = m_buffer_base + (y * m_width + x);
 
         // Ignore invalid writes
         if (addr < m_max_addr)
             IOWR_16DIRECT(addr, 0, color);
-    }
+    }*/
+
+    inline void draw_pixel(rgba_t color, unsigned x, unsigned y) {
+            rgba_t *addr = m_buffer_base + (y * m_width + x);
+
+            IOWR_32DIRECT(0x04000000, 0, *addr);
+            IOWR_32DIRECT(0x04000000, 1, color);
+        }
 
     void draw_rect(rgba_t color, unsigned x1, unsigned y1, unsigned x2, unsigned y2);
 
