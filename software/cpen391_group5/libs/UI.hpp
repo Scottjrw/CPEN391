@@ -124,6 +124,33 @@ private:
     TouchCB m_cb;
 };
 
+
+/* ------------------------------------------------------------------
+ * Simple slider class
+ */
+class Slider : public Rectangle, public Touchable {
+public:
+    virtual void draw();
+    virtual void undraw();
+    virtual bool touch(Point p);
+    virtual void onTouch(TouchCB callback);
+
+    Slider(SimpleGraphics &graphics, TouchControl &touch,
+            Point p1, Point p2, SimpleGraphics::rgba_t text_color,
+            SimpleGraphics::rgba_t background_color, int min, int max);
+
+private:
+    std::string m_text;
+    SimpleGraphics::rgba_t m_text_color;
+    TouchCB m_cb;
+    int min, max;
+    Point slider_p1, slider_p2;
+    Point slider_bar_p1, slider_bar_p2;
+    int chosen_value;
+};
+
+
+
 /* ------------------------------------------------------------------
  * Simple dropdown menu class
  *

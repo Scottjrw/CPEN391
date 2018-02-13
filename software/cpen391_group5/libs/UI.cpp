@@ -105,6 +105,131 @@ void Button::onTouch(TouchCB callback){
 	m_cb = callback;
 }
 
+Slider::Slider(SimpleGraphics &graphics, TouchControl &touch,
+        Point p1, Point p2, SimpleGraphics::rgba_t text_color,
+        SimpleGraphics::rgba_t background_color, int min, int max):
+	Rectangle(graphics, p1, p2, background_color),
+    Touchable(touch),
+    m_text("00"),
+    m_text_color(text_color),
+    m_cb(nullptr),
+    min(min),
+    max(max),
+    slider_p1(),
+    slider_p2(),
+    slider_bar_p1(),
+    slider_bar_p2(),
+    chosen_value()
+{ }
+
+
+void Slider::draw(){
+	Rectangle::draw();
+    // display the value of the slider
+
+	unsigned remaining_space_x;
+	unsigned text_width = 5*m_text.length();
+
+	if ((m_p2.x - m_p1.x) > text_width) {
+		remaining_space_x = (m_p2.x - m_p1.x) - text_width;
+	} else
+		remaining_space_x = 4;
+
+    unsigned strStartXPos = m_p2.x - 8;
+
+	unsigned remaining_space_y;
+
+	if ((m_p2.y - m_p1.y) > CHAR_HEIGHT) {
+		remaining_space_y = (m_p2.y - m_p1.y) - CHAR_HEIGHT;
+	} else
+		remaining_space_y = 4;
+
+    unsigned strStartYPos = (remaining_space_y/2) +  m_p1.y;
+
+    slider_bar_p1.x = m_p1.x + 2;
+    slider_bar_p1.y = strStartYPos + 3;
+
+    slider_bar_p2.x = m_p1.x + remaining_space_x - 4;
+    slider_bar_p2.y = strStartYPos + 5;
+
+    Rectangle slider_bar(m_graphics, slider_bar_p1, slider_bar_p2, SimpleGraphics::rgba(255, 255, 255, 255));
+    slider_bar.draw();
+
+}
+
+void Slider::undraw(){
+	Rectangle::undraw();
+
+	unsigned remaining_space_x;
+	unsigned text_width = 5*m_text.length();
+
+	if ((m_p2.x - m_p1.x) > text_width) {
+		remaining_space_x = (m_p2.x - m_p1.x) - text_width;
+	} else
+		remaining_space_x = 4;
+
+	unsigned strStartXPos = (remaining_space_x/2) + m_p1.x;
+
+	unsigned remaining_space_y;
+
+	if ((m_p2.y - m_p1.y) > CHAR_HEIGHT) {
+		remaining_space_y = (m_p2.y - m_p1.y) - CHAR_HEIGHT;
+	} else
+		remaining_space_y = 4;
+
+	unsigned strStartYPos = (remaining_space_y/2) +  m_p1.y;
+
+	m_graphics.draw_string(m_graphics.rgba(0,0,0,0), strStartXPos, strStartYPos, m_text);
+}
+
+bool Slider::touch(Point P){
+	if(P.x > slider_bar_p1.x && P.x < slider_bar_p2.x && P.y > m_p1.y && P.y < m_p2.y) {
+		Slider::draw();
+
+		slider_p1.x = P.x - 1;
+		slider_p1.y = m_p1.y + 2;
+		slider_p2.x = P.x + 1;
+		slider_p2.y = m_p2.y - 2;
+
+		float slider_width = slider_bar_p2.x - slider_bar_p1.x;
+		float relative_touch = P.x - slider_bar_p1.x;
+		float ratio = relative_touch/slider_width;
+		int range = max-min;
+
+		chosen_value = ratio*range;
+
+		m_text[0] = (int)(chosen_value)/10 + '0';
+		m_text[1] = (int)(chosen_value)%10 + '0';
+
+	    unsigned strStartXPos = m_p2.x - 12;
+
+		unsigned remaining_space_y;
+
+		if ((m_p2.y - m_p1.y) > CHAR_HEIGHT) {
+			remaining_space_y = (m_p2.y - m_p1.y) - CHAR_HEIGHT;
+		} else
+			remaining_space_y = 4;
+
+	    unsigned strStartYPos = (remaining_space_y/2) +  m_p1.y;
+
+	    m_graphics.draw_string(m_text_color, strStartXPos, strStartYPos, m_text);
+
+		Rectangle slider(m_graphics, slider_p1, slider_p2, SimpleGraphics::rgba(0, 0, 0, 255));
+		slider.draw();
+	}
+
+
+    if(P.x > m_p1.x && P.x < m_p2.x && P.y > m_p1.y && P.y < m_p2.y) {
+    	if (m_cb != nullptr) m_cb(this, P);
+        return true;
+    } else
+        return false;
+}
+
+void Slider::onTouch(TouchCB callback){
+	m_cb = callback;
+}
+
 
 DropdownMenu::DropdownMenu(SimpleGraphics &graphics, TouchControl &touch,
         Expand direction, Point p1, Point p2, std::string text, SimpleGraphics::rgba_t text_color,

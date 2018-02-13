@@ -31,6 +31,11 @@ int main(void) {
             SimpleGraphics::rgba(255, 255, 255, 255),
             SimpleGraphics::rgba(0, 0, 255, 100));
 
+    Slider slider(graphics, touch, {60, 20}, {160, 40},
+                SimpleGraphics::rgba(255, 255, 255, 255),
+                SimpleGraphics::rgba(0, 255, 0, 100), 0, 50);
+
+
     DropdownMenu menu(graphics, touch, DropdownMenu::TOP, {0, 0}, {60, 20}, "Menu",
             SimpleGraphics::rgba(255, 255, 255, 255),
             SimpleGraphics::rgba(255, 255, 0, 100));
@@ -60,11 +65,18 @@ int main(void) {
 
             });
 
+    slider.onTouch([] (Touchable *, Point p) {
+                std::cout << "Slider Got Touched" << std::endl;
+
+                });
+
 //    screen.addDrawable(&rect);
     screen.addDrawable(&button);
     screen.addTouchable(&button);
     screen.addDrawable(&menu);
     screen.addTouchable(&menu);
+    screen.addDrawable(&slider);
+    screen.addTouchable(&slider);
 
     std::cout << "Starting" << std::endl;
 
