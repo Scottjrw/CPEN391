@@ -71,10 +71,7 @@ Info: cpen391_group5_qsys.Video_Out_Resampler: RGB Resampling: 8 (bits) x 3 (pla
 Info: cpen391_group5_qsys.Video_Out_Scaler: Change in Resolution: 320 x 240 -> 640 x 480
 Info: cpen391_group5_qsys.Video_Out_VGA_CTRL: Video Output Stream: Format: 640 x 480 with Color: 10 (bits) x 3 (planes) converted to 8 (bits) per color plane
 Warning: cpen391_group5_qsys.nios2: Nios II Classic cores are now superseded by improved Gen 2 cores.
-Error: cpen391_group5_qsys.pixel_cluster_0.mm: Interface must have an associated reset
 Info: cpen391_group5_qsys.switch_in_pio: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
-Warning: cpen391_group5_qsys.pixel_cluster_0: pixel_cluster_0.leds must be exported, or connected to a matching conduit.
-Error: cpen391_group5_qsys.pixel_cluster_0.mm: pixel_cluster_0.mm must declare an associated reset
 Info: ip-generate succeeded.
 Info: Finished: Create block symbol file (.bsf)
 Info: 
@@ -151,10 +148,7 @@ Info: cpen391_group5_qsys.Video_Out_Resampler: RGB Resampling: 8 (bits) x 3 (pla
 Info: cpen391_group5_qsys.Video_Out_Scaler: Change in Resolution: 320 x 240 -> 640 x 480
 Info: cpen391_group5_qsys.Video_Out_VGA_CTRL: Video Output Stream: Format: 640 x 480 with Color: 10 (bits) x 3 (planes) converted to 8 (bits) per color plane
 Warning: cpen391_group5_qsys.nios2: Nios II Classic cores are now superseded by improved Gen 2 cores.
-Error: cpen391_group5_qsys.pixel_cluster_0.mm: Interface must have an associated reset
 Info: cpen391_group5_qsys.switch_in_pio: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
-Warning: cpen391_group5_qsys.pixel_cluster_0: pixel_cluster_0.leds must be exported, or connected to a matching conduit.
-Error: cpen391_group5_qsys.pixel_cluster_0.mm: pixel_cluster_0.mm must declare an associated reset
 Info: cpen391_group5_qsys: Generating cpen391_group5_qsys "cpen391_group5_qsys" for QUARTUS_SYNTH
 Info: Interconnect is inserted between master Draw_DMA.avalon_dma_master and slave Draw_Buffer.s2 because the master has address signal 32 bit wide, but the slave is 14 bit wide.
 Info: Interconnect is inserted between master Draw_DMA.avalon_dma_master and slave Draw_Buffer.s2 because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
@@ -164,7 +158,175 @@ Info: Interconnect is inserted between master Draw_DMA.avalon_dma_master and sla
 Info: Interconnect is inserted between master Draw_DMA.avalon_dma_master and slave Draw_Buffer.s2 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
 Warning: cpen391_group5_qsys: "No matching role found for touchscreen_uart:s1:dataavailable (dataavailable)"
 Warning: cpen391_group5_qsys: "No matching role found for touchscreen_uart:s1:readyfordata (readyfordata)"
-Error: Generation stopped, 34 or more modules remaining
-Info: cpen391_group5_qsys: Done "cpen391_group5_qsys" with 33 modules, 1 files
-Error: ip-generate failed with exit code 1: 3 Errors, 4 Warnings
-Info: Stopping: Create HDL design files for synthesis
+Info: Draw_Buffer: Starting RTL generation for module 'cpen391_group5_qsys_Draw_Buffer'
+Info: Draw_Buffer:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=cpen391_group5_qsys_Draw_Buffer --dir=/tmp/alt7574_1799060612873308520.dir/0001_Draw_Buffer_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7574_1799060612873308520.dir/0001_Draw_Buffer_gen//cpen391_group5_qsys_Draw_Buffer_component_configuration.pl  --do_build_sim=0  ]
+Info: Draw_Buffer: Done RTL generation for module 'cpen391_group5_qsys_Draw_Buffer'
+Info: Draw_Buffer: "cpen391_group5_qsys" instantiated altera_avalon_onchip_memory2 "Draw_Buffer"
+Info: Draw_DMA: Starting Generation of Video DMA Controller
+Info: Draw_DMA: "cpen391_group5_qsys" instantiated altera_up_avalon_video_dma_controller "Draw_DMA"
+Info: Draw_Resampler: Starting Generation of Video RGB Resampler
+Info: Draw_Resampler: "cpen391_group5_qsys" instantiated altera_up_avalon_video_rgb_resampler "Draw_Resampler"
+Info: Draw_Scaler: Starting Generation of Video Scaler
+Info: Draw_Scaler: "cpen391_group5_qsys" instantiated altera_up_avalon_video_scaler "Draw_Scaler"
+Info: Video_Blender: Starting Generation of the Alpha Blender
+Info: Video_Blender: "cpen391_group5_qsys" instantiated altera_up_avalon_video_alpha_blender "Video_Blender"
+Info: Video_Clock: "cpen391_group5_qsys" instantiated altera_up_avalon_video_pll "Video_Clock"
+Info: Video_Frame_Buffer: Starting RTL generation for module 'cpen391_group5_qsys_Video_Frame_Buffer'
+Info: Video_Frame_Buffer:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=cpen391_group5_qsys_Video_Frame_Buffer --dir=/tmp/alt7574_1799060612873308520.dir/0006_Video_Frame_Buffer_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7574_1799060612873308520.dir/0006_Video_Frame_Buffer_gen//cpen391_group5_qsys_Video_Frame_Buffer_component_configuration.pl  --do_build_sim=0  ]
+Info: Video_Frame_Buffer: Done RTL generation for module 'cpen391_group5_qsys_Video_Frame_Buffer'
+Info: Video_Frame_Buffer: "cpen391_group5_qsys" instantiated altera_avalon_onchip_memory2 "Video_Frame_Buffer"
+Info: Video_In_CSC: Starting Generation of Colour Space Converter
+Info: Video_In_CSC: "cpen391_group5_qsys" instantiated altera_up_avalon_video_csc "Video_In_CSC"
+Info: Video_In_Chroma: Starting Generation of Chroma Resampler
+Info: Video_In_Chroma: "cpen391_group5_qsys" instantiated altera_up_avalon_video_chroma_resampler "Video_In_Chroma"
+Info: Video_In_Clipper: Starting generation of the video clipper
+Info: Video_In_Clipper: "cpen391_group5_qsys" instantiated altera_up_avalon_video_clipper "Video_In_Clipper"
+Info: Video_In_DMA: Starting Generation of Video DMA Controller
+Info: Video_In_DMA: "cpen391_group5_qsys" instantiated altera_up_avalon_video_dma_controller "Video_In_DMA"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_up_video_dma_control_slave.v
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_up_video_dma_to_memory.v
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_up_video_dma_to_stream.v
+Info: Video_In_Decoder: Starting Generation of Video In Decoder
+Info: Video_In_Decoder: "cpen391_group5_qsys" instantiated altera_up_avalon_video_decoder "Video_In_Decoder"
+Info: Video_In_Scaler: Starting Generation of Video Scaler
+Info: Video_In_Scaler: "cpen391_group5_qsys" instantiated altera_up_avalon_video_scaler "Video_In_Scaler"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_up_video_scaler_shrink.v
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_up_video_scaler_multiply_width.v
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_up_video_scaler_multiply_height.v
+Info: Video_Out_DMA: Starting Generation of Video DMA Controller
+Info: Video_Out_DMA: "cpen391_group5_qsys" instantiated altera_up_avalon_video_dma_controller "Video_Out_DMA"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_up_video_dma_control_slave.v
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_up_video_dma_to_memory.v
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_up_video_dma_to_stream.v
+Info: Video_Out_FIFO: Starting Generation of the Dual Clock Buffer
+Info: Video_Out_FIFO: "cpen391_group5_qsys" instantiated altera_up_avalon_video_dual_clock_buffer "Video_Out_FIFO"
+Info: Video_Out_Resampler: Starting Generation of Video RGB Resampler
+Info: Video_Out_Resampler: "cpen391_group5_qsys" instantiated altera_up_avalon_video_rgb_resampler "Video_Out_Resampler"
+Info: Video_Out_Scaler: Starting Generation of Video Scaler
+Info: Video_Out_Scaler: "cpen391_group5_qsys" instantiated altera_up_avalon_video_scaler "Video_Out_Scaler"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_up_video_scaler_shrink.v
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_up_video_scaler_multiply_width.v
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_up_video_scaler_multiply_height.v
+Info: Video_Out_VGA_CTRL: Starting Generation of VGA Controller
+Info: Video_Out_VGA_CTRL: "cpen391_group5_qsys" instantiated altera_up_avalon_video_vga_controller "Video_Out_VGA_CTRL"
+Info: clocks: "cpen391_group5_qsys" instantiated altera_up_avalon_sys_sdram_pll "clocks"
+Info: jtag_uart_0: Starting RTL generation for module 'cpen391_group5_qsys_jtag_uart_0'
+Info: jtag_uart_0:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=cpen391_group5_qsys_jtag_uart_0 --dir=/tmp/alt7574_1799060612873308520.dir/0018_jtag_uart_0_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7574_1799060612873308520.dir/0018_jtag_uart_0_gen//cpen391_group5_qsys_jtag_uart_0_component_configuration.pl  --do_build_sim=0  ]
+Info: jtag_uart_0: Done RTL generation for module 'cpen391_group5_qsys_jtag_uart_0'
+Info: jtag_uart_0: "cpen391_group5_qsys" instantiated altera_avalon_jtag_uart "jtag_uart_0"
+Info: led_out_pio: Starting RTL generation for module 'cpen391_group5_qsys_led_out_pio'
+Info: led_out_pio:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=cpen391_group5_qsys_led_out_pio --dir=/tmp/alt7574_1799060612873308520.dir/0019_led_out_pio_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7574_1799060612873308520.dir/0019_led_out_pio_gen//cpen391_group5_qsys_led_out_pio_component_configuration.pl  --do_build_sim=0  ]
+Info: led_out_pio: Done RTL generation for module 'cpen391_group5_qsys_led_out_pio'
+Info: led_out_pio: "cpen391_group5_qsys" instantiated altera_avalon_pio "led_out_pio"
+Info: main_timer: Starting RTL generation for module 'cpen391_group5_qsys_main_timer'
+Info: main_timer:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64//perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64//perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer/generate_rtl.pl --name=cpen391_group5_qsys_main_timer --dir=/tmp/alt7574_1799060612873308520.dir/0020_main_timer_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7574_1799060612873308520.dir/0020_main_timer_gen//cpen391_group5_qsys_main_timer_component_configuration.pl  --do_build_sim=0  ]
+Info: main_timer: Done RTL generation for module 'cpen391_group5_qsys_main_timer'
+Info: main_timer: "cpen391_group5_qsys" instantiated altera_avalon_timer "main_timer"
+Info: nios2: Starting RTL generation for module 'cpen391_group5_qsys_nios2'
+Info: nios2:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/eperlcmd -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2/cpu_lib -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2/nios_lib -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2 -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2 -- /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2/generate_rtl.epl --name=cpen391_group5_qsys_nios2 --dir=/tmp/alt7574_1799060612873308520.dir/0021_nios2_gen/ --quartus_bindir=/home/guoj/altera/15.0/quartus/linux64 --verilog --config=/tmp/alt7574_1799060612873308520.dir/0021_nios2_gen//cpen391_group5_qsys_nios2_processor_configuration.pl  --do_build_sim=0  ]
+Info: nios2: # 2018.02.12 15:52:56 (*) Starting Nios II generation
+Info: nios2: # 2018.02.12 15:52:56 (*)   Checking for plaintext license.
+Info: nios2: # 2018.02.12 15:52:58 (*)   Plaintext license not found.
+Info: nios2: # 2018.02.12 15:52:58 (*)   Checking for encrypted license (non-evaluation).
+Info: nios2: # 2018.02.12 15:52:59 (*)   Encrypted license not found.  Defaulting to OCP evaluation license (produces a time-limited SOF)
+Info: nios2: # 2018.02.12 15:52:59 (*)   Elaborating CPU configuration settings
+Info: nios2: # 2018.02.12 15:52:59 (*)   Creating all objects for CPU
+Info: nios2: # 2018.02.12 15:52:59 (*)     Testbench
+Info: nios2: # 2018.02.12 15:53:00 (*)     Instruction decoding
+Info: nios2: # 2018.02.12 15:53:00 (*)       Instruction fields
+Info: nios2: # 2018.02.12 15:53:00 (*)       Instruction decodes
+Info: nios2: # 2018.02.12 15:53:00 (*)       Signals for RTL simulation waveforms
+Info: nios2: # 2018.02.12 15:53:00 (*)       Instruction controls
+Info: nios2: # 2018.02.12 15:53:00 (*)     Pipeline frontend
+Info: nios2: # 2018.02.12 15:53:00 (*)     Pipeline backend
+Info: nios2: # 2018.02.12 15:53:02 (*)   Generating RTL from CPU objects
+Info: nios2: # 2018.02.12 15:53:04 (*)   Creating encrypted RTL
+Info: nios2: # 2018.02.12 15:53:04 (*) Done Nios II generation
+Info: nios2: Done RTL generation for module 'cpen391_group5_qsys_nios2'
+Info: nios2: "cpen391_group5_qsys" instantiated altera_nios2_qsys "nios2"
+Info: pixel_cluster_0: "cpen391_group5_qsys" instantiated pixel_cluster "pixel_cluster_0"
+Info: sdram: Starting RTL generation for module 'cpen391_group5_qsys_sdram'
+Info: sdram:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_new_sdram_controller -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_new_sdram_controller/generate_rtl.pl --name=cpen391_group5_qsys_sdram --dir=/tmp/alt7574_1799060612873308520.dir/0023_sdram_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7574_1799060612873308520.dir/0023_sdram_gen//cpen391_group5_qsys_sdram_component_configuration.pl  --do_build_sim=0  ]
+Info: sdram: Done RTL generation for module 'cpen391_group5_qsys_sdram'
+Info: sdram: "cpen391_group5_qsys" instantiated altera_avalon_new_sdram_controller "sdram"
+Info: switch_in_pio: Starting RTL generation for module 'cpen391_group5_qsys_switch_in_pio'
+Info: switch_in_pio:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=cpen391_group5_qsys_switch_in_pio --dir=/tmp/alt7574_1799060612873308520.dir/0024_switch_in_pio_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7574_1799060612873308520.dir/0024_switch_in_pio_gen//cpen391_group5_qsys_switch_in_pio_component_configuration.pl  --do_build_sim=0  ]
+Info: switch_in_pio: Done RTL generation for module 'cpen391_group5_qsys_switch_in_pio'
+Info: switch_in_pio: "cpen391_group5_qsys" instantiated altera_avalon_pio "switch_in_pio"
+Info: touchscreen_uart: Starting RTL generation for module 'cpen391_group5_qsys_touchscreen_uart'
+Info: touchscreen_uart:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_uart -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_uart/generate_rtl.pl --name=cpen391_group5_qsys_touchscreen_uart --dir=/tmp/alt7574_1799060612873308520.dir/0025_touchscreen_uart_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7574_1799060612873308520.dir/0025_touchscreen_uart_gen//cpen391_group5_qsys_touchscreen_uart_component_configuration.pl  --do_build_sim=0  ]
+Info: touchscreen_uart: Done RTL generation for module 'cpen391_group5_qsys_touchscreen_uart'
+Info: touchscreen_uart: "cpen391_group5_qsys" instantiated altera_avalon_uart "touchscreen_uart"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_0: "cpen391_group5_qsys" instantiated altera_mm_interconnect "mm_interconnect_0"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_1: "cpen391_group5_qsys" instantiated altera_mm_interconnect "mm_interconnect_1"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_001: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_002: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_003: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_004: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_005: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_006: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_007: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_008: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_009: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_010: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_011: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_012: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_2: "cpen391_group5_qsys" instantiated altera_mm_interconnect "mm_interconnect_2"
+Info: irq_mapper: "cpen391_group5_qsys" instantiated altera_irq_mapper "irq_mapper"
+Info: rst_controller: "cpen391_group5_qsys" instantiated altera_reset_controller "rst_controller"
+Info: video_pll: "Video_Clock" instantiated altera_pll "video_pll"
+Info: reset_from_locked: "Video_Clock" instantiated altera_up_avalon_reset_from_locked_signal "reset_from_locked"
+Info: sys_pll: "clocks" instantiated altera_pll "sys_pll"
+Info: Video_In_DMA_avalon_dma_master_translator: "mm_interconnect_0" instantiated altera_merlin_master_translator "Video_In_DMA_avalon_dma_master_translator"
+Info: Video_Frame_Buffer_s1_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "Video_Frame_Buffer_s1_translator"
+Info: Video_In_DMA_avalon_dma_master_agent: "mm_interconnect_0" instantiated altera_merlin_master_agent "Video_In_DMA_avalon_dma_master_agent"
+Info: Video_Frame_Buffer_s1_agent: "mm_interconnect_0" instantiated altera_merlin_slave_agent "Video_Frame_Buffer_s1_agent"
+Info: Video_Frame_Buffer_s1_agent_rsp_fifo: "mm_interconnect_0" instantiated altera_avalon_sc_fifo "Video_Frame_Buffer_s1_agent_rsp_fifo"
+Info: router: "mm_interconnect_0" instantiated altera_merlin_router "router"
+Info: router_002: "mm_interconnect_0" instantiated altera_merlin_router "router_002"
+Info: cmd_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: rsp_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux"
+Info: rsp_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: avalon_st_adapter: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter"
+Info: router: "mm_interconnect_1" instantiated altera_merlin_router "router"
+Info: router_001: "mm_interconnect_1" instantiated altera_merlin_router "router_001"
+Info: cmd_demux: "mm_interconnect_1" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_mux: "mm_interconnect_1" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: rsp_mux: "mm_interconnect_1" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: Draw_Buffer_s2_cmd_width_adapter: "mm_interconnect_1" instantiated altera_merlin_width_adapter "Draw_Buffer_s2_cmd_width_adapter"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_merlin_burst_uncompressor.sv
+Info: router: "mm_interconnect_2" instantiated altera_merlin_router "router"
+Info: router_001: "mm_interconnect_2" instantiated altera_merlin_router "router_001"
+Info: router_002: "mm_interconnect_2" instantiated altera_merlin_router "router_002"
+Info: router_006: "mm_interconnect_2" instantiated altera_merlin_router "router_006"
+Info: router_010: "mm_interconnect_2" instantiated altera_merlin_router "router_010"
+Info: nios2_data_master_limiter: "mm_interconnect_2" instantiated altera_merlin_traffic_limiter "nios2_data_master_limiter"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_avalon_sc_fifo.v
+Info: Video_In_DMA_avalon_dma_control_slave_burst_adapter: "mm_interconnect_2" instantiated altera_merlin_burst_adapter "Video_In_DMA_avalon_dma_control_slave_burst_adapter"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_merlin_address_alignment.sv
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_avalon_st_pipeline_base.v
+Info: cmd_demux: "mm_interconnect_2" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_demux_001: "mm_interconnect_2" instantiated altera_merlin_demultiplexer "cmd_demux_001"
+Info: cmd_mux: "mm_interconnect_2" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: cmd_mux_004: "mm_interconnect_2" instantiated altera_merlin_multiplexer "cmd_mux_004"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: rsp_demux: "mm_interconnect_2" instantiated altera_merlin_demultiplexer "rsp_demux"
+Info: rsp_demux_004: "mm_interconnect_2" instantiated altera_merlin_demultiplexer "rsp_demux_004"
+Info: rsp_mux: "mm_interconnect_2" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: rsp_mux_001: "mm_interconnect_2" instantiated altera_merlin_multiplexer "rsp_mux_001"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: avalon_st_adapter_008: "mm_interconnect_2" instantiated altera_avalon_st_adapter "avalon_st_adapter_008"
+Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
+Info: error_adapter_0: "avalon_st_adapter_008" instantiated error_adapter "error_adapter_0"
+Info: cpen391_group5_qsys: Done "cpen391_group5_qsys" with 72 modules, 122 files
+Info: ip-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

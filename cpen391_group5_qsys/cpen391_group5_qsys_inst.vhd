@@ -30,8 +30,7 @@
 			video_in_decoder_TD_VS         : in    std_logic                     := 'X';             -- TD_VS
 			video_in_decoder_clk27_reset   : in    std_logic                     := 'X';             -- clk27_reset
 			video_in_decoder_TD_RESET      : out   std_logic;                                        -- TD_RESET
-			video_in_decoder_overflow_flag : out   std_logic;                                        -- overflow_flag
-			pixel_cluster_leds             : out   std_logic_vector(9 downto 0)                      -- leds
+			video_in_decoder_overflow_flag : out   std_logic                                         -- overflow_flag
 		);
 	end component cpen391_group5_qsys;
 
@@ -67,7 +66,6 @@
 			video_in_decoder_TD_VS         => CONNECTED_TO_video_in_decoder_TD_VS,         --                 .TD_VS
 			video_in_decoder_clk27_reset   => CONNECTED_TO_video_in_decoder_clk27_reset,   --                 .clk27_reset
 			video_in_decoder_TD_RESET      => CONNECTED_TO_video_in_decoder_TD_RESET,      --                 .TD_RESET
-			video_in_decoder_overflow_flag => CONNECTED_TO_video_in_decoder_overflow_flag, --                 .overflow_flag
-			pixel_cluster_leds             => CONNECTED_TO_pixel_cluster_leds              --    pixel_cluster.leds
+			video_in_decoder_overflow_flag => CONNECTED_TO_video_in_decoder_overflow_flag  --                 .overflow_flag
 		);
 

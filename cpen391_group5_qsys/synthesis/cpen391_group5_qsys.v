@@ -6,7 +6,6 @@
 module cpen391_group5_qsys (
 		input  wire        clk_clk,                        //              clk.clk
 		output wire [7:0]  led_out_export,                 //          led_out.export
-		output wire [9:0]  pixel_cluster_leds,             //    pixel_cluster.leds
 		input  wire        reset_reset,                    //            reset.reset
 		output wire        sdram_clk_clk,                  //        sdram_clk.clk
 		output wire [12:0] sdram_wire_addr,                //       sdram_wire.addr
@@ -103,7 +102,7 @@ module cpen391_group5_qsys (
 	wire         draw_scaler_avalon_scaler_source_ready;                              // Draw_Resampler:stream_in_ready -> Draw_Scaler:stream_out_ready
 	wire         draw_scaler_avalon_scaler_source_startofpacket;                      // Draw_Scaler:stream_out_startofpacket -> Draw_Resampler:stream_in_startofpacket
 	wire         draw_scaler_avalon_scaler_source_endofpacket;                        // Draw_Scaler:stream_out_endofpacket -> Draw_Resampler:stream_in_endofpacket
-	wire         clocks_sys_clk_clk;                                                  // clocks:sys_clk_clk -> [Draw_Buffer:clk, Draw_DMA:clk, Draw_Resampler:clk, Draw_Scaler:clk, Video_Blender:clk, Video_Clock:ref_clk_clk, Video_Frame_Buffer:clk, Video_In_CSC:clk, Video_In_Chroma:clk, Video_In_Clipper:clk, Video_In_DMA:clk, Video_In_Decoder:clk, Video_In_Scaler:clk, Video_Out_DMA:clk, Video_Out_FIFO:clk_stream_in, Video_Out_Resampler:clk, Video_Out_Scaler:clk, irq_mapper:clk, jtag_uart_0:clk, led_out_pio:clk, main_timer:clk, mm_interconnect_0:clocks_sys_clk_clk, mm_interconnect_1:clocks_sys_clk_clk, mm_interconnect_2:clocks_sys_clk_clk, nios2:clk, pixel_cluster_0:clk, rst_controller:clk, sdram:clk, switch_in_pio:clk, touchscreen_uart:clk]
+	wire         clocks_sys_clk_clk;                                                  // clocks:sys_clk_clk -> [Draw_Buffer:clk, Draw_DMA:clk, Draw_Resampler:clk, Draw_Scaler:clk, Video_Blender:clk, Video_Clock:ref_clk_clk, Video_Frame_Buffer:clk, Video_In_CSC:clk, Video_In_Chroma:clk, Video_In_Clipper:clk, Video_In_DMA:clk, Video_In_Decoder:clk, Video_In_Scaler:clk, Video_Out_DMA:clk, Video_Out_FIFO:clk_stream_in, Video_Out_Resampler:clk, Video_Out_Scaler:clk, irq_mapper:clk, jtag_uart_0:clk, led_out_pio:clk, main_timer:clk, mm_interconnect_0:clocks_sys_clk_clk, mm_interconnect_1:clocks_sys_clk_clk, mm_interconnect_2:clocks_sys_clk_clk, nios2:clk, rst_controller:clk, sdram:clk, switch_in_pio:clk, touchscreen_uart:clk]
 	wire         video_clock_vga_clk_clk;                                             // Video_Clock:vga_clk_clk -> [Video_Out_FIFO:clk_stream_out, Video_Out_VGA_CTRL:clk, rst_controller_002:clk]
 	wire         video_in_dma_avalon_dma_master_waitrequest;                          // mm_interconnect_0:Video_In_DMA_avalon_dma_master_waitrequest -> Video_In_DMA:master_waitrequest
 	wire  [31:0] video_in_dma_avalon_dma_master_address;                              // Video_In_DMA:master_address -> mm_interconnect_0:Video_In_DMA_avalon_dma_master_address
@@ -183,12 +182,6 @@ module cpen391_group5_qsys (
 	wire   [3:0] mm_interconnect_2_nios2_jtag_debug_module_byteenable;                // mm_interconnect_2:nios2_jtag_debug_module_byteenable -> nios2:jtag_debug_module_byteenable
 	wire         mm_interconnect_2_nios2_jtag_debug_module_write;                     // mm_interconnect_2:nios2_jtag_debug_module_write -> nios2:jtag_debug_module_write
 	wire  [31:0] mm_interconnect_2_nios2_jtag_debug_module_writedata;                 // mm_interconnect_2:nios2_jtag_debug_module_writedata -> nios2:jtag_debug_module_writedata
-	wire  [31:0] mm_interconnect_2_pixel_cluster_0_mm_readdata;                       // pixel_cluster_0:mm_readdata -> mm_interconnect_2:pixel_cluster_0_mm_readdata
-	wire   [1:0] mm_interconnect_2_pixel_cluster_0_mm_address;                        // mm_interconnect_2:pixel_cluster_0_mm_address -> pixel_cluster_0:mm_address
-	wire         mm_interconnect_2_pixel_cluster_0_mm_read;                           // mm_interconnect_2:pixel_cluster_0_mm_read -> pixel_cluster_0:mm_read
-	wire   [3:0] mm_interconnect_2_pixel_cluster_0_mm_byteenable;                     // mm_interconnect_2:pixel_cluster_0_mm_byteenable -> pixel_cluster_0:mm_byteenable
-	wire         mm_interconnect_2_pixel_cluster_0_mm_write;                          // mm_interconnect_2:pixel_cluster_0_mm_write -> pixel_cluster_0:mm_write
-	wire  [31:0] mm_interconnect_2_pixel_cluster_0_mm_writedata;                      // mm_interconnect_2:pixel_cluster_0_mm_writedata -> pixel_cluster_0:mm_writedata
 	wire         mm_interconnect_2_led_out_pio_s1_chipselect;                         // mm_interconnect_2:led_out_pio_s1_chipselect -> led_out_pio:chipselect
 	wire  [31:0] mm_interconnect_2_led_out_pio_s1_readdata;                           // led_out_pio:readdata -> mm_interconnect_2:led_out_pio_s1_readdata
 	wire   [1:0] mm_interconnect_2_led_out_pio_s1_address;                            // mm_interconnect_2:led_out_pio_s1_address -> led_out_pio:address
@@ -235,7 +228,7 @@ module cpen391_group5_qsys (
 	wire         irq_mapper_receiver1_irq;                                            // main_timer:irq -> irq_mapper:receiver1_irq
 	wire         irq_mapper_receiver2_irq;                                            // touchscreen_uart:irq -> irq_mapper:receiver2_irq
 	wire  [31:0] nios2_d_irq_irq;                                                     // irq_mapper:sender_irq -> nios2:d_irq
-	wire         rst_controller_reset_out_reset;                                      // rst_controller:reset_out -> [Draw_Buffer:reset, Draw_DMA:reset, Draw_Resampler:reset, Draw_Scaler:reset, Video_Blender:reset, Video_Frame_Buffer:reset, Video_In_CSC:reset, Video_In_Chroma:reset, Video_In_Clipper:reset, Video_In_DMA:reset, Video_In_Decoder:reset, Video_In_Scaler:reset, Video_Out_DMA:reset, Video_Out_FIFO:reset_stream_in, Video_Out_Resampler:reset, Video_Out_Scaler:reset, irq_mapper:reset, jtag_uart_0:rst_n, led_out_pio:reset_n, main_timer:reset_n, mm_interconnect_0:Video_In_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_1:Draw_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_2:nios2_reset_n_reset_bridge_in_reset_reset, nios2:reset_n, pixel_cluster_0:reset, rst_translator:in_reset, sdram:reset_n, switch_in_pio:reset_n, touchscreen_uart:reset_n]
+	wire         rst_controller_reset_out_reset;                                      // rst_controller:reset_out -> [Draw_Buffer:reset, Draw_DMA:reset, Draw_Resampler:reset, Draw_Scaler:reset, Video_Blender:reset, Video_Frame_Buffer:reset, Video_In_CSC:reset, Video_In_Chroma:reset, Video_In_Clipper:reset, Video_In_DMA:reset, Video_In_Decoder:reset, Video_In_Scaler:reset, Video_Out_DMA:reset, Video_Out_FIFO:reset_stream_in, Video_Out_Resampler:reset, Video_Out_Scaler:reset, irq_mapper:reset, jtag_uart_0:rst_n, led_out_pio:reset_n, main_timer:reset_n, mm_interconnect_0:Video_In_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_1:Draw_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_2:nios2_reset_n_reset_bridge_in_reset_reset, nios2:reset_n, rst_translator:in_reset, sdram:reset_n, switch_in_pio:reset_n, touchscreen_uart:reset_n]
 	wire         rst_controller_reset_out_reset_req;                                  // rst_controller:reset_req -> [Draw_Buffer:reset_req, Video_Frame_Buffer:reset_req, nios2:reset_req, rst_translator:reset_req_in]
 	wire         nios2_jtag_debug_module_reset_reset;                                 // nios2:jtag_debug_module_resetrequest -> [rst_controller:reset_in0, rst_controller_001:reset_in0]
 	wire         clocks_reset_source_reset;                                           // clocks:reset_source_reset -> [rst_controller:reset_in1, rst_controller_001:reset_in1]
@@ -621,21 +614,6 @@ module cpen391_group5_qsys (
 		.no_ci_readra                          ()                                                       // custom_instruction_master.readra
 	);
 
-	pixel_cluster #(
-		.ADDR_BITS  (2),
-		.BYTE_WIDTH (4)
-	) pixel_cluster_0 (
-		.clk           (clocks_sys_clk_clk),                              //       clock.clk
-		.reset         (rst_controller_reset_out_reset),                  //       reset.reset
-		.mm_address    (mm_interconnect_2_pixel_cluster_0_mm_address),    //          mm.address
-		.mm_byteenable (mm_interconnect_2_pixel_cluster_0_mm_byteenable), //            .byteenable
-		.mm_read       (mm_interconnect_2_pixel_cluster_0_mm_read),       //            .read
-		.mm_write      (mm_interconnect_2_pixel_cluster_0_mm_write),      //            .write
-		.mm_readdata   (mm_interconnect_2_pixel_cluster_0_mm_readdata),   //            .readdata
-		.mm_writedata  (mm_interconnect_2_pixel_cluster_0_mm_writedata),  //            .writedata
-		.leds          (pixel_cluster_leds)                               // conduit_end.leds
-	);
-
 	cpen391_group5_qsys_sdram sdram (
 		.clk            (clocks_sys_clk_clk),                       //   clk.clk
 		.reset_n        (~rst_controller_reset_out_reset),          // reset.reset_n
@@ -780,12 +758,6 @@ module cpen391_group5_qsys (
 		.nios2_jtag_debug_module_byteenable                (mm_interconnect_2_nios2_jtag_debug_module_byteenable),                //                                       .byteenable
 		.nios2_jtag_debug_module_waitrequest               (mm_interconnect_2_nios2_jtag_debug_module_waitrequest),               //                                       .waitrequest
 		.nios2_jtag_debug_module_debugaccess               (mm_interconnect_2_nios2_jtag_debug_module_debugaccess),               //                                       .debugaccess
-		.pixel_cluster_0_mm_address                        (mm_interconnect_2_pixel_cluster_0_mm_address),                        //                     pixel_cluster_0_mm.address
-		.pixel_cluster_0_mm_write                          (mm_interconnect_2_pixel_cluster_0_mm_write),                          //                                       .write
-		.pixel_cluster_0_mm_read                           (mm_interconnect_2_pixel_cluster_0_mm_read),                           //                                       .read
-		.pixel_cluster_0_mm_readdata                       (mm_interconnect_2_pixel_cluster_0_mm_readdata),                       //                                       .readdata
-		.pixel_cluster_0_mm_writedata                      (mm_interconnect_2_pixel_cluster_0_mm_writedata),                      //                                       .writedata
-		.pixel_cluster_0_mm_byteenable                     (mm_interconnect_2_pixel_cluster_0_mm_byteenable),                     //                                       .byteenable
 		.sdram_s1_address                                  (mm_interconnect_2_sdram_s1_address),                                  //                               sdram_s1.address
 		.sdram_s1_write                                    (mm_interconnect_2_sdram_s1_write),                                    //                                       .write
 		.sdram_s1_read                                     (mm_interconnect_2_sdram_s1_read),                                     //                                       .read

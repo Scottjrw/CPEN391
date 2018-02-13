@@ -30,8 +30,7 @@ module cpen391_group5_qsys (
 	video_in_decoder_TD_VS,
 	video_in_decoder_clk27_reset,
 	video_in_decoder_TD_RESET,
-	video_in_decoder_overflow_flag,
-	pixel_cluster_leds);	
+	video_in_decoder_overflow_flag);	
 
 	input		clk_clk;
 	output	[7:0]	led_out_export;
@@ -64,5 +63,4 @@ module cpen391_group5_qsys (
 	input		video_in_decoder_clk27_reset;
 	output		video_in_decoder_TD_RESET;
 	output		video_in_decoder_overflow_flag;
-	output	[9:0]	pixel_cluster_leds;
 endmodule

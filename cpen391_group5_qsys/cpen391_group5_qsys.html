@@ -67,7 +67,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
   </table>
   <table class="blueBar">
    <tr>
-    <td class="l">2018.02.12.15:52:48</td>
+    <td class="l">2018.02.12.16:31:54</td>
     <td class="r">Datasheet</td>
    </tr>
   </table>
@@ -113,9 +113,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      <br/>&#160;&#160;
      <a href="#module_nios2"><b>nios2</b>
      </a> altera_nios2_qsys 15.0
-     <br/>&#160;&#160;
-     <a href="#module_pixel_cluster_0"><b>pixel_cluster_0</b>
-     </a> pixel_cluster 1.0
      <br/>&#160;&#160;
      <a href="#module_sdram"><b>sdram</b>
      </a> altera_avalon_new_sdram_controller 15.0
@@ -342,25 +339,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
     <td class="empty"></td>
     <td class="addr"><span style="color:#989898">0x</span>00090800</td>
     <td class="addr"><span style="color:#989898">0x</span>00090800</td>
-   </tr>
-   <tr>
-    <td class="slavemodule">&#160;
-     <a href="#module_pixel_cluster_0"><b>pixel_cluster_0</b>
-     </a>
-    </td>
-    <td class="empty"></td>
-    <td class="empty"></td>
-    <td class="empty"></td>
-    <td class="empty"></td>
-    <td class="empty"></td>
-   </tr>
-   <tr>
-    <td class="slaveb">mm&#160;</td>
-    <td class="empty"></td>
-    <td class="empty"></td>
-    <td class="empty"></td>
-    <td class="addr"><span style="color:#989898">0x</span>00091040</td>
-    <td class="empty"></td>
    </tr>
    <tr>
     <td class="slavemodule">&#160;
@@ -3614,7 +3592,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        <a href="#module_clocks">clocks</a>
       </td>
       <td class="from">sys_clk&#160;&#160;</td>
-      <td class="main" rowspan="107">nios2</td>
+      <td class="main" rowspan="102">nios2</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;clk</td>
@@ -3725,32 +3703,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
       <td></td>
       <td class="to">&#160;&#160;irq</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">jtag_debug_module_reset&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;reset</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">data_master&#160;&#160;</td>
-      <td class="neighbor" rowspan="4">
-       <a href="#module_pixel_cluster_0">pixel_cluster_0</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;mm</td>
      </tr>
      <tr>
       <td></td>
@@ -4657,7 +4609,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">dataSlaveMapParam</td>
-        <td class="parametervalue">&lt;address-map&gt;&lt;slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /&gt;&lt;slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /&gt;&lt;slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /&gt;&lt;slave name='touchscreen_uart.s1' start='0x91000' end='0x91020' /&gt;&lt;slave name='main_timer.s1' start='0x91020' end='0x91040' /&gt;&lt;slave name='pixel_cluster_0.mm' start='0x91040' end='0x91050' /&gt;&lt;slave name='switch_in_pio.s1' start='0x91050' end='0x91060' /&gt;&lt;slave name='led_out_pio.s1' start='0x91060' end='0x91070' /&gt;&lt;slave name='Draw_DMA.avalon_dma_control_slave' start='0x91070' end='0x91080' /&gt;&lt;slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /&gt;&lt;slave name='Video_In_DMA.avalon_dma_control_slave' start='0x91090' end='0x910A0' /&gt;&lt;slave name='jtag_uart_0.avalon_jtag_slave' start='0x910A0' end='0x910A8' /&gt;&lt;slave name='sdram.s1' start='0x8000000' end='0xC000000' /&gt;&lt;/address-map&gt;</td>
+        <td class="parametervalue">&lt;address-map&gt;&lt;slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /&gt;&lt;slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /&gt;&lt;slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /&gt;&lt;slave name='touchscreen_uart.s1' start='0x91000' end='0x91020' /&gt;&lt;slave name='main_timer.s1' start='0x91020' end='0x91040' /&gt;&lt;slave name='switch_in_pio.s1' start='0x91050' end='0x91060' /&gt;&lt;slave name='led_out_pio.s1' start='0x91060' end='0x91070' /&gt;&lt;slave name='Draw_DMA.avalon_dma_control_slave' start='0x91070' end='0x91080' /&gt;&lt;slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /&gt;&lt;slave name='Video_In_DMA.avalon_dma_control_slave' start='0x91090' end='0x910A0' /&gt;&lt;slave name='jtag_uart_0.avalon_jtag_slave' start='0x910A0' end='0x910A8' /&gt;&lt;slave name='sdram.s1' start='0x8000000' end='0xC000000' /&gt;&lt;/address-map&gt;</td>
        </tr>
        <tr>
         <td class="parametername">clockFrequency</td>
@@ -4830,83 +4782,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
       </table>
      </td>
-    </tr>
-   </table>
-  </div>
-  <a name="module_pixel_cluster_0"> </a>
-  <div>
-   <hr/>
-   <h2>pixel_cluster_0</h2>pixel_cluster v1.0
-   <br/>
-   <div class="greydiv">
-    <table class="connectionboxes">
-     <tr>
-      <td class="neighbor" rowspan="4">
-       <a href="#module_nios2">nios2</a>
-      </td>
-      <td class="from">data_master&#160;&#160;</td>
-      <td class="main" rowspan="9">pixel_cluster_0</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;mm</td>
-     </tr>
-     <tr>
-      <td class="from">jtag_debug_module_reset&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;reset</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td class="neighbor" rowspan="4">
-       <a href="#module_clocks">clocks</a>
-      </td>
-      <td class="from">sys_clk&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clock</td>
-     </tr>
-     <tr>
-      <td class="from">reset_source&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;reset</td>
-     </tr>
-    </table>
-   </div>
-   <br/>
-   <br/>
-   <table class="flowbox">
-    <tr>
-     <td class="parametersbox">
-      <h2>Parameters</h2>
-      <table>
-       <tr>
-        <td class="parametername">ADDR_BITS</td>
-        <td class="parametervalue">2</td>
-       </tr>
-       <tr>
-        <td class="parametername">BYTE_WIDTH</td>
-        <td class="parametervalue">4</td>
-       </tr>
-       <tr>
-        <td class="parametername">deviceFamily</td>
-        <td class="parametervalue">UNKNOWN</td>
-       </tr>
-       <tr>
-        <td class="parametername">generateLegacySim</td>
-        <td class="parametervalue">false</td>
-       </tr>
-      </table>
-     </td>
-    </tr>
-   </table>&#160;&#160;
-   <table class="flowbox">
-    <tr>
-     <td class="parametersbox">
-      <h2>Software Assignments</h2>(none)</td>
     </tr>
    </table>
   </div>
@@ -5584,8 +5459,8 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
   </div>
   <table class="blueBar">
    <tr>
-    <td class="l">generation took 0.01 seconds</td>
-    <td class="r">rendering took 0.11 seconds</td>
+    <td class="l">generation took 0.00 seconds</td>
+    <td class="r">rendering took 0.04 seconds</td>
    </tr>
   </table>
  </body>

@@ -29,7 +29,6 @@
 		.video_in_decoder_TD_VS         (<connected-to-video_in_decoder_TD_VS>),         //                 .TD_VS
 		.video_in_decoder_clk27_reset   (<connected-to-video_in_decoder_clk27_reset>),   //                 .clk27_reset
 		.video_in_decoder_TD_RESET      (<connected-to-video_in_decoder_TD_RESET>),      //                 .TD_RESET
-		.video_in_decoder_overflow_flag (<connected-to-video_in_decoder_overflow_flag>), //                 .overflow_flag
-		.pixel_cluster_leds             (<connected-to-pixel_cluster_leds>)              //    pixel_cluster.leds
+		.video_in_decoder_overflow_flag (<connected-to-video_in_decoder_overflow_flag>)  //                 .overflow_flag
 	);
 

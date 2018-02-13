@@ -1,0 +1,95 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate /home/guoj/Documents/Year-3/CPEN-391/repo/test_pixel_cluster_qsys.qsys --block-symbol-file --output-directory=/home/guoj/Documents/Year-3/CPEN-391/repo/test_pixel_cluster_qsys --family="Cyclone V" --part=5CSEMA5F31C6
+Progress: Loading repo/test_pixel_cluster_qsys.qsys
+Progress: Reading input file
+Progress: Adding clk_0 [clock_source 15.0]
+Progress: Parameterizing module clk_0
+Progress: Adding jtag_uart_0 [altera_avalon_jtag_uart 15.0]
+Progress: Parameterizing module jtag_uart_0
+Progress: Adding nios2_qsys_0 [altera_nios2_qsys 15.0]
+Progress: Parameterizing module nios2_qsys_0
+Progress: Adding onchip_memory2_0 [altera_avalon_onchip_memory2 15.0]
+Progress: Parameterizing module onchip_memory2_0
+Progress: Adding pixel_cluster_0 [pixel_cluster 1.0]
+Progress: Parameterizing module pixel_cluster_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Warning: test_pixel_cluster_qsys.nios2_qsys_0: Nios II Classic cores are now superseded by improved Gen 2 cores.
+Info: ip-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate /home/guoj/Documents/Year-3/CPEN-391/repo/test_pixel_cluster_qsys.qsys --synthesis=VERILOG --output-directory=/home/guoj/Documents/Year-3/CPEN-391/repo/test_pixel_cluster_qsys/synthesis --family="Cyclone V" --part=5CSEMA5F31C6
+Progress: Loading repo/test_pixel_cluster_qsys.qsys
+Progress: Reading input file
+Progress: Adding clk_0 [clock_source 15.0]
+Progress: Parameterizing module clk_0
+Progress: Adding jtag_uart_0 [altera_avalon_jtag_uart 15.0]
+Progress: Parameterizing module jtag_uart_0
+Progress: Adding nios2_qsys_0 [altera_nios2_qsys 15.0]
+Progress: Parameterizing module nios2_qsys_0
+Progress: Adding onchip_memory2_0 [altera_avalon_onchip_memory2 15.0]
+Progress: Parameterizing module onchip_memory2_0
+Progress: Adding pixel_cluster_0 [pixel_cluster 1.0]
+Progress: Parameterizing module pixel_cluster_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Warning: test_pixel_cluster_qsys.nios2_qsys_0: Nios II Classic cores are now superseded by improved Gen 2 cores.
+Info: test_pixel_cluster_qsys: Generating test_pixel_cluster_qsys "test_pixel_cluster_qsys" for QUARTUS_SYNTH
+Info: jtag_uart_0: Starting RTL generation for module 'test_pixel_cluster_qsys_jtag_uart_0'
+Info: jtag_uart_0:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=test_pixel_cluster_qsys_jtag_uart_0 --dir=/tmp/alt7574_1799060612873308520.dir/0169_jtag_uart_0_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7574_1799060612873308520.dir/0169_jtag_uart_0_gen//test_pixel_cluster_qsys_jtag_uart_0_component_configuration.pl  --do_build_sim=0  ]
+Info: jtag_uart_0: Done RTL generation for module 'test_pixel_cluster_qsys_jtag_uart_0'
+Info: jtag_uart_0: "test_pixel_cluster_qsys" instantiated altera_avalon_jtag_uart "jtag_uart_0"
+Info: nios2_qsys_0: Starting RTL generation for module 'test_pixel_cluster_qsys_nios2_qsys_0'
+Info: nios2_qsys_0:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/eperlcmd -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2/cpu_lib -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2/nios_lib -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2 -I /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2 -- /home/guoj/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2/generate_rtl.epl --name=test_pixel_cluster_qsys_nios2_qsys_0 --dir=/tmp/alt7574_1799060612873308520.dir/0170_nios2_qsys_0_gen/ --quartus_bindir=/home/guoj/altera/15.0/quartus/linux64 --verilog --config=/tmp/alt7574_1799060612873308520.dir/0170_nios2_qsys_0_gen//test_pixel_cluster_qsys_nios2_qsys_0_processor_configuration.pl  --do_build_sim=0  ]
+Info: nios2_qsys_0: # 2018.02.12 16:32:33 (*) Starting Nios II generation
+Info: nios2_qsys_0: # 2018.02.12 16:32:33 (*)   Checking for plaintext license.
+Info: nios2_qsys_0: # 2018.02.12 16:32:35 (*)   Plaintext license not found.
+Info: nios2_qsys_0: # 2018.02.12 16:32:35 (*)   No license required to generate encrypted Nios II/e.
+Info: nios2_qsys_0: # 2018.02.12 16:32:35 (*)   Elaborating CPU configuration settings
+Info: nios2_qsys_0: # 2018.02.12 16:32:35 (*)   Creating all objects for CPU
+Info: nios2_qsys_0: # 2018.02.12 16:32:36 (*)   Generating RTL from CPU objects
+Info: nios2_qsys_0: # 2018.02.12 16:32:36 (*)   Creating plain-text RTL
+Info: nios2_qsys_0: # 2018.02.12 16:32:37 (*) Done Nios II generation
+Info: nios2_qsys_0: Done RTL generation for module 'test_pixel_cluster_qsys_nios2_qsys_0'
+Info: nios2_qsys_0: "test_pixel_cluster_qsys" instantiated altera_nios2_qsys "nios2_qsys_0"
+Info: onchip_memory2_0: Starting RTL generation for module 'test_pixel_cluster_qsys_onchip_memory2_0'
+Info: onchip_memory2_0:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=test_pixel_cluster_qsys_onchip_memory2_0 --dir=/tmp/alt7574_1799060612873308520.dir/0171_onchip_memory2_0_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7574_1799060612873308520.dir/0171_onchip_memory2_0_gen//test_pixel_cluster_qsys_onchip_memory2_0_component_configuration.pl  --do_build_sim=0  ]
+Info: onchip_memory2_0: Done RTL generation for module 'test_pixel_cluster_qsys_onchip_memory2_0'
+Info: onchip_memory2_0: "test_pixel_cluster_qsys" instantiated altera_avalon_onchip_memory2 "onchip_memory2_0"
+Info: pixel_cluster_0: "test_pixel_cluster_qsys" instantiated pixel_cluster "pixel_cluster_0"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_001: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_002: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_003: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_0: "test_pixel_cluster_qsys" instantiated altera_mm_interconnect "mm_interconnect_0"
+Info: irq_mapper: "test_pixel_cluster_qsys" instantiated altera_irq_mapper "irq_mapper"
+Info: rst_controller: "test_pixel_cluster_qsys" instantiated altera_reset_controller "rst_controller"
+Info: nios2_qsys_0_data_master_translator: "mm_interconnect_0" instantiated altera_merlin_master_translator "nios2_qsys_0_data_master_translator"
+Info: jtag_uart_0_avalon_jtag_slave_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "jtag_uart_0_avalon_jtag_slave_translator"
+Info: nios2_qsys_0_data_master_agent: "mm_interconnect_0" instantiated altera_merlin_master_agent "nios2_qsys_0_data_master_agent"
+Info: jtag_uart_0_avalon_jtag_slave_agent: "mm_interconnect_0" instantiated altera_merlin_slave_agent "jtag_uart_0_avalon_jtag_slave_agent"
+Info: jtag_uart_0_avalon_jtag_slave_agent_rsp_fifo: "mm_interconnect_0" instantiated altera_avalon_sc_fifo "jtag_uart_0_avalon_jtag_slave_agent_rsp_fifo"
+Info: router: "mm_interconnect_0" instantiated altera_merlin_router "router"
+Info: router_001: "mm_interconnect_0" instantiated altera_merlin_router "router_001"
+Info: router_002: "mm_interconnect_0" instantiated altera_merlin_router "router_002"
+Info: router_003: "mm_interconnect_0" instantiated altera_merlin_router "router_003"
+Info: cmd_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_demux_001: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux_001"
+Info: cmd_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: cmd_mux_001: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux_001"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/test_pixel_cluster_qsys/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: rsp_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux"
+Info: rsp_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/test_pixel_cluster_qsys/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: rsp_mux_001: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux_001"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/test_pixel_cluster_qsys/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: avalon_st_adapter: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter"
+Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
+Info: test_pixel_cluster_qsys: Done "test_pixel_cluster_qsys" with 26 modules, 40 files
+Info: ip-generate succeeded.
+Info: Finished: Create HDL design files for synthesis
