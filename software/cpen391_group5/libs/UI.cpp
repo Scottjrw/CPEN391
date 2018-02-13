@@ -7,7 +7,7 @@
 #define     MENU_ITEM_SPACE     5
 using namespace UI;
 
-Rectangle::Rectangle(SimpleGraphics &graphics, Point p1, Point p2, SimpleGraphics::rgba_t color):
+Rectangle::Rectangle(SimpleGraphics &graphics, Point p1, Point p2, rgba_t color):
     Drawable(graphics),
     m_p1(p1),
     m_p2(p2),
@@ -17,33 +17,50 @@ Rectangle::Rectangle(SimpleGraphics &graphics, Point p1, Point p2, SimpleGraphic
 void Rectangle::draw() {
 
     // show a filled rectangle on screen 
-    m_graphics.draw_rect(m_color, m_p1.x, m_p1.y, m_p2.x, m_p2.y);
+    m_graphics.draw_rect(m_color，m_p1.x, m_p1.y, m_p2.x, m_p2.y)
 }
 
 void Rectangle::undraw() {
 
     // shows nothing on screen
-    SimpleGraphics::rgba_t opaque_Color= m_graphics.rgba(0,0,0,0);
-    m_graphics.draw_rect(opaque_Color, m_p1.x, m_p1.y, m_p2.x, m_p2.y);
+    SimpleGraphics::rgba_t opaque_Color= m_graphics.rgba(255,255,255,0);
+    m_graphics.draw_rect(opaque_Color，m_p1.x, m_p1.y, m_p2.x, m_p2.y)
 }
 
+<<<<<<< HEAD
+void Circle::draw() {
+
+}
+
+void Circle::undraw() {
+
+}
+=======
+>>>>>>> 2c8313571cc1301bf8f0dc9dac083f6fabb92c49
 
 
 
 Button::Button(SimpleGraphics &graphics, TouchControl &touch,
-        Point p1, Point p2, std::string text, SimpleGraphics::rgba_t text_color,
-        SimpleGraphics::rgba_t background_color):
-	Rectangle(graphics, p1, p2, background_color),
+        Point p1, Point p2, std::string text, SimpleGraphics::rgba_t text_color,SimpleGraphics::rgba_t background_color):
+    Rectangle(graphics, p1, p2, background_color),
     Touchable(touch),
     m_text(text),
+<<<<<<< HEAD
+    m_text_color(text_color)
+{}
+=======
     m_text_color(text_color),
     m_cb(nullptr)
 { }
+>>>>>>> 2c8313571cc1301bf8f0dc9dac083f6fabb92c49
 
 
 void Button::draw(){
-	Rectangle::draw();
+
     // display the name of the button
+<<<<<<< HEAD
+    Rectangle::draw();
+=======
 	unsigned remaining_space_x;
 	unsigned text_width = 5*m_text.length();
 
@@ -55,6 +72,7 @@ void Button::draw(){
     unsigned strStartXPos = (remaining_space_x/2) + m_p1.x;
 
 	unsigned remaining_space_y;
+>>>>>>> 2c8313571cc1301bf8f0dc9dac083f6fabb92c49
 
 	if ((m_p2.y - m_p1.y) > CHAR_HEIGHT) {
 		remaining_space_y = (m_p2.y - m_p1.y) - CHAR_HEIGHT;
@@ -68,6 +86,10 @@ void Button::draw(){
 }
 
 void Button::undraw(){
+<<<<<<< HEAD
+    Rectangle button = Rectangle(graphics, p1, p2);
+    button.undraw();
+=======
 	Rectangle::undraw();
 
 	unsigned remaining_space_x;
@@ -90,6 +112,7 @@ void Button::undraw(){
 	unsigned strStartYPos = (remaining_space_y/2) +  m_p1.y;
 
 	m_graphics.draw_string(m_graphics.rgba(0,0,0,0), strStartXPos, strStartYPos, m_text);
+>>>>>>> 2c8313571cc1301bf8f0dc9dac083f6fabb92c49
 }
 
 bool Button::touch(Point P){
@@ -102,7 +125,13 @@ bool Button::touch(Point P){
 }
 
 void Button::onTouch(TouchCB callback){
+<<<<<<< HEAD
+
+
+
+=======
 	m_cb = callback;
+>>>>>>> 2c8313571cc1301bf8f0dc9dac083f6fabb92c49
 }
 
 Slider::Slider(SimpleGraphics &graphics, TouchControl &touch,
@@ -238,6 +267,16 @@ DropdownMenu::DropdownMenu(SimpleGraphics &graphics, TouchControl &touch,
     Touchable(touch),
     m_expandDir(direction),
     m_expander(graphics, touch, p1, p2, text, text_color, background_color),
+<<<<<<< HEAD
+    m_p1(p1);
+    m_p2(p2);
+{
+    auto cb = [this] (Touchable *, Point){
+        this->expand(); 
+    };
+
+    m_expander.onTouch(cb);
+=======
     m_buttons(),
     m_p1(p1),
     m_p2(p2),
@@ -248,24 +287,28 @@ DropdownMenu::DropdownMenu(SimpleGraphics &graphics, TouchControl &touch,
 		else this->expand();
 	};
 	m_expander.onTouch(cb);
+>>>>>>> 2c8313571cc1301bf8f0dc9dac083f6fabb92c49
 }
 
 void DropdownMenu::draw(){
     m_expander.draw();
-
 }
 
 void DropdownMenu::undraw(){
-    m_expander.draw();
-
+    m_expander.undraw();
 }
 
+<<<<<<< HEAD
+bool DropdownMenu::touch(){
+    return m_expander.touch();
+=======
 bool DropdownMenu::touch(Point p){
 	for (Button temp : m_buttons) {
 		if (temp.touch(p)) return true;
 	}
 	if (m_expander.touch(p)) return true;
 	return false;
+>>>>>>> 2c8313571cc1301bf8f0dc9dac083f6fabb92c49
 }
 
 void DropdownMenu::expand(){
@@ -279,7 +322,7 @@ void DropdownMenu::expand(){
 
         case BOTTOM:
 
-            for(int i = 0; i < (int)m_buttons.size(); i++){
+            for(int i = 0; i < m_buttons.size(); i++){
                 m_buttons[i].draw();
             }
     }
@@ -288,7 +331,7 @@ void DropdownMenu::expand(){
 
 void DropdownMenu::close(){
 
-    for(int i = 0; i < (int)m_buttons.size(); i++){
+    for(int i = 0; i < m_buttons.size(); i++){
         m_buttons[i].undraw();
     }
     m_is_open = false;
