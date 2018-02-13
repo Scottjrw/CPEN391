@@ -14,7 +14,6 @@
 #include <stdexcept>
 #include <utility>
 #include "UI.hpp"
-#include "vision.hpp"
 
 
 
@@ -23,18 +22,22 @@ using namespace UI;
 class Cursor : public Drawable{
 
 public:
-    Cursor(SimpleGraphics &graphics, Point center, SimpleGraphics::rgba_t color, int radius);
 
     virtual void draw();
     virtual void undraw();
 
-    void update(unsigned x, unsigned y);
+    void draw_cursor(SimpleGraphics::rgba_t color, unsigned x, unsigned y, int radius, std::vector<ColourPoint> &pointPixels);
 
+    Cursor(SimpleGraphics &graphics, SimpleGraphics::rgba_t color, int radius);
+
+    void update(Point center);
 
 private:
     Point m_center;
     SimpleGraphics::rgba_t m_color;
     int m_radius;
-    vector<struct PointPixel> m_pointPixels;
+    std::vector<ColourPoint> m_ColourPixels;
 
-}  
+};
+
+#endif

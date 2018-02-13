@@ -148,6 +148,7 @@ CXX_SRCS += ../cpen391_group5/libs/SimpleGraphics.cpp
 CXX_SRCS += ../cpen391_group5/libs/touch.cpp
 CXX_SRCS += ../cpen391_group5/libs/screen.cpp
 CXX_SRCS += ../cpen391_group5/libs/UI.cpp
+CXX_SRCS += ../cpen391_group5/libs/cursor.cpp
 ASM_SRCS :=
 
 # Path to root of object file tree.

@@ -14,6 +14,7 @@
 #include <stdexcept>
 #include <utility>
 #include "UI.hpp"
+#include "cursor.hpp"
 
 using namespace UI;
 
@@ -45,6 +46,7 @@ public:
 private:
 	std::vector<Drawable*> drawables;
 	std::vector<Touchable*> touchables;
+	Cursor cursor;
 
 };
 

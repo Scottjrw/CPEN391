@@ -2,27 +2,56 @@
 #include "UI.hpp"
 #include "SimpleGraphics.hpp"
 
-Cursor::Cursor(SimpleGraphics &graphics, Point center, SimpleGraphics::rgba_t color, int radius):
-    m_color(color),
+Cursor::Cursor(SimpleGraphics &graphics, SimpleGraphics::rgba_t color, int radius):
+	Drawable(graphics),
+	m_color(color),
     m_radius(radius),
-    m_center(center)
+    m_ColourPixels()
 {}
 
 void Cursor::draw(){
     // draw new Cursor
     // store new covered Pixcel Points
-    SimpleGraphics::draw_x(m_color, m_center.x, m_center.y, m_radius, m_pointPixels);
+	draw_cursor(m_color, m_center.x, m_center.y, m_radius, m_ColourPixels);
+}
+
+void Cursor::draw_cursor(SimpleGraphics::rgba_t color, unsigned x, unsigned y, int radius, std::vector<ColourPoint> &pointPixels) {
+	for (int i = -radius; i <= radius; i++) {
+		for (int j = -radius; j <= radius; j++) {
+			if (i == j || -i == j) {
+
+				ColourPoint coveredPoint;
+				coveredPoint.x = x+i;
+				coveredPoint.y = y+j;
+				coveredPoint.color = m_graphics.read_pixel(coveredPoint.x, coveredPoint.y);
+
+				pointPixels.push_back(coveredPoint);
+
+				m_graphics.draw_pixel(color, x + i, y + j);
+			}
+		}
+	}
 }
 
 void Cursor::undraw(){
 
     // restore previously covered points
-    while(!m_pointPixels.empty()){
+    while(!m_ColourPixels.empty()){
 
         // get previously covered points
-        PointPixel prev_PointPixel = m_pointPixels.back();
-        draw_pixel(prev_PointPixel.color, prev_PointPixel.x, prev_PointPixel.y);
-        m_pointPixels.pop_back();
+    	ColourPoint prev_ColourPixel = m_ColourPixels.back();
+        m_graphics.draw_pixel(prev_ColourPixel.color, prev_ColourPixel.x, prev_ColourPixel.y);
+        m_ColourPixels.pop_back();
     }
+}
+
+void Cursor::update(Point center){
+
+    m_center = center;
+
+    undraw();
+
+    draw();
+
 }
 

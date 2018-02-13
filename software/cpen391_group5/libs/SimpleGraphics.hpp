@@ -25,6 +25,16 @@ public:
             IOWR_16DIRECT(addr, 0, color);
     }
 
+    inline rgba_t read_pixel(unsigned x, unsigned y) {
+		rgba_t *addr = m_buffer_base + (y * m_width + x);
+
+		// Ignore invalid writes
+		if (addr < m_max_addr)
+			return IORD_16DIRECT(addr, 0);
+
+		return 0;
+	}
+
     void draw_rect(rgba_t color, unsigned x1, unsigned y1, unsigned x2, unsigned y2);
 
     void draw_x(rgba_t color, unsigned x, unsigned y, int radius);

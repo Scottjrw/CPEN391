@@ -11,11 +11,12 @@
 using namespace UI;
 
 Screen::Screen(SimpleGraphics &graphics, TouchControl &touch):
-		Drawable(graphics),
-		Touchable(touch),
-		drawables(),
-		touchables()
-	{}
+	Drawable(graphics),
+	Touchable(touch),
+	drawables(),
+	touchables(),
+	cursor(m_graphics, SimpleGraphics::rgba(255, 0, 0, 255), 4)
+{}
 
 void Screen::draw() {
 	Rectangle clear_rect(m_graphics, {0, 0}, {160, 120}, SimpleGraphics::rgba(0, 0, 0, 0));
@@ -28,14 +29,12 @@ void Screen::draw() {
 
 void Screen::enable_touch() {
 
-	Cursor cursor(m_graphics, SimpleGraphics::rgba(255, 0, 0, 255), 4);
-
 	m_touch.setTouchCB([this](TouchControl *, unsigned x, unsigned y) {
 		Point p = {x, y};
 
 		// undraw previous cursor
 		// restore the image that previous cursor covers
-		cursor.update();
+		cursor.update(p);
 		// draw new cursor at Point p
 
 		for (auto touch : touchables) {
