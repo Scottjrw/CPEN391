@@ -46,8 +46,10 @@ wire reset = ~KEY[0];
 cpen391_group5_qsys sys_inst(
     .clk_clk(CLOCK_50),
     .reset_reset(reset),
-    .led_out_export(LEDR[7:0]),
+    .led_out_export(), // EMPTY
     .switch_in_export(SW[7:0]),
+
+    .pixel_cluster_leds(LEDR),
 
     // SDRAM
     .sdram_clk_clk(DRAM_CLK),
@@ -82,7 +84,7 @@ cpen391_group5_qsys sys_inst(
     .video_in_decoder_TD_VS(TD_VS),
     .video_in_decoder_clk27_reset(reset),
     .video_in_decoder_TD_RESET(TD_RESET_N),
-    .video_in_decoder_overflow_flag(LEDR[9])
+    .video_in_decoder_overflow_flag()
 );
 
 endmodule

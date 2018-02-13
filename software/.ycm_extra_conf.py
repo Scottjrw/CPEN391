@@ -43,6 +43,10 @@ def FlagsForFile( filename, **kwargs ):
 
     project_folder = os.path.join(relative_to, project_name)
     project_bsp_folder = os.path.join(relative_to, project_name + '_bsp')
+    make_bsp_color_coded = True
+    if not os.path.isdir(project_bsp_folder):
+        make_bsp_color_coded = False
+        project_bsp_folder = os.path.join(relative_to, 'cpen391_group5_bsp')
 
     flags = CreateFlags(project_folder, project_bsp_folder)
 
@@ -52,7 +56,7 @@ def FlagsForFile( filename, **kwargs ):
             f.write('\n'.join(flags) + '\n')
 
     bsp_color_coded = os.path.join(project_bsp_folder, '.color_coded')
-    if not os.path.isfile(bsp_color_coded):
+    if make_bsp_color_coded and not os.path.isfile(bsp_color_coded):
         with open(bsp_color_coded, 'w') as f:
             f.write('\n'.join(flags) + '\n')
 

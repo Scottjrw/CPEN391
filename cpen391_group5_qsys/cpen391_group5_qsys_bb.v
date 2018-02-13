@@ -14,6 +14,8 @@ module cpen391_group5_qsys (
 	sdram_wire_ras_n,
 	sdram_wire_we_n,
 	switch_in_export,
+	touchscreen_rxd,
+	touchscreen_txd,
 	vga_controller_CLK,
 	vga_controller_HS,
 	vga_controller_VS,
@@ -29,8 +31,7 @@ module cpen391_group5_qsys (
 	video_in_decoder_clk27_reset,
 	video_in_decoder_TD_RESET,
 	video_in_decoder_overflow_flag,
-	touchscreen_rxd,
-	touchscreen_txd);	
+	pixel_cluster_leds);	
 
 	input		clk_clk;
 	output	[7:0]	led_out_export;
@@ -46,6 +47,8 @@ module cpen391_group5_qsys (
 	output		sdram_wire_ras_n;
 	output		sdram_wire_we_n;
 	input	[7:0]	switch_in_export;
+	input		touchscreen_rxd;
+	output		touchscreen_txd;
 	output		vga_controller_CLK;
 	output		vga_controller_HS;
 	output		vga_controller_VS;
@@ -61,6 +64,5 @@ module cpen391_group5_qsys (
 	input		video_in_decoder_clk27_reset;
 	output		video_in_decoder_TD_RESET;
 	output		video_in_decoder_overflow_flag;
-	input		touchscreen_rxd;
-	output		touchscreen_txd;
+	output	[9:0]	pixel_cluster_leds;
 endmodule

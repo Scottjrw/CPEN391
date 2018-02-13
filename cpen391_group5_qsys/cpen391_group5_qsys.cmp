@@ -2,6 +2,7 @@
 		port (
 			clk_clk                        : in    std_logic                     := 'X';             -- clk
 			led_out_export                 : out   std_logic_vector(7 downto 0);                     -- export
+			pixel_cluster_leds             : out   std_logic_vector(9 downto 0);                     -- leds
 			reset_reset                    : in    std_logic                     := 'X';             -- reset
 			sdram_clk_clk                  : out   std_logic;                                        -- clk
 			sdram_wire_addr                : out   std_logic_vector(12 downto 0);                    -- addr

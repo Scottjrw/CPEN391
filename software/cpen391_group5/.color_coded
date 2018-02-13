@@ -1,3 +1,5 @@
+-Wall
+-std=c++11
 -DALT_NO_INSTRUCTION_EMULATION
 -DALT_SINGLE_THREADED
 -D__hal__
@@ -6,13 +8,7 @@
 -I/home/guoj/Documents/Year-3/CPEN-391/repo/software/cpen391_group5_bsp/drivers/inc
 -I/home/guoj/Documents/Year-3/CPEN-391/repo/software/cpen391_group5/libs
 -I/home/guoj/Documents/Year-3/CPEN-391/repo/software/cpen391_group5
--Wall
--std=c++11
 -include
 /home/guoj/Documents/Year-3/CPEN-391/repo/software/cpen391_group5/../ycm.h
 -isystem
 /home/guoj/Documents/Year-3/CPEN-391/repo/software/cpen391_group5_bsp/HAL/inc
--isystem
-/home/guoj/altera/15.0/nios2eds/bin/gnu/H-x86_64-pc-linux-gnu/nios2-elf/include
--isystem
-/home/guoj/altera/15.0/nios2eds/bin/gnu/nios2-elf/include/c++/4.9.1

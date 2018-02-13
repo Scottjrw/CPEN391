@@ -58,7 +58,7 @@
    {
       datum baseAddress
       {
-         value = "594016";
+         value = "594032";
          type = "String";
       }
    }
@@ -164,7 +164,7 @@
    {
       datum baseAddress
       {
-         value = "594048";
+         value = "594064";
          type = "String";
       }
    }
@@ -201,7 +201,7 @@
    {
       datum baseAddress
       {
-         value = "594032";
+         value = "594048";
          type = "String";
       }
    }
@@ -261,6 +261,38 @@
          type = "String";
       }
    }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
    element jtag_uart_0
    {
       datum _sortIndex
@@ -273,7 +305,7 @@
    {
       datum baseAddress
       {
-         value = "594064";
+         value = "594080";
          type = "String";
       }
    }
@@ -289,7 +321,7 @@
    {
       datum baseAddress
       {
-         value = "594000";
+         value = "594016";
          type = "String";
       }
    }
@@ -322,6 +354,22 @@
       datum baseAddress
       {
          value = "591872";
+         type = "String";
+      }
+   }
+   element pixel_cluster_0
+   {
+      datum _sortIndex
+      {
+         value = "26";
+         type = "int";
+      }
+   }
+   element pixel_cluster_0.mm
+   {
+      datum baseAddress
+      {
+         value = "593984";
          type = "String";
       }
    }
@@ -358,7 +406,7 @@
    {
       datum baseAddress
       {
-         value = "593984";
+         value = "594000";
          type = "String";
       }
    }
@@ -403,6 +451,11 @@
  <interface
    name="led_out"
    internal="led_out_pio.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="pixel_cluster"
+   internal="pixel_cluster_0.conduit_end"
    type="conduit"
    dir="end" />
  <interface name="reset" internal="clocks.ref_reset" type="reset" dir="end" />
@@ -779,7 +832,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="28" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='touchscreen_uart.s1' start='0x91000' end='0x91020' /><slave name='main_timer.s1' start='0x91020' end='0x91040' /><slave name='switch_in_pio.s1' start='0x91040' end='0x91050' /><slave name='led_out_pio.s1' start='0x91050' end='0x91060' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0x91060' end='0x91070' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91070' end='0x91080' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x91090' end='0x91098' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='touchscreen_uart.s1' start='0x91000' end='0x91020' /><slave name='main_timer.s1' start='0x91020' end='0x91040' /><slave name='pixel_cluster_0.mm' start='0x91040' end='0x91050' /><slave name='switch_in_pio.s1' start='0x91050' end='0x91060' /><slave name='led_out_pio.s1' start='0x91060' end='0x91070' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0x91070' end='0x91080' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0x91090' end='0x910A0' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x910A0' end='0x910A8' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="true" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -896,6 +949,10 @@
   <parameter name="tightlyCoupledInstructionMaster3MapParam" value="" />
   <parameter name="userDefinedSettings" value="" />
  </module>
+ <module name="pixel_cluster_0" kind="pixel_cluster" version="1.0" enabled="1">
+  <parameter name="ADDR_BITS" value="2" />
+  <parameter name="BYTE_WIDTH" value="4" />
+ </module>
  <module
    name="sdram"
    kind="altera_avalon_new_sdram_controller"
@@ -996,7 +1053,7 @@
    start="nios2.data_master"
    end="Video_In_DMA.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091080" />
+  <parameter name="baseAddress" value="0x00091090" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1005,7 +1062,7 @@
    start="nios2.data_master"
    end="Video_Out_DMA.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091070" />
+  <parameter name="baseAddress" value="0x00091080" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1014,7 +1071,7 @@
    start="nios2.data_master"
    end="Draw_DMA.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091060" />
+  <parameter name="baseAddress" value="0x00091070" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1023,7 +1080,7 @@
    start="nios2.data_master"
    end="jtag_uart_0.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091090" />
+  <parameter name="baseAddress" value="0x000910a0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1039,9 +1096,18 @@
    kind="avalon"
    version="15.0"
    start="nios2.data_master"
+   end="pixel_cluster_0.mm">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00091040" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="15.0"
+   start="nios2.data_master"
    end="led_out_pio.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091050" />
+  <parameter name="baseAddress" value="0x00091060" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1050,7 +1116,7 @@
    start="nios2.data_master"
    end="switch_in_pio.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091040" />
+  <parameter name="baseAddress" value="0x00091050" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="avalon" version="15.0" start="nios2.data_master" end="sdram.s1">
@@ -1279,6 +1345,11 @@
    kind="clock"
    version="15.0"
    start="clocks.sys_clk"
+   end="pixel_cluster_0.clock" />
+ <connection
+   kind="clock"
+   version="15.0"
+   start="clocks.sys_clk"
    end="Video_Out_FIFO.clock_stream_in" />
  <connection
    kind="clock"
@@ -1420,6 +1491,11 @@
    kind="reset"
    version="15.0"
    start="nios2.jtag_debug_module_reset"
+   end="pixel_cluster_0.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
    end="Video_Frame_Buffer.reset1" />
  <connection
    kind="reset"
@@ -1541,6 +1617,11 @@
    version="15.0"
    start="clocks.reset_source"
    end="touchscreen_uart.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="clocks.reset_source"
+   end="pixel_cluster_0.reset" />
  <connection
    kind="reset"
    version="15.0"
