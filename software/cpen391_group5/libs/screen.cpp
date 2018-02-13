@@ -27,8 +27,17 @@ void Screen::draw() {
 }
 
 void Screen::enable_touch() {
+
+	Cursor cursor(m_graphics, SimpleGraphics::rgba(255, 0, 0, 255), 4);
+
 	m_touch.setTouchCB([this](TouchControl *, unsigned x, unsigned y) {
 		Point p = {x, y};
+
+		// undraw previous cursor
+		// restore the image that previous cursor covers
+		cursor.update();
+		// draw new cursor at Point p
+
 		for (auto touch : touchables) {
 			if (touch->touch(p)) break;
 		}
