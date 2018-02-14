@@ -5,11 +5,11 @@
  version="1.0"
  fabric="QSYS">
  <!-- Format version 15.0 145 (Future versions may contain additional information.) -->
- <!-- 2018.02.12.18:39:34 -->
+ <!-- 2018.02.13.20:07:13 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1518489573</value>
+  <value>1518581232</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -15013,25 +15013,17 @@ the requested settings for a module instance. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <parameter name="getAddr">
-   <type>java.math.BigInteger</type>
-   <value>5</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="getColor">
-   <type>java.math.BigInteger</type>
-   <value>9</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
   <parameter name="writeVal">
    <type>java.math.BigInteger</type>
    <value>3</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="writeVal_wait">
+   <type>java.math.BigInteger</type>
+   <value>5</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -15143,7 +15135,7 @@ parameters are a RESULT of the module parameters. -->
     <role>reset</role>
    </port>
   </interface>
-  <interface name="slave" kind="avalon_slave" version="15.0">
+  <interface name="mm" kind="avalon_slave" version="15.0">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -15445,7 +15437,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="writeWaitStates">
     <type>int</type>
-    <value>1</value>
+    <value>0</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -15453,7 +15445,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="writeWaitTime">
     <type>int</type>
-    <value>1</value>
+    <value>0</value>
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
@@ -15478,22 +15470,34 @@ parameters are a RESULT of the module parameters. -->
    <type>avalon</type>
    <isStart>false</isStart>
    <port>
-    <name>write_slave</name>
+    <name>mm_writedata</name>
     <direction>Input</direction>
-    <width>1</width>
-    <role>write</role>
+    <width>32</width>
+    <role>writedata</role>
    </port>
    <port>
-    <name>address</name>
+    <name>mm_address</name>
     <direction>Input</direction>
     <width>24</width>
     <role>address</role>
    </port>
    <port>
-    <name>data_in</name>
+    <name>mm_write</name>
     <direction>Input</direction>
+    <width>1</width>
+    <role>write</role>
+   </port>
+   <port>
+    <name>mm_readdata</name>
+    <direction>Output</direction>
     <width>32</width>
-    <role>writedata</role>
+    <role>readdata</role>
+   </port>
+   <port>
+    <name>mm_read</name>
+    <direction>Input</direction>
+    <width>1</width>
+    <role>read</role>
    </port>
   </interface>
   <interface name="avalon_master" kind="avalon_master" version="15.0">
@@ -16977,7 +16981,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="dataSlaveMapParam">
    <type>java.lang.String</type>
-   <value><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='touchscreen_uart.s1' start='0x91000' end='0x91020' /><slave name='main_timer.s1' start='0x91020' end='0x91040' /><slave name='switch_in_pio.s1' start='0x91040' end='0x91050' /><slave name='led_out_pio.s1' start='0x91050' end='0x91060' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0x91060' end='0x91070' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91070' end='0x91080' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x91090' end='0x91098' /><slave name='new_component_0.slave' start='0x4000000' end='0x8000000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></value>
+   <value><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='touchscreen_uart.s1' start='0x91000' end='0x91020' /><slave name='main_timer.s1' start='0x91020' end='0x91040' /><slave name='switch_in_pio.s1' start='0x91040' end='0x91050' /><slave name='led_out_pio.s1' start='0x91050' end='0x91060' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0x91060' end='0x91070' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91070' end='0x91080' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x91090' end='0x91098' /><slave name='new_component_0.mm' start='0x4000000' end='0x8000000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -17609,6 +17613,14 @@ parameters are a RESULT of the module parameters. -->
    </memoryBlock>
    <memoryBlock>
     <isBridge>false</isBridge>
+    <moduleName>new_component_0</moduleName>
+    <slaveName>mm</slaveName>
+    <name>new_component_0.mm</name>
+    <baseAddress>67108864</baseAddress>
+    <span>67108864</span>
+   </memoryBlock>
+   <memoryBlock>
+    <isBridge>false</isBridge>
     <moduleName>led_out_pio</moduleName>
     <slaveName>s1</slaveName>
     <name>led_out_pio.s1</name>
@@ -17662,14 +17674,6 @@ parameters are a RESULT of the module parameters. -->
     <name>Video_Frame_Buffer.s2</name>
     <baseAddress>0</baseAddress>
     <span>307200</span>
-   </memoryBlock>
-   <memoryBlock>
-    <isBridge>false</isBridge>
-    <moduleName>new_component_0</moduleName>
-    <slaveName>slave</slaveName>
-    <name>new_component_0.slave</name>
-    <baseAddress>67108864</baseAddress>
-    <span>67108864</span>
    </memoryBlock>
   </interface>
   <interface name="instruction_master" kind="avalon_master" version="15.0">
@@ -21612,6 +21616,57 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>jtag_debug_module</endConnectionPoint>
  </connection>
  <connection
+   name="nios2.data_master/new_component_0.mm"
+   kind="avalon"
+   version="15.0"
+   start="nios2.data_master"
+   end="new_component_0.mm">
+  <parameter name="arbitrationPriority">
+   <type>int</type>
+   <value>1</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="baseAddress">
+   <type>java.math.BigInteger</type>
+   <value>0x04000000</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="defaultConnection">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>nios2</startModule>
+  <startConnectionPoint>data_master</startConnectionPoint>
+  <endModule>new_component_0</endModule>
+  <endConnectionPoint>mm</endConnectionPoint>
+ </connection>
+ <connection
    name="nios2.data_master/led_out_pio.s1"
    kind="avalon"
    version="15.0"
@@ -21967,57 +22022,6 @@ parameters are a RESULT of the module parameters. -->
   <startConnectionPoint>data_master</startConnectionPoint>
   <endModule>Video_Frame_Buffer</endModule>
   <endConnectionPoint>s2</endConnectionPoint>
- </connection>
- <connection
-   name="nios2.data_master/new_component_0.slave"
-   kind="avalon"
-   version="15.0"
-   start="nios2.data_master"
-   end="new_component_0.slave">
-  <parameter name="arbitrationPriority">
-   <type>int</type>
-   <value>1</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="baseAddress">
-   <type>java.math.BigInteger</type>
-   <value>0x04000000</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="defaultConnection">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>nios2</startModule>
-  <startConnectionPoint>data_master</startConnectionPoint>
-  <endModule>new_component_0</endModule>
-  <endConnectionPoint>slave</endConnectionPoint>
  </connection>
  <connection
    name="nios2.instruction_master/nios2.jtag_debug_module"

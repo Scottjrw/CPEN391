@@ -194,6 +194,11 @@ module cpen391_group5_qsys (
 	wire   [3:0] mm_interconnect_2_nios2_jtag_debug_module_byteenable;                // mm_interconnect_2:nios2_jtag_debug_module_byteenable -> nios2:jtag_debug_module_byteenable
 	wire         mm_interconnect_2_nios2_jtag_debug_module_write;                     // mm_interconnect_2:nios2_jtag_debug_module_write -> nios2:jtag_debug_module_write
 	wire  [31:0] mm_interconnect_2_nios2_jtag_debug_module_writedata;                 // mm_interconnect_2:nios2_jtag_debug_module_writedata -> nios2:jtag_debug_module_writedata
+	wire  [31:0] mm_interconnect_2_new_component_0_mm_readdata;                       // new_component_0:mm_readdata -> mm_interconnect_2:new_component_0_mm_readdata
+	wire  [23:0] mm_interconnect_2_new_component_0_mm_address;                        // mm_interconnect_2:new_component_0_mm_address -> new_component_0:mm_address
+	wire         mm_interconnect_2_new_component_0_mm_read;                           // mm_interconnect_2:new_component_0_mm_read -> new_component_0:mm_read
+	wire         mm_interconnect_2_new_component_0_mm_write;                          // mm_interconnect_2:new_component_0_mm_write -> new_component_0:mm_write
+	wire  [31:0] mm_interconnect_2_new_component_0_mm_writedata;                      // mm_interconnect_2:new_component_0_mm_writedata -> new_component_0:mm_writedata
 	wire         mm_interconnect_2_led_out_pio_s1_chipselect;                         // mm_interconnect_2:led_out_pio_s1_chipselect -> led_out_pio:chipselect
 	wire  [31:0] mm_interconnect_2_led_out_pio_s1_readdata;                           // led_out_pio:readdata -> mm_interconnect_2:led_out_pio_s1_readdata
 	wire   [1:0] mm_interconnect_2_led_out_pio_s1_address;                            // mm_interconnect_2:led_out_pio_s1_address -> led_out_pio:address
@@ -229,9 +234,6 @@ module cpen391_group5_qsys (
 	wire         mm_interconnect_2_video_frame_buffer_s2_write;                       // mm_interconnect_2:Video_Frame_Buffer_s2_write -> Video_Frame_Buffer:write2
 	wire  [31:0] mm_interconnect_2_video_frame_buffer_s2_writedata;                   // mm_interconnect_2:Video_Frame_Buffer_s2_writedata -> Video_Frame_Buffer:writedata2
 	wire         mm_interconnect_2_video_frame_buffer_s2_clken;                       // mm_interconnect_2:Video_Frame_Buffer_s2_clken -> Video_Frame_Buffer:clken2
-	wire  [23:0] mm_interconnect_2_new_component_0_slave_address;                     // mm_interconnect_2:new_component_0_slave_address -> new_component_0:address
-	wire         mm_interconnect_2_new_component_0_slave_write;                       // mm_interconnect_2:new_component_0_slave_write -> new_component_0:write_slave
-	wire  [31:0] mm_interconnect_2_new_component_0_slave_writedata;                   // mm_interconnect_2:new_component_0_slave_writedata -> new_component_0:data_in
 	wire         irq_mapper_receiver0_irq;                                            // jtag_uart_0:av_irq -> irq_mapper:receiver0_irq
 	wire         irq_mapper_receiver1_irq;                                            // main_timer:irq -> irq_mapper:receiver1_irq
 	wire         irq_mapper_receiver2_irq;                                            // touchscreen_uart:irq -> irq_mapper:receiver2_irq
@@ -591,21 +593,22 @@ module cpen391_group5_qsys (
 	);
 
 	signal_control #(
-		.idle     (6'b000000),
-		.getAddr  (6'b000101),
-		.getColor (6'b001001),
-		.writeVal (6'b000011)
+		.idle          (6'b000000),
+		.writeVal      (6'b000011),
+		.writeVal_wait (6'b000101)
 	) new_component_0 (
-		.clk          (clocks_sys_clk_clk),                                //         clock.clk
-		.reset        (rst_controller_reset_out_reset),                    //         reset.reset
-		.write_slave  (mm_interconnect_2_new_component_0_slave_write),     //         slave.write
-		.address      (mm_interconnect_2_new_component_0_slave_address),   //              .address
-		.data_in      (mm_interconnect_2_new_component_0_slave_writedata), //              .writedata
-		.write_master (new_component_0_avalon_master_write),               // avalon_master.write
-		.wait_request (new_component_0_avalon_master_waitrequest),         //              .waitrequest
-		.byteenable   (new_component_0_avalon_master_byteenable),          //              .byteenable
-		.address_out  (new_component_0_avalon_master_address),             //              .address
-		.data_out     (new_component_0_avalon_master_writedata)            //              .writedata
+		.clk          (clocks_sys_clk_clk),                             //         clock.clk
+		.reset        (rst_controller_reset_out_reset),                 //         reset.reset
+		.mm_writedata (mm_interconnect_2_new_component_0_mm_writedata), //            mm.writedata
+		.mm_address   (mm_interconnect_2_new_component_0_mm_address),   //              .address
+		.mm_write     (mm_interconnect_2_new_component_0_mm_write),     //              .write
+		.mm_readdata  (mm_interconnect_2_new_component_0_mm_readdata),  //              .readdata
+		.mm_read      (mm_interconnect_2_new_component_0_mm_read),      //              .read
+		.write_master (new_component_0_avalon_master_write),            // avalon_master.write
+		.wait_request (new_component_0_avalon_master_waitrequest),      //              .waitrequest
+		.byteenable   (new_component_0_avalon_master_byteenable),       //              .byteenable
+		.address_out  (new_component_0_avalon_master_address),          //              .address
+		.data_out     (new_component_0_avalon_master_writedata)         //              .writedata
 	);
 
 	cpen391_group5_qsys_nios2 nios2 (
@@ -781,9 +784,11 @@ module cpen391_group5_qsys (
 		.main_timer_s1_readdata                            (mm_interconnect_2_main_timer_s1_readdata),                            //                                            .readdata
 		.main_timer_s1_writedata                           (mm_interconnect_2_main_timer_s1_writedata),                           //                                            .writedata
 		.main_timer_s1_chipselect                          (mm_interconnect_2_main_timer_s1_chipselect),                          //                                            .chipselect
-		.new_component_0_slave_address                     (mm_interconnect_2_new_component_0_slave_address),                     //                       new_component_0_slave.address
-		.new_component_0_slave_write                       (mm_interconnect_2_new_component_0_slave_write),                       //                                            .write
-		.new_component_0_slave_writedata                   (mm_interconnect_2_new_component_0_slave_writedata),                   //                                            .writedata
+		.new_component_0_mm_address                        (mm_interconnect_2_new_component_0_mm_address),                        //                          new_component_0_mm.address
+		.new_component_0_mm_write                          (mm_interconnect_2_new_component_0_mm_write),                          //                                            .write
+		.new_component_0_mm_read                           (mm_interconnect_2_new_component_0_mm_read),                           //                                            .read
+		.new_component_0_mm_readdata                       (mm_interconnect_2_new_component_0_mm_readdata),                       //                                            .readdata
+		.new_component_0_mm_writedata                      (mm_interconnect_2_new_component_0_mm_writedata),                      //                                            .writedata
 		.nios2_jtag_debug_module_address                   (mm_interconnect_2_nios2_jtag_debug_module_address),                   //                     nios2_jtag_debug_module.address
 		.nios2_jtag_debug_module_write                     (mm_interconnect_2_nios2_jtag_debug_module_write),                     //                                            .write
 		.nios2_jtag_debug_module_read                      (mm_interconnect_2_nios2_jtag_debug_module_read),                      //                                            .read

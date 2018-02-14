@@ -317,6 +317,158 @@
          type = "String";
       }
    }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
    element jtag_uart_0
    {
       datum _sortIndex
@@ -373,7 +525,7 @@
          type = "int";
       }
    }
-   element new_component_0.slave
+   element new_component_0.mm
    {
       datum baseAddress
       {
@@ -842,10 +994,9 @@
   <parameter name="watchdogPulse" value="2" />
  </module>
  <module name="new_component_0" kind="new_component" version="1.0" enabled="1">
-  <parameter name="getAddr" value="5" />
-  <parameter name="getColor" value="9" />
   <parameter name="idle" value="0" />
   <parameter name="writeVal" value="3" />
+  <parameter name="writeVal_wait" value="5" />
  </module>
  <module name="nios2" kind="altera_nios2_qsys" version="15.0" enabled="1">
   <parameter name="bht_ramBlockType" value="Automatic" />
@@ -857,7 +1008,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="28" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='touchscreen_uart.s1' start='0x91000' end='0x91020' /><slave name='main_timer.s1' start='0x91020' end='0x91040' /><slave name='switch_in_pio.s1' start='0x91040' end='0x91050' /><slave name='led_out_pio.s1' start='0x91050' end='0x91060' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0x91060' end='0x91070' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91070' end='0x91080' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x91090' end='0x91098' /><slave name='new_component_0.slave' start='0x4000000' end='0x8000000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='touchscreen_uart.s1' start='0x91000' end='0x91020' /><slave name='main_timer.s1' start='0x91020' end='0x91040' /><slave name='switch_in_pio.s1' start='0x91040' end='0x91050' /><slave name='led_out_pio.s1' start='0x91050' end='0x91060' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0x91060' end='0x91070' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91070' end='0x91080' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x91090' end='0x91098' /><slave name='new_component_0.mm' start='0x4000000' end='0x8000000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="true" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -1126,6 +1277,15 @@
    kind="avalon"
    version="15.0"
    start="nios2.data_master"
+   end="new_component_0.mm">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x04000000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="15.0"
+   start="nios2.data_master"
    end="led_out_pio.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00091050" />
@@ -1179,15 +1339,6 @@
    end="Video_Frame_Buffer.s2">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="15.0"
-   start="nios2.data_master"
-   end="new_component_0.slave">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x04000000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
