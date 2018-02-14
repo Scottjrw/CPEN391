@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Tue Feb 13 14:40:52 PST 2018
+ * Generated: Wed Feb 14 00:54:08 PST 2018
  */
 
 /*
@@ -135,7 +135,7 @@
 #define __ALTERA_AVALON_UART
 #define __ALTERA_NIOS2_QSYS
 #define __ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER
-#define __NEW_COMPONENT
+#define __GRAPHICS_CONTROLLER
 
 
 /*
@@ -275,6 +275,20 @@
 
 
 /*
+ * graphics_controller_0 configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_graphics_controller_0 graphics_controller
+#define GRAPHICS_CONTROLLER_0_BASE 0x4000000
+#define GRAPHICS_CONTROLLER_0_IRQ -1
+#define GRAPHICS_CONTROLLER_0_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define GRAPHICS_CONTROLLER_0_NAME "/dev/graphics_controller_0"
+#define GRAPHICS_CONTROLLER_0_SPAN 67108864
+#define GRAPHICS_CONTROLLER_0_TYPE "graphics_controller"
+
+
+/*
  * hal configuration
  *
  */
@@ -353,20 +367,6 @@
 #define MAIN_TIMER_TICKS_PER_SEC 1000
 #define MAIN_TIMER_TIMEOUT_PULSE_OUTPUT 0
 #define MAIN_TIMER_TYPE "altera_avalon_timer"
-
-
-/*
- * new_component_0 configuration
- *
- */
-
-#define ALT_MODULE_CLASS_new_component_0 new_component
-#define NEW_COMPONENT_0_BASE 0x4000000
-#define NEW_COMPONENT_0_IRQ -1
-#define NEW_COMPONENT_0_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define NEW_COMPONENT_0_NAME "/dev/new_component_0"
-#define NEW_COMPONENT_0_SPAN 67108864
-#define NEW_COMPONENT_0_TYPE "new_component"
 
 
 /*

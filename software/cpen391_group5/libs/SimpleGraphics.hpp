@@ -6,6 +6,9 @@
 #include <cstdint>
 #include <io.h>
 
+#define DRAW_PIXEL 1
+#define DRAW_RECT 2
+
 class SimpleGraphics {
 public:
     typedef uint16_t rgba_t;
@@ -29,10 +32,10 @@ public:
             //rgba_t *addr = m_buffer_base + (y * m_width + x);
 
             IOWR_32DIRECT(0x04000000, 0, (uint32_t)x);
-            IOWR_32DIRECT(0x04000000, 4, (uint32_t)y);
-            IOWR_32DIRECT(0x04000000, 8, (uint32_t)m_width);
-            IOWR_32DIRECT(0x04000000, 12, (uint32_t)m_buffer_base);
-            IOWR_32DIRECT(0x04000000, 16, color);
+            IOWR_32DIRECT(0x04000000, 8, (uint32_t)y);
+            IOWR_32DIRECT(0x04000000, 16, (uint32_t)m_width);
+            IOWR_32DIRECT(0x04000000, 20, color);
+            IOWR_32DIRECT(0x04000000, 24, DRAW_PIXEL);
         }
 
     void draw_rect(rgba_t color, unsigned x1, unsigned y1, unsigned x2, unsigned y2);

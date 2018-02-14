@@ -2,9 +2,9 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>2018-2-13 20:19:13</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1518581953915</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>C:\Users\Jingrui\Desktop\cpen391\CPEN391\software\cpen391_group5_bsp</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>Feb 14, 2018 1:41:22 AM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1518601282424</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>C:\Users\wjrpo\Desktop\CPEN391\software\cpen391_group5_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\cpen391_group5_qsys.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
@@ -971,7 +971,7 @@
                 <attributes>printable</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>new_component_0</slaveDescriptor>
+                <slaveDescriptor>graphics_controller_0</slaveDescriptor>
                 <addressRange>0x04000000 - 0x07FFFFFF</addressRange>
                 <addressSpan>67108864</addressSpan>
                 <attributes/>

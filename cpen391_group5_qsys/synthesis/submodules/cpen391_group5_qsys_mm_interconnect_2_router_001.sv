@@ -47,7 +47,7 @@ module cpen391_group5_qsys_mm_interconnect_2_router_001_default_decode
      parameter DEFAULT_CHANNEL = 6,
                DEFAULT_WR_CHANNEL = -1,
                DEFAULT_RD_CHANNEL = -1,
-               DEFAULT_DESTID = 8 
+               DEFAULT_DESTID = 5 
    )
   (output [99 - 96 : 0] default_destination_id,
    output [13-1 : 0] default_wr_channel,
@@ -232,7 +232,7 @@ module cpen391_group5_qsys_mm_interconnect_2_router_001
     // ( 0x91020 .. 0x91040 )
     if ( {address[RG:PAD4],{PAD4{1'b0}}} == 28'h91020   ) begin
             src_channel = 13'b0010000000000;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 7;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 8;
     end
 
     // ( 0x91040 .. 0x91050 )
@@ -244,7 +244,7 @@ module cpen391_group5_qsys_mm_interconnect_2_router_001
     // ( 0x91050 .. 0x91060 )
     if ( {address[RG:PAD6],{PAD6{1'b0}}} == 28'h91050   ) begin
             src_channel = 13'b0000010000000;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 6;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 7;
     end
 
     // ( 0x91060 .. 0x91070 )
@@ -268,13 +268,13 @@ module cpen391_group5_qsys_mm_interconnect_2_router_001
     // ( 0x91090 .. 0x91098 )
     if ( {address[RG:PAD10],{PAD10{1'b0}}} == 28'h91090   ) begin
             src_channel = 13'b0000000010000;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 5;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 6;
     end
 
     // ( 0x4000000 .. 0x8000000 )
     if ( {address[RG:PAD11],{PAD11{1'b0}}} == 28'h4000000   ) begin
             src_channel = 13'b0000001000000;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 8;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 5;
     end
 
     // ( 0x8000000 .. 0xc000000 )

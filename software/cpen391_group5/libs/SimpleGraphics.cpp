@@ -2,9 +2,16 @@
 #include "Fonts.c"
 
 void SimpleGraphics::draw_rect(rgba_t color, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2) {
-    for (unsigned int i = x1; i < x2; i++)
+    /*for (unsigned int i = x1; i < x2; i++)
         for (unsigned int j = y1; j < y2; j++)
-            draw_pixel(color, i, j);
+            draw_pixel(color, i, j);*/
+	IOWR_32DIRECT(0x04000000, 0, (uint32_t)x1);
+	IOWR_32DIRECT(0x04000000, 4, (uint32_t)x2);
+	IOWR_32DIRECT(0x04000000, 8, (uint32_t)y1);
+	IOWR_32DIRECT(0x04000000, 12, (uint32_t)y2);
+	IOWR_32DIRECT(0x04000000, 16, (uint32_t)m_width);
+	IOWR_32DIRECT(0x04000000, 20, color);
+	IOWR_32DIRECT(0x04000000, 24, DRAW_RECT);
 }
 
 void SimpleGraphics::draw_x(rgba_t color, unsigned int x, unsigned int y, int radius) {
