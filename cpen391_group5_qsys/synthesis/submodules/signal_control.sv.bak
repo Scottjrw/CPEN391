@@ -1,0 +1,64 @@
+module signal_control (
+    input logic clk, reset,
+	 input logic [31:0] data_in,
+	 input logic [31:0] address,
+	 input logic write_slave,
+    output logic write_master,
+	 input logic wait_request,
+    output logic [3:0] byteenable,
+	 output logic [31:0] address_out,
+    output logic [31:0] data_out
+    );
+	 
+	 parameter [4:0] idle = 4'b000_00;
+	 parameter [4:0] getAddr = 4'b001_01;
+	 parameter [4:0] getColor = 4'b010_01;
+	 parameter [4:0] writeVal = 4'b100_11;
+	 
+	 logic [4:0] state = idle;
+	 
+	 wire addr_reg, color_reg;
+	 
+	 always @(posedge clk or posedge reset) begin 
+		if(reset)
+			state = idle;
+		else begin
+			case(state)
+				idle: begin
+					if (write_slave==1'b1 && address==0) state <= getAddr;
+					else state <= idle;
+				end
+				
+				getAddr: begin
+					if(write_slave==1'b1 && address==1) state <= getColor;
+					else state <= getAddr;
+				end
+				
+				getColor: begin
+					if(write_slave==1'b1 && address==1) state <= getColor;
+					else state <= writeVal;
+				end
+				
+				writeVal: begin
+					if(wait_request) state <= writeVal;
+					else state <= idle;
+				end
+				
+				default: state <= idle;
+			endcase
+		end
+	 end
+	 
+	 always @(posedge clk or posedge reset) begin
+		if(addr_reg) address_out <= data_in;
+		else if (color_reg) data_out <= data_in;
+	 end
+	 
+	 always_comb begin
+		addr_reg = state[2];
+		color_reg = state[3];
+		write_master = state[4];
+	 end
+
+    
+endmodule
