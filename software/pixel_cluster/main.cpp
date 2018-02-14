@@ -4,9 +4,11 @@
 #include "io.h"
 
 int main(void) {
-    IOWR_16DIRECT(PIXEL_CLUSTER_0_BASE, 12, 0xccdd);
+    IOWR_16DIRECT(PIXEL_CLUSTER_0_BASE, 0, 0xff01);
+    IOWR_16DIRECT(PIXEL_CLUSTER_0_BASE, 2, 0xff01);
+    IOWR_16DIRECT(PIXEL_CLUSTER_0_BASE, 6, 0xff01);
 
-    printf("%x\n", IORD_16DIRECT(PIXEL_CLUSTER_0_BASE, 13));
+    printf("%x\n", IORD_8DIRECT(PIXEL_CLUSTER_0_BASE, 7));
 
     return 0;
 }

@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>12-Feb-2018 4:44:22 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1518482662921</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>12-Feb-2018 7:30:43 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1518492643963</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>/home/guoj/Documents/Year-3/CPEN-391/repo/software/pixel_cluster_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>../../test_pixel_cluster_qsys.sopcinfo</SopcDesignFile>
@@ -894,13 +894,13 @@
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>pixel_cluster_0</slaveDescriptor>
-                <addressRange>0x00081000 - 0x0008100F</addressRange>
-                <addressSpan>16</addressSpan>
+                <addressRange>0x00081000 - 0x0008103F</addressRange>
+                <addressSpan>64</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>jtag_uart_0</slaveDescriptor>
-                <addressRange>0x00081010 - 0x00081017</addressRange>
+                <addressRange>0x00081040 - 0x00081047</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>

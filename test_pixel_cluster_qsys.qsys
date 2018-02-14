@@ -37,7 +37,7 @@
    {
       datum baseAddress
       {
-         value = "528400";
+         value = "528448";
          type = "String";
       }
    }
@@ -113,7 +113,7 @@
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
  <interface
    name="pixel_cluster"
-   internal="pixel_cluster_0.conduit_end"
+   internal="pixel_cluster_0.led_out"
    type="conduit"
    dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
@@ -156,7 +156,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="20" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x40000' end='0x80000' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x80800' end='0x81000' /><slave name='pixel_cluster_0.mm' start='0x81000' end='0x81040' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x81010' end='0x81018' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x40000' end='0x80000' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x80800' end='0x81000' /><slave name='pixel_cluster_0.mm' start='0x81000' end='0x81040' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x81040' end='0x81048' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="false" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -313,7 +313,7 @@
    start="nios2_qsys_0.data_master"
    end="jtag_uart_0.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00081010" />
+  <parameter name="baseAddress" value="0x00081040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -405,11 +405,6 @@
    version="15.0"
    start="nios2_qsys_0.jtag_debug_module_reset"
    end="jtag_uart_0.reset" />
- <connection
-   kind="reset"
-   version="15.0"
-   start="nios2_qsys_0.jtag_debug_module_reset"
-   end="pixel_cluster_0.reset" />
  <connection
    kind="reset"
    version="15.0"

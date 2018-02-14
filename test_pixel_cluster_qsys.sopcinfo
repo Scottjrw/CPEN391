@@ -5,11 +5,11 @@
  version="1.0"
  fabric="QSYS">
  <!-- Format version 15.0 153 (Future versions may contain additional information.) -->
- <!-- 2018.02.12.16:41:08 -->
+ <!-- 2018.02.12.19:26:26 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1518482468</value>
+  <value>1518492385</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -2335,7 +2335,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="dataSlaveMapParam">
    <type>java.lang.String</type>
-   <value><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x40000' end='0x80000' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x80800' end='0x81000' /><slave name='pixel_cluster_0.mm' start='0x81000' end='0x81010' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x81010' end='0x81018' /></address-map>]]></value>
+   <value><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x40000' end='0x80000' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x80800' end='0x81000' /><slave name='pixel_cluster_0.mm' start='0x81000' end='0x81040' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x81040' end='0x81048' /></address-map>]]></value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -2918,7 +2918,7 @@ parameters are a RESULT of the module parameters. -->
     <moduleName>jtag_uart_0</moduleName>
     <slaveName>avalon_jtag_slave</slaveName>
     <name>jtag_uart_0.avalon_jtag_slave</name>
-    <baseAddress>528400</baseAddress>
+    <baseAddress>528448</baseAddress>
     <span>8</span>
    </memoryBlock>
    <memoryBlock>
@@ -2935,7 +2935,7 @@ parameters are a RESULT of the module parameters. -->
     <slaveName>mm</slaveName>
     <name>pixel_cluster_0.mm</name>
     <baseAddress>528384</baseAddress>
-    <span>16</span>
+    <span>64</span>
    </memoryBlock>
    <memoryBlock>
     <isBridge>false</isBridge>
@@ -4685,19 +4685,27 @@ parameters are a RESULT of the module parameters. -->
    path="pixel_cluster_0">
   <!-- Describes a single module. Module parameters are
 the requested settings for a module instance. -->
-  <parameter name="ADDR_BITS">
+  <parameter name="N_REGS">
    <type>int</type>
    <value>2</value>
    <derived>false</derived>
-   <enabled>true</enabled>
+   <enabled>false</enabled>
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <parameter name="BYTE_WIDTH">
+  <parameter name="ADDR_BITS">
    <type>int</type>
    <value>4</value>
    <derived>false</derived>
-   <enabled>true</enabled>
+   <enabled>false</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="REG_BITS">
+   <type>int</type>
+   <value>32</value>
+   <derived>false</derived>
+   <enabled>false</enabled>
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
@@ -4751,22 +4759,6 @@ parameters are a RESULT of the module parameters. -->
     <derived>false</derived>
     <enabled>true</enabled>
     <visible>true</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="clockRateKnown">
-    <type>java.lang.Boolean</type>
-    <value>true</value>
-    <derived>true</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
-    <valid>true</valid>
-   </parameter>
-   <parameter name="clockRate">
-    <type>java.lang.Long</type>
-    <value>50000000</value>
-    <derived>true</derived>
-    <enabled>true</enabled>
-    <visible>false</visible>
     <valid>true</valid>
    </parameter>
    <type>clock</type>
@@ -4861,7 +4853,7 @@ parameters are a RESULT of the module parameters. -->
    </parameter>
    <parameter name="addressSpan">
     <type>java.math.BigInteger</type>
-    <value>16</value>
+    <value>64</value>
     <derived>true</derived>
     <enabled>true</enabled>
     <visible>false</visible>
@@ -5160,7 +5152,7 @@ parameters are a RESULT of the module parameters. -->
    <port>
     <name>mm_address</name>
     <direction>Input</direction>
-    <width>2</width>
+    <width>4</width>
     <role>address</role>
    </port>
    <port>
@@ -5194,7 +5186,7 @@ parameters are a RESULT of the module parameters. -->
     <role>writedata</role>
    </port>
   </interface>
-  <interface name="conduit_end" kind="conduit_end" version="15.0">
+  <interface name="led_out" kind="conduit_end" version="15.0">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -5256,7 +5248,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <parameter name="baseAddress">
    <type>java.math.BigInteger</type>
-   <value>0x00081010</value>
+   <value>0x00081040</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -5690,33 +5682,6 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>irq</endConnectionPoint>
  </connection>
  <connection
-   name="clk_0.clk_reset/pixel_cluster_0.reset"
-   kind="reset"
-   version="15.0"
-   start="clk_0.clk_reset"
-   end="pixel_cluster_0.reset">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>clk_0</startModule>
-  <startConnectionPoint>clk_reset</startConnectionPoint>
-  <endModule>pixel_cluster_0</endModule>
-  <endConnectionPoint>reset</endConnectionPoint>
- </connection>
- <connection
    name="clk_0.clk_reset/jtag_uart_0.reset"
    kind="reset"
    version="15.0"
@@ -5741,6 +5706,33 @@ parameters are a RESULT of the module parameters. -->
   <startModule>clk_0</startModule>
   <startConnectionPoint>clk_reset</startConnectionPoint>
   <endModule>jtag_uart_0</endModule>
+  <endConnectionPoint>reset</endConnectionPoint>
+ </connection>
+ <connection
+   name="clk_0.clk_reset/pixel_cluster_0.reset"
+   kind="reset"
+   version="15.0"
+   start="clk_0.clk_reset"
+   end="pixel_cluster_0.reset">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>clk_0</startModule>
+  <startConnectionPoint>clk_reset</startConnectionPoint>
+  <endModule>pixel_cluster_0</endModule>
   <endConnectionPoint>reset</endConnectionPoint>
  </connection>
  <connection
@@ -5822,33 +5814,6 @@ parameters are a RESULT of the module parameters. -->
   <startModule>nios2_qsys_0</startModule>
   <startConnectionPoint>jtag_debug_module_reset</startConnectionPoint>
   <endModule>jtag_uart_0</endModule>
-  <endConnectionPoint>reset</endConnectionPoint>
- </connection>
- <connection
-   name="nios2_qsys_0.jtag_debug_module_reset/pixel_cluster_0.reset"
-   kind="reset"
-   version="15.0"
-   start="nios2_qsys_0.jtag_debug_module_reset"
-   end="pixel_cluster_0.reset">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>nios2_qsys_0</startModule>
-  <startConnectionPoint>jtag_debug_module_reset</startConnectionPoint>
-  <endModule>pixel_cluster_0</endModule>
   <endConnectionPoint>reset</endConnectionPoint>
  </connection>
  <connection
@@ -6047,7 +6012,7 @@ parameters are a RESULT of the module parameters. -->
   <version>15.0</version>
  </plugin>
  <plugin>
-  <instanceCount>7</instanceCount>
+  <instanceCount>6</instanceCount>
   <name>reset</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IConnection</subtype>

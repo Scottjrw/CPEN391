@@ -92,7 +92,7 @@ cpen391_group5_qsys sys_inst(
 test_pixel_cluster_qsys sys2_inst(
     .clk_clk(CLOCK_50),
     .reset_reset_n(~reset),
-    .leds_leds(LEDR)
+    .pixel_cluster_leds(LEDR)
 );
 
 endmodule

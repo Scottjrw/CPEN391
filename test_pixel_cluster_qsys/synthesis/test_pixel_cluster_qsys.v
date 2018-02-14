@@ -4,9 +4,9 @@
 
 `timescale 1 ps / 1 ps
 module test_pixel_cluster_qsys (
-		input  wire       clk_clk,       //   clk.clk
-		output wire [9:0] leds_leds,     //  leds.leds
-		input  wire       reset_reset_n  // reset.reset_n
+		input  wire       clk_clk,            //           clk.clk
+		output wire [9:0] pixel_cluster_leds, // pixel_cluster.leds
+		input  wire       reset_reset_n       //         reset.reset_n
 	);
 
 	wire  [31:0] nios2_qsys_0_data_master_readdata;                            // mm_interconnect_0:nios2_qsys_0_data_master_readdata -> nios2_qsys_0:d_readdata
@@ -37,7 +37,7 @@ module test_pixel_cluster_qsys (
 	wire         mm_interconnect_0_nios2_qsys_0_jtag_debug_module_write;       // mm_interconnect_0:nios2_qsys_0_jtag_debug_module_write -> nios2_qsys_0:jtag_debug_module_write
 	wire  [31:0] mm_interconnect_0_nios2_qsys_0_jtag_debug_module_writedata;   // mm_interconnect_0:nios2_qsys_0_jtag_debug_module_writedata -> nios2_qsys_0:jtag_debug_module_writedata
 	wire  [31:0] mm_interconnect_0_pixel_cluster_0_mm_readdata;                // pixel_cluster_0:mm_readdata -> mm_interconnect_0:pixel_cluster_0_mm_readdata
-	wire   [1:0] mm_interconnect_0_pixel_cluster_0_mm_address;                 // mm_interconnect_0:pixel_cluster_0_mm_address -> pixel_cluster_0:mm_address
+	wire   [3:0] mm_interconnect_0_pixel_cluster_0_mm_address;                 // mm_interconnect_0:pixel_cluster_0_mm_address -> pixel_cluster_0:mm_address
 	wire         mm_interconnect_0_pixel_cluster_0_mm_read;                    // mm_interconnect_0:pixel_cluster_0_mm_read -> pixel_cluster_0:mm_read
 	wire   [3:0] mm_interconnect_0_pixel_cluster_0_mm_byteenable;              // mm_interconnect_0:pixel_cluster_0_mm_byteenable -> pixel_cluster_0:mm_byteenable
 	wire         mm_interconnect_0_pixel_cluster_0_mm_write;                   // mm_interconnect_0:pixel_cluster_0_mm_write -> pixel_cluster_0:mm_write
@@ -51,10 +51,10 @@ module test_pixel_cluster_qsys (
 	wire         mm_interconnect_0_onchip_memory2_0_s1_clken;                  // mm_interconnect_0:onchip_memory2_0_s1_clken -> onchip_memory2_0:clken
 	wire         irq_mapper_receiver0_irq;                                     // jtag_uart_0:av_irq -> irq_mapper:receiver0_irq
 	wire  [31:0] nios2_qsys_0_d_irq_irq;                                       // irq_mapper:sender_irq -> nios2_qsys_0:d_irq
-	wire         rst_controller_reset_out_reset;                               // rst_controller:reset_out -> [jtag_uart_0:rst_n, mm_interconnect_0:jtag_uart_0_reset_reset_bridge_in_reset_reset, onchip_memory2_0:reset, pixel_cluster_0:reset, rst_translator:in_reset]
+	wire         rst_controller_reset_out_reset;                               // rst_controller:reset_out -> [jtag_uart_0:rst_n, mm_interconnect_0:jtag_uart_0_reset_reset_bridge_in_reset_reset, onchip_memory2_0:reset]
 	wire         rst_controller_reset_out_reset_req;                           // rst_controller:reset_req -> [onchip_memory2_0:reset_req, rst_translator:reset_req_in]
 	wire         nios2_qsys_0_jtag_debug_module_reset_reset;                   // nios2_qsys_0:jtag_debug_module_resetrequest -> rst_controller:reset_in1
-	wire         rst_controller_001_reset_out_reset;                           // rst_controller_001:reset_out -> [irq_mapper:reset, mm_interconnect_0:nios2_qsys_0_reset_n_reset_bridge_in_reset_reset, nios2_qsys_0:reset_n]
+	wire         rst_controller_001_reset_out_reset;                           // rst_controller_001:reset_out -> [irq_mapper:reset, mm_interconnect_0:nios2_qsys_0_reset_n_reset_bridge_in_reset_reset, nios2_qsys_0:reset_n, pixel_cluster_0:reset, rst_translator_001:in_reset]
 	wire         rst_controller_001_reset_out_reset_req;                       // rst_controller_001:reset_req -> [nios2_qsys_0:reset_req, rst_translator_001:reset_req_in]
 
 	test_pixel_cluster_qsys_jtag_uart_0 jtag_uart_0 (
@@ -113,18 +113,19 @@ module test_pixel_cluster_qsys (
 	);
 
 	pixel_cluster #(
-		.ADDR_BITS  (2),
-		.BYTE_WIDTH (4)
+		.N_REGS    (2),
+		.ADDR_BITS (4),
+		.REG_BITS  (32)
 	) pixel_cluster_0 (
-		.clk           (clk_clk),                                         //       clock.clk
-		.reset         (rst_controller_reset_out_reset),                  //       reset.reset
-		.mm_address    (mm_interconnect_0_pixel_cluster_0_mm_address),    //          mm.address
-		.mm_byteenable (mm_interconnect_0_pixel_cluster_0_mm_byteenable), //            .byteenable
-		.mm_read       (mm_interconnect_0_pixel_cluster_0_mm_read),       //            .read
-		.mm_write      (mm_interconnect_0_pixel_cluster_0_mm_write),      //            .write
-		.mm_readdata   (mm_interconnect_0_pixel_cluster_0_mm_readdata),   //            .readdata
-		.mm_writedata  (mm_interconnect_0_pixel_cluster_0_mm_writedata),  //            .writedata
-		.leds          (leds_leds)                                        // conduit_end.leds
+		.clk           (clk_clk),                                         //   clock.clk
+		.reset         (rst_controller_001_reset_out_reset),              //   reset.reset
+		.mm_address    (mm_interconnect_0_pixel_cluster_0_mm_address),    //      mm.address
+		.mm_byteenable (mm_interconnect_0_pixel_cluster_0_mm_byteenable), //        .byteenable
+		.mm_read       (mm_interconnect_0_pixel_cluster_0_mm_read),       //        .read
+		.mm_write      (mm_interconnect_0_pixel_cluster_0_mm_write),      //        .write
+		.mm_readdata   (mm_interconnect_0_pixel_cluster_0_mm_readdata),   //        .readdata
+		.mm_writedata  (mm_interconnect_0_pixel_cluster_0_mm_writedata),  //        .writedata
+		.leds          (pixel_cluster_leds)                               // led_out.leds
 	);
 
 	test_pixel_cluster_qsys_mm_interconnect_0 mm_interconnect_0 (
