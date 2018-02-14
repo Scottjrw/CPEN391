@@ -13,9 +13,9 @@ using namespace UI;
 Screen::Screen(SimpleGraphics &graphics, TouchControl &touch):
 	Drawable(graphics),
 	Touchable(touch),
+	cursor(m_graphics, SimpleGraphics::rgba(255, 0, 0, 255), 4),
 	drawables(),
-	touchables(),
-	cursor(m_graphics, SimpleGraphics::rgba(255, 0, 0, 255), 4)
+	touchables()
 {}
 
 void Screen::draw() {

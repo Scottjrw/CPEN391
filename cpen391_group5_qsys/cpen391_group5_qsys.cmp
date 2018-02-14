@@ -24,6 +24,8 @@
 			vga_controller_R               : out   std_logic_vector(7 downto 0);                     -- R
 			vga_controller_G               : out   std_logic_vector(7 downto 0);                     -- G
 			vga_controller_B               : out   std_logic_vector(7 downto 0);                     -- B
+			video_rxd                      : in    std_logic                     := 'X';             -- rxd
+			video_txd                      : out   std_logic;                                        -- txd
 			video_in_decoder_TD_CLK27      : in    std_logic                     := 'X';             -- TD_CLK27
 			video_in_decoder_TD_DATA       : in    std_logic_vector(7 downto 0)  := (others => 'X'); -- TD_DATA
 			video_in_decoder_TD_HS         : in    std_logic                     := 'X';             -- TD_HS

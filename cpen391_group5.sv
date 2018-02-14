@@ -64,6 +64,9 @@ cpen391_group5_qsys sys_inst(
     // Touchscreen UART
     .touchscreen_rxd(GPIO_1[33]),
     .touchscreen_txd(GPIO_1[35]),
+	 
+	 .video_rxd(GPIO_1[32]),
+	 .video_txd(GPIO_1[34]),
 
     // VGA
     .vga_controller_CLK(VGA_CLK),

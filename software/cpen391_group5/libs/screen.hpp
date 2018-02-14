@@ -43,10 +43,12 @@ public:
 
 	Screen(SimpleGraphics &graphics, TouchControl &touch);
 
+	Cursor cursor;
+
 private:
 	std::vector<Drawable*> drawables;
 	std::vector<Touchable*> touchables;
-	Cursor cursor;
+
 
 };
 

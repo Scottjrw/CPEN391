@@ -58,7 +58,7 @@
    {
       datum baseAddress
       {
-         value = "594016";
+         value = "594048";
          type = "String";
       }
    }
@@ -164,7 +164,7 @@
    {
       datum baseAddress
       {
-         value = "594048";
+         value = "594080";
          type = "String";
       }
    }
@@ -201,7 +201,7 @@
    {
       datum baseAddress
       {
-         value = "594032";
+         value = "594064";
          type = "String";
       }
    }
@@ -273,7 +273,7 @@
    {
       datum baseAddress
       {
-         value = "594064";
+         value = "594096";
          type = "String";
       }
    }
@@ -289,7 +289,7 @@
    {
       datum baseAddress
       {
-         value = "594000";
+         value = "594032";
          type = "String";
       }
    }
@@ -305,7 +305,7 @@
    {
       datum baseAddress
       {
-         value = "593952";
+         value = "593984";
          type = "String";
       }
    }
@@ -358,7 +358,7 @@
    {
       datum baseAddress
       {
-         value = "593984";
+         value = "594016";
          type = "String";
       }
    }
@@ -371,6 +371,22 @@
       }
    }
    element touchscreen_uart.s1
+   {
+      datum baseAddress
+      {
+         value = "593952";
+         type = "String";
+      }
+   }
+   element video_uart
+   {
+      datum _sortIndex
+      {
+         value = "26";
+         type = "int";
+      }
+   }
+   element video_uart.s1
    {
       datum baseAddress
       {
@@ -421,6 +437,11 @@
  <interface
    name="vga_controller"
    internal="Video_Out_VGA_CTRL.external_interface"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="video"
+   internal="video_uart.external_connection"
    type="conduit"
    dir="end" />
  <interface
@@ -779,7 +800,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="28" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='touchscreen_uart.s1' start='0x91000' end='0x91020' /><slave name='main_timer.s1' start='0x91020' end='0x91040' /><slave name='switch_in_pio.s1' start='0x91040' end='0x91050' /><slave name='led_out_pio.s1' start='0x91050' end='0x91060' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0x91060' end='0x91070' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91070' end='0x91080' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x91090' end='0x91098' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='video_uart.s1' start='0x91000' end='0x91020' /><slave name='touchscreen_uart.s1' start='0x91020' end='0x91040' /><slave name='main_timer.s1' start='0x91040' end='0x91060' /><slave name='switch_in_pio.s1' start='0x91060' end='0x91070' /><slave name='led_out_pio.s1' start='0x91070' end='0x91080' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91090' end='0x910A0' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0x910A0' end='0x910B0' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x910B0' end='0x910B8' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="true" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -807,7 +828,7 @@
   <parameter name="impl" value="Fast" />
   <parameter name="instAddrWidth" value="28" />
   <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
-  <parameter name="internalIrqMaskSystemInfo" value="11" />
+  <parameter name="internalIrqMaskSystemInfo" value="15" />
   <parameter name="manuallyAssignCpuID" value="true" />
   <parameter name="mmu_TLBMissExcOffset" value="0" />
   <parameter name="mmu_TLBMissExcSlave" value="None" />
@@ -963,6 +984,26 @@
   <parameter name="useEopRegister" value="false" />
   <parameter name="useRelativePathForSimFile" value="false" />
  </module>
+ <module
+   name="video_uart"
+   kind="altera_avalon_uart"
+   version="15.0"
+   enabled="1">
+  <parameter name="baud" value="38400" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="dataBits" value="8" />
+  <parameter name="fixedBaud" value="true" />
+  <parameter name="parity" value="NONE" />
+  <parameter name="simCharStream" value="" />
+  <parameter name="simInteractiveInputEnable" value="false" />
+  <parameter name="simInteractiveOutputEnable" value="false" />
+  <parameter name="simTrueBaud" value="false" />
+  <parameter name="stopBits" value="1" />
+  <parameter name="syncRegDepth" value="2" />
+  <parameter name="useCtsRts" value="false" />
+  <parameter name="useEopRegister" value="false" />
+  <parameter name="useRelativePathForSimFile" value="false" />
+ </module>
  <connection
    kind="avalon"
    version="15.0"
@@ -996,7 +1037,7 @@
    start="nios2.data_master"
    end="Video_In_DMA.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091080" />
+  <parameter name="baseAddress" value="0x000910a0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1005,7 +1046,7 @@
    start="nios2.data_master"
    end="Video_Out_DMA.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091070" />
+  <parameter name="baseAddress" value="0x00091090" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1014,7 +1055,7 @@
    start="nios2.data_master"
    end="Draw_DMA.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091060" />
+  <parameter name="baseAddress" value="0x00091080" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1023,7 +1064,7 @@
    start="nios2.data_master"
    end="jtag_uart_0.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091090" />
+  <parameter name="baseAddress" value="0x000910b0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1041,7 +1082,7 @@
    start="nios2.data_master"
    end="led_out_pio.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091050" />
+  <parameter name="baseAddress" value="0x00091070" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1050,7 +1091,7 @@
    start="nios2.data_master"
    end="switch_in_pio.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091040" />
+  <parameter name="baseAddress" value="0x00091060" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="avalon" version="15.0" start="nios2.data_master" end="sdram.s1">
@@ -1064,7 +1105,7 @@
    start="nios2.data_master"
    end="main_timer.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091020" />
+  <parameter name="baseAddress" value="0x00091040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1081,6 +1122,15 @@
    version="15.0"
    start="nios2.data_master"
    end="touchscreen_uart.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00091020" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="15.0"
+   start="nios2.data_master"
+   end="video_uart.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00091000" />
   <parameter name="defaultConnection" value="false" />
@@ -1269,6 +1319,11 @@
    kind="clock"
    version="15.0"
    start="clocks.sys_clk"
+   end="video_uart.clk" />
+ <connection
+   kind="clock"
+   version="15.0"
+   start="clocks.sys_clk"
    end="Video_Frame_Buffer.clk1" />
  <connection
    kind="clock"
@@ -1315,6 +1370,13 @@
    start="nios2.d_irq"
    end="touchscreen_uart.irq">
   <parameter name="irqNumber" value="1" />
+ </connection>
+ <connection
+   kind="interrupt"
+   version="15.0"
+   start="nios2.d_irq"
+   end="video_uart.irq">
+  <parameter name="irqNumber" value="2" />
  </connection>
  <connection
    kind="reset"
@@ -1416,6 +1478,11 @@
    version="15.0"
    start="nios2.jtag_debug_module_reset"
    end="touchscreen_uart.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
+   end="video_uart.reset" />
  <connection
    kind="reset"
    version="15.0"
@@ -1541,6 +1608,11 @@
    version="15.0"
    start="clocks.reset_source"
    end="touchscreen_uart.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="clocks.reset_source"
+   end="video_uart.reset" />
  <connection
    kind="reset"
    version="15.0"

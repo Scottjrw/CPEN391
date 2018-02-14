@@ -144,12 +144,13 @@ ELF := cpen391_group5.elf
 # Paths to C, C++, and assembly source files.
 C_SRCS := ../cpen391_group5/libs/Fonts.c
 CXX_SRCS += ../cpen391_group5/main.cpp
-CXX_SRCS += ../cpen391_group5/vision.cpp
 CXX_SRCS += ../cpen391_group5/libs/SimpleGraphics.cpp
 CXX_SRCS += ../cpen391_group5/libs/UI.cpp
 CXX_SRCS += ../cpen391_group5/libs/touch.cpp
 CXX_SRCS += ../cpen391_group5/libs/screen.cpp
 CXX_SRCS += ../cpen391_group5/libs/cursor.cpp
+CXX_SRCS += vision_updated.cpp
+CXX_SRCS += libs/video.cpp
 ASM_SRCS :=
 
 
