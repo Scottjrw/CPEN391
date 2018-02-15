@@ -29,7 +29,7 @@ public:
 
         rgba_t *addr = m_buffer_base + (y * m_width + x);
 
-        while (!commands.empty()) usleep(1);
+        while (!commands.empty()|| m_pending_irq) usleep(1);
 
         // Ignore invalid writes
         if (addr < m_max_addr)

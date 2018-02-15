@@ -20,6 +20,7 @@ void Rectangle::draw() {
 
     // show a filled rectangle on screen 
     m_graphics.draw_rect(m_color, m_p1.x, m_p1.y, m_p2.x, m_p2.y);
+    //usleep(500);
 }
 
 void Rectangle::undraw() {
