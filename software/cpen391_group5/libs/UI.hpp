@@ -18,6 +18,12 @@ namespace UI {
  */
 typedef struct {unsigned x; unsigned y;} Point;
 
+typedef struct {
+    unsigned x;
+    unsigned y;
+    SimpleGraphics::rgba_t color;
+} ColourPoint;
+
 /* ------------------------------------------------------------------
  * An abstract class which represents anything that can be drawn
  */
@@ -28,7 +34,7 @@ public:
      * Draw the object on the screen
      */
     virtual void draw() = 0;
-    
+
     virtual ~Drawable(){};
 
     /*
@@ -51,6 +57,7 @@ public:
 protected:
     // Subclasses need access to these to draw themselves
     SimpleGraphics &m_graphics;
+    bool m_is_showing = false;
 };
 
 /* ------------------------------------------------------------------
@@ -124,6 +131,36 @@ private:
     TouchCB m_cb;
 };
 
+
+/* ------------------------------------------------------------------
+ * Simple slider class
+ */
+class Slider : public Rectangle, public Touchable {
+public:
+    virtual void draw();
+    virtual void undraw();
+    virtual bool touch(Point p);
+    virtual void onTouch(TouchCB callback);
+
+    Slider(SimpleGraphics &graphics, TouchControl &touch,
+            Point p1, Point p2, SimpleGraphics::rgba_t text_color,
+            SimpleGraphics::rgba_t background_color, int min, int max);
+
+    int chosen_value = 50;
+    int min, max;
+
+private:
+    std::string m_text;
+    SimpleGraphics::rgba_t m_text_color;
+    TouchCB m_cb;
+    Point slider_p1, slider_p2;
+    Point slider_bar_p1, slider_bar_p2;
+    SimpleGraphics::rgba_t m_background_color;
+    bool initial_state;
+};
+
+
+
 /* ------------------------------------------------------------------
  * Simple dropdown menu class
  *
@@ -161,6 +198,8 @@ private:
 
     // Points that define m_expander
     Point m_p1, m_p2;
+
+    bool m_is_open;
 };
 
 } // namespace UI

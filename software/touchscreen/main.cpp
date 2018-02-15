@@ -19,28 +19,45 @@
 #define SG_MAX_HEIGHT 120
 
 int main(void) {
-    SimpleGraphics graphics(reinterpret_cast<SimpleGraphics::rgba_t *>(DRAW_BUFFER_BASE), 
+    SimpleGraphics graphics(reinterpret_cast<SimpleGraphics::rgba_t *>(DRAW_BUFFER_BASE),
             SG_MAX_WIDTH, SG_MAX_HEIGHT);
 
     TouchControl touch(TOUCHSCREEN_UART_NAME, TOUCHSCREEN_UART_IRQ, TOUCHSCREEN_UART_IRQ_INTERRUPT_CONTROLLER_ID,
             SG_MAX_WIDTH, SG_MAX_HEIGHT, true);
 
     Screen screen(graphics, touch);
-    Rectangle rect(graphics, {0, 0}, {20, 40}, SimpleGraphics::rgba(255, 0, 0, 255));
-    Button button(graphics, touch, {20, 0}, {40, 20}, "Hello", 
+//    Rectangle rect(graphics, {0, 0}, {20, 40}, SimpleGraphics::rgba(255, 0, 0, 255));
+    Button button(graphics, touch, {60, 0}, {160, 20}, "Change Config",
             SimpleGraphics::rgba(255, 255, 255, 255),
-            SimpleGraphics::rgba(0, 0, 255, 255));
+            SimpleGraphics::rgba(0, 0, 255, 100));
 
-    DropdownMenu menu(graphics, touch, DropdownMenu::TOP, {50, 0}, {90, 20}, "Drop", 
+    Slider slider(graphics, touch, {60, 20}, {160, 40},
+                SimpleGraphics::rgba(255, 255, 255, 255),
+                SimpleGraphics::rgba(0, 255, 0, 100), 0, 50);
+
+
+    DropdownMenu menu(graphics, touch, DropdownMenu::TOP, {0, 0}, {60, 20}, "Menu",
             SimpleGraphics::rgba(255, 255, 255, 255),
-            SimpleGraphics::rgba(255, 255, 0, 255));
+            SimpleGraphics::rgba(255, 255, 0, 100));
 
-    menu.newItem(graphics, touch, "My button", SimpleGraphics::rgba(255, 255, 255, 255),
-            SimpleGraphics::rgba(0, 0, 255, 255),
+    menu.newItem(graphics, touch, "Option 1", SimpleGraphics::rgba(255, 255, 255, 255),
+            SimpleGraphics::rgba(0, 0, 255, 100),
             [] (Touchable *, Point p) {
             std::cout << "Dropdown menu button got touched" << std::endl;
 
             });
+    menu.newItem(graphics, touch, "Option 2", SimpleGraphics::rgba(255, 255, 255, 255),
+                SimpleGraphics::rgba(0, 0, 255, 100),
+                [] (Touchable *, Point p) {
+                std::cout << "Dropdown menu button got touched" << std::endl;
+
+                });
+    menu.newItem(graphics, touch, "Option 3", SimpleGraphics::rgba(255, 255, 255, 255),
+                SimpleGraphics::rgba(0, 0, 255, 100),
+                [] (Touchable *, Point p) {
+                std::cout << "Dropdown menu button got touched" << std::endl;
+
+                });
 
 
     button.onTouch([] (Touchable *, Point p) {
@@ -48,11 +65,18 @@ int main(void) {
 
             });
 
-    screen.addDrawable(&rect);
+    slider.onTouch([] (Touchable *, Point p) {
+                std::cout << "Slider Got Touched" << std::endl;
+
+                });
+
+//    screen.addDrawable(&rect);
     screen.addDrawable(&button);
     screen.addTouchable(&button);
     screen.addDrawable(&menu);
     screen.addTouchable(&menu);
+    screen.addDrawable(&slider);
+    screen.addTouchable(&slider);
 
     std::cout << "Starting" << std::endl;
 
@@ -101,8 +125,6 @@ int main(void) {
         }
         std::cout << "Done Calibration" << std::endl;
     }
-    
-    graphics.draw_rect(graphics.rgba(0, 0, 0, 255), 0, 0, SG_MAX_WIDTH, SG_MAX_HEIGHT);
 
     screen.draw();
 

@@ -4,7 +4,7 @@
 
 # List of include directories for -I compiler option (-I added when used).
 # Includes the BSP.
-ALT_INCLUDE_DIRS := libs
+ALT_INCLUDE_DIRS := ../cpen391_group5/libs
 
 # List of library directories for -L linker option (-L added when used).
 # Includes the BSP.
@@ -144,10 +144,11 @@ ELF := touchscreen.elf
 # Paths to C, C++, and assembly source files.
 C_SRCS :=
 CXX_SRCS += main.cpp
-CXX_SRCS += ./libs/SimpleGraphics.cpp
-CXX_SRCS += ./libs/touch.cpp
-CXX_SRCS += ./libs/screen.cpp
-CXX_SRCS += ./libs/UI.cpp
+CXX_SRCS += ../cpen391_group5/libs/SimpleGraphics.cpp
+CXX_SRCS += ../cpen391_group5/libs/touch.cpp
+CXX_SRCS += ../cpen391_group5/libs/screen.cpp
+CXX_SRCS += ../cpen391_group5/libs/UI.cpp
+CXX_SRCS += ../cpen391_group5/libs/cursor.cpp
 ASM_SRCS :=
 
 # Path to root of object file tree.

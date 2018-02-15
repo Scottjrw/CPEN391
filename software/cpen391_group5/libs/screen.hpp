@@ -14,11 +14,19 @@
 #include <stdexcept>
 #include <utility>
 #include "UI.hpp"
+#include "cursor.hpp"
 
 using namespace UI;
 
+typedef enum {
+		HOME,
+		IMAGE_SETTINGS,
+		GESTURE_SETTINGS
+	} Current_Screen;
+
 class Screen : public Drawable, public Touchable {
 public:
+
 
 	/*
 	 * draw all elements part of the screen
@@ -42,9 +50,18 @@ public:
 
 	Screen(SimpleGraphics &graphics, TouchControl &touch);
 
+	Current_Screen run(void);
+
+	void exit(Current_Screen New_Screen);
+
+	Cursor cursor;
+	bool exited;
+
 private:
 	std::vector<Drawable*> drawables;
 	std::vector<Touchable*> touchables;
+	Current_Screen Next_Screen;
+
 
 };
 
