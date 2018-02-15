@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>13-Feb-2018 6:40:20 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1518576020713</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>14-Feb-2018 4:58:17 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1518656297727</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\Daniel\Desktop\CPEN391\software\cpen391_group5_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\cpen391_group5_qsys.sopcinfo</SopcDesignFile>

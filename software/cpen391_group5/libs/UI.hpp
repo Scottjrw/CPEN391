@@ -34,7 +34,7 @@ public:
      * Draw the object on the screen
      */
     virtual void draw() = 0;
-    
+
     virtual ~Drawable(){};
 
     /*
@@ -57,6 +57,7 @@ public:
 protected:
     // Subclasses need access to these to draw themselves
     SimpleGraphics &m_graphics;
+    bool m_is_showing = false;
 };
 
 /* ------------------------------------------------------------------
@@ -145,14 +146,17 @@ public:
             Point p1, Point p2, SimpleGraphics::rgba_t text_color,
             SimpleGraphics::rgba_t background_color, int min, int max);
 
+    int chosen_value = 50;
+    int min, max;
+
 private:
     std::string m_text;
     SimpleGraphics::rgba_t m_text_color;
     TouchCB m_cb;
-    int min, max;
     Point slider_p1, slider_p2;
     Point slider_bar_p1, slider_bar_p2;
-    int chosen_value;
+    SimpleGraphics::rgba_t m_background_color;
+    bool initial_state;
 };
 
 

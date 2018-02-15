@@ -7,16 +7,20 @@
 
 
 #include "screen.hpp"
+#include <stdio.h>
 
 using namespace UI;
 
 Screen::Screen(SimpleGraphics &graphics, TouchControl &touch):
 	Drawable(graphics),
 	Touchable(touch),
-	cursor(m_graphics, SimpleGraphics::rgba(255, 0, 0, 255), 4),
+	cursor(m_graphics, SimpleGraphics::rgba(0, 255, 0, 255), 4),
+	exited(false),
 	drawables(),
-	touchables()
-{}
+	touchables(),
+	Next_Screen()
+{
+}
 
 void Screen::draw() {
 	Rectangle clear_rect(m_graphics, {0, 0}, {160, 120}, SimpleGraphics::rgba(0, 0, 0, 0));
@@ -29,17 +33,21 @@ void Screen::draw() {
 
 void Screen::enable_touch() {
 
+	std::cout << "Enable Touch" << std::endl;
 	m_touch.setTouchCB([this](TouchControl *, unsigned x, unsigned y) {
 		Point p = {x, y};
 
 		// undraw previous cursor
 		// restore the image that previous cursor covers
-		cursor.update(p);
+
 		// draw new cursor at Point p
+
+		cursor.undraw();
 
 		for (auto touch : touchables) {
 			if (touch->touch(p)) break;
 		}
+		cursor.update(p);
 	});
 }
 
@@ -57,3 +65,21 @@ void Screen::addDrawable(Drawable* element) {
 void Screen::addTouchable(Touchable* element) {
 	touchables.push_back(element);
 }
+
+
+Current_Screen Screen::run(void) {
+	while(exited == false){
+		m_touch.trypoll();
+	}
+	return Next_Screen;
+
+}
+
+void Screen::exit(Current_Screen New_Screen) {
+	exited = true;
+	Next_Screen = New_Screen;
+}
+
+
+
+
