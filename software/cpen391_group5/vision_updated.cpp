@@ -50,7 +50,6 @@ void Gesture_Recognizer::gesture_detect() {
 	unsigned distSq = absDistanceSq(previous_point.x, current_point.x, previous_point.y, current_point.y);
 
 	if (distSq > (GESTURE_MAX_MOVE * GESTURE_MAX_MOVE)) {
-		printf("Point Jumped\n");
 		state = WAIT_START;
 	} else if (distSq > (GESTURE_JITTER_RANGE * GESTURE_JITTER_RANGE)) {
 //		printf("previous: %i %i    current: %i %i\n", previous_point.x, previous_point.y,current_point.x, current_point.y );
@@ -109,12 +108,12 @@ void Gesture_Recognizer::gesture_detect() {
 	last_dir = dir;
 }
 
-void Gesture_Recognizer::update_dots(void) {
-//	point point_from_register;
-//
+void Gesture_Recognizer::update_dots(point red_dot) {
+	gesture_detect();
+
 	previous_point = current_point;
-//
-//	*current_point = point_from_register;
+
+	current_point = red_dot;
 }
 
 void Gesture_Recognizer::print_gesture(Direction g) {
@@ -175,88 +174,3 @@ Direction Gesture_Recognizer::pointDirection(struct point *prev, struct point *n
 			return DOWN_LEFT;
 	}
 }
-
-void Gesture_Recognizer::find_dots(void) {
-
-    volatile uint32_t *data = VIDEO_FRAME_BUFFER_BASE;
-
-    memset(slots, 0, sizeof(slots));
-
-    for (unsigned y = 0; y < DOTS_MAX_Y; y++) {
-        for (unsigned x = 0; x < DOTS_MAX_X; x++) {
-            struct rgba pixel;
-            // Don't use IORD since we want the cache to work when using NIOS F
-            *((uint32_t *) &pixel) = *data;
-            data++;
-
-            if (pixel.r > 120 && pixel.g < 60 && pixel.b < 60) {
-            	Red_Point.x = x;
-            	Red_Point.y = y;
-                int free_slot = -1;
-                bool found_slot = false;
-
-                for (unsigned i = 0; i < DOTS_NUM_SLOTS; i++) {
-                    if (slots[i].count > 0 ) {
-                        unsigned distSq = absDistanceSq(slots[i].x, x, slots[i].y, y);
-
-                        if (distSq < (DOTS_RANGE*DOTS_RANGE)) {
-                            slots[i].x = average2Points(slots[i].x, x);
-                            slots[i].y = average2Points(slots[i].y, y);
-                            slots[i].count++;
-                            found_slot = true;
-                            break;
-                        }
-                    } else {
-                        free_slot = i;
-                    }
-                }
-
-                if (!found_slot) {
-                    if (free_slot == -1)
-                        printf("Ran out of slots!\n");
-
-                    slots[free_slot].x = x;
-                    slots[free_slot].y = y;
-                    slots[free_slot].count += 1;
-                }
-            }
-        }
-    }
-
-    unsigned int max_count = 0;
-    int max_index = -1;
-
-    for (unsigned i = 0; i < DOTS_NUM_SLOTS; i++) {
-        //printf("Slot %d: x = %u, y = %u, count= %d\n", i, slots[i].x, slots[i].y, slots[i].count);
-
-        // Undraw previous X
-        if (prev_slots[i].count > 0) {
-//            graphics.draw_cross(graphics.rgba(0, 0, 0, 0), prev_slots[i].x, prev_slots[i].y, DOTS_MARKER_SIZE);
-        }
-
-        // Draw the new X and record the draw
-        if (slots[i].count > 0) {
-//            graphics.draw_cross(graphics.rgba(0, 255, 0, 255), slots[i].x, slots[i].y, DOTS_MARKER_SIZE);
-
-            // Find max
-            if (slots[i].count > max_count) {
-                max_count = slots[i].count;
-                max_index = i;
-            }
-
-            memcpy(&prev_slots[i], &slots[i], sizeof(struct point));
-        } else {
-            prev_slots[i].count = 0;
-        }
-    }
-    if (max_index != -1) {
-    	current_point = slots[max_index];
-    }
-
-    gesture_detect();
-
-
-    update_dots();
-}
-
-

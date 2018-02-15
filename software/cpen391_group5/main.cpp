@@ -30,33 +30,9 @@ void gestures_settings_screen(SimpleGraphics &graphics, TouchControl &touch, Scr
 #define SG_MAX_WIDTH 160
 #define SG_MAX_HEIGHT 120
 
+#define MIN_COUNT 150
+
 int main(int argc, const char * argv[]) {
-
-    PixelCluster pix_cluster(reinterpret_cast<uint32_t *>(PIXEL_CLUSTER_0_BASE),
-            PIXEL_CLUSTER_0_IRQ_INTERRUPT_CONTROLLER_ID, PIXEL_CLUSTER_0_IRQ);
-
-    pix_cluster.reset();
-    pix_cluster.compare_enable(true, true, true);
-    pix_cluster.compare_value(120, 60, 60);
-    pix_cluster.compare_less_than(false, true, true);
-    pix_cluster.range(50);
-    pix_cluster.startIRQ();
-
-    std::cout << "Start" << std::endl;
-    std::cout << "Enabled IRQ" << std::endl;
-
-    while(1) {
-        usleep(500000);
-        unsigned x, y, count;
-        pix_cluster.poll(x, y, count);
-
-        std::cout << "X = " << x << "Y = " << y << "Count = " << count << std::endl;
-
-        std::cout << "AVG " << pix_cluster.isr_period_ms(true) << " ms between isr" << std::endl;
-
-    }
-
-
 	/*
 	 * Only initialize this camera stuff the first time
 	 */
@@ -82,6 +58,29 @@ int main(int argc, const char * argv[]) {
 	}
 
 
+	/*
+	 * Gesture Initialization
+	 */
+	Gesture_Recognizer::GestureCB cb_up = []{
+		std::cout << "CB: UP" << std::endl;
+	};
+
+	Gesture_Recognizer::GestureCB cb_down = []{
+		std::cout << "CB: DOWN" << std::endl;
+	};
+
+	Gesture_Recognizer::GestureCB cb_left = []{
+		std::cout << "CB: LEFT" << std::endl;
+	};
+
+	Gesture_Recognizer::GestureCB cb_right = []{
+		std::cout << "CB: RIGHT" << std::endl;
+	};
+
+
+	Gesture_Recognizer GR;
+
+
 
 	SimpleGraphics graphics(
             reinterpret_cast<char *>(GRAPHICS_CONTROLLER_0_BASE),
@@ -95,6 +94,17 @@ int main(int argc, const char * argv[]) {
 
 	Current_Screen s(HOME);
 
+    PixelCluster pix_cluster(reinterpret_cast<uint32_t *>(PIXEL_CLUSTER_0_BASE),
+            PIXEL_CLUSTER_0_IRQ_INTERRUPT_CONTROLLER_ID, PIXEL_CLUSTER_0_IRQ);
+
+    pix_cluster.reset();
+    pix_cluster.compare_enable(true, true, true);
+    pix_cluster.compare_value(120, 60, 60);
+    pix_cluster.compare_less_than(false, true, true);
+    pix_cluster.range(50);
+
+
+    pix_cluster.startIRQ();
     graphics.startIRQ();
 
 	while (1){
@@ -102,6 +112,12 @@ int main(int argc, const char * argv[]) {
 		switch(s) {
 		case HOME: 
         {
+        	Cursor red_dot_cursor(graphics, SimpleGraphics::rgba(255, 0, 0, 255), 4);
+
+        	GR.change_gesture_map(Direction(UP), cb_up);
+			GR.change_gesture_map(Direction(DOWN), cb_down);
+			GR.change_gesture_map(Direction(LEFT), cb_left);
+			GR.change_gesture_map(Direction(RIGHT), cb_right);
 
             Video::imageSettings(brightness, contrast, 0x80, 0x00, saturation);
 			Button title(graphics, touch, {0, 0}, {100, 30}, "LIGHT CONTROLLER",
@@ -116,16 +132,6 @@ int main(int argc, const char * argv[]) {
 					SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(89, 89, 89, 150));
 
-
-            PixelCluster pix_cluster(reinterpret_cast<uint32_t *>(PIXEL_CLUSTER_0_BASE),
-                    PIXEL_CLUSTER_0_IRQ_INTERRUPT_CONTROLLER_ID, PIXEL_CLUSTER_0_IRQ);
-
-            pix_cluster.reset();
-            pix_cluster.compare_enable(true, true, true);
-            pix_cluster.compare_value(120, 60, 60);
-            pix_cluster.compare_less_than(false, true, true);
-            pix_cluster.range(50);
-            pix_cluster.startIRQ();
 
 			menu.newItem(graphics, touch, "Change IMG", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(166, 166, 166, 100),
@@ -152,6 +158,11 @@ int main(int argc, const char * argv[]) {
 
 					});
 
+			pix_cluster.isrCB([&red_dot_cursor, &GR] (PixelCluster *, unsigned x, unsigned y, unsigned count) {
+				red_dot_cursor.update({x/2,y/2});
+				GR.update_dots({x,y,count});
+			});
+
 			screen.addDrawable(&title);
 			screen.addTouchable(&title);
 			screen.addDrawable(&team_name);
@@ -162,6 +173,8 @@ int main(int argc, const char * argv[]) {
 			screen.enable_touch();
 			touch.touch_enable();
 			s = screen.run();
+			pix_cluster.isrCB(nullptr);
+
 			break;
 		}
 
@@ -220,6 +233,8 @@ int main(int argc, const char * argv[]) {
 					screen.exit(Current_Screen(HOME));
 
 					});
+
+			pix_cluster.isrCB(nullptr);
 
 
 
@@ -358,6 +373,8 @@ int main(int argc, const char * argv[]) {
 
 					});
 
+			pix_cluster.isrCB(nullptr);
+
 
 
 		//	gesture_settings.addDrawable(&background);
@@ -380,54 +397,6 @@ int main(int argc, const char * argv[]) {
 		}
 		}
 
-	}
-
-
-	/*
-	 * Still have to implement the Dot Recognition
-	 */
-
-
-	Cursor red_dot_cursor(graphics, SimpleGraphics::rgba(255, 0, 0, 255), 4);
-	std::cout << "Starting" << std::endl;
-
-	Gesture_Recognizer::GestureCB cb_up = []{
-		std::cout << "CB: UP" << std::endl;
-	};
-
-	Gesture_Recognizer::GestureCB cb_down = []{
-		std::cout << "CB: DOWN" << std::endl;
-	};
-
-	Gesture_Recognizer::GestureCB cb_left = []{
-		std::cout << "CB: LEFT" << std::endl;
-	};
-
-	Gesture_Recognizer::GestureCB cb_right = []{
-		std::cout << "CB: RIGHT" << std::endl;
-	};
-
-
-	Gesture_Recognizer GR;
-
-	GR.change_gesture_map(Direction(UP), cb_up);
-	GR.change_gesture_map(Direction(DOWN), cb_down);
-	GR.change_gesture_map(Direction(LEFT), cb_left);
-	GR.change_gesture_map(Direction(RIGHT), cb_right);
-
-	UI::Point temp;
-
-	while(1) {
-		GR.find_dots();
-		if ((temp.x == GR.Red_Point.x/2) && (temp.y == GR.Red_Point.y/2)){
-			red_dot_cursor.undraw();
-		}
-		else {
-			temp.x = GR.Red_Point.x/2;
-			temp.y = GR.Red_Point.y/2;
-			red_dot_cursor.update(temp);
-		}
-		touch.trypoll();
 	}
 
     return 0;

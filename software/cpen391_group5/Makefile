@@ -152,6 +152,7 @@ CXX_SRCS += libs/cursor.cpp
 CXX_SRCS += vision_updated.cpp
 CXX_SRCS += libs/video.cpp
 CXX_SRCS += libs/PixelCluster.cpp
+CXX_SRCS += libs/wifi.cpp
 ASM_SRCS :=
 
 

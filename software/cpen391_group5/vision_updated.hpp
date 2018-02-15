@@ -53,7 +53,10 @@ public:
 	void change_gesture_map(Direction dir, GestureCB callback);
 
 
-	void find_dots(void);
+	/*
+	 * Store Dot from hardware
+	 */
+	void update_dots(point red_dot);
 
 	point Red_Point;
 
@@ -104,11 +107,6 @@ private:
 	 * Gesture Detector
 	 */
 	void gesture_detect();
-
-	/*
-	 * Store Dot from hardware
-	 */
-	void update_dots(void);
 
 	/*
 	 * Print a Gesture

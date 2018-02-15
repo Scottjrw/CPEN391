@@ -6,7 +6,7 @@
  */
 
 #include <string.h>
-#include "wifi.h"
+#include "wifi.hpp"
 
 namespace Wifi {
 
