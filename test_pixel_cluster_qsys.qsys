@@ -111,11 +111,6 @@
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
- <interface
-   name="pixel_cluster"
-   internal="pixel_cluster_0.led_out"
-   type="conduit"
-   dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
  <module name="clk_0" kind="clock_source" version="15.0" enabled="1">
   <parameter name="clockFrequency" value="50000000" />
@@ -184,7 +179,7 @@
   <parameter name="impl" value="Tiny" />
   <parameter name="instAddrWidth" value="20" />
   <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x40000' end='0x80000' /><slave name='nios2_qsys_0.jtag_debug_module' start='0x80800' end='0x81000' /></address-map>]]></parameter>
-  <parameter name="internalIrqMaskSystemInfo" value="1" />
+  <parameter name="internalIrqMaskSystemInfo" value="3" />
   <parameter name="manuallyAssignCpuID" value="true" />
   <parameter name="mmu_TLBMissExcOffset" value="0" />
   <parameter name="mmu_TLBMissExcSlave" value="None" />
@@ -304,8 +299,15 @@
  </module>
  <module name="pixel_cluster_0" kind="pixel_cluster" version="1.0" enabled="1">
   <parameter name="ADDR_BITS" value="4" />
+  <parameter name="COLOR_BITS" value="8" />
+  <parameter name="COUNTER_BITS" value="16" />
+  <parameter name="N_CLUSTERS" value="4" />
+  <parameter name="N_COLORS" value="3" />
   <parameter name="N_REGS" value="2" />
   <parameter name="REG_BITS" value="32" />
+  <parameter name="X_MAX" value="320" />
+  <parameter name="X_Y_BITS" value="16" />
+  <parameter name="Y_MAX" value="240" />
  </module>
  <connection
    kind="avalon"
@@ -373,6 +375,13 @@
    version="15.0"
    start="clk_0.clk"
    end="pixel_cluster_0.clock" />
+ <connection
+   kind="interrupt"
+   version="15.0"
+   start="nios2_qsys_0.d_irq"
+   end="pixel_cluster_0.frame_complete">
+  <parameter name="irqNumber" value="1" />
+ </connection>
  <connection
    kind="interrupt"
    version="15.0"

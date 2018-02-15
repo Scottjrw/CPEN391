@@ -43,7 +43,6 @@ module cpen391_group5(
 
 wire reset = ~KEY[0];
 
-/*
 cpen391_group5_qsys sys_inst(
     .clk_clk(CLOCK_50),
     .reset_reset(reset),
@@ -87,12 +86,13 @@ cpen391_group5_qsys sys_inst(
     .video_in_decoder_TD_RESET(TD_RESET_N),
     .video_in_decoder_overflow_flag()
 );
-*/
 
+/*
 test_pixel_cluster_qsys sys2_inst(
     .clk_clk(CLOCK_50),
     .reset_reset_n(~reset),
     .pixel_cluster_leds(LEDR)
 );
+*/
 
 endmodule

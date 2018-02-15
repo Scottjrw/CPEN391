@@ -1,6 +1,4 @@
 module pixel_cluster
-//#(
-//)
 (
     clk,
     reset,
@@ -203,7 +201,7 @@ pixel_cluster_find_max
     .finish(find_max_finish),
 
     .values(clusterer_cluster_counters),
-    .max_index(max_index)
+    .max_index(find_max_max_index)
 );
 
 logic find_max_finish_capture;
@@ -213,13 +211,16 @@ logic irq_reset;
 pixel_cluster_capture
 cap_finish (
     .clk(clk),
-    .reset(),
+    .reset(irq_reset),
 
     .in(find_max_finish),
     .out(find_max_finish_capture)
 );
 
+// IRQ Send after max is found
 assign irq_send_irq = find_max_finish_capture;
+
+// -- Avalon MM Register Map --
 
 localparam Control_Register_Num = 0;
 localparam Compare_En_Register_Num = 1;
