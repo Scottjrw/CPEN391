@@ -201,3 +201,100 @@ initial begin
 end
 
 endmodule
+
+module pixel_cluster_avalon_st_tb();
+parameter N_COLORS = 3;
+parameter COLOR_BITS = 8;
+parameter X_MAX = 32;
+parameter Y_MAX = 24;
+parameter X_Y_BITS = 16;
+
+logic clk;
+logic reset;
+
+logic st_ready;
+logic st_startofpacket;
+logic st_endofpacket;
+logic st_valid;
+logic [COLOR_BITS*N_COLORS-1:0] st_data;
+
+logic [COLOR_BITS*N_COLORS-1:0] pixel_stream;
+logic pixel_valid;
+logic [X_Y_BITS-1:0] pixel_x;
+logic [X_Y_BITS-1:0] pixel_y;
+
+pixel_cluster_avalon_st #(
+    .N_COLORS(N_COLORS),
+    .COLOR_BITS(COLOR_BITS),
+    .X_MAX(X_MAX),
+    .Y_MAX(Y_MAX),
+    .X_Y_BITS(X_Y_BITS)
+) inst (
+    .clk(clk),
+    .reset(reset),
+
+    .st_ready(st_ready),
+    .st_startofpacket(st_startofpacket),
+    .st_endofpacket(st_endofpacket),
+    .st_valid(st_valid),
+    .st_data(st_data),
+
+    .pixel_stream(pixel_stream),
+    .pixel_valid(pixel_valid),
+    .pixel_x(pixel_x),
+    .pixel_y(pixel_y)
+);
+
+initial forever begin
+    clk = 0; #5;
+    clk = 1; #5;
+end
+
+parameter NUM_TESTS = 11;
+
+reg [COLOR_BITS*N_COLORS/2-1:0] x, y;
+
+initial begin
+    reset = 1;
+    st_startofpacket = 0;
+    st_endofpacket = 0;
+    st_valid = 0;
+    st_data = 0;
+    #10;
+    reset = 0;
+    #10;
+    assert(pixel_valid == 0);
+
+    st_startofpacket = 1;
+    st_valid = 1;
+
+    for (y = 0; y < Y_MAX; y++) begin
+        for (x = 0; x < X_MAX; x++) begin
+            if (x == X_MAX-1 && y == Y_MAX-1)
+                st_endofpacket = 1;
+
+            st_data = {x, y};
+            #10;
+            assert(pixel_stream == {x, y});
+            assert(pixel_valid == 1);
+            assert(pixel_x == x);
+            assert(pixel_y == y);
+            st_startofpacket = 0;
+            st_endofpacket = 0;
+        end
+    end
+
+    st_data = 0;
+    st_valid = 0;
+
+    #10;
+    assert(pixel_valid == 0);
+
+    #50;
+
+    $display("All tests finished");
+
+    $stop;
+end
+
+endmodule

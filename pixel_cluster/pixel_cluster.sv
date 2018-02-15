@@ -15,7 +15,6 @@ module pixel_cluster
 );
 input clk, reset;
 
-
 // Pixel Cluster Regs
 parameter N_REGS = 2;
 parameter ADDR_BITS = 4;
@@ -59,9 +58,14 @@ pixel_cluster_regs
 
 endmodule
 
+/*
+A module that takes a Avalon video stream and 
+converts it into pixels with x, y coordinates
 
+*/
 module pixel_cluster_avalon_st
 #(
+    parameter N_COLORS = 3,
     parameter COLOR_BITS = 8,
     parameter X_MAX = 320,
     parameter Y_MAX = 240,
@@ -79,28 +83,67 @@ module pixel_cluster_avalon_st
     pixel_stream,
     pixel_valid,
     pixel_x,
-    pixel_y,
-    cluster_reset
+    pixel_y
 );
-
-parameter N_COLORS = 3;
 
 input logic clk;
 input logic reset;
 
+// Avalon Streaming Interface
 output logic st_ready;
 input logic st_startofpacket;
 input logic st_endofpacket;
 input logic st_valid;
 input logic [COLOR_BITS*N_COLORS-1:0] st_data;
 
+// Output stream of pixels with x, y values
 output logic [COLOR_BITS*N_COLORS-1:0] pixel_stream;
 output logic pixel_valid;
-output logic pixel_x;
-output logic pixel_y;
-output logic cluster_reset;
+output logic [X_Y_BITS-1:0] pixel_x;
+output logic [X_Y_BITS-1:0] pixel_y;
 
+// -- End of IO --
 
+logic done;
+
+always_ff @(posedge clk) begin
+    if (reset) begin
+        st_ready <= 0;
+        pixel_stream <= 0;
+        pixel_valid <= 0;
+        pixel_x <= 0;
+        pixel_y <= 0;
+        done <= 0;
+    end
+    else begin
+        st_ready <= 1;
+
+        if (st_valid) begin
+            pixel_stream <= st_data;
+            // Row major, increment X then Y
+            pixel_x <= (pixel_x == X_MAX-1) ? 0 : pixel_x + 1'b1;
+            pixel_y <= (pixel_x == X_MAX-1) ? pixel_y + 1'b1 : pixel_y;
+
+            // Start and End Conditions
+            if (st_startofpacket) begin
+                pixel_x <= 0;
+                pixel_y <= 0;
+                pixel_valid <= 1;
+                done <= 0;
+            end
+            else if (st_endofpacket) begin
+                done <= 1;
+            end
+        end
+
+        if (done) begin
+            pixel_x <= 0;
+            pixel_y <= 0;
+            pixel_valid <= 0;
+            done <= 0;
+        end
+    end
+end
 endmodule
 
 /*
@@ -112,6 +155,7 @@ endmodule
  */
 module pixel_cluster_color_filter
 #(
+    parameter N_COLORS = 3,
     parameter COLOR_BITS = 8
 )(
     pixel_stream_in,
@@ -122,7 +166,6 @@ module pixel_cluster_color_filter
     pixel_valid_out
 );
 
-parameter N_COLORS = 3;
 
 // Stream of ST pixels
 input logic [N_COLORS*COLOR_BITS-1:0] pixel_stream_in;
@@ -151,7 +194,6 @@ always_comb begin
     compare_ok[2] = (pixel_stream_in[2*COLOR_BITS +: COLOR_BITS] < r_cmp) ? less_than[2] : ~less_than[2];
 
     pixel_valid_out = (&(compare_ok | ~compare)) & pixel_valid_in;
-    pixel_stream_out = pixel_stream_in;
 end
 
 endmodule
@@ -160,9 +202,6 @@ endmodule
 /*
  Clusters input x,y points into N_CLUSTERS clusters
  Pixels are considered in a cluster if they are within range
-
- This module needs some serious pipelining to achieve the 1 pixel/clk rate
- at which the video IP cores send (without buffering).
 
  */
 module pixel_cluster_x_y_clusterer
@@ -218,17 +257,20 @@ end
 Point pipeline[N_CLUSTERS-1:0];
 logic [N_CLUSTERS-1:0] pipeline_valid;
 
-// Stage 1, diffx = x1 - x2, diffy = y1 - y2
+// diffx = x1 - x2, diffy = y1 - y2
 logic signed [X_Y_BITS-1:0] diffX[N_CLUSTERS-1:0];
 logic signed [X_Y_BITS-1:0] diffY[N_CLUSTERS-1:0];
 
-// Stage 2, sqrx = diffx*diffx, sqry = diffy*diffy
+// sqrx = diffx*diffx, sqry = diffy*diffy
 logic [2*X_Y_BITS-1:0] sqrX[N_CLUSTERS-1:0];
 logic [2*X_Y_BITS-1:0] sqrY[N_CLUSTERS-1:0];
 
-// Stage 3, distance = sqrx + sqry
+// distance = sqrx + sqry
 logic [2*X_Y_BITS-1:0] distanceSq[N_CLUSTERS-1:0];
 
+// Calculate the distance purely combinationally
+// Cannot pipeline this as the value of distance depends on
+// whether or not the slot was updated by previous pixels
 always_comb begin
     rangeSq = range * range;
     for (int i = 0; i < N_CLUSTERS; i++) begin
@@ -255,8 +297,10 @@ always_ff @(posedge clk) begin
         pipeline_valid[0] <= valid;
 
         for (int i = 0; i < N_CLUSTERS; i++) begin
-            pipeline[i+1] <= pipeline[i];
-            pipeline_valid[i+1] <= pipeline_valid[i];
+            if (i + 1 < N_CLUSTERS) begin
+                pipeline[i+1] <= pipeline[i];
+                pipeline_valid[i+1] <= pipeline_valid[i];
+            end
 
             if (pipeline_valid[i] && (count[i] == 0 || distanceSq[i] <= rangeSq)) begin
                 if (count[i] == 0) begin
@@ -280,6 +324,87 @@ endmodule
 
 
 /*
+Searches through values and finds the maximum
+
+*/
+module pixel_cluster_find_max
+#(
+    parameter VALUE_BITS = 16,
+    parameter N_VALUES = 4
+) (
+    clk,
+    reset,
+    
+    start,
+    finish,
+
+    values,
+    max_index
+);
+
+input logic clk, reset;
+
+input logic start;
+output logic finish;
+
+input logic [VALUE_BITS*N_VALUES-1:0] values;
+output logic [$clog2(N_VALUES)-1:0] max_index;
+
+// -- End of IO --
+
+typedef enum logic[1:0] {
+    idle =      2'b00,
+    running =   2'b10,
+    done =      2'b01
+} state_t;
+
+state_t state;
+
+logic[$clog2(N_VALUES)-1:0] index;
+
+assign finish = state[0];
+
+always_ff @(posedge clk) begin
+    if (reset) begin
+        running <= 0;
+        finish <= 0;
+        max_index <= 0;
+        index <= 0;
+    end
+    else begin
+        case (state)
+            idle:
+            if (start)
+                state <= running;
+
+            running:
+            if (max_index == N_VALUES - 1) begin
+                state <= 
+            end
+            else begin
+                if (values[max_index] < values[index]) begin
+                    max_index <= index;
+                end
+                max_index <= max_index + 1'b1;
+            end
+
+            done:
+            state <= idle;
+        endcase
+        end
+        else if (start) begin
+            running <= 1'b1;
+            max_index <= 0;
+            index <= 0;
+        end
+    end
+end
+
+
+endmodule
+
+
+/*
 Module to manage the Avalon MM interface
 Has N 32-bit registers for read and write
 
@@ -298,7 +423,9 @@ module pixel_cluster_regs
     read_regs,
     write_regs,
 
-    trigger,
+    // Triggers on read or write for each reg
+    read_trigger,
+    write_trigger,
 
     // Avalon MM Signals
     mm_address,
@@ -323,17 +450,19 @@ input logic [REG_BITS-1:0] mm_writedata;
 input logic [(REG_BITS*N)-1:0] read_regs;
 output logic [(REG_BITS*N)-1:0] write_regs;
 
-output logic [N-1:0] trigger;
+output logic [N-1:0] read_trigger;
+output logic [N-1:0] write_trigger;
 
 always_ff @(posedge clk) begin
-    trigger <= 0;
+    read_trigger <= 0;
+    write_trigger <= 0;
 
     if (reset) begin
         for (int i = 0; i < N; i++)
             write_regs[i] <= 0;
     end
     else if (mm_write) begin
-        trigger[mm_address] <= 1'b1;
+        write_trigger[mm_address] <= 1'b1;
 
         for (int i = 0; i < REG_BITS/8; i++) begin
             if (mm_byteenable[i]) begin
@@ -342,6 +471,8 @@ always_ff @(posedge clk) begin
         end
     end
     else if (mm_read) begin
+        read_trigger[mm_address] <= 1'b1;
+
         for (int i = 0; i < REG_BITS/8; i++) begin
             mm_readdata[i*8 +: 8] <= {8{mm_byteenable[i]}} & read_regs[mm_address*32 + i*8 +: 8];
         end
