@@ -22,7 +22,31 @@ int main(void) {
     SimpleGraphics graphics(reinterpret_cast<SimpleGraphics::rgba_t *>(DRAW_BUFFER_BASE),
             SG_MAX_WIDTH, SG_MAX_HEIGHT);
 
-    TouchControl touch(TOUCHSCREEN_UART_NAME, TOUCHSCREEN_UART_IRQ, TOUCHSCREEN_UART_IRQ_INTERRUPT_CONTROLLER_ID,
+    int address_x = IORD_32DIRECT(NEW_COMPONENT_0_BASE, 0);
+        	int address_y = IORD_32DIRECT(NEW_COMPONENT_0_BASE, 4);
+        	int address_buffer = IORD_32DIRECT(NEW_COMPONENT_0_BASE, 8);
+        	int address_width = IORD_32DIRECT(NEW_COMPONENT_0_BASE, 12);
+        	int address_data = IORD_32DIRECT(NEW_COMPONENT_0_BASE, 16);
+        	std::cout<<std::hex<<address_x<<" ";
+        	std::cout<<std::hex<<address_y<<" ";
+        	std::cout<<std::hex<<address_buffer<<" ";
+        	std::cout<<std::hex<<address_width<<" ";
+        	std::cout<<std::hex<<address_data<<std::endl;
+    for(int i=0; i<10; i++){
+    	graphics.draw_pixel(SimpleGraphics::rgba(255, 0, 0, 255), 100,50+i);
+    	address_x = IORD_32DIRECT(NEW_COMPONENT_0_BASE, 0);
+    	address_y = IORD_32DIRECT(NEW_COMPONENT_0_BASE, 4);
+    	address_buffer = IORD_32DIRECT(NEW_COMPONENT_0_BASE, 8);
+    	address_width = IORD_32DIRECT(NEW_COMPONENT_0_BASE, 12);
+    	address_data = IORD_32DIRECT(NEW_COMPONENT_0_BASE, 16);
+    	std::cout<<std::hex<<address_x<<" ";
+    	std::cout<<std::hex<<address_y<<" ";
+    	std::cout<<std::hex<<address_buffer<<" ";
+    	std::cout<<std::hex<<address_width<<" ";
+    	std::cout<<std::hex<<address_data<<std::endl;
+    }
+
+    /*TouchControl touch(TOUCHSCREEN_UART_NAME, TOUCHSCREEN_UART_IRQ, TOUCHSCREEN_UART_IRQ_INTERRUPT_CONTROLLER_ID,
             SG_MAX_WIDTH, SG_MAX_HEIGHT, true);
 
     Screen screen(graphics, touch);
@@ -136,7 +160,7 @@ int main(void) {
 
     while (1) { 
         touch.trypoll();
-    }
+    }*/
 
     return 0;
 }

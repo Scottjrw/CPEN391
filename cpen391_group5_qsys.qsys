@@ -21,7 +21,7 @@
    {
       datum _sortIndex
       {
-         value = "16";
+         value = "17";
          type = "int";
       }
    }
@@ -50,7 +50,7 @@
    {
       datum _sortIndex
       {
-         value = "20";
+         value = "21";
          type = "int";
       }
    }
@@ -66,7 +66,7 @@
    {
       datum _sortIndex
       {
-         value = "22";
+         value = "23";
          type = "int";
       }
    }
@@ -74,7 +74,7 @@
    {
       datum _sortIndex
       {
-         value = "21";
+         value = "22";
          type = "int";
       }
    }
@@ -82,7 +82,7 @@
    {
       datum _sortIndex
       {
-         value = "23";
+         value = "24";
          type = "int";
       }
    }
@@ -90,7 +90,7 @@
    {
       datum _sortIndex
       {
-         value = "26";
+         value = "27";
          type = "int";
       }
    }
@@ -98,7 +98,7 @@
    {
       datum _sortIndex
       {
-         value = "15";
+         value = "16";
          type = "int";
       }
    }
@@ -132,7 +132,7 @@
    {
       datum _sortIndex
       {
-         value = "11";
+         value = "12";
          type = "int";
       }
    }
@@ -140,7 +140,7 @@
    {
       datum _sortIndex
       {
-         value = "10";
+         value = "11";
          type = "int";
       }
    }
@@ -148,7 +148,7 @@
    {
       datum _sortIndex
       {
-         value = "12";
+         value = "13";
          type = "int";
       }
    }
@@ -156,7 +156,7 @@
    {
       datum _sortIndex
       {
-         value = "14";
+         value = "15";
          type = "int";
       }
    }
@@ -172,7 +172,7 @@
    {
       datum _sortIndex
       {
-         value = "9";
+         value = "10";
          type = "int";
       }
    }
@@ -180,7 +180,7 @@
    {
       datum _sortIndex
       {
-         value = "13";
+         value = "14";
          type = "int";
       }
       datum sopceditor_expanded
@@ -193,7 +193,7 @@
    {
       datum _sortIndex
       {
-         value = "17";
+         value = "18";
          type = "int";
       }
    }
@@ -209,7 +209,7 @@
    {
       datum _sortIndex
       {
-         value = "24";
+         value = "25";
          type = "int";
       }
    }
@@ -217,7 +217,7 @@
    {
       datum _sortIndex
       {
-         value = "19";
+         value = "20";
          type = "int";
       }
    }
@@ -225,7 +225,7 @@
    {
       datum _sortIndex
       {
-         value = "18";
+         value = "19";
          type = "int";
       }
    }
@@ -233,7 +233,7 @@
    {
       datum _sortIndex
       {
-         value = "25";
+         value = "26";
          type = "int";
       }
    }
@@ -293,11 +293,27 @@
          type = "String";
       }
    }
+   element graphics_controller_0
+   {
+      datum _sortIndex
+      {
+         value = "3";
+         type = "int";
+      }
+   }
+   element graphics_controller_0.mm
+   {
+      datum baseAddress
+      {
+         value = "67108864";
+         type = "String";
+      }
+   }
    element jtag_uart_0
    {
       datum _sortIndex
       {
-         value = "8";
+         value = "9";
          type = "int";
       }
    }
@@ -313,7 +329,7 @@
    {
       datum _sortIndex
       {
-         value = "6";
+         value = "7";
          type = "int";
       }
    }
@@ -361,7 +377,7 @@
    {
       datum _sortIndex
       {
-         value = "5";
+         value = "6";
          type = "int";
       }
    }
@@ -382,7 +398,7 @@
    {
       datum _sortIndex
       {
-         value = "7";
+         value = "8";
          type = "int";
       }
    }
@@ -398,7 +414,7 @@
    {
       datum _sortIndex
       {
-         value = "3";
+         value = "4";
          type = "int";
       }
    }
@@ -414,7 +430,7 @@
    {
       datum _sortIndex
       {
-         value = "4";
+         value = "5";
          type = "int";
       }
    }
@@ -770,6 +786,21 @@
   <parameter name="other_boards" value="None" />
  </module>
  <module
+   name="graphics_controller_0"
+   kind="graphics_controller"
+   version="1.0"
+   enabled="1">
+  <parameter name="pixel_idle" value="0" />
+  <parameter name="pixel_write" value="1" />
+  <parameter name="rec_cmp_x" value="3" />
+  <parameter name="rec_cmp_y" value="5" />
+  <parameter name="rec_idle" value="0" />
+  <parameter name="rec_inc_x" value="12" />
+  <parameter name="rec_inc_y" value="22" />
+  <parameter name="rec_init" value="1" />
+  <parameter name="rec_write" value="34" />
+ </module>
+ <module
    name="jtag_uart_0"
    kind="altera_avalon_jtag_uart"
    version="15.0"
@@ -832,7 +863,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="28" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='video_uart.s1' start='0x91000' end='0x91020' /><slave name='touchscreen_uart.s1' start='0x91020' end='0x91040' /><slave name='main_timer.s1' start='0x91040' end='0x91060' /><slave name='switch_in_pio.s1' start='0x91060' end='0x91070' /><slave name='led_out_pio.s1' start='0x91070' end='0x91080' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91090' end='0x910A0' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0x910A0' end='0x910B0' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x910B0' end='0x910B8' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='video_uart.s1' start='0x91000' end='0x91020' /><slave name='touchscreen_uart.s1' start='0x91020' end='0x91040' /><slave name='main_timer.s1' start='0x91040' end='0x91060' /><slave name='switch_in_pio.s1' start='0x91060' end='0x91070' /><slave name='led_out_pio.s1' start='0x91070' end='0x91080' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91090' end='0x910A0' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0x910A0' end='0x910B0' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x910B0' end='0x910B8' /><slave name='graphics_controller_0.mm' start='0x4000000' end='0x8000000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="true" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -860,7 +891,7 @@
   <parameter name="impl" value="Fast" />
   <parameter name="instAddrWidth" value="28" />
   <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
-  <parameter name="internalIrqMaskSystemInfo" value="15" />
+  <parameter name="internalIrqMaskSystemInfo" value="31" />
   <parameter name="manuallyAssignCpuID" value="true" />
   <parameter name="mmu_TLBMissExcOffset" value="0" />
   <parameter name="mmu_TLBMissExcSlave" value="None" />
@@ -1066,6 +1097,15 @@
  <connection
    kind="avalon"
    version="15.0"
+   start="graphics_controller_0.avalon_master"
+   end="Draw_Buffer.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00080000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="15.0"
    start="nios2.data_master"
    end="Video_In_DMA.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
@@ -1106,6 +1146,15 @@
    end="nios2.jtag_debug_module">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00090800" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="15.0"
+   start="nios2.data_master"
+   end="graphics_controller_0.mm">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x04000000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1366,6 +1415,11 @@
    kind="clock"
    version="15.0"
    start="clocks.sys_clk"
+   end="graphics_controller_0.clock" />
+ <connection
+   kind="clock"
+   version="15.0"
+   start="clocks.sys_clk"
    end="Video_Out_FIFO.clock_stream_in" />
  <connection
    kind="clock"
@@ -1382,6 +1436,13 @@
    version="15.0"
    start="Video_Clock.vga_clk"
    end="Video_Out_FIFO.clock_stream_out" />
+ <connection
+   kind="interrupt"
+   version="15.0"
+   start="nios2.d_irq"
+   end="graphics_controller_0.interrupt_sender">
+  <parameter name="irqNumber" value="4" />
+ </connection>
  <connection
    kind="interrupt"
    version="15.0"
@@ -1519,6 +1580,11 @@
    kind="reset"
    version="15.0"
    start="nios2.jtag_debug_module_reset"
+   end="graphics_controller_0.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
    end="Video_Frame_Buffer.reset1" />
  <connection
    kind="reset"
@@ -1645,6 +1711,11 @@
    version="15.0"
    start="clocks.reset_source"
    end="video_uart.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="clocks.reset_source"
+   end="graphics_controller_0.reset" />
  <connection
    kind="reset"
    version="15.0"

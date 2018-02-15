@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Thu Feb 15 01:02:23 PST 2018
+ * Generated: Thu Feb 15 01:54:27 PST 2018
  */
 
 /*
@@ -135,6 +135,7 @@
 #define __ALTERA_AVALON_UART
 #define __ALTERA_NIOS2_QSYS
 #define __ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER
+#define __GRAPHICS_CONTROLLER
 
 
 /*
@@ -271,6 +272,20 @@
 #define VIDEO_OUT_DMA_NAME "/dev/Video_Out_DMA"
 #define VIDEO_OUT_DMA_SPAN 16
 #define VIDEO_OUT_DMA_TYPE "altera_up_avalon_video_dma_controller"
+
+
+/*
+ * graphics_controller_0 configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_graphics_controller_0 graphics_controller
+#define GRAPHICS_CONTROLLER_0_BASE 0x4000000
+#define GRAPHICS_CONTROLLER_0_IRQ 4
+#define GRAPHICS_CONTROLLER_0_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define GRAPHICS_CONTROLLER_0_NAME "/dev/graphics_controller_0"
+#define GRAPHICS_CONTROLLER_0_SPAN 67108864
+#define GRAPHICS_CONTROLLER_0_TYPE "graphics_controller"
 
 
 /*

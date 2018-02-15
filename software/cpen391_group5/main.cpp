@@ -10,8 +10,8 @@
 #include "screen.hpp"
 #include "cursor.hpp"
 #include "UI.hpp"
+#include "touch.hpp"
 #include "io.h"
-#include <stdio.h>
 
 constexpr unsigned SG_MAX_WIDTH = 160;
 constexpr unsigned SG_MAX_HEIGHT = 120;
@@ -24,6 +24,10 @@ void home_screen(SimpleGraphics &graphics, TouchControl &touch, Screen &screen);
 void image_settings_screen(SimpleGraphics &graphics, TouchControl &touch, Screen &screen);
 void gestures_settings_screen(SimpleGraphics &graphics, TouchControl &touch, Screen &screen);
 
+#define DEBOUNCE_MS 100
+
+#define SG_MAX_WIDTH 160
+#define SG_MAX_HEIGHT 120
 
 int main(int argc, const char * argv[]) {
 
@@ -54,13 +58,19 @@ int main(int argc, const char * argv[]) {
 
 
 
-	SimpleGraphics graphics(reinterpret_cast<SimpleGraphics::rgba_t *>(DRAW_BUFFER_BASE),
+	SimpleGraphics graphics(
+            reinterpret_cast<char *>(GRAPHICS_CONTROLLER_0_BASE),
+            GRAPHICS_CONTROLLER_0_IRQ_INTERRUPT_CONTROLLER_ID,
+            GRAPHICS_CONTROLLER_0_IRQ,
+            reinterpret_cast<SimpleGraphics::rgba_t *>(DRAW_BUFFER_BASE),
 			SG_MAX_WIDTH, SG_MAX_HEIGHT);
 
 	TouchControl touch(TOUCHSCREEN_UART_NAME, TOUCHSCREEN_UART_IRQ, TOUCHSCREEN_UART_IRQ_INTERRUPT_CONTROLLER_ID,
 			SG_MAX_WIDTH, SG_MAX_HEIGHT, true);
 
 	Current_Screen s(HOME);
+
+    graphics.startIRQ();
 
 	while (1){
 		Screen screen(graphics, touch);
