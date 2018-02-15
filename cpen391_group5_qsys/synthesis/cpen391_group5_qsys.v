@@ -36,7 +36,9 @@ module cpen391_group5_qsys (
 		input  wire        video_in_decoder_TD_VS,         //                 .TD_VS
 		input  wire        video_in_decoder_clk27_reset,   //                 .clk27_reset
 		output wire        video_in_decoder_TD_RESET,      //                 .TD_RESET
-		output wire        video_in_decoder_overflow_flag  //                 .overflow_flag
+		output wire        video_in_decoder_overflow_flag, //                 .overflow_flag
+		input  wire        wifi_rxd,                       //             wifi.rxd
+		output wire        wifi_txd                        //                 .txd
 	);
 
 	wire         video_blender_avalon_blended_source_valid;                           // Video_Blender:output_valid -> Video_Out_FIFO:stream_in_valid
@@ -99,7 +101,7 @@ module cpen391_group5_qsys (
 	wire         draw_scaler_avalon_scaler_source_ready;                              // Draw_Resampler:stream_in_ready -> Draw_Scaler:stream_out_ready
 	wire         draw_scaler_avalon_scaler_source_startofpacket;                      // Draw_Scaler:stream_out_startofpacket -> Draw_Resampler:stream_in_startofpacket
 	wire         draw_scaler_avalon_scaler_source_endofpacket;                        // Draw_Scaler:stream_out_endofpacket -> Draw_Resampler:stream_in_endofpacket
-	wire         clocks_sys_clk_clk;                                                  // clocks:sys_clk_clk -> [Draw_Buffer:clk, Draw_DMA:clk, Draw_Resampler:clk, Draw_Scaler:clk, Video_Blender:clk, Video_Clock:ref_clk_clk, Video_Frame_Buffer:clk, Video_In_CSC:clk, Video_In_Chroma:clk, Video_In_Clipper:clk, Video_In_DMA:clk, Video_In_Decoder:clk, Video_In_Scaler:clk, Video_Out_DMA:clk, Video_Out_FIFO:clk_stream_in, Video_Out_Resampler:clk, Video_Out_Scaler:clk, avalon_st_adapter:in_clk_0_clk, avalon_st_adapter_001:in_clk_0_clk, avalon_st_adapter_002:in_clk_0_clk, graphics_controller_0:clk, irq_mapper:clk, jtag_uart_0:clk, led_out_pio:clk, main_timer:clk, mm_interconnect_0:clocks_sys_clk_clk, mm_interconnect_1:clocks_sys_clk_clk, mm_interconnect_2:clocks_sys_clk_clk, nios2:clk, pixel_cluster_0:clk, rst_controller:clk, sdram:clk, st_splitter_0:clk, switch_in_pio:clk, touchscreen_uart:clk, video_uart:clk]
+	wire         clocks_sys_clk_clk;                                                  // clocks:sys_clk_clk -> [Draw_Buffer:clk, Draw_DMA:clk, Draw_Resampler:clk, Draw_Scaler:clk, Video_Blender:clk, Video_Clock:ref_clk_clk, Video_Frame_Buffer:clk, Video_In_CSC:clk, Video_In_Chroma:clk, Video_In_Clipper:clk, Video_In_DMA:clk, Video_In_Decoder:clk, Video_In_Scaler:clk, Video_Out_DMA:clk, Video_Out_FIFO:clk_stream_in, Video_Out_Resampler:clk, Video_Out_Scaler:clk, avalon_st_adapter:in_clk_0_clk, avalon_st_adapter_001:in_clk_0_clk, avalon_st_adapter_002:in_clk_0_clk, graphics_controller_0:clk, irq_mapper:clk, jtag_uart_0:clk, led_out_pio:clk, main_timer:clk, mm_interconnect_0:clocks_sys_clk_clk, mm_interconnect_1:clocks_sys_clk_clk, mm_interconnect_2:clocks_sys_clk_clk, nios2:clk, pixel_cluster_0:clk, rst_controller:clk, sdram:clk, st_splitter_0:clk, switch_in_pio:clk, touchscreen_uart:clk, video_uart:clk, wifi_uart:clk]
 	wire         video_clock_vga_clk_clk;                                             // Video_Clock:vga_clk_clk -> [Video_Out_FIFO:clk_stream_out, Video_Out_VGA_CTRL:clk, rst_controller_002:clk]
 	wire         video_in_dma_avalon_dma_master_waitrequest;                          // mm_interconnect_0:Video_In_DMA_avalon_dma_master_waitrequest -> Video_In_DMA:master_waitrequest
 	wire  [31:0] video_in_dma_avalon_dma_master_address;                              // Video_In_DMA:master_address -> mm_interconnect_0:Video_In_DMA_avalon_dma_master_address
@@ -237,6 +239,13 @@ module cpen391_group5_qsys (
 	wire         mm_interconnect_2_video_uart_s1_begintransfer;                       // mm_interconnect_2:video_uart_s1_begintransfer -> video_uart:begintransfer
 	wire         mm_interconnect_2_video_uart_s1_write;                               // mm_interconnect_2:video_uart_s1_write -> video_uart:write_n
 	wire  [15:0] mm_interconnect_2_video_uart_s1_writedata;                           // mm_interconnect_2:video_uart_s1_writedata -> video_uart:writedata
+	wire         mm_interconnect_2_wifi_uart_s1_chipselect;                           // mm_interconnect_2:wifi_uart_s1_chipselect -> wifi_uart:chipselect
+	wire  [15:0] mm_interconnect_2_wifi_uart_s1_readdata;                             // wifi_uart:readdata -> mm_interconnect_2:wifi_uart_s1_readdata
+	wire   [2:0] mm_interconnect_2_wifi_uart_s1_address;                              // mm_interconnect_2:wifi_uart_s1_address -> wifi_uart:address
+	wire         mm_interconnect_2_wifi_uart_s1_read;                                 // mm_interconnect_2:wifi_uart_s1_read -> wifi_uart:read_n
+	wire         mm_interconnect_2_wifi_uart_s1_begintransfer;                        // mm_interconnect_2:wifi_uart_s1_begintransfer -> wifi_uart:begintransfer
+	wire         mm_interconnect_2_wifi_uart_s1_write;                                // mm_interconnect_2:wifi_uart_s1_write -> wifi_uart:write_n
+	wire  [15:0] mm_interconnect_2_wifi_uart_s1_writedata;                            // mm_interconnect_2:wifi_uart_s1_writedata -> wifi_uart:writedata
 	wire         mm_interconnect_2_video_frame_buffer_s2_chipselect;                  // mm_interconnect_2:Video_Frame_Buffer_s2_chipselect -> Video_Frame_Buffer:chipselect2
 	wire  [31:0] mm_interconnect_2_video_frame_buffer_s2_readdata;                    // Video_Frame_Buffer:readdata2 -> mm_interconnect_2:Video_Frame_Buffer_s2_readdata
 	wire  [16:0] mm_interconnect_2_video_frame_buffer_s2_address;                     // mm_interconnect_2:Video_Frame_Buffer_s2_address -> Video_Frame_Buffer:address2
@@ -250,6 +259,7 @@ module cpen391_group5_qsys (
 	wire         irq_mapper_receiver3_irq;                                            // main_timer:irq -> irq_mapper:receiver3_irq
 	wire         irq_mapper_receiver4_irq;                                            // touchscreen_uart:irq -> irq_mapper:receiver4_irq
 	wire         irq_mapper_receiver5_irq;                                            // video_uart:irq -> irq_mapper:receiver5_irq
+	wire         irq_mapper_receiver6_irq;                                            // wifi_uart:irq -> irq_mapper:receiver6_irq
 	wire  [31:0] nios2_d_irq_irq;                                                     // irq_mapper:sender_irq -> nios2:d_irq
 	wire         video_in_scaler_avalon_scaler_source_valid;                          // Video_In_Scaler:stream_out_valid -> avalon_st_adapter:in_0_valid
 	wire  [23:0] video_in_scaler_avalon_scaler_source_data;                           // Video_In_Scaler:stream_out_data -> avalon_st_adapter:in_0_data
@@ -284,7 +294,7 @@ module cpen391_group5_qsys (
 	wire         avalon_st_adapter_002_out_0_ready;                                   // pixel_cluster_0:st_ready -> avalon_st_adapter_002:out_0_ready
 	wire         avalon_st_adapter_002_out_0_startofpacket;                           // avalon_st_adapter_002:out_0_startofpacket -> pixel_cluster_0:st_startofpacket
 	wire         avalon_st_adapter_002_out_0_endofpacket;                             // avalon_st_adapter_002:out_0_endofpacket -> pixel_cluster_0:st_endofpacket
-	wire         rst_controller_reset_out_reset;                                      // rst_controller:reset_out -> [Draw_Buffer:reset, Draw_DMA:reset, Draw_Resampler:reset, Draw_Scaler:reset, Video_Blender:reset, Video_Frame_Buffer:reset, Video_In_CSC:reset, Video_In_Chroma:reset, Video_In_Clipper:reset, Video_In_DMA:reset, Video_In_Decoder:reset, Video_In_Scaler:reset, Video_Out_DMA:reset, Video_Out_FIFO:reset_stream_in, Video_Out_Resampler:reset, Video_Out_Scaler:reset, avalon_st_adapter:in_rst_0_reset, avalon_st_adapter_001:in_rst_0_reset, avalon_st_adapter_002:in_rst_0_reset, graphics_controller_0:reset, irq_mapper:reset, jtag_uart_0:rst_n, led_out_pio:reset_n, main_timer:reset_n, mm_interconnect_0:Video_In_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_1:Draw_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_2:graphics_controller_0_reset_reset_bridge_in_reset_reset, nios2:reset_n, pixel_cluster_0:reset, rst_translator:in_reset, sdram:reset_n, st_splitter_0:reset, switch_in_pio:reset_n, touchscreen_uart:reset_n, video_uart:reset_n]
+	wire         rst_controller_reset_out_reset;                                      // rst_controller:reset_out -> [Draw_Buffer:reset, Draw_DMA:reset, Draw_Resampler:reset, Draw_Scaler:reset, Video_Blender:reset, Video_Frame_Buffer:reset, Video_In_CSC:reset, Video_In_Chroma:reset, Video_In_Clipper:reset, Video_In_DMA:reset, Video_In_Decoder:reset, Video_In_Scaler:reset, Video_Out_DMA:reset, Video_Out_FIFO:reset_stream_in, Video_Out_Resampler:reset, Video_Out_Scaler:reset, avalon_st_adapter:in_rst_0_reset, avalon_st_adapter_001:in_rst_0_reset, avalon_st_adapter_002:in_rst_0_reset, graphics_controller_0:reset, irq_mapper:reset, jtag_uart_0:rst_n, led_out_pio:reset_n, main_timer:reset_n, mm_interconnect_0:Video_In_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_1:Draw_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_2:graphics_controller_0_reset_reset_bridge_in_reset_reset, nios2:reset_n, pixel_cluster_0:reset, rst_translator:in_reset, sdram:reset_n, st_splitter_0:reset, switch_in_pio:reset_n, touchscreen_uart:reset_n, video_uart:reset_n, wifi_uart:reset_n]
 	wire         rst_controller_reset_out_reset_req;                                  // rst_controller:reset_req -> [Draw_Buffer:reset_req, Video_Frame_Buffer:reset_req, nios2:reset_req, rst_translator:reset_req_in]
 	wire         nios2_jtag_debug_module_reset_reset;                                 // nios2:jtag_debug_module_resetrequest -> [rst_controller:reset_in0, rst_controller_001:reset_in0]
 	wire         clocks_reset_source_reset;                                           // clocks:reset_source_reset -> [rst_controller:reset_in1, rst_controller_001:reset_in1]
@@ -697,7 +707,7 @@ module cpen391_group5_qsys (
 	);
 
 	pixel_cluster #(
-		.N_REGS       (7),
+		.N_REGS       (11),
 		.ADDR_BITS    (4),
 		.REG_BITS     (32),
 		.N_COLORS     (3),
@@ -939,6 +949,23 @@ module cpen391_group5_qsys (
 		.irq           (irq_mapper_receiver5_irq)                       //                 irq.irq
 	);
 
+	cpen391_group5_qsys_wifi_uart wifi_uart (
+		.clk           (clocks_sys_clk_clk),                           //                 clk.clk
+		.reset_n       (~rst_controller_reset_out_reset),              //               reset.reset_n
+		.address       (mm_interconnect_2_wifi_uart_s1_address),       //                  s1.address
+		.begintransfer (mm_interconnect_2_wifi_uart_s1_begintransfer), //                    .begintransfer
+		.chipselect    (mm_interconnect_2_wifi_uart_s1_chipselect),    //                    .chipselect
+		.read_n        (~mm_interconnect_2_wifi_uart_s1_read),         //                    .read_n
+		.write_n       (~mm_interconnect_2_wifi_uart_s1_write),        //                    .write_n
+		.writedata     (mm_interconnect_2_wifi_uart_s1_writedata),     //                    .writedata
+		.readdata      (mm_interconnect_2_wifi_uart_s1_readdata),      //                    .readdata
+		.dataavailable (),                                             //                    .dataavailable
+		.readyfordata  (),                                             //                    .readyfordata
+		.rxd           (wifi_rxd),                                     // external_connection.export
+		.txd           (wifi_txd),                                     //                    .export
+		.irq           (irq_mapper_receiver6_irq)                      //                 irq.irq
+	);
+
 	cpen391_group5_qsys_mm_interconnect_0 mm_interconnect_0 (
 		.clocks_sys_clk_clk                             (clocks_sys_clk_clk),                                 //                           clocks_sys_clk.clk
 		.Video_In_DMA_reset_reset_bridge_in_reset_reset (rst_controller_reset_out_reset),                     // Video_In_DMA_reset_reset_bridge_in_reset.reset
@@ -1094,7 +1121,14 @@ module cpen391_group5_qsys (
 		.video_uart_s1_readdata                                  (mm_interconnect_2_video_uart_s1_readdata),                            //                                                  .readdata
 		.video_uart_s1_writedata                                 (mm_interconnect_2_video_uart_s1_writedata),                           //                                                  .writedata
 		.video_uart_s1_begintransfer                             (mm_interconnect_2_video_uart_s1_begintransfer),                       //                                                  .begintransfer
-		.video_uart_s1_chipselect                                (mm_interconnect_2_video_uart_s1_chipselect)                           //                                                  .chipselect
+		.video_uart_s1_chipselect                                (mm_interconnect_2_video_uart_s1_chipselect),                          //                                                  .chipselect
+		.wifi_uart_s1_address                                    (mm_interconnect_2_wifi_uart_s1_address),                              //                                      wifi_uart_s1.address
+		.wifi_uart_s1_write                                      (mm_interconnect_2_wifi_uart_s1_write),                                //                                                  .write
+		.wifi_uart_s1_read                                       (mm_interconnect_2_wifi_uart_s1_read),                                 //                                                  .read
+		.wifi_uart_s1_readdata                                   (mm_interconnect_2_wifi_uart_s1_readdata),                             //                                                  .readdata
+		.wifi_uart_s1_writedata                                  (mm_interconnect_2_wifi_uart_s1_writedata),                            //                                                  .writedata
+		.wifi_uart_s1_begintransfer                              (mm_interconnect_2_wifi_uart_s1_begintransfer),                        //                                                  .begintransfer
+		.wifi_uart_s1_chipselect                                 (mm_interconnect_2_wifi_uart_s1_chipselect)                            //                                                  .chipselect
 	);
 
 	cpen391_group5_qsys_irq_mapper irq_mapper (
@@ -1106,6 +1140,7 @@ module cpen391_group5_qsys (
 		.receiver3_irq (irq_mapper_receiver3_irq),       // receiver3.irq
 		.receiver4_irq (irq_mapper_receiver4_irq),       // receiver4.irq
 		.receiver5_irq (irq_mapper_receiver5_irq),       // receiver5.irq
+		.receiver6_irq (irq_mapper_receiver6_irq),       // receiver6.irq
 		.sender_irq    (nios2_d_irq_irq)                 //    sender.irq
 	);
 

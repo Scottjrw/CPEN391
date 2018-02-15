@@ -50,9 +50,9 @@ module cpen391_group5_qsys_mm_interconnect_2_router_013_default_decode
                DEFAULT_DESTID = 1 
    )
   (output [81 - 78 : 0] default_destination_id,
-   output [15-1 : 0] default_wr_channel,
-   output [15-1 : 0] default_rd_channel,
-   output [15-1 : 0] default_src_channel
+   output [16-1 : 0] default_wr_channel,
+   output [16-1 : 0] default_rd_channel,
+   output [16-1 : 0] default_src_channel
   );
 
   assign default_destination_id = 
@@ -63,7 +63,7 @@ module cpen391_group5_qsys_mm_interconnect_2_router_013_default_decode
       assign default_src_channel = '0;
     end
     else begin : default_channel_assignment
-      assign default_src_channel = 15'b1 << DEFAULT_CHANNEL;
+      assign default_src_channel = 16'b1 << DEFAULT_CHANNEL;
     end
   endgenerate
 
@@ -73,8 +73,8 @@ module cpen391_group5_qsys_mm_interconnect_2_router_013_default_decode
       assign default_rd_channel = '0;
     end
     else begin : default_rw_channel_assignment
-      assign default_wr_channel = 15'b1 << DEFAULT_WR_CHANNEL;
-      assign default_rd_channel = 15'b1 << DEFAULT_RD_CHANNEL;
+      assign default_wr_channel = 16'b1 << DEFAULT_WR_CHANNEL;
+      assign default_rd_channel = 16'b1 << DEFAULT_RD_CHANNEL;
     end
   endgenerate
 
@@ -103,7 +103,7 @@ module cpen391_group5_qsys_mm_interconnect_2_router_013
     // -------------------
     output                          src_valid,
     output reg [95-1    : 0] src_data,
-    output reg [15-1 : 0] src_channel,
+    output reg [16-1 : 0] src_channel,
     output                          src_startofpacket,
     output                          src_endofpacket,
     input                           src_ready
@@ -119,7 +119,7 @@ module cpen391_group5_qsys_mm_interconnect_2_router_013
     localparam PKT_PROTECTION_H = 85;
     localparam PKT_PROTECTION_L = 83;
     localparam ST_DATA_W = 95;
-    localparam ST_CHANNEL_W = 15;
+    localparam ST_CHANNEL_W = 16;
     localparam DECODER_TYPE = 1;
 
     localparam PKT_TRANS_WRITE = 52;
@@ -158,7 +158,7 @@ module cpen391_group5_qsys_mm_interconnect_2_router_013
     assign src_valid         = sink_valid;
     assign src_startofpacket = sink_startofpacket;
     assign src_endofpacket   = sink_endofpacket;
-    wire [15-1 : 0] default_src_channel;
+    wire [16-1 : 0] default_src_channel;
 
 
 
@@ -190,11 +190,11 @@ module cpen391_group5_qsys_mm_interconnect_2_router_013
 
 
         if (destid == 1 ) begin
-            src_channel = 15'b01;
+            src_channel = 16'b01;
         end
 
         if (destid == 2  && read_transaction) begin
-            src_channel = 15'b10;
+            src_channel = 16'b10;
         end
 
 

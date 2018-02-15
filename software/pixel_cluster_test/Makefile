@@ -29,8 +29,8 @@ ALT_LDDEPS :=
 MAKEABLE_LIBRARY_ROOT_DIRS :=
 
 # Generic flags passed to the compiler for different types of input files.
-ALT_CFLAGS :=
-ALT_CXXFLAGS :=
+ALT_CFLAGS := -std=c++11
+ALT_CXXFLAGS := -std=c++11
 ALT_CPPFLAGS :=
 ALT_ASFLAGS :=
 ALT_LDFLAGS :=
@@ -143,7 +143,7 @@ ELF := pixel_cluster_test.elf
 
 # Paths to C, C++, and assembly source files.
 C_SRCS :=
-CXX_SRCS :=
+CXX_SRCS := main.cpp
 ASM_SRCS :=
 
 

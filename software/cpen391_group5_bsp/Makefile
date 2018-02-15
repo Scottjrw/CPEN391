@@ -98,7 +98,7 @@ ACDS_VERSION := 15.0
 
 # This following BUILD_NUMBER comment indicates the build number of the tool 
 # used to generate this makefile. 
-# BUILD_NUMBER: 145
+# BUILD_NUMBER: 153
 
 SETTINGS_FILE := settings.bsp
 SOPC_FILE := ../../cpen391_group5_qsys.sopcinfo

@@ -22,7 +22,7 @@ module pixel_cluster
 input clk, reset;
 
 // Pixel Cluster Regs
-parameter N_REGS = 7;
+parameter N_REGS = 11;
 parameter ADDR_BITS = 4;
 parameter REG_BITS = 32;
 
@@ -229,22 +229,26 @@ localparam Range_Register_Num = 3;
 localparam Max_X_Register_Num = 4;
 localparam Max_Y_Register_Num = 5;
 localparam Max_Count_Register_Num = 6;
+localparam Debug_Register_0_Num = 7;
+localparam Debug_Register_1_Num = 8;
+localparam Debug_Register_2_Num = 9;
+localparam Debug_Register_3_Num = 10;
 
 // Control Register
-assign register_control       = {{(REG_BITS-1){1'b0}}, 1'b1} & regs_write_regs[Control_Register_Num*REG_BITS +: REG_BITS];
+assign register_control       = regs_write_regs[Control_Register_Num*REG_BITS +: REG_BITS];
 assign regs_read_regs[Control_Register_Num*REG_BITS +: REG_BITS] = register_control;
 // Reset clusterer and irq when written to
 assign clusterer_reset = regs_write_trigger[Control_Register_Num];
 assign irq_reset = regs_write_trigger[Control_Register_Num];
 
 // Compare Enable
-assign register_compare_en    = {{(REG_BITS-3){1'b0}}, 3'b1} & regs_write_regs[Compare_En_Register_Num*REG_BITS +: REG_BITS];
+assign register_compare_en    = regs_write_regs[Compare_En_Register_Num*REG_BITS +: REG_BITS];
 assign regs_read_regs[Compare_En_Register_Num*REG_BITS +: REG_BITS] = register_compare_en;
-assign color_filter_compare =   register_compare_en[0 +: 8];
-assign color_filter_less_than = register_compare_en[8 +: 8];
+assign color_filter_compare =   register_compare_en[0 +: N_COLORS];
+assign color_filter_less_than = register_compare_en[8 +: N_COLORS];
 
 // Compare Color
-assign register_compare_color = {{(REG_BITS-24){1'b0}}, 24'b1} & regs_write_regs[Compare_Color_Register_Num*REG_BITS +: REG_BITS];
+assign register_compare_color = regs_write_regs[Compare_Color_Register_Num*REG_BITS +: REG_BITS];
 assign regs_read_regs[Compare_Color_Register_Num*REG_BITS +: REG_BITS] = register_compare_color;
 assign color_filter_b_cmp = register_compare_color[0*COLOR_BITS +: COLOR_BITS];
 assign color_filter_g_cmp = register_compare_color[1*COLOR_BITS +: COLOR_BITS];
@@ -256,17 +260,25 @@ assign regs_read_regs[Range_Register_Num*REG_BITS +: REG_BITS] = register_range;
 assign clusterer_range = register_range[X_Y_BITS-1:0];
 
 // Max X
-assign register_max_x         = {{X_Y_BITS{1'b0}}, clusterer_X_clusters[find_max_max_index]};
+assign register_max_x         = {16'b0, clusterer_X_clusters[X_Y_BITS*find_max_max_index +: X_Y_BITS]};
 assign regs_read_regs[Max_X_Register_Num*REG_BITS +: REG_BITS] = register_max_x;
 
 // Max Y
-assign register_max_y         = {{X_Y_BITS{1'b0}}, clusterer_Y_clusters[find_max_max_index]};
+assign register_max_y         = {16'b0, clusterer_Y_clusters[X_Y_BITS*find_max_max_index +: X_Y_BITS]};
 assign regs_read_regs[Max_Y_Register_Num*REG_BITS +: REG_BITS] = register_max_y;
 
 // Max Count
-assign register_max_count     = {{X_Y_BITS{1'b0}}, clusterer_cluster_counters[find_max_max_index]};
+assign register_max_count     = {16'b0, clusterer_cluster_counters[X_Y_BITS*find_max_max_index +: X_Y_BITS]};
 assign regs_read_regs[Max_Count_Register_Num*REG_BITS +: REG_BITS] = register_max_count;
 
+// Debug 0
+assign regs_read_regs[Debug_Register_0_Num*REG_BITS +: REG_BITS] = find_max_max_index;
+// Debug 1
+assign regs_read_regs[Debug_Register_1_Num*REG_BITS +: REG_BITS] = {color_filter_pixel_valid_out, st_valid, irq_reset, irq_send_irq, find_max_finish_capture};
+// Debug 2
+assign regs_read_regs[Debug_Register_2_Num*REG_BITS +: REG_BITS] = clusterer_cluster_counters[31:0];
+// Debug 3
+assign regs_read_regs[Debug_Register_3_Num*REG_BITS +: REG_BITS] = clusterer_cluster_counters[63:32];
 
 endmodule
 

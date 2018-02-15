@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Tue Feb 13 18:40:21 PST 2018
+ * Generated: Thu Feb 15 03:48:07 PST 2018
  */
 
 /*
@@ -72,6 +72,7 @@ ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG_UART_0, jtag_uart_0);
 ALTERA_AVALON_TIMER_INSTANCE ( MAIN_TIMER, main_timer);
 ALTERA_AVALON_UART_INSTANCE ( TOUCHSCREEN_UART, touchscreen_uart);
 ALTERA_AVALON_UART_INSTANCE ( VIDEO_UART, video_uart);
+ALTERA_AVALON_UART_INSTANCE ( WIFI_UART, wifi_uart);
 
 /*
  * Initialize the interrupt controller devices
@@ -98,4 +99,5 @@ void alt_sys_init( void )
     ALTERA_AVALON_JTAG_UART_INIT ( JTAG_UART_0, jtag_uart_0);
     ALTERA_AVALON_UART_INIT ( TOUCHSCREEN_UART, touchscreen_uart);
     ALTERA_AVALON_UART_INIT ( VIDEO_UART, video_uart);
+    ALTERA_AVALON_UART_INIT ( WIFI_UART, wifi_uart);
 }
