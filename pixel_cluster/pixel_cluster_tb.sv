@@ -223,6 +223,8 @@ logic pixel_valid;
 logic [X_Y_BITS-1:0] pixel_x;
 logic [X_Y_BITS-1:0] pixel_y;
 
+logic pixel_end;
+
 pixel_cluster_avalon_st #(
     .N_COLORS(N_COLORS),
     .COLOR_BITS(COLOR_BITS),
@@ -242,15 +244,14 @@ pixel_cluster_avalon_st #(
     .pixel_stream(pixel_stream),
     .pixel_valid(pixel_valid),
     .pixel_x(pixel_x),
-    .pixel_y(pixel_y)
+    .pixel_y(pixel_y),
+    .pixel_end(pixel_end)
 );
 
 initial forever begin
     clk = 0; #5;
     clk = 1; #5;
 end
-
-parameter NUM_TESTS = 11;
 
 reg [COLOR_BITS*N_COLORS/2-1:0] x, y;
 
@@ -264,6 +265,7 @@ initial begin
     reset = 0;
     #10;
     assert(pixel_valid == 0);
+    assert(pixel_end == 0);
 
     st_startofpacket = 1;
     st_valid = 1;
@@ -279,6 +281,7 @@ initial begin
             assert(pixel_valid == 1);
             assert(pixel_x == x);
             assert(pixel_y == y);
+            assert(pixel_end == 0);
             st_startofpacket = 0;
             st_endofpacket = 0;
         end
@@ -289,12 +292,152 @@ initial begin
 
     #10;
     assert(pixel_valid == 0);
+    assert(pixel_end == 1);
+
+    #10;
+    assert(pixel_end == 0);
+
 
     #50;
 
     $display("All tests finished");
 
     $stop;
+end
+
+endmodule
+
+module pixel_cluster_find_max_tb();
+parameter VALUE_BITS = 16;
+parameter N_VALUES = 4;
+
+logic clk, reset;
+
+logic start;
+logic finish;
+
+logic [VALUE_BITS*N_VALUES-1:0] values;
+logic [$clog2(N_VALUES)-1:0] max_index;
+
+pixel_cluster_find_max
+#(
+    .VALUE_BITS(VALUE_BITS),
+    .N_VALUES(N_VALUES)
+) inst (
+    .clk(clk),
+    .reset(reset),
+    
+    .start(start),
+    .finish(finish),
+
+    .values(values),
+    .max_index(max_index)
+);
+
+initial forever begin
+    clk = 0; #5;
+    clk = 1; #5;
+end
+
+parameter NUM_TESTS = 4;
+int ok = 0;
+
+initial begin
+    reset = 1; start = 0; values = 0;
+    #10;
+
+    reset = 0;
+    #10;
+    
+    start = 1; 
+    #10;
+    start = 0;
+    @(posedge finish) #5;
+    assert(max_index == 0) ok++;
+
+    #10;
+
+    start = 1;
+    values = {16'd1010, 16'd165, 16'd123, 16'd1000};
+    #10;
+    start = 0;
+    @(posedge finish) #5;
+    assert(max_index == 3) ok++;
+
+    #10;
+
+    start = 1;
+    values = {16'd1029, 16'd444, 16'd54, 16'd1029};
+    #10;
+    start = 0;
+    @(posedge finish) #5;
+    assert(max_index == 0) ok++;
+
+    #10;
+
+    start = 1;
+    values = {16'd0, 16'd1, 16'd0, 16'd0};
+    #10;
+    start = 0;
+    @(posedge finish) #5;
+    assert(max_index == 2) ok++;
+    
+    if (ok == NUM_TESTS)
+        $display("All Tests passed");
+    else
+        $display("%d of %d tests passed", ok, NUM_TESTS);
+
+    $stop;
+
+end
+endmodule
+
+module pixel_cluster_delay_tb();
+parameter DELAY = 10;
+
+logic clk, reset;
+
+logic in;
+logic out;
+
+pixel_cluster_delay
+#(
+    .DELAY(DELAY)
+) inst (
+    .clk(clk),
+    .reset(reset),
+
+    .in(in),
+    .out(out)
+);
+
+initial forever begin
+    clk = 0; #5;
+    clk = 1; #5;
+end
+
+initial begin
+    in = 0;
+    reset = 1;
+    #10;
+    reset = 0;
+    #10;
+
+    in = 1;
+    #10;
+    in = 0;
+
+    for (int i = 1; i < DELAY; i++)
+        #10;
+
+    assert(out == 1);
+    #10;
+    assert(out == 0);
+
+    #20;
+
+    $stop;
+
 end
 
 endmodule
