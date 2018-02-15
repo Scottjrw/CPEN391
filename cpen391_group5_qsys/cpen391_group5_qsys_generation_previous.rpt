@@ -1,0 +1,191 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys.qsys --block-symbol-file --output-directory=/home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys --family="Cyclone V" --part=5CSEMA5F31C6
+Progress: Loading repo/cpen391_group5_qsys.qsys
+Progress: Reading input file
+Progress: Adding Draw_Buffer [altera_avalon_onchip_memory2 15.0]
+Progress: Parameterizing module Draw_Buffer
+Progress: Adding Draw_DMA [altera_up_avalon_video_dma_controller 15.0]
+Progress: Parameterizing module Draw_DMA
+Progress: Adding Draw_Resampler [altera_up_avalon_video_rgb_resampler 15.0]
+Progress: Parameterizing module Draw_Resampler
+Progress: Adding Draw_Scaler [altera_up_avalon_video_scaler 15.0]
+Progress: Parameterizing module Draw_Scaler
+Progress: Adding Video_Blender [altera_up_avalon_video_alpha_blender 15.0]
+Progress: Parameterizing module Video_Blender
+Progress: Adding Video_Clock [altera_up_avalon_video_pll 15.0]
+Progress: Parameterizing module Video_Clock
+Progress: Adding Video_Frame_Buffer [altera_avalon_onchip_memory2 15.0]
+Progress: Parameterizing module Video_Frame_Buffer
+Progress: Adding Video_In_CSC [altera_up_avalon_video_csc 15.0]
+Progress: Parameterizing module Video_In_CSC
+Progress: Adding Video_In_Chroma [altera_up_avalon_video_chroma_resampler 15.0]
+Progress: Parameterizing module Video_In_Chroma
+Progress: Adding Video_In_Clipper [altera_up_avalon_video_clipper 15.0]
+Progress: Parameterizing module Video_In_Clipper
+Progress: Adding Video_In_DMA [altera_up_avalon_video_dma_controller 15.0]
+Progress: Parameterizing module Video_In_DMA
+Progress: Adding Video_In_Decoder [altera_up_avalon_video_decoder 15.0]
+Progress: Parameterizing module Video_In_Decoder
+Progress: Adding Video_In_Scaler [altera_up_avalon_video_scaler 15.0]
+Progress: Parameterizing module Video_In_Scaler
+Progress: Adding Video_Out_DMA [altera_up_avalon_video_dma_controller 15.0]
+Progress: Parameterizing module Video_Out_DMA
+Progress: Adding Video_Out_FIFO [altera_up_avalon_video_dual_clock_buffer 15.0]
+Progress: Parameterizing module Video_Out_FIFO
+Progress: Adding Video_Out_Resampler [altera_up_avalon_video_rgb_resampler 15.0]
+Progress: Parameterizing module Video_Out_Resampler
+Progress: Adding Video_Out_Scaler [altera_up_avalon_video_scaler 15.0]
+Progress: Parameterizing module Video_Out_Scaler
+Progress: Adding Video_Out_VGA_CTRL [altera_up_avalon_video_vga_controller 15.0]
+Progress: Parameterizing module Video_Out_VGA_CTRL
+Progress: Adding clocks [altera_up_avalon_sys_sdram_pll 15.0]
+Progress: Parameterizing module clocks
+Progress: Adding graphics_controller_0 [graphics_controller 1.0]
+Progress: Parameterizing module graphics_controller_0
+Progress: Adding jtag_uart_0 [altera_avalon_jtag_uart 15.0]
+Progress: Parameterizing module jtag_uart_0
+Progress: Adding led_out_pio [altera_avalon_pio 15.0]
+Progress: Parameterizing module led_out_pio
+Progress: Adding main_timer [altera_avalon_timer 15.0]
+Progress: Parameterizing module main_timer
+Progress: Adding nios2 [altera_nios2_qsys 15.0]
+Progress: Parameterizing module nios2
+Progress: Adding pixel_cluster_0 [pixel_cluster 1.0]
+Progress: Parameterizing module pixel_cluster_0
+Progress: Adding sdram [altera_avalon_new_sdram_controller 15.0]
+Progress: Parameterizing module sdram
+Progress: Adding st_splitter_0 [altera_avalon_st_splitter 15.0]
+Progress: Parameterizing module st_splitter_0
+Progress: Adding switch_in_pio [altera_avalon_pio 15.0]
+Progress: Parameterizing module switch_in_pio
+Progress: Adding touchscreen_uart [altera_avalon_uart 15.0]
+Progress: Parameterizing module touchscreen_uart
+Progress: Adding video_uart [altera_avalon_uart 15.0]
+Progress: Parameterizing module video_uart
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: cpen391_group5_qsys.Draw_Resampler: RGB Resampling: 4 (bits) x 4 (planes) -> 10 (bits) x 4 (planes)
+Info: cpen391_group5_qsys.Draw_Scaler: Change in Resolution: 160 x 120 -> 640 x 480
+Info: cpen391_group5_qsys.Video_In_CSC: Colour Space Conversion: 8 (bits) x 3 (planes) (444 YCrCb) -> 8 (bits) x 3 (planes) (24-bit RGB)
+Info: cpen391_group5_qsys.Video_In_Chroma: Chroma Resampling: 8 (bits) x 2 (planes) -> 8 (bits) x 3 (planes)
+Info: cpen391_group5_qsys.Video_In_Clipper: Change in Resolution: 720 x 244 -> 640 x 240
+Info: cpen391_group5_qsys.Video_In_Decoder: Video In Stream: Format: 720 x 244 (Odd Frames) or 720 x 243 (Even Frames) with Colour: 8 (bits) x 2 (planes) (YCrCb 4:2:2)
+Info: cpen391_group5_qsys.Video_In_Scaler: Change in Resolution: 640 x 240 -> 320 x 240
+Info: cpen391_group5_qsys.Video_Out_Resampler: RGB Resampling: 8 (bits) x 3 (planes) -> 10 (bits) x 3 (planes)
+Info: cpen391_group5_qsys.Video_Out_Scaler: Change in Resolution: 320 x 240 -> 640 x 480
+Info: cpen391_group5_qsys.Video_Out_VGA_CTRL: Video Output Stream: Format: 640 x 480 with Color: 10 (bits) x 3 (planes) converted to 8 (bits) per color plane
+Warning: cpen391_group5_qsys.nios2: Nios II Classic cores are now superseded by improved Gen 2 cores.
+Info: cpen391_group5_qsys.switch_in_pio: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: cpen391_group5_qsys.Video_In_Scaler.avalon_scaler_source/st_splitter_0.in: The sink has a empty signal of 2 bits, but the source does not. Avalon-ST Adapter will be inserted.
+Info: cpen391_group5_qsys.st_splitter_0.out0/Video_In_DMA.avalon_dma_sink: The source has a empty signal of 2 bits, but the sink does not. Avalon-ST Adapter will be inserted.
+Info: cpen391_group5_qsys.st_splitter_0.out1/pixel_cluster_0.video_in: The source has a empty signal of 2 bits, but the sink does not. Avalon-ST Adapter will be inserted.
+Error: cpen391_group5_qsys.nios2.d_irq/pixel_cluster_0.frame_complete_irq: Missing connection end (try "Remove Dangling Connections")
+Warning: cpen391_group5_qsys.pixel_cluster_0: Interrupt sender pixel_cluster_0.frame_complete is not connected to an interrupt receiver
+Info: ip-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate /home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys.qsys --synthesis=VERILOG --output-directory=/home/guoj/Documents/Year-3/CPEN-391/repo/cpen391_group5_qsys/synthesis --family="Cyclone V" --part=5CSEMA5F31C6
+Progress: Loading repo/cpen391_group5_qsys.qsys
+Progress: Reading input file
+Progress: Adding Draw_Buffer [altera_avalon_onchip_memory2 15.0]
+Progress: Parameterizing module Draw_Buffer
+Progress: Adding Draw_DMA [altera_up_avalon_video_dma_controller 15.0]
+Progress: Parameterizing module Draw_DMA
+Progress: Adding Draw_Resampler [altera_up_avalon_video_rgb_resampler 15.0]
+Progress: Parameterizing module Draw_Resampler
+Progress: Adding Draw_Scaler [altera_up_avalon_video_scaler 15.0]
+Progress: Parameterizing module Draw_Scaler
+Progress: Adding Video_Blender [altera_up_avalon_video_alpha_blender 15.0]
+Progress: Parameterizing module Video_Blender
+Progress: Adding Video_Clock [altera_up_avalon_video_pll 15.0]
+Progress: Parameterizing module Video_Clock
+Progress: Adding Video_Frame_Buffer [altera_avalon_onchip_memory2 15.0]
+Progress: Parameterizing module Video_Frame_Buffer
+Progress: Adding Video_In_CSC [altera_up_avalon_video_csc 15.0]
+Progress: Parameterizing module Video_In_CSC
+Progress: Adding Video_In_Chroma [altera_up_avalon_video_chroma_resampler 15.0]
+Progress: Parameterizing module Video_In_Chroma
+Progress: Adding Video_In_Clipper [altera_up_avalon_video_clipper 15.0]
+Progress: Parameterizing module Video_In_Clipper
+Progress: Adding Video_In_DMA [altera_up_avalon_video_dma_controller 15.0]
+Progress: Parameterizing module Video_In_DMA
+Progress: Adding Video_In_Decoder [altera_up_avalon_video_decoder 15.0]
+Progress: Parameterizing module Video_In_Decoder
+Progress: Adding Video_In_Scaler [altera_up_avalon_video_scaler 15.0]
+Progress: Parameterizing module Video_In_Scaler
+Progress: Adding Video_Out_DMA [altera_up_avalon_video_dma_controller 15.0]
+Progress: Parameterizing module Video_Out_DMA
+Progress: Adding Video_Out_FIFO [altera_up_avalon_video_dual_clock_buffer 15.0]
+Progress: Parameterizing module Video_Out_FIFO
+Progress: Adding Video_Out_Resampler [altera_up_avalon_video_rgb_resampler 15.0]
+Progress: Parameterizing module Video_Out_Resampler
+Progress: Adding Video_Out_Scaler [altera_up_avalon_video_scaler 15.0]
+Progress: Parameterizing module Video_Out_Scaler
+Progress: Adding Video_Out_VGA_CTRL [altera_up_avalon_video_vga_controller 15.0]
+Progress: Parameterizing module Video_Out_VGA_CTRL
+Progress: Adding clocks [altera_up_avalon_sys_sdram_pll 15.0]
+Progress: Parameterizing module clocks
+Progress: Adding graphics_controller_0 [graphics_controller 1.0]
+Progress: Parameterizing module graphics_controller_0
+Progress: Adding jtag_uart_0 [altera_avalon_jtag_uart 15.0]
+Progress: Parameterizing module jtag_uart_0
+Progress: Adding led_out_pio [altera_avalon_pio 15.0]
+Progress: Parameterizing module led_out_pio
+Progress: Adding main_timer [altera_avalon_timer 15.0]
+Progress: Parameterizing module main_timer
+Progress: Adding nios2 [altera_nios2_qsys 15.0]
+Progress: Parameterizing module nios2
+Progress: Adding pixel_cluster_0 [pixel_cluster 1.0]
+Progress: Parameterizing module pixel_cluster_0
+Progress: Adding sdram [altera_avalon_new_sdram_controller 15.0]
+Progress: Parameterizing module sdram
+Progress: Adding st_splitter_0 [altera_avalon_st_splitter 15.0]
+Progress: Parameterizing module st_splitter_0
+Progress: Adding switch_in_pio [altera_avalon_pio 15.0]
+Progress: Parameterizing module switch_in_pio
+Progress: Adding touchscreen_uart [altera_avalon_uart 15.0]
+Progress: Parameterizing module touchscreen_uart
+Progress: Adding video_uart [altera_avalon_uart 15.0]
+Progress: Parameterizing module video_uart
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: cpen391_group5_qsys.Draw_Resampler: RGB Resampling: 4 (bits) x 4 (planes) -> 10 (bits) x 4 (planes)
+Info: cpen391_group5_qsys.Draw_Scaler: Change in Resolution: 160 x 120 -> 640 x 480
+Info: cpen391_group5_qsys.Video_In_CSC: Colour Space Conversion: 8 (bits) x 3 (planes) (444 YCrCb) -> 8 (bits) x 3 (planes) (24-bit RGB)
+Info: cpen391_group5_qsys.Video_In_Chroma: Chroma Resampling: 8 (bits) x 2 (planes) -> 8 (bits) x 3 (planes)
+Info: cpen391_group5_qsys.Video_In_Clipper: Change in Resolution: 720 x 244 -> 640 x 240
+Info: cpen391_group5_qsys.Video_In_Decoder: Video In Stream: Format: 720 x 244 (Odd Frames) or 720 x 243 (Even Frames) with Colour: 8 (bits) x 2 (planes) (YCrCb 4:2:2)
+Info: cpen391_group5_qsys.Video_In_Scaler: Change in Resolution: 640 x 240 -> 320 x 240
+Info: cpen391_group5_qsys.Video_Out_Resampler: RGB Resampling: 8 (bits) x 3 (planes) -> 10 (bits) x 3 (planes)
+Info: cpen391_group5_qsys.Video_Out_Scaler: Change in Resolution: 320 x 240 -> 640 x 480
+Info: cpen391_group5_qsys.Video_Out_VGA_CTRL: Video Output Stream: Format: 640 x 480 with Color: 10 (bits) x 3 (planes) converted to 8 (bits) per color plane
+Warning: cpen391_group5_qsys.nios2: Nios II Classic cores are now superseded by improved Gen 2 cores.
+Info: cpen391_group5_qsys.switch_in_pio: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: cpen391_group5_qsys.Video_In_Scaler.avalon_scaler_source/st_splitter_0.in: The sink has a empty signal of 2 bits, but the source does not. Avalon-ST Adapter will be inserted.
+Info: cpen391_group5_qsys.st_splitter_0.out0/Video_In_DMA.avalon_dma_sink: The source has a empty signal of 2 bits, but the sink does not. Avalon-ST Adapter will be inserted.
+Info: cpen391_group5_qsys.st_splitter_0.out1/pixel_cluster_0.video_in: The source has a empty signal of 2 bits, but the sink does not. Avalon-ST Adapter will be inserted.
+Error: cpen391_group5_qsys.nios2.d_irq/pixel_cluster_0.frame_complete_irq: Missing connection end (try "Remove Dangling Connections")
+Warning: cpen391_group5_qsys.pixel_cluster_0: Interrupt sender pixel_cluster_0.frame_complete is not connected to an interrupt receiver
+Info: cpen391_group5_qsys: Generating cpen391_group5_qsys "cpen391_group5_qsys" for QUARTUS_SYNTH
+Info: Interconnect is inserted between master Draw_DMA.avalon_dma_master and slave Draw_Buffer.s2 because the master has address signal 32 bit wide, but the slave is 14 bit wide.
+Info: Interconnect is inserted between master Draw_DMA.avalon_dma_master and slave Draw_Buffer.s2 because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master Draw_DMA.avalon_dma_master and slave Draw_Buffer.s2 because the master has lock signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master Draw_DMA.avalon_dma_master and slave Draw_Buffer.s2 because the master has read signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master Draw_DMA.avalon_dma_master and slave Draw_Buffer.s2 because the master has readdata signal 16 bit wide, but the slave is 32 bit wide.
+Info: Interconnect is inserted between master Draw_DMA.avalon_dma_master and slave Draw_Buffer.s2 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Warning: pixel_cluster_0.frame_complete_irq: Cannot connect reset for irq_synchronizer.receiver
+Info: avalon_st_adapter: Inserting data_format_adapter: data_format_adapter_0
+Info: avalon_st_adapter_001: Inserting data_format_adapter: data_format_adapter_0
+Warning: avalon_st_adapter_001.data_format_adapter_0: The symbols per beat on input interface(3) and the output interface(3) match,  but the input interface is using the empty signal, while the output interface is not using the empty signal.  Empty signal data may be lost between the input and the output interface (across this adapter).
+Info: avalon_st_adapter_002: Inserting data_format_adapter: data_format_adapter_0
+Warning: avalon_st_adapter_002.data_format_adapter_0: The symbols per beat on input interface(3) and the output interface(3) match,  but the input interface is using the empty signal, while the output interface is not using the empty signal.  Empty signal data may be lost between the input and the output interface (across this adapter).
+Warning: cpen391_group5_qsys: "No matching role found for touchscreen_uart:s1:dataavailable (dataavailable)"
+Warning: cpen391_group5_qsys: "No matching role found for touchscreen_uart:s1:readyfordata (readyfordata)"
+Warning: cpen391_group5_qsys: "No matching role found for video_uart:s1:dataavailable (dataavailable)"
+Warning: cpen391_group5_qsys: "No matching role found for video_uart:s1:readyfordata (readyfordata)"
+Error: Internal error: (irq_mapper.receiver0.receiver0_irq/irq => irq_synchronizer.sender.sender_irq/irq) Internal error: STD_LOGIC_VECTOR: Zero or negative width types not supported, it was 0

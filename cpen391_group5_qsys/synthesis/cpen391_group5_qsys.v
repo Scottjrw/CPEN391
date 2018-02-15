@@ -89,11 +89,6 @@ module cpen391_group5_qsys (
 	wire         draw_resampler_avalon_rgb_source_ready;                              // Video_Blender:foreground_ready -> Draw_Resampler:stream_out_ready
 	wire         draw_resampler_avalon_rgb_source_startofpacket;                      // Draw_Resampler:stream_out_startofpacket -> Video_Blender:foreground_startofpacket
 	wire         draw_resampler_avalon_rgb_source_endofpacket;                        // Draw_Resampler:stream_out_endofpacket -> Video_Blender:foreground_endofpacket
-	wire         video_in_scaler_avalon_scaler_source_valid;                          // Video_In_Scaler:stream_out_valid -> Video_In_DMA:stream_valid
-	wire  [23:0] video_in_scaler_avalon_scaler_source_data;                           // Video_In_Scaler:stream_out_data -> Video_In_DMA:stream_data
-	wire         video_in_scaler_avalon_scaler_source_ready;                          // Video_In_DMA:stream_ready -> Video_In_Scaler:stream_out_ready
-	wire         video_in_scaler_avalon_scaler_source_startofpacket;                  // Video_In_Scaler:stream_out_startofpacket -> Video_In_DMA:stream_startofpacket
-	wire         video_in_scaler_avalon_scaler_source_endofpacket;                    // Video_In_Scaler:stream_out_endofpacket -> Video_In_DMA:stream_endofpacket
 	wire         video_out_scaler_avalon_scaler_source_valid;                         // Video_Out_Scaler:stream_out_valid -> Video_Out_Resampler:stream_in_valid
 	wire  [23:0] video_out_scaler_avalon_scaler_source_data;                          // Video_Out_Scaler:stream_out_data -> Video_Out_Resampler:stream_in_data
 	wire         video_out_scaler_avalon_scaler_source_ready;                         // Video_Out_Resampler:stream_in_ready -> Video_Out_Scaler:stream_out_ready
@@ -104,7 +99,7 @@ module cpen391_group5_qsys (
 	wire         draw_scaler_avalon_scaler_source_ready;                              // Draw_Resampler:stream_in_ready -> Draw_Scaler:stream_out_ready
 	wire         draw_scaler_avalon_scaler_source_startofpacket;                      // Draw_Scaler:stream_out_startofpacket -> Draw_Resampler:stream_in_startofpacket
 	wire         draw_scaler_avalon_scaler_source_endofpacket;                        // Draw_Scaler:stream_out_endofpacket -> Draw_Resampler:stream_in_endofpacket
-	wire         clocks_sys_clk_clk;                                                  // clocks:sys_clk_clk -> [Draw_Buffer:clk, Draw_DMA:clk, Draw_Resampler:clk, Draw_Scaler:clk, Video_Blender:clk, Video_Clock:ref_clk_clk, Video_Frame_Buffer:clk, Video_In_CSC:clk, Video_In_Chroma:clk, Video_In_Clipper:clk, Video_In_DMA:clk, Video_In_Decoder:clk, Video_In_Scaler:clk, Video_Out_DMA:clk, Video_Out_FIFO:clk_stream_in, Video_Out_Resampler:clk, Video_Out_Scaler:clk, graphics_controller_0:clk, irq_mapper:clk, jtag_uart_0:clk, led_out_pio:clk, main_timer:clk, mm_interconnect_0:clocks_sys_clk_clk, mm_interconnect_1:clocks_sys_clk_clk, mm_interconnect_2:clocks_sys_clk_clk, nios2:clk, rst_controller:clk, sdram:clk, switch_in_pio:clk, touchscreen_uart:clk, video_uart:clk]
+	wire         clocks_sys_clk_clk;                                                  // clocks:sys_clk_clk -> [Draw_Buffer:clk, Draw_DMA:clk, Draw_Resampler:clk, Draw_Scaler:clk, Video_Blender:clk, Video_Clock:ref_clk_clk, Video_Frame_Buffer:clk, Video_In_CSC:clk, Video_In_Chroma:clk, Video_In_Clipper:clk, Video_In_DMA:clk, Video_In_Decoder:clk, Video_In_Scaler:clk, Video_Out_DMA:clk, Video_Out_FIFO:clk_stream_in, Video_Out_Resampler:clk, Video_Out_Scaler:clk, avalon_st_adapter:in_clk_0_clk, avalon_st_adapter_001:in_clk_0_clk, avalon_st_adapter_002:in_clk_0_clk, graphics_controller_0:clk, irq_mapper:clk, jtag_uart_0:clk, led_out_pio:clk, main_timer:clk, mm_interconnect_0:clocks_sys_clk_clk, mm_interconnect_1:clocks_sys_clk_clk, mm_interconnect_2:clocks_sys_clk_clk, nios2:clk, pixel_cluster_0:clk, rst_controller:clk, sdram:clk, st_splitter_0:clk, switch_in_pio:clk, touchscreen_uart:clk, video_uart:clk]
 	wire         video_clock_vga_clk_clk;                                             // Video_Clock:vga_clk_clk -> [Video_Out_FIFO:clk_stream_out, Video_Out_VGA_CTRL:clk, rst_controller_002:clk]
 	wire         video_in_dma_avalon_dma_master_waitrequest;                          // mm_interconnect_0:Video_In_DMA_avalon_dma_master_waitrequest -> Video_In_DMA:master_waitrequest
 	wire  [31:0] video_in_dma_avalon_dma_master_address;                              // Video_In_DMA:master_address -> mm_interconnect_0:Video_In_DMA_avalon_dma_master_address
@@ -201,6 +196,12 @@ module cpen391_group5_qsys (
 	wire         mm_interconnect_2_graphics_controller_0_mm_read;                     // mm_interconnect_2:graphics_controller_0_mm_read -> graphics_controller_0:mm_read
 	wire         mm_interconnect_2_graphics_controller_0_mm_write;                    // mm_interconnect_2:graphics_controller_0_mm_write -> graphics_controller_0:mm_write
 	wire  [31:0] mm_interconnect_2_graphics_controller_0_mm_writedata;                // mm_interconnect_2:graphics_controller_0_mm_writedata -> graphics_controller_0:mm_writedata
+	wire  [31:0] mm_interconnect_2_pixel_cluster_0_mm_readdata;                       // pixel_cluster_0:mm_readdata -> mm_interconnect_2:pixel_cluster_0_mm_readdata
+	wire   [3:0] mm_interconnect_2_pixel_cluster_0_mm_address;                        // mm_interconnect_2:pixel_cluster_0_mm_address -> pixel_cluster_0:mm_address
+	wire         mm_interconnect_2_pixel_cluster_0_mm_read;                           // mm_interconnect_2:pixel_cluster_0_mm_read -> pixel_cluster_0:mm_read
+	wire   [3:0] mm_interconnect_2_pixel_cluster_0_mm_byteenable;                     // mm_interconnect_2:pixel_cluster_0_mm_byteenable -> pixel_cluster_0:mm_byteenable
+	wire         mm_interconnect_2_pixel_cluster_0_mm_write;                          // mm_interconnect_2:pixel_cluster_0_mm_write -> pixel_cluster_0:mm_write
+	wire  [31:0] mm_interconnect_2_pixel_cluster_0_mm_writedata;                      // mm_interconnect_2:pixel_cluster_0_mm_writedata -> pixel_cluster_0:mm_writedata
 	wire         mm_interconnect_2_led_out_pio_s1_chipselect;                         // mm_interconnect_2:led_out_pio_s1_chipselect -> led_out_pio:chipselect
 	wire  [31:0] mm_interconnect_2_led_out_pio_s1_readdata;                           // led_out_pio:readdata -> mm_interconnect_2:led_out_pio_s1_readdata
 	wire   [1:0] mm_interconnect_2_led_out_pio_s1_address;                            // mm_interconnect_2:led_out_pio_s1_address -> led_out_pio:address
@@ -243,13 +244,47 @@ module cpen391_group5_qsys (
 	wire         mm_interconnect_2_video_frame_buffer_s2_write;                       // mm_interconnect_2:Video_Frame_Buffer_s2_write -> Video_Frame_Buffer:write2
 	wire  [31:0] mm_interconnect_2_video_frame_buffer_s2_writedata;                   // mm_interconnect_2:Video_Frame_Buffer_s2_writedata -> Video_Frame_Buffer:writedata2
 	wire         mm_interconnect_2_video_frame_buffer_s2_clken;                       // mm_interconnect_2:Video_Frame_Buffer_s2_clken -> Video_Frame_Buffer:clken2
-	wire         irq_mapper_receiver0_irq;                                            // graphics_controller_0:irq -> irq_mapper:receiver0_irq
-	wire         irq_mapper_receiver1_irq;                                            // jtag_uart_0:av_irq -> irq_mapper:receiver1_irq
-	wire         irq_mapper_receiver2_irq;                                            // main_timer:irq -> irq_mapper:receiver2_irq
-	wire         irq_mapper_receiver3_irq;                                            // touchscreen_uart:irq -> irq_mapper:receiver3_irq
-	wire         irq_mapper_receiver4_irq;                                            // video_uart:irq -> irq_mapper:receiver4_irq
+	wire         irq_mapper_receiver0_irq;                                            // pixel_cluster_0:irq_send_irq -> irq_mapper:receiver0_irq
+	wire         irq_mapper_receiver1_irq;                                            // graphics_controller_0:irq -> irq_mapper:receiver1_irq
+	wire         irq_mapper_receiver2_irq;                                            // jtag_uart_0:av_irq -> irq_mapper:receiver2_irq
+	wire         irq_mapper_receiver3_irq;                                            // main_timer:irq -> irq_mapper:receiver3_irq
+	wire         irq_mapper_receiver4_irq;                                            // touchscreen_uart:irq -> irq_mapper:receiver4_irq
+	wire         irq_mapper_receiver5_irq;                                            // video_uart:irq -> irq_mapper:receiver5_irq
 	wire  [31:0] nios2_d_irq_irq;                                                     // irq_mapper:sender_irq -> nios2:d_irq
-	wire         rst_controller_reset_out_reset;                                      // rst_controller:reset_out -> [Draw_Buffer:reset, Draw_DMA:reset, Draw_Resampler:reset, Draw_Scaler:reset, Video_Blender:reset, Video_Frame_Buffer:reset, Video_In_CSC:reset, Video_In_Chroma:reset, Video_In_Clipper:reset, Video_In_DMA:reset, Video_In_Decoder:reset, Video_In_Scaler:reset, Video_Out_DMA:reset, Video_Out_FIFO:reset_stream_in, Video_Out_Resampler:reset, Video_Out_Scaler:reset, graphics_controller_0:reset, irq_mapper:reset, jtag_uart_0:rst_n, led_out_pio:reset_n, main_timer:reset_n, mm_interconnect_0:Video_In_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_1:Draw_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_2:graphics_controller_0_reset_reset_bridge_in_reset_reset, nios2:reset_n, rst_translator:in_reset, sdram:reset_n, switch_in_pio:reset_n, touchscreen_uart:reset_n, video_uart:reset_n]
+	wire         video_in_scaler_avalon_scaler_source_valid;                          // Video_In_Scaler:stream_out_valid -> avalon_st_adapter:in_0_valid
+	wire  [23:0] video_in_scaler_avalon_scaler_source_data;                           // Video_In_Scaler:stream_out_data -> avalon_st_adapter:in_0_data
+	wire         video_in_scaler_avalon_scaler_source_ready;                          // avalon_st_adapter:in_0_ready -> Video_In_Scaler:stream_out_ready
+	wire         video_in_scaler_avalon_scaler_source_startofpacket;                  // Video_In_Scaler:stream_out_startofpacket -> avalon_st_adapter:in_0_startofpacket
+	wire         video_in_scaler_avalon_scaler_source_endofpacket;                    // Video_In_Scaler:stream_out_endofpacket -> avalon_st_adapter:in_0_endofpacket
+	wire         avalon_st_adapter_out_0_valid;                                       // avalon_st_adapter:out_0_valid -> st_splitter_0:in0_valid
+	wire  [23:0] avalon_st_adapter_out_0_data;                                        // avalon_st_adapter:out_0_data -> st_splitter_0:in0_data
+	wire         avalon_st_adapter_out_0_ready;                                       // st_splitter_0:in0_ready -> avalon_st_adapter:out_0_ready
+	wire         avalon_st_adapter_out_0_startofpacket;                               // avalon_st_adapter:out_0_startofpacket -> st_splitter_0:in0_startofpacket
+	wire         avalon_st_adapter_out_0_endofpacket;                                 // avalon_st_adapter:out_0_endofpacket -> st_splitter_0:in0_endofpacket
+	wire   [1:0] avalon_st_adapter_out_0_empty;                                       // avalon_st_adapter:out_0_empty -> st_splitter_0:in0_empty
+	wire         st_splitter_0_out0_valid;                                            // st_splitter_0:out0_valid -> avalon_st_adapter_001:in_0_valid
+	wire  [23:0] st_splitter_0_out0_data;                                             // st_splitter_0:out0_data -> avalon_st_adapter_001:in_0_data
+	wire         st_splitter_0_out0_ready;                                            // avalon_st_adapter_001:in_0_ready -> st_splitter_0:out0_ready
+	wire         st_splitter_0_out0_startofpacket;                                    // st_splitter_0:out0_startofpacket -> avalon_st_adapter_001:in_0_startofpacket
+	wire         st_splitter_0_out0_endofpacket;                                      // st_splitter_0:out0_endofpacket -> avalon_st_adapter_001:in_0_endofpacket
+	wire   [1:0] st_splitter_0_out0_empty;                                            // st_splitter_0:out0_empty -> avalon_st_adapter_001:in_0_empty
+	wire         avalon_st_adapter_001_out_0_valid;                                   // avalon_st_adapter_001:out_0_valid -> Video_In_DMA:stream_valid
+	wire  [23:0] avalon_st_adapter_001_out_0_data;                                    // avalon_st_adapter_001:out_0_data -> Video_In_DMA:stream_data
+	wire         avalon_st_adapter_001_out_0_ready;                                   // Video_In_DMA:stream_ready -> avalon_st_adapter_001:out_0_ready
+	wire         avalon_st_adapter_001_out_0_startofpacket;                           // avalon_st_adapter_001:out_0_startofpacket -> Video_In_DMA:stream_startofpacket
+	wire         avalon_st_adapter_001_out_0_endofpacket;                             // avalon_st_adapter_001:out_0_endofpacket -> Video_In_DMA:stream_endofpacket
+	wire         st_splitter_0_out1_valid;                                            // st_splitter_0:out1_valid -> avalon_st_adapter_002:in_0_valid
+	wire  [23:0] st_splitter_0_out1_data;                                             // st_splitter_0:out1_data -> avalon_st_adapter_002:in_0_data
+	wire         st_splitter_0_out1_ready;                                            // avalon_st_adapter_002:in_0_ready -> st_splitter_0:out1_ready
+	wire         st_splitter_0_out1_startofpacket;                                    // st_splitter_0:out1_startofpacket -> avalon_st_adapter_002:in_0_startofpacket
+	wire         st_splitter_0_out1_endofpacket;                                      // st_splitter_0:out1_endofpacket -> avalon_st_adapter_002:in_0_endofpacket
+	wire   [1:0] st_splitter_0_out1_empty;                                            // st_splitter_0:out1_empty -> avalon_st_adapter_002:in_0_empty
+	wire         avalon_st_adapter_002_out_0_valid;                                   // avalon_st_adapter_002:out_0_valid -> pixel_cluster_0:st_valid
+	wire  [23:0] avalon_st_adapter_002_out_0_data;                                    // avalon_st_adapter_002:out_0_data -> pixel_cluster_0:st_data
+	wire         avalon_st_adapter_002_out_0_ready;                                   // pixel_cluster_0:st_ready -> avalon_st_adapter_002:out_0_ready
+	wire         avalon_st_adapter_002_out_0_startofpacket;                           // avalon_st_adapter_002:out_0_startofpacket -> pixel_cluster_0:st_startofpacket
+	wire         avalon_st_adapter_002_out_0_endofpacket;                             // avalon_st_adapter_002:out_0_endofpacket -> pixel_cluster_0:st_endofpacket
+	wire         rst_controller_reset_out_reset;                                      // rst_controller:reset_out -> [Draw_Buffer:reset, Draw_DMA:reset, Draw_Resampler:reset, Draw_Scaler:reset, Video_Blender:reset, Video_Frame_Buffer:reset, Video_In_CSC:reset, Video_In_Chroma:reset, Video_In_Clipper:reset, Video_In_DMA:reset, Video_In_Decoder:reset, Video_In_Scaler:reset, Video_Out_DMA:reset, Video_Out_FIFO:reset_stream_in, Video_Out_Resampler:reset, Video_Out_Scaler:reset, avalon_st_adapter:in_rst_0_reset, avalon_st_adapter_001:in_rst_0_reset, avalon_st_adapter_002:in_rst_0_reset, graphics_controller_0:reset, irq_mapper:reset, jtag_uart_0:rst_n, led_out_pio:reset_n, main_timer:reset_n, mm_interconnect_0:Video_In_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_1:Draw_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_2:graphics_controller_0_reset_reset_bridge_in_reset_reset, nios2:reset_n, pixel_cluster_0:reset, rst_translator:in_reset, sdram:reset_n, st_splitter_0:reset, switch_in_pio:reset_n, touchscreen_uart:reset_n, video_uart:reset_n]
 	wire         rst_controller_reset_out_reset_req;                                  // rst_controller:reset_req -> [Draw_Buffer:reset_req, Video_Frame_Buffer:reset_req, nios2:reset_req, rst_translator:reset_req_in]
 	wire         nios2_jtag_debug_module_reset_reset;                                 // nios2:jtag_debug_module_resetrequest -> [rst_controller:reset_in0, rst_controller_001:reset_in0]
 	wire         clocks_reset_source_reset;                                           // clocks:reset_source_reset -> [rst_controller:reset_in1, rst_controller_001:reset_in1]
@@ -424,11 +459,11 @@ module cpen391_group5_qsys (
 	cpen391_group5_qsys_Video_In_DMA video_in_dma (
 		.clk                  (clocks_sys_clk_clk),                                                 //                      clk.clk
 		.reset                (rst_controller_reset_out_reset),                                     //                    reset.reset
-		.stream_data          (video_in_scaler_avalon_scaler_source_data),                          //          avalon_dma_sink.data
-		.stream_startofpacket (video_in_scaler_avalon_scaler_source_startofpacket),                 //                         .startofpacket
-		.stream_endofpacket   (video_in_scaler_avalon_scaler_source_endofpacket),                   //                         .endofpacket
-		.stream_valid         (video_in_scaler_avalon_scaler_source_valid),                         //                         .valid
-		.stream_ready         (video_in_scaler_avalon_scaler_source_ready),                         //                         .ready
+		.stream_data          (avalon_st_adapter_001_out_0_data),                                   //          avalon_dma_sink.data
+		.stream_startofpacket (avalon_st_adapter_001_out_0_startofpacket),                          //                         .startofpacket
+		.stream_endofpacket   (avalon_st_adapter_001_out_0_endofpacket),                            //                         .endofpacket
+		.stream_valid         (avalon_st_adapter_001_out_0_valid),                                  //                         .valid
+		.stream_ready         (avalon_st_adapter_001_out_0_ready),                                  //                         .ready
 		.slave_address        (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_address),    // avalon_dma_control_slave.address
 		.slave_byteenable     (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_byteenable), //                         .byteenable
 		.slave_read           (mm_interconnect_2_video_in_dma_avalon_dma_control_slave_read),       //                         .read
@@ -591,7 +626,7 @@ module cpen391_group5_qsys (
 		.byteenable   (graphics_controller_0_avalon_master_byteenable),       //                 .byteenable
 		.address_out  (graphics_controller_0_avalon_master_address),          //                 .address
 		.data_out     (graphics_controller_0_avalon_master_writedata),        //                 .writedata
-		.irq          (irq_mapper_receiver0_irq)                              // interrupt_sender.irq
+		.irq          (irq_mapper_receiver1_irq)                              // interrupt_sender.irq
 	);
 
 	cpen391_group5_qsys_jtag_uart_0 jtag_uart_0 (
@@ -604,7 +639,7 @@ module cpen391_group5_qsys (
 		.av_write_n     (~mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_write),      //                  .write_n
 		.av_writedata   (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_writedata),   //                  .writedata
 		.av_waitrequest (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_waitrequest), //                  .waitrequest
-		.av_irq         (irq_mapper_receiver1_irq)                                     //               irq.irq
+		.av_irq         (irq_mapper_receiver2_irq)                                     //               irq.irq
 	);
 
 	cpen391_group5_qsys_led_out_pio led_out_pio (
@@ -626,7 +661,7 @@ module cpen391_group5_qsys (
 		.readdata   (mm_interconnect_2_main_timer_s1_readdata),   //      .readdata
 		.chipselect (mm_interconnect_2_main_timer_s1_chipselect), //      .chipselect
 		.write_n    (~mm_interconnect_2_main_timer_s1_write),     //      .write_n
-		.irq        (irq_mapper_receiver2_irq)                    //   irq.irq
+		.irq        (irq_mapper_receiver3_irq)                    //   irq.irq
 	);
 
 	cpen391_group5_qsys_nios2 nios2 (
@@ -661,6 +696,34 @@ module cpen391_group5_qsys (
 		.no_ci_readra                          ()                                                       // custom_instruction_master.readra
 	);
 
+	pixel_cluster #(
+		.N_REGS       (7),
+		.ADDR_BITS    (4),
+		.REG_BITS     (32),
+		.N_COLORS     (3),
+		.COLOR_BITS   (8),
+		.X_MAX        (320),
+		.Y_MAX        (240),
+		.N_CLUSTERS   (4),
+		.X_Y_BITS     (16),
+		.COUNTER_BITS (16)
+	) pixel_cluster_0 (
+		.clk              (clocks_sys_clk_clk),                              //              clock.clk
+		.reset            (rst_controller_reset_out_reset),                  //              reset.reset
+		.mm_address       (mm_interconnect_2_pixel_cluster_0_mm_address),    //                 mm.address
+		.mm_byteenable    (mm_interconnect_2_pixel_cluster_0_mm_byteenable), //                   .byteenable
+		.mm_read          (mm_interconnect_2_pixel_cluster_0_mm_read),       //                   .read
+		.mm_write         (mm_interconnect_2_pixel_cluster_0_mm_write),      //                   .write
+		.mm_readdata      (mm_interconnect_2_pixel_cluster_0_mm_readdata),   //                   .readdata
+		.mm_writedata     (mm_interconnect_2_pixel_cluster_0_mm_writedata),  //                   .writedata
+		.irq_send_irq     (irq_mapper_receiver0_irq),                        // frame_complete_irq.irq
+		.st_ready         (avalon_st_adapter_002_out_0_ready),               //           video_in.ready
+		.st_startofpacket (avalon_st_adapter_002_out_0_startofpacket),       //                   .startofpacket
+		.st_endofpacket   (avalon_st_adapter_002_out_0_endofpacket),         //                   .endofpacket
+		.st_valid         (avalon_st_adapter_002_out_0_valid),               //                   .valid
+		.st_data          (avalon_st_adapter_002_out_0_data)                 //                   .data
+	);
+
 	cpen391_group5_qsys_sdram sdram (
 		.clk            (clocks_sys_clk_clk),                       //   clk.clk
 		.reset_n        (~rst_controller_reset_out_reset),          // reset.reset_n
@@ -682,6 +745,156 @@ module cpen391_group5_qsys (
 		.zs_dqm         (sdram_wire_dqm),                           //      .export
 		.zs_ras_n       (sdram_wire_ras_n),                         //      .export
 		.zs_we_n        (sdram_wire_we_n)                           //      .export
+	);
+
+	altera_avalon_st_splitter #(
+		.NUMBER_OF_OUTPUTS (2),
+		.QUALIFY_VALID_OUT (1),
+		.USE_PACKETS       (1),
+		.DATA_WIDTH        (24),
+		.CHANNEL_WIDTH     (1),
+		.ERROR_WIDTH       (1),
+		.BITS_PER_SYMBOL   (8),
+		.EMPTY_WIDTH       (2)
+	) st_splitter_0 (
+		.clk                 (clocks_sys_clk_clk),                    //   clk.clk
+		.reset               (rst_controller_reset_out_reset),        // reset.reset
+		.in0_ready           (avalon_st_adapter_out_0_ready),         //    in.ready
+		.in0_valid           (avalon_st_adapter_out_0_valid),         //      .valid
+		.in0_startofpacket   (avalon_st_adapter_out_0_startofpacket), //      .startofpacket
+		.in0_endofpacket     (avalon_st_adapter_out_0_endofpacket),   //      .endofpacket
+		.in0_empty           (avalon_st_adapter_out_0_empty),         //      .empty
+		.in0_data            (avalon_st_adapter_out_0_data),          //      .data
+		.out0_ready          (st_splitter_0_out0_ready),              //  out0.ready
+		.out0_valid          (st_splitter_0_out0_valid),              //      .valid
+		.out0_startofpacket  (st_splitter_0_out0_startofpacket),      //      .startofpacket
+		.out0_endofpacket    (st_splitter_0_out0_endofpacket),        //      .endofpacket
+		.out0_empty          (st_splitter_0_out0_empty),              //      .empty
+		.out0_data           (st_splitter_0_out0_data),               //      .data
+		.out1_ready          (st_splitter_0_out1_ready),              //  out1.ready
+		.out1_valid          (st_splitter_0_out1_valid),              //      .valid
+		.out1_startofpacket  (st_splitter_0_out1_startofpacket),      //      .startofpacket
+		.out1_endofpacket    (st_splitter_0_out1_endofpacket),        //      .endofpacket
+		.out1_empty          (st_splitter_0_out1_empty),              //      .empty
+		.out1_data           (st_splitter_0_out1_data),               //      .data
+		.in0_channel         (1'b0),                                  // (terminated)
+		.in0_error           (1'b0),                                  // (terminated)
+		.out0_channel        (),                                      // (terminated)
+		.out0_error          (),                                      // (terminated)
+		.out1_channel        (),                                      // (terminated)
+		.out1_error          (),                                      // (terminated)
+		.out2_ready          (1'b1),                                  // (terminated)
+		.out2_valid          (),                                      // (terminated)
+		.out2_startofpacket  (),                                      // (terminated)
+		.out2_endofpacket    (),                                      // (terminated)
+		.out2_empty          (),                                      // (terminated)
+		.out2_channel        (),                                      // (terminated)
+		.out2_error          (),                                      // (terminated)
+		.out2_data           (),                                      // (terminated)
+		.out3_ready          (1'b1),                                  // (terminated)
+		.out3_valid          (),                                      // (terminated)
+		.out3_startofpacket  (),                                      // (terminated)
+		.out3_endofpacket    (),                                      // (terminated)
+		.out3_empty          (),                                      // (terminated)
+		.out3_channel        (),                                      // (terminated)
+		.out3_error          (),                                      // (terminated)
+		.out3_data           (),                                      // (terminated)
+		.out4_ready          (1'b1),                                  // (terminated)
+		.out4_valid          (),                                      // (terminated)
+		.out4_startofpacket  (),                                      // (terminated)
+		.out4_endofpacket    (),                                      // (terminated)
+		.out4_empty          (),                                      // (terminated)
+		.out4_channel        (),                                      // (terminated)
+		.out4_error          (),                                      // (terminated)
+		.out4_data           (),                                      // (terminated)
+		.out5_ready          (1'b1),                                  // (terminated)
+		.out5_valid          (),                                      // (terminated)
+		.out5_startofpacket  (),                                      // (terminated)
+		.out5_endofpacket    (),                                      // (terminated)
+		.out5_empty          (),                                      // (terminated)
+		.out5_channel        (),                                      // (terminated)
+		.out5_error          (),                                      // (terminated)
+		.out5_data           (),                                      // (terminated)
+		.out6_ready          (1'b1),                                  // (terminated)
+		.out6_valid          (),                                      // (terminated)
+		.out6_startofpacket  (),                                      // (terminated)
+		.out6_endofpacket    (),                                      // (terminated)
+		.out6_empty          (),                                      // (terminated)
+		.out6_channel        (),                                      // (terminated)
+		.out6_error          (),                                      // (terminated)
+		.out6_data           (),                                      // (terminated)
+		.out7_ready          (1'b1),                                  // (terminated)
+		.out7_valid          (),                                      // (terminated)
+		.out7_startofpacket  (),                                      // (terminated)
+		.out7_endofpacket    (),                                      // (terminated)
+		.out7_empty          (),                                      // (terminated)
+		.out7_channel        (),                                      // (terminated)
+		.out7_error          (),                                      // (terminated)
+		.out7_data           (),                                      // (terminated)
+		.out8_ready          (1'b1),                                  // (terminated)
+		.out8_valid          (),                                      // (terminated)
+		.out8_startofpacket  (),                                      // (terminated)
+		.out8_endofpacket    (),                                      // (terminated)
+		.out8_empty          (),                                      // (terminated)
+		.out8_channel        (),                                      // (terminated)
+		.out8_error          (),                                      // (terminated)
+		.out8_data           (),                                      // (terminated)
+		.out9_ready          (1'b1),                                  // (terminated)
+		.out9_valid          (),                                      // (terminated)
+		.out9_startofpacket  (),                                      // (terminated)
+		.out9_endofpacket    (),                                      // (terminated)
+		.out9_empty          (),                                      // (terminated)
+		.out9_channel        (),                                      // (terminated)
+		.out9_error          (),                                      // (terminated)
+		.out9_data           (),                                      // (terminated)
+		.out10_ready         (1'b1),                                  // (terminated)
+		.out10_valid         (),                                      // (terminated)
+		.out10_startofpacket (),                                      // (terminated)
+		.out10_endofpacket   (),                                      // (terminated)
+		.out10_empty         (),                                      // (terminated)
+		.out10_channel       (),                                      // (terminated)
+		.out10_error         (),                                      // (terminated)
+		.out10_data          (),                                      // (terminated)
+		.out11_ready         (1'b1),                                  // (terminated)
+		.out11_valid         (),                                      // (terminated)
+		.out11_startofpacket (),                                      // (terminated)
+		.out11_endofpacket   (),                                      // (terminated)
+		.out11_empty         (),                                      // (terminated)
+		.out11_channel       (),                                      // (terminated)
+		.out11_error         (),                                      // (terminated)
+		.out11_data          (),                                      // (terminated)
+		.out12_ready         (1'b1),                                  // (terminated)
+		.out12_valid         (),                                      // (terminated)
+		.out12_startofpacket (),                                      // (terminated)
+		.out12_endofpacket   (),                                      // (terminated)
+		.out12_empty         (),                                      // (terminated)
+		.out12_channel       (),                                      // (terminated)
+		.out12_error         (),                                      // (terminated)
+		.out12_data          (),                                      // (terminated)
+		.out13_ready         (1'b1),                                  // (terminated)
+		.out13_valid         (),                                      // (terminated)
+		.out13_startofpacket (),                                      // (terminated)
+		.out13_endofpacket   (),                                      // (terminated)
+		.out13_empty         (),                                      // (terminated)
+		.out13_channel       (),                                      // (terminated)
+		.out13_error         (),                                      // (terminated)
+		.out13_data          (),                                      // (terminated)
+		.out14_ready         (1'b1),                                  // (terminated)
+		.out14_valid         (),                                      // (terminated)
+		.out14_startofpacket (),                                      // (terminated)
+		.out14_endofpacket   (),                                      // (terminated)
+		.out14_empty         (),                                      // (terminated)
+		.out14_channel       (),                                      // (terminated)
+		.out14_error         (),                                      // (terminated)
+		.out14_data          (),                                      // (terminated)
+		.out15_ready         (1'b1),                                  // (terminated)
+		.out15_valid         (),                                      // (terminated)
+		.out15_startofpacket (),                                      // (terminated)
+		.out15_endofpacket   (),                                      // (terminated)
+		.out15_empty         (),                                      // (terminated)
+		.out15_channel       (),                                      // (terminated)
+		.out15_error         (),                                      // (terminated)
+		.out15_data          ()                                       // (terminated)
 	);
 
 	cpen391_group5_qsys_switch_in_pio switch_in_pio (
@@ -706,7 +919,7 @@ module cpen391_group5_qsys (
 		.readyfordata  (),                                                    //                    .readyfordata
 		.rxd           (touchscreen_rxd),                                     // external_connection.export
 		.txd           (touchscreen_txd),                                     //                    .export
-		.irq           (irq_mapper_receiver3_irq)                             //                 irq.irq
+		.irq           (irq_mapper_receiver4_irq)                             //                 irq.irq
 	);
 
 	cpen391_group5_qsys_video_uart video_uart (
@@ -723,7 +936,7 @@ module cpen391_group5_qsys (
 		.readyfordata  (),                                              //                    .readyfordata
 		.rxd           (video_rxd),                                     // external_connection.export
 		.txd           (video_txd),                                     //                    .export
-		.irq           (irq_mapper_receiver4_irq)                       //                 irq.irq
+		.irq           (irq_mapper_receiver5_irq)                       //                 irq.irq
 	);
 
 	cpen391_group5_qsys_mm_interconnect_0 mm_interconnect_0 (
@@ -832,6 +1045,12 @@ module cpen391_group5_qsys (
 		.nios2_jtag_debug_module_byteenable                      (mm_interconnect_2_nios2_jtag_debug_module_byteenable),                //                                                  .byteenable
 		.nios2_jtag_debug_module_waitrequest                     (mm_interconnect_2_nios2_jtag_debug_module_waitrequest),               //                                                  .waitrequest
 		.nios2_jtag_debug_module_debugaccess                     (mm_interconnect_2_nios2_jtag_debug_module_debugaccess),               //                                                  .debugaccess
+		.pixel_cluster_0_mm_address                              (mm_interconnect_2_pixel_cluster_0_mm_address),                        //                                pixel_cluster_0_mm.address
+		.pixel_cluster_0_mm_write                                (mm_interconnect_2_pixel_cluster_0_mm_write),                          //                                                  .write
+		.pixel_cluster_0_mm_read                                 (mm_interconnect_2_pixel_cluster_0_mm_read),                           //                                                  .read
+		.pixel_cluster_0_mm_readdata                             (mm_interconnect_2_pixel_cluster_0_mm_readdata),                       //                                                  .readdata
+		.pixel_cluster_0_mm_writedata                            (mm_interconnect_2_pixel_cluster_0_mm_writedata),                      //                                                  .writedata
+		.pixel_cluster_0_mm_byteenable                           (mm_interconnect_2_pixel_cluster_0_mm_byteenable),                     //                                                  .byteenable
 		.sdram_s1_address                                        (mm_interconnect_2_sdram_s1_address),                                  //                                          sdram_s1.address
 		.sdram_s1_write                                          (mm_interconnect_2_sdram_s1_write),                                    //                                                  .write
 		.sdram_s1_read                                           (mm_interconnect_2_sdram_s1_read),                                     //                                                  .read
@@ -886,7 +1105,107 @@ module cpen391_group5_qsys (
 		.receiver2_irq (irq_mapper_receiver2_irq),       // receiver2.irq
 		.receiver3_irq (irq_mapper_receiver3_irq),       // receiver3.irq
 		.receiver4_irq (irq_mapper_receiver4_irq),       // receiver4.irq
+		.receiver5_irq (irq_mapper_receiver5_irq),       // receiver5.irq
 		.sender_irq    (nios2_d_irq_irq)                 //    sender.irq
+	);
+
+	cpen391_group5_qsys_avalon_st_adapter #(
+		.inBitsPerSymbol (8),
+		.inUsePackets    (1),
+		.inDataWidth     (24),
+		.inChannelWidth  (0),
+		.inErrorWidth    (0),
+		.inUseEmptyPort  (0),
+		.inUseValid      (1),
+		.inUseReady      (1),
+		.inReadyLatency  (0),
+		.outDataWidth    (24),
+		.outChannelWidth (0),
+		.outErrorWidth   (0),
+		.outUseEmptyPort (1),
+		.outUseValid     (1),
+		.outUseReady     (1),
+		.outReadyLatency (0)
+	) avalon_st_adapter (
+		.in_clk_0_clk        (clocks_sys_clk_clk),                                 // in_clk_0.clk
+		.in_rst_0_reset      (rst_controller_reset_out_reset),                     // in_rst_0.reset
+		.in_0_data           (video_in_scaler_avalon_scaler_source_data),          //     in_0.data
+		.in_0_valid          (video_in_scaler_avalon_scaler_source_valid),         //         .valid
+		.in_0_ready          (video_in_scaler_avalon_scaler_source_ready),         //         .ready
+		.in_0_startofpacket  (video_in_scaler_avalon_scaler_source_startofpacket), //         .startofpacket
+		.in_0_endofpacket    (video_in_scaler_avalon_scaler_source_endofpacket),   //         .endofpacket
+		.out_0_data          (avalon_st_adapter_out_0_data),                       //    out_0.data
+		.out_0_valid         (avalon_st_adapter_out_0_valid),                      //         .valid
+		.out_0_ready         (avalon_st_adapter_out_0_ready),                      //         .ready
+		.out_0_startofpacket (avalon_st_adapter_out_0_startofpacket),              //         .startofpacket
+		.out_0_endofpacket   (avalon_st_adapter_out_0_endofpacket),                //         .endofpacket
+		.out_0_empty         (avalon_st_adapter_out_0_empty)                       //         .empty
+	);
+
+	cpen391_group5_qsys_avalon_st_adapter_001 #(
+		.inBitsPerSymbol (8),
+		.inUsePackets    (1),
+		.inDataWidth     (24),
+		.inChannelWidth  (0),
+		.inErrorWidth    (0),
+		.inUseEmptyPort  (1),
+		.inUseValid      (1),
+		.inUseReady      (1),
+		.inReadyLatency  (0),
+		.outDataWidth    (24),
+		.outChannelWidth (0),
+		.outErrorWidth   (0),
+		.outUseEmptyPort (0),
+		.outUseValid     (1),
+		.outUseReady     (1),
+		.outReadyLatency (0)
+	) avalon_st_adapter_001 (
+		.in_clk_0_clk        (clocks_sys_clk_clk),                        // in_clk_0.clk
+		.in_rst_0_reset      (rst_controller_reset_out_reset),            // in_rst_0.reset
+		.in_0_data           (st_splitter_0_out0_data),                   //     in_0.data
+		.in_0_valid          (st_splitter_0_out0_valid),                  //         .valid
+		.in_0_ready          (st_splitter_0_out0_ready),                  //         .ready
+		.in_0_startofpacket  (st_splitter_0_out0_startofpacket),          //         .startofpacket
+		.in_0_endofpacket    (st_splitter_0_out0_endofpacket),            //         .endofpacket
+		.in_0_empty          (st_splitter_0_out0_empty),                  //         .empty
+		.out_0_data          (avalon_st_adapter_001_out_0_data),          //    out_0.data
+		.out_0_valid         (avalon_st_adapter_001_out_0_valid),         //         .valid
+		.out_0_ready         (avalon_st_adapter_001_out_0_ready),         //         .ready
+		.out_0_startofpacket (avalon_st_adapter_001_out_0_startofpacket), //         .startofpacket
+		.out_0_endofpacket   (avalon_st_adapter_001_out_0_endofpacket)    //         .endofpacket
+	);
+
+	cpen391_group5_qsys_avalon_st_adapter_001 #(
+		.inBitsPerSymbol (8),
+		.inUsePackets    (1),
+		.inDataWidth     (24),
+		.inChannelWidth  (0),
+		.inErrorWidth    (0),
+		.inUseEmptyPort  (1),
+		.inUseValid      (1),
+		.inUseReady      (1),
+		.inReadyLatency  (0),
+		.outDataWidth    (24),
+		.outChannelWidth (0),
+		.outErrorWidth   (0),
+		.outUseEmptyPort (0),
+		.outUseValid     (1),
+		.outUseReady     (1),
+		.outReadyLatency (0)
+	) avalon_st_adapter_002 (
+		.in_clk_0_clk        (clocks_sys_clk_clk),                        // in_clk_0.clk
+		.in_rst_0_reset      (rst_controller_reset_out_reset),            // in_rst_0.reset
+		.in_0_data           (st_splitter_0_out1_data),                   //     in_0.data
+		.in_0_valid          (st_splitter_0_out1_valid),                  //         .valid
+		.in_0_ready          (st_splitter_0_out1_ready),                  //         .ready
+		.in_0_startofpacket  (st_splitter_0_out1_startofpacket),          //         .startofpacket
+		.in_0_endofpacket    (st_splitter_0_out1_endofpacket),            //         .endofpacket
+		.in_0_empty          (st_splitter_0_out1_empty),                  //         .empty
+		.out_0_data          (avalon_st_adapter_002_out_0_data),          //    out_0.data
+		.out_0_valid         (avalon_st_adapter_002_out_0_valid),         //         .valid
+		.out_0_ready         (avalon_st_adapter_002_out_0_ready),         //         .ready
+		.out_0_startofpacket (avalon_st_adapter_002_out_0_startofpacket), //         .startofpacket
+		.out_0_endofpacket   (avalon_st_adapter_002_out_0_endofpacket)    //         .endofpacket
 	);
 
 	altera_reset_controller #(

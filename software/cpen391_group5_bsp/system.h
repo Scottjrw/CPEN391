@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Thu Feb 15 01:54:27 PST 2018
+ * Generated: Thu Feb 15 03:09:30 PST 2018
  */
 
 /*
@@ -136,6 +136,7 @@
 #define __ALTERA_NIOS2_QSYS
 #define __ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER
 #define __GRAPHICS_CONTROLLER
+#define __PIXEL_CLUSTER
 
 
 /*
@@ -173,7 +174,7 @@
  */
 
 #define ALT_MODULE_CLASS_Draw_DMA altera_up_avalon_video_dma_controller
-#define DRAW_DMA_BASE 0x91080
+#define DRAW_DMA_BASE 0x910c0
 #define DRAW_DMA_IRQ -1
 #define DRAW_DMA_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define DRAW_DMA_NAME "/dev/Draw_DMA"
@@ -197,19 +198,19 @@
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
 #define ALT_STDERR "/dev/jtag_uart_0"
-#define ALT_STDERR_BASE 0x910b0
+#define ALT_STDERR_BASE 0x910f0
 #define ALT_STDERR_DEV jtag_uart_0
 #define ALT_STDERR_IS_JTAG_UART
 #define ALT_STDERR_PRESENT
 #define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDIN "/dev/jtag_uart_0"
-#define ALT_STDIN_BASE 0x910b0
+#define ALT_STDIN_BASE 0x910f0
 #define ALT_STDIN_DEV jtag_uart_0
 #define ALT_STDIN_IS_JTAG_UART
 #define ALT_STDIN_PRESENT
 #define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
 #define ALT_STDOUT "/dev/jtag_uart_0"
-#define ALT_STDOUT_BASE 0x910b0
+#define ALT_STDOUT_BASE 0x910f0
 #define ALT_STDOUT_DEV jtag_uart_0
 #define ALT_STDOUT_IS_JTAG_UART
 #define ALT_STDOUT_PRESENT
@@ -252,7 +253,7 @@
  */
 
 #define ALT_MODULE_CLASS_Video_In_DMA altera_up_avalon_video_dma_controller
-#define VIDEO_IN_DMA_BASE 0x910a0
+#define VIDEO_IN_DMA_BASE 0x910e0
 #define VIDEO_IN_DMA_IRQ -1
 #define VIDEO_IN_DMA_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define VIDEO_IN_DMA_NAME "/dev/Video_In_DMA"
@@ -266,7 +267,7 @@
  */
 
 #define ALT_MODULE_CLASS_Video_Out_DMA altera_up_avalon_video_dma_controller
-#define VIDEO_OUT_DMA_BASE 0x91090
+#define VIDEO_OUT_DMA_BASE 0x910d0
 #define VIDEO_OUT_DMA_IRQ -1
 #define VIDEO_OUT_DMA_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define VIDEO_OUT_DMA_NAME "/dev/Video_Out_DMA"
@@ -304,7 +305,7 @@
  */
 
 #define ALT_MODULE_CLASS_jtag_uart_0 altera_avalon_jtag_uart
-#define JTAG_UART_0_BASE 0x910b0
+#define JTAG_UART_0_BASE 0x910f0
 #define JTAG_UART_0_IRQ 0
 #define JTAG_UART_0_IRQ_INTERRUPT_CONTROLLER_ID 0
 #define JTAG_UART_0_NAME "/dev/jtag_uart_0"
@@ -322,7 +323,7 @@
  */
 
 #define ALT_MODULE_CLASS_led_out_pio altera_avalon_pio
-#define LED_OUT_PIO_BASE 0x91070
+#define LED_OUT_PIO_BASE 0x910b0
 #define LED_OUT_PIO_BIT_CLEARING_EDGE_REGISTER 0
 #define LED_OUT_PIO_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define LED_OUT_PIO_CAPTURE 0
@@ -350,7 +351,7 @@
 
 #define ALT_MODULE_CLASS_main_timer altera_avalon_timer
 #define MAIN_TIMER_ALWAYS_RUN 0
-#define MAIN_TIMER_BASE 0x91040
+#define MAIN_TIMER_BASE 0x91080
 #define MAIN_TIMER_COUNTER_SIZE 32
 #define MAIN_TIMER_FIXED_PERIOD 0
 #define MAIN_TIMER_FREQ 50000000
@@ -367,6 +368,20 @@
 #define MAIN_TIMER_TICKS_PER_SEC 1000
 #define MAIN_TIMER_TIMEOUT_PULSE_OUTPUT 0
 #define MAIN_TIMER_TYPE "altera_avalon_timer"
+
+
+/*
+ * pixel_cluster_0 configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_pixel_cluster_0 pixel_cluster
+#define PIXEL_CLUSTER_0_BASE 0x91000
+#define PIXEL_CLUSTER_0_IRQ 5
+#define PIXEL_CLUSTER_0_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define PIXEL_CLUSTER_0_NAME "/dev/pixel_cluster_0"
+#define PIXEL_CLUSTER_0_SPAN 64
+#define PIXEL_CLUSTER_0_TYPE "pixel_cluster"
 
 
 /*
@@ -414,7 +429,7 @@
  */
 
 #define ALT_MODULE_CLASS_switch_in_pio altera_avalon_pio
-#define SWITCH_IN_PIO_BASE 0x91060
+#define SWITCH_IN_PIO_BASE 0x910a0
 #define SWITCH_IN_PIO_BIT_CLEARING_EDGE_REGISTER 0
 #define SWITCH_IN_PIO_BIT_MODIFYING_OUTPUT_REGISTER 0
 #define SWITCH_IN_PIO_CAPTURE 0
@@ -441,7 +456,7 @@
  */
 
 #define ALT_MODULE_CLASS_touchscreen_uart altera_avalon_uart
-#define TOUCHSCREEN_UART_BASE 0x91020
+#define TOUCHSCREEN_UART_BASE 0x91060
 #define TOUCHSCREEN_UART_BAUD 9600
 #define TOUCHSCREEN_UART_DATA_BITS 8
 #define TOUCHSCREEN_UART_FIXED_BAUD 1
@@ -466,7 +481,7 @@
  */
 
 #define ALT_MODULE_CLASS_video_uart altera_avalon_uart
-#define VIDEO_UART_BASE 0x91000
+#define VIDEO_UART_BASE 0x91040
 #define VIDEO_UART_BAUD 38400
 #define VIDEO_UART_DATA_BITS 8
 #define VIDEO_UART_FIXED_BAUD 1

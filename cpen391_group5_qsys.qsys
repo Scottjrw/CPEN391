@@ -21,7 +21,7 @@
    {
       datum _sortIndex
       {
-         value = "17";
+         value = "19";
          type = "int";
       }
    }
@@ -50,7 +50,7 @@
    {
       datum _sortIndex
       {
-         value = "21";
+         value = "23";
          type = "int";
       }
    }
@@ -58,7 +58,7 @@
    {
       datum baseAddress
       {
-         value = "594048";
+         value = "594112";
          type = "String";
       }
    }
@@ -66,7 +66,7 @@
    {
       datum _sortIndex
       {
-         value = "23";
+         value = "25";
          type = "int";
       }
    }
@@ -74,7 +74,7 @@
    {
       datum _sortIndex
       {
-         value = "22";
+         value = "24";
          type = "int";
       }
    }
@@ -82,7 +82,7 @@
    {
       datum _sortIndex
       {
-         value = "24";
+         value = "26";
          type = "int";
       }
    }
@@ -90,7 +90,7 @@
    {
       datum _sortIndex
       {
-         value = "27";
+         value = "29";
          type = "int";
       }
    }
@@ -98,7 +98,7 @@
    {
       datum _sortIndex
       {
-         value = "16";
+         value = "18";
          type = "int";
       }
    }
@@ -156,7 +156,7 @@
    {
       datum _sortIndex
       {
-         value = "15";
+         value = "17";
          type = "int";
       }
    }
@@ -164,7 +164,7 @@
    {
       datum baseAddress
       {
-         value = "594080";
+         value = "594144";
          type = "String";
       }
    }
@@ -193,7 +193,7 @@
    {
       datum _sortIndex
       {
-         value = "18";
+         value = "20";
          type = "int";
       }
    }
@@ -201,7 +201,7 @@
    {
       datum baseAddress
       {
-         value = "594064";
+         value = "594128";
          type = "String";
       }
    }
@@ -209,7 +209,7 @@
    {
       datum _sortIndex
       {
-         value = "25";
+         value = "27";
          type = "int";
       }
    }
@@ -217,7 +217,7 @@
    {
       datum _sortIndex
       {
-         value = "20";
+         value = "22";
          type = "int";
       }
    }
@@ -225,7 +225,7 @@
    {
       datum _sortIndex
       {
-         value = "19";
+         value = "21";
          type = "int";
       }
    }
@@ -233,7 +233,7 @@
    {
       datum _sortIndex
       {
-         value = "26";
+         value = "28";
          type = "int";
       }
    }
@@ -243,6 +243,22 @@
       {
          value = "0";
          type = "int";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
       }
    }
    element cpen391_group5_qsys
@@ -321,7 +337,7 @@
    {
       datum baseAddress
       {
-         value = "594096";
+         value = "594160";
          type = "String";
       }
    }
@@ -337,7 +353,7 @@
    {
       datum baseAddress
       {
-         value = "594032";
+         value = "594096";
          type = "String";
       }
    }
@@ -353,7 +369,7 @@
    {
       datum baseAddress
       {
-         value = "593984";
+         value = "594048";
          type = "String";
       }
    }
@@ -370,6 +386,22 @@
       datum baseAddress
       {
          value = "591872";
+         type = "String";
+      }
+   }
+   element pixel_cluster_0
+   {
+      datum _sortIndex
+      {
+         value = "16";
+         type = "int";
+      }
+   }
+   element pixel_cluster_0.mm
+   {
+      datum baseAddress
+      {
+         value = "593920";
          type = "String";
       }
    }
@@ -394,6 +426,14 @@
          type = "String";
       }
    }
+   element st_splitter_0
+   {
+      datum _sortIndex
+      {
+         value = "15";
+         type = "int";
+      }
+   }
    element switch_in_pio
    {
       datum _sortIndex
@@ -406,7 +446,7 @@
    {
       datum baseAddress
       {
-         value = "594016";
+         value = "594080";
          type = "String";
       }
    }
@@ -422,7 +462,7 @@
    {
       datum baseAddress
       {
-         value = "593952";
+         value = "594016";
          type = "String";
       }
    }
@@ -438,7 +478,7 @@
    {
       datum baseAddress
       {
-         value = "593920";
+         value = "593984";
          type = "String";
       }
    }
@@ -863,7 +903,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="28" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='video_uart.s1' start='0x91000' end='0x91020' /><slave name='touchscreen_uart.s1' start='0x91020' end='0x91040' /><slave name='main_timer.s1' start='0x91040' end='0x91060' /><slave name='switch_in_pio.s1' start='0x91060' end='0x91070' /><slave name='led_out_pio.s1' start='0x91070' end='0x91080' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0x91080' end='0x91090' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x91090' end='0x910A0' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0x910A0' end='0x910B0' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x910B0' end='0x910B8' /><slave name='graphics_controller_0.mm' start='0x4000000' end='0x8000000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='Draw_Buffer.s1' start='0x80000' end='0x89600' /><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='pixel_cluster_0.mm' start='0x91000' end='0x91040' /><slave name='video_uart.s1' start='0x91040' end='0x91060' /><slave name='touchscreen_uart.s1' start='0x91060' end='0x91080' /><slave name='main_timer.s1' start='0x91080' end='0x910A0' /><slave name='switch_in_pio.s1' start='0x910A0' end='0x910B0' /><slave name='led_out_pio.s1' start='0x910B0' end='0x910C0' /><slave name='Draw_DMA.avalon_dma_control_slave' start='0x910C0' end='0x910D0' /><slave name='Video_Out_DMA.avalon_dma_control_slave' start='0x910D0' end='0x910E0' /><slave name='Video_In_DMA.avalon_dma_control_slave' start='0x910E0' end='0x910F0' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x910F0' end='0x910F8' /><slave name='graphics_controller_0.mm' start='0x4000000' end='0x8000000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="true" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -891,7 +931,7 @@
   <parameter name="impl" value="Fast" />
   <parameter name="instAddrWidth" value="28" />
   <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='nios2.jtag_debug_module' start='0x90800' end='0x91000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
-  <parameter name="internalIrqMaskSystemInfo" value="31" />
+  <parameter name="internalIrqMaskSystemInfo" value="63" />
   <parameter name="manuallyAssignCpuID" value="true" />
   <parameter name="mmu_TLBMissExcOffset" value="0" />
   <parameter name="mmu_TLBMissExcSlave" value="None" />
@@ -980,6 +1020,18 @@
   <parameter name="tightlyCoupledInstructionMaster3MapParam" value="" />
   <parameter name="userDefinedSettings" value="" />
  </module>
+ <module name="pixel_cluster_0" kind="pixel_cluster" version="1.0" enabled="1">
+  <parameter name="ADDR_BITS" value="4" />
+  <parameter name="COLOR_BITS" value="8" />
+  <parameter name="COUNTER_BITS" value="16" />
+  <parameter name="N_CLUSTERS" value="4" />
+  <parameter name="N_COLORS" value="3" />
+  <parameter name="N_REGS" value="7" />
+  <parameter name="REG_BITS" value="32" />
+  <parameter name="X_MAX" value="320" />
+  <parameter name="X_Y_BITS" value="16" />
+  <parameter name="Y_MAX" value="240" />
+ </module>
  <module
    name="sdram"
    kind="altera_avalon_new_sdram_controller"
@@ -1008,6 +1060,29 @@
   <parameter name="refreshPeriod" value="7.8125" />
   <parameter name="registerDataIn" value="true" />
   <parameter name="rowWidth" value="13" />
+ </module>
+ <module
+   name="st_splitter_0"
+   kind="altera_avalon_st_splitter"
+   version="15.0"
+   enabled="1">
+  <parameter name="AUTO_CLK_CLOCK_RATE" value="50000000" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
+  <parameter name="BITS_PER_SYMBOL" value="8" />
+  <parameter name="CHANNEL_WIDTH" value="1" />
+  <parameter name="DATA_WIDTH" value="24" />
+  <parameter name="ERROR_DESCRIPTOR" value="" />
+  <parameter name="ERROR_WIDTH" value="1" />
+  <parameter name="MAX_CHANNELS" value="1" />
+  <parameter name="NUMBER_OF_OUTPUTS" value="2" />
+  <parameter name="QUALIFY_VALID_OUT" value="1" />
+  <parameter name="READY_LATENCY" value="0" />
+  <parameter name="USE_CHANNEL" value="0" />
+  <parameter name="USE_DATA" value="1" />
+  <parameter name="USE_ERROR" value="0" />
+  <parameter name="USE_PACKETS" value="1" />
+  <parameter name="USE_READY" value="1" />
+  <parameter name="USE_VALID" value="1" />
  </module>
  <module
    name="switch_in_pio"
@@ -1109,7 +1184,7 @@
    start="nios2.data_master"
    end="Video_In_DMA.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000910a0" />
+  <parameter name="baseAddress" value="0x000910e0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1118,7 +1193,7 @@
    start="nios2.data_master"
    end="Video_Out_DMA.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091090" />
+  <parameter name="baseAddress" value="0x000910d0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1127,7 +1202,7 @@
    start="nios2.data_master"
    end="Draw_DMA.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091080" />
+  <parameter name="baseAddress" value="0x000910c0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1136,7 +1211,7 @@
    start="nios2.data_master"
    end="jtag_uart_0.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000910b0" />
+  <parameter name="baseAddress" value="0x000910f0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1161,9 +1236,18 @@
    kind="avalon"
    version="15.0"
    start="nios2.data_master"
+   end="pixel_cluster_0.mm">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00091000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="15.0"
+   start="nios2.data_master"
    end="led_out_pio.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091070" />
+  <parameter name="baseAddress" value="0x000910b0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1172,7 +1256,7 @@
    start="nios2.data_master"
    end="switch_in_pio.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091060" />
+  <parameter name="baseAddress" value="0x000910a0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection kind="avalon" version="15.0" start="nios2.data_master" end="sdram.s1">
@@ -1186,7 +1270,7 @@
    start="nios2.data_master"
    end="main_timer.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091040" />
+  <parameter name="baseAddress" value="0x00091080" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1204,7 +1288,7 @@
    start="nios2.data_master"
    end="touchscreen_uart.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091020" />
+  <parameter name="baseAddress" value="0x00091060" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1213,7 +1297,7 @@
    start="nios2.data_master"
    end="video_uart.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00091000" />
+  <parameter name="baseAddress" value="0x00091040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1296,11 +1380,6 @@
  <connection
    kind="avalon_streaming"
    version="15.0"
-   start="Video_In_Scaler.avalon_scaler_source"
-   end="Video_In_DMA.avalon_dma_sink" />
- <connection
-   kind="avalon_streaming"
-   version="15.0"
    start="Video_Out_Scaler.avalon_scaler_source"
    end="Video_Out_Resampler.avalon_rgb_sink" />
  <connection
@@ -1308,6 +1387,21 @@
    version="15.0"
    start="Draw_Scaler.avalon_scaler_source"
    end="Draw_Resampler.avalon_rgb_sink" />
+ <connection
+   kind="avalon_streaming"
+   version="15.0"
+   start="Video_In_Scaler.avalon_scaler_source"
+   end="st_splitter_0.in" />
+ <connection
+   kind="avalon_streaming"
+   version="15.0"
+   start="st_splitter_0.out0"
+   end="Video_In_DMA.avalon_dma_sink" />
+ <connection
+   kind="avalon_streaming"
+   version="15.0"
+   start="st_splitter_0.out1"
+   end="pixel_cluster_0.video_in" />
  <connection kind="clock" version="15.0" start="clocks.sys_clk" end="nios2.clk" />
  <connection kind="clock" version="15.0" start="clocks.sys_clk" end="sdram.clk" />
  <connection
@@ -1405,6 +1499,11 @@
    kind="clock"
    version="15.0"
    start="clocks.sys_clk"
+   end="st_splitter_0.clk" />
+ <connection
+   kind="clock"
+   version="15.0"
+   start="clocks.sys_clk"
    end="Video_Frame_Buffer.clk1" />
  <connection
    kind="clock"
@@ -1416,6 +1515,11 @@
    version="15.0"
    start="clocks.sys_clk"
    end="graphics_controller_0.clock" />
+ <connection
+   kind="clock"
+   version="15.0"
+   start="clocks.sys_clk"
+   end="pixel_cluster_0.clock" />
  <connection
    kind="clock"
    version="15.0"
@@ -1436,6 +1540,13 @@
    version="15.0"
    start="Video_Clock.vga_clk"
    end="Video_Out_FIFO.clock_stream_out" />
+ <connection
+   kind="interrupt"
+   version="15.0"
+   start="nios2.d_irq"
+   end="pixel_cluster_0.frame_complete_irq">
+  <parameter name="irqNumber" value="5" />
+ </connection>
  <connection
    kind="interrupt"
    version="15.0"
@@ -1585,6 +1696,16 @@
    kind="reset"
    version="15.0"
    start="nios2.jtag_debug_module_reset"
+   end="st_splitter_0.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
+   end="pixel_cluster_0.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
    end="Video_Frame_Buffer.reset1" />
  <connection
    kind="reset"
@@ -1716,6 +1837,16 @@
    version="15.0"
    start="clocks.reset_source"
    end="graphics_controller_0.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="clocks.reset_source"
+   end="st_splitter_0.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="clocks.reset_source"
+   end="pixel_cluster_0.reset" />
  <connection
    kind="reset"
    version="15.0"

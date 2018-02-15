@@ -20,9 +20,9 @@
 // Altera IRQ Mapper
 //
 // Parameters
-//   NUM_RCVRS        : 5
+//   NUM_RCVRS        : 6
 //   SENDER_IRW_WIDTH : 32
-//   IRQ_MAP          : 0:4,1:0,2:3,3:1,4:2
+//   IRQ_MAP          : 0:5,1:4,2:0,3:3,4:1,5:2
 //
 // -------------------------------------------------------
 
@@ -44,6 +44,7 @@ module cpen391_group5_qsys_irq_mapper
     input                receiver2_irq,
     input                receiver3_irq,
     input                receiver4_irq,
+    input                receiver5_irq,
 
     // -------------------
     // Command Source (Output)
@@ -55,11 +56,12 @@ module cpen391_group5_qsys_irq_mapper
     always @* begin
 	sender_irq = 0;
 
-        sender_irq[4] = receiver0_irq;
-        sender_irq[0] = receiver1_irq;
-        sender_irq[3] = receiver2_irq;
-        sender_irq[1] = receiver3_irq;
-        sender_irq[2] = receiver4_irq;
+        sender_irq[5] = receiver0_irq;
+        sender_irq[4] = receiver1_irq;
+        sender_irq[0] = receiver2_irq;
+        sender_irq[3] = receiver3_irq;
+        sender_irq[1] = receiver4_irq;
+        sender_irq[2] = receiver5_irq;
     end
 
 endmodule
