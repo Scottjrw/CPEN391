@@ -24,15 +24,15 @@ module cpen391_group5_qsys (
 	vga_controller_R,
 	vga_controller_G,
 	vga_controller_B,
+	video_rxd,
+	video_txd,
 	video_in_decoder_TD_CLK27,
 	video_in_decoder_TD_DATA,
 	video_in_decoder_TD_HS,
 	video_in_decoder_TD_VS,
 	video_in_decoder_clk27_reset,
 	video_in_decoder_TD_RESET,
-	video_in_decoder_overflow_flag,
-	video_rxd,
-	video_txd);	
+	video_in_decoder_overflow_flag);	
 
 	input		clk_clk;
 	output	[7:0]	led_out_export;
@@ -58,6 +58,8 @@ module cpen391_group5_qsys (
 	output	[7:0]	vga_controller_R;
 	output	[7:0]	vga_controller_G;
 	output	[7:0]	vga_controller_B;
+	input		video_rxd;
+	output		video_txd;
 	input		video_in_decoder_TD_CLK27;
 	input	[7:0]	video_in_decoder_TD_DATA;
 	input		video_in_decoder_TD_HS;
@@ -65,6 +67,4 @@ module cpen391_group5_qsys (
 	input		video_in_decoder_clk27_reset;
 	output		video_in_decoder_TD_RESET;
 	output		video_in_decoder_overflow_flag;
-	input		video_rxd;
-	output		video_txd;
 endmodule

@@ -2,9 +2,9 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>14-Feb-2018 4:58:17 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1518656297727</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>C:\Users\Daniel\Desktop\CPEN391\software\cpen391_group5_bsp</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>15-Feb-2018 1:02:23 AM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1518685343283</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>/home/guoj/Documents/Year-3/CPEN-391/repo/software/cpen391_group5_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>../../cpen391_group5_qsys.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
@@ -939,12 +939,6 @@
                 <addressRange>0x00091040 - 0x0009105F</addressRange>
                 <addressSpan>32</addressSpan>
                 <attributes>timer</attributes>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>pixel_cluster_0</slaveDescriptor>
-                <addressRange>0x00091040 - 0x0009104F</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>switch_in_pio</slaveDescriptor>

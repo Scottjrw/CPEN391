@@ -49,8 +49,6 @@ cpen391_group5_qsys sys_inst(
     .led_out_export(), // EMPTY
     .switch_in_export(SW[7:0]),
 
-    .pixel_cluster_leds(LEDR),
-
     // SDRAM
     .sdram_clk_clk(DRAM_CLK),
     .sdram_wire_addr(DRAM_ADDR),

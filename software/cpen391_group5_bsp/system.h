@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Tue Feb 13 18:40:21 PST 2018
+ * Generated: Thu Feb 15 01:02:23 PST 2018
  */
 
 /*
@@ -135,7 +135,6 @@
 #define __ALTERA_AVALON_UART
 #define __ALTERA_NIOS2_QSYS
 #define __ALTERA_UP_AVALON_VIDEO_DMA_CONTROLLER
-#define __PIXEL_CLUSTER
 
 
 /*
@@ -353,20 +352,6 @@
 #define MAIN_TIMER_TICKS_PER_SEC 1000
 #define MAIN_TIMER_TIMEOUT_PULSE_OUTPUT 0
 #define MAIN_TIMER_TYPE "altera_avalon_timer"
-
-
-/*
- * pixel_cluster_0 configuration
- *
- */
-
-#define ALT_MODULE_CLASS_pixel_cluster_0 pixel_cluster
-#define PIXEL_CLUSTER_0_BASE 0x91040
-#define PIXEL_CLUSTER_0_IRQ -1
-#define PIXEL_CLUSTER_0_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define PIXEL_CLUSTER_0_NAME "/dev/pixel_cluster_0"
-#define PIXEL_CLUSTER_0_SPAN 16
-#define PIXEL_CLUSTER_0_TYPE "pixel_cluster"
 
 
 /*

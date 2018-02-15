@@ -15,10 +15,10 @@ Screen::Screen(SimpleGraphics &graphics, TouchControl &touch):
 	Drawable(graphics),
 	Touchable(touch),
 	cursor(m_graphics, SimpleGraphics::rgba(0, 255, 0, 255), 4),
-	exited(false),
-	drawables(),
-	touchables(),
-	Next_Screen()
+	m_exited(false),
+	m_drawables(),
+	m_touchables(),
+	m_next_screen()
 {
 }
 
@@ -26,8 +26,8 @@ void Screen::draw() {
 	Rectangle clear_rect(m_graphics, {0, 0}, {160, 120}, SimpleGraphics::rgba(0, 0, 0, 0));
 	clear_rect.draw();
 
-	for (int i = 0; i < (int)drawables.size(); i++) {
-		drawables[i]->draw();
+	for (unsigned i = 0; i < m_drawables.size(); i++) {
+		m_drawables[i]->draw();
 	}
 }
 
@@ -44,7 +44,7 @@ void Screen::enable_touch() {
 
 		cursor.undraw();
 
-		for (auto touch : touchables) {
+		for (auto touch : m_touchables) {
 			if (touch->touch(p)) break;
 		}
 		cursor.update(p);
@@ -52,32 +52,32 @@ void Screen::enable_touch() {
 }
 
 void Screen::clear() {
-	for (int i = 0; i < (int)drawables.size(); i++) {
-		drawables[i]->undraw();
+	for (unsigned i = 0; i < m_drawables.size(); i++) {
+		m_drawables[i]->undraw();
 	}
 }
 
 
 void Screen::addDrawable(Drawable* element) {
-	drawables.push_back(element);
+	m_drawables.push_back(element);
 }
 
 void Screen::addTouchable(Touchable* element) {
-	touchables.push_back(element);
+	m_touchables.push_back(element);
 }
 
 
 Current_Screen Screen::run(void) {
-	while(exited == false){
+	while(m_exited == false){
 		m_touch.trypoll();
 	}
-	return Next_Screen;
+	return m_next_screen;
 
 }
 
-void Screen::exit(Current_Screen New_Screen) {
-	exited = true;
-	Next_Screen = New_Screen;
+void Screen::exit(Current_Screen next_screen) {
+	m_exited = true;
+	m_next_screen = next_screen;
 }
 
 

@@ -2,7 +2,7 @@ set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsy
 set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsys" -name IP_TOOL_VERSION "15.0"
 set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsys" -name IP_TOOL_ENV "Qsys"
 set_global_assignment -library "cpen391_group5_qsys" -name SOPCINFO_FILE [file join $::quartus(qip_path) "../../cpen391_group5_qsys.sopcinfo"]
-set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsys" -name SLD_INFO "QSYS_NAME cpen391_group5_qsys HAS_SOPCINFO 1 GENERATION_ID 1518574980"
+set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsys" -name SLD_INFO "QSYS_NAME cpen391_group5_qsys HAS_SOPCINFO 1 GENERATION_ID 1518684182"
 set_global_assignment -library "cpen391_group5_qsys" -name MISC_FILE [file join $::quartus(qip_path) "../cpen391_group5_qsys.cmp"]
 set_global_assignment -library "cpen391_group5_qsys" -name SLD_FILE [file join $::quartus(qip_path) "cpen391_group5_qsys.regmap"]
 set_global_assignment -library "cpen391_group5_qsys" -name SLD_FILE [file join $::quartus(qip_path) "cpen391_group5_qsys.debuginfo"]
@@ -16,7 +16,7 @@ set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsy
 set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsys" -name IP_COMPONENT_REPORT_HIERARCHY "On"
 set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsys" -name IP_COMPONENT_INTERNAL "Off"
 set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsys" -name IP_COMPONENT_VERSION "MS4w"
-set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsys" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MTUxODU3NDk4MA==::QXV0byBHRU5FUkFUSU9OX0lE"
+set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsys" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MTUxODY4NDE4Mg==::QXV0byBHRU5FUkFUSU9OX0lE"
 set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsys" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfRkFNSUxZ::Q3ljbG9uZSBW::QXV0byBERVZJQ0VfRkFNSUxZ"
 set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsys" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0U=::NUNTRU1BNUYzMUM2::QXV0byBERVZJQ0U="
 set_global_assignment -entity "cpen391_group5_qsys" -library "cpen391_group5_qsys" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfU1BFRURHUkFERQ==::Ng==::QXV0byBERVZJQ0VfU1BFRURHUkFERQ=="
@@ -2365,21 +2365,21 @@ set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file jo
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_touchscreen_uart.v"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_switch_in_pio.v"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_sdram.v"]
-set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2.ocp"]
-set_global_assignment -library "cpen391_group5_qsys" -name SDC_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2.sdc"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2.v"]
-set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_bht_ram.mif"]
-set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_dc_tag_ram.mif"]
-set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_ic_tag_ram.mif"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_jtag_debug_module_sysclk.v"]
-set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_jtag_debug_module_tck.v"]
+set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_bht_ram.mif"]
+set_global_assignment -library "cpen391_group5_qsys" -name SDC_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2.sdc"]
+set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_ociram_default_contents.mif"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_jtag_debug_module_wrapper.v"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_mult_cell.v"]
-set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_ociram_default_contents.mif"]
-set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_oci_test_bench.v"]
-set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_rf_ram_a.mif"]
+set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2.ocp"]
+set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_jtag_debug_module_tck.v"]
 set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_rf_ram_b.mif"]
+set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_ic_tag_ram.mif"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_test_bench.v"]
+set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_rf_ram_a.mif"]
+set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_oci_test_bench.v"]
+set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_nios2_dc_tag_ram.mif"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_main_timer.v"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_led_out_pio.v"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_jtag_uart_0.v"]
@@ -2414,8 +2414,8 @@ set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file jo
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/altera_up_YCrCb_to_RGB_converter.v"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/altera_up_RGB_to_YCrCb_converter.v"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_Video_In_CSC.v"]
-set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_Video_Frame_Buffer.hex"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_Video_Frame_Buffer.v"]
+set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_Video_Frame_Buffer.hex"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_Video_Clock.v"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_Video_Clock_video_pll.v"]
 set_global_assignment -library "cpen391_group5_qsys" -name QIP_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_Video_Clock_video_pll.qip"]
@@ -2425,8 +2425,8 @@ set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file jo
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_Draw_Scaler.v"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_Draw_Resampler.v"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_Draw_DMA.v"]
-set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_Draw_Buffer.hex"]
 set_global_assignment -library "cpen391_group5_qsys" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_Draw_Buffer.v"]
+set_global_assignment -library "cpen391_group5_qsys" -name SOURCE_FILE [file join $::quartus(qip_path) "submodules/cpen391_group5_qsys_Draw_Buffer.hex"]
 
 set_global_assignment -entity "altera_reset_controller" -library "cpen391_group5_qsys" -name IP_TOOL_NAME "altera_reset_controller"
 set_global_assignment -entity "altera_reset_controller" -library "cpen391_group5_qsys" -name IP_TOOL_VERSION "15.0"

@@ -3,7 +3,6 @@
 #include <string.h>
 #include "system.h"
 #include "sys/alt_alarm.h"
-#include "main.hpp"
 #include "SimpleGraphics.hpp"
 #include "vision_updated.hpp"
 #include <iostream>
@@ -14,6 +13,8 @@
 #include "io.h"
 #include <stdio.h>
 
+constexpr unsigned SG_MAX_WIDTH = 160;
+constexpr unsigned SG_MAX_HEIGHT = 120;
 
 int brightness = 0x00;
 int contrast = 0x80;
@@ -30,21 +31,21 @@ int main(int argc, const char * argv[]) {
 	/*
 	 * Only initialize this camera stuff the first time
 	 */
-	if (initialize(VIDEO_UART_NAME)) {
+	if (Video::initialize(VIDEO_UART_NAME)) {
 		printf("File Opened Successfully\n");
 	}
 	else {
 		printf("File Failed to Open\n");
 	}
 
-	if (imageSettings(brightness, contrast, 0x80, 0x00, saturation)) {
+	if (Video::imageSettings(brightness, contrast, 0x80, 0x00, saturation)) {
 		printf("changed colors\n");
 	}
 	else {
 		printf("changed colors failed\n");
 	}
 
-	if (mirror_mode_on()) {
+	if (Video::mirror_mode_on()) {
 		printf("mirror successful\n");
 	}
 	else {
@@ -64,8 +65,9 @@ int main(int argc, const char * argv[]) {
 	while (1){
 		Screen screen(graphics, touch);
 		switch(s) {
-		case HOME: {
-			imageSettings(brightness, contrast, 0x80, 0x00, saturation);
+		case HOME: 
+        {
+            Video::imageSettings(brightness, contrast, 0x80, 0x00, saturation);
 			Button title(graphics, touch, {0, 0}, {100, 30}, "LIGHT CONTROLLER",
 					SimpleGraphics::rgba(0, 0, 0, 255),
 					SimpleGraphics::rgba(255, 255, 153, 175));
@@ -80,19 +82,19 @@ int main(int argc, const char * argv[]) {
 
 			menu.newItem(graphics, touch, "Change IMG", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(166, 166, 166, 100),
-					[&graphics, &touch, &screen] (Touchable *, Point p) {
+					[&screen] (Touchable *, Point p) {
 					std::cout << "Change Image Settings" << std::endl;
 					screen.clear();
-					imageSettings(0x7F, contrast, 0x0A, 0x00, 0x00);
+                    Video::imageSettings(0x7F, contrast, 0x0A, 0x00, 0x00);
 					screen.exit(IMAGE_SETTINGS);
 
 					});
 			menu.newItem(graphics, touch, "Gestures", SimpleGraphics::rgba(255, 255, 255, 255),
 						SimpleGraphics::rgba(166, 166, 166, 100),
-						[&graphics, &touch, &screen] (Touchable *, Point p) {
+						[&screen] (Touchable *, Point p) {
 						std::cout << "Change Gesture Mappings" << std::endl;
 						screen.clear();
-						imageSettings(0x7F, contrast, 0x0A, 0x00, 0x00);
+                        Video::imageSettings(0x7F, contrast, 0x0A, 0x00, 0x00);
 						screen.exit(Current_Screen(GESTURE_SETTINGS));
 
 						});

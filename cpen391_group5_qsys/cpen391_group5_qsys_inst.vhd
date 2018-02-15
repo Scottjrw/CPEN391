@@ -24,15 +24,15 @@
 			vga_controller_R               : out   std_logic_vector(7 downto 0);                     -- R
 			vga_controller_G               : out   std_logic_vector(7 downto 0);                     -- G
 			vga_controller_B               : out   std_logic_vector(7 downto 0);                     -- B
+			video_rxd                      : in    std_logic                     := 'X';             -- rxd
+			video_txd                      : out   std_logic;                                        -- txd
 			video_in_decoder_TD_CLK27      : in    std_logic                     := 'X';             -- TD_CLK27
 			video_in_decoder_TD_DATA       : in    std_logic_vector(7 downto 0)  := (others => 'X'); -- TD_DATA
 			video_in_decoder_TD_HS         : in    std_logic                     := 'X';             -- TD_HS
 			video_in_decoder_TD_VS         : in    std_logic                     := 'X';             -- TD_VS
 			video_in_decoder_clk27_reset   : in    std_logic                     := 'X';             -- clk27_reset
 			video_in_decoder_TD_RESET      : out   std_logic;                                        -- TD_RESET
-			video_in_decoder_overflow_flag : out   std_logic;                                        -- overflow_flag
-			video_rxd                      : in    std_logic                     := 'X';             -- rxd
-			video_txd                      : out   std_logic                                         -- txd
+			video_in_decoder_overflow_flag : out   std_logic                                         -- overflow_flag
 		);
 	end component cpen391_group5_qsys;
 
@@ -62,14 +62,14 @@
 			vga_controller_R               => CONNECTED_TO_vga_controller_R,               --                 .R
 			vga_controller_G               => CONNECTED_TO_vga_controller_G,               --                 .G
 			vga_controller_B               => CONNECTED_TO_vga_controller_B,               --                 .B
+			video_rxd                      => CONNECTED_TO_video_rxd,                      --            video.rxd
+			video_txd                      => CONNECTED_TO_video_txd,                      --                 .txd
 			video_in_decoder_TD_CLK27      => CONNECTED_TO_video_in_decoder_TD_CLK27,      -- video_in_decoder.TD_CLK27
 			video_in_decoder_TD_DATA       => CONNECTED_TO_video_in_decoder_TD_DATA,       --                 .TD_DATA
 			video_in_decoder_TD_HS         => CONNECTED_TO_video_in_decoder_TD_HS,         --                 .TD_HS
 			video_in_decoder_TD_VS         => CONNECTED_TO_video_in_decoder_TD_VS,         --                 .TD_VS
 			video_in_decoder_clk27_reset   => CONNECTED_TO_video_in_decoder_clk27_reset,   --                 .clk27_reset
 			video_in_decoder_TD_RESET      => CONNECTED_TO_video_in_decoder_TD_RESET,      --                 .TD_RESET
-			video_in_decoder_overflow_flag => CONNECTED_TO_video_in_decoder_overflow_flag, --                 .overflow_flag
-			video_rxd                      => CONNECTED_TO_video_rxd,                      --            video.rxd
-			video_txd                      => CONNECTED_TO_video_txd                       --                 .txd
+			video_in_decoder_overflow_flag => CONNECTED_TO_video_in_decoder_overflow_flag  --                 .overflow_flag
 		);
 

@@ -23,14 +23,14 @@
 		.vga_controller_R               (<connected-to-vga_controller_R>),               //                 .R
 		.vga_controller_G               (<connected-to-vga_controller_G>),               //                 .G
 		.vga_controller_B               (<connected-to-vga_controller_B>),               //                 .B
+		.video_rxd                      (<connected-to-video_rxd>),                      //            video.rxd
+		.video_txd                      (<connected-to-video_txd>),                      //                 .txd
 		.video_in_decoder_TD_CLK27      (<connected-to-video_in_decoder_TD_CLK27>),      // video_in_decoder.TD_CLK27
 		.video_in_decoder_TD_DATA       (<connected-to-video_in_decoder_TD_DATA>),       //                 .TD_DATA
 		.video_in_decoder_TD_HS         (<connected-to-video_in_decoder_TD_HS>),         //                 .TD_HS
 		.video_in_decoder_TD_VS         (<connected-to-video_in_decoder_TD_VS>),         //                 .TD_VS
 		.video_in_decoder_clk27_reset   (<connected-to-video_in_decoder_clk27_reset>),   //                 .clk27_reset
 		.video_in_decoder_TD_RESET      (<connected-to-video_in_decoder_TD_RESET>),      //                 .TD_RESET
-		.video_in_decoder_overflow_flag (<connected-to-video_in_decoder_overflow_flag>), //                 .overflow_flag
-		.video_rxd                      (<connected-to-video_rxd>),                      //            video.rxd
-		.video_txd                      (<connected-to-video_txd>)                       //                 .txd
+		.video_in_decoder_overflow_flag (<connected-to-video_in_decoder_overflow_flag>)  //                 .overflow_flag
 	);
 

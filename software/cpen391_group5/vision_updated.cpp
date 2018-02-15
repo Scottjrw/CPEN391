@@ -34,7 +34,7 @@ Gesture_Recognizer::Gesture_Recognizer(void):
 { }
 
 void Gesture_Recognizer::change_gesture_map(Direction dir, GestureCB callback) {
-	int i;
+    unsigned i;
 	for (i = 0; i < (MAX_GESTURES-1); i++) {
 		if (dir == gestures[i]) break;
 	}
@@ -43,13 +43,7 @@ void Gesture_Recognizer::change_gesture_map(Direction dir, GestureCB callback) {
 
 
 
-unsigned Gesture_Recognizer::absDistanceSq(unsigned x1, unsigned x2, unsigned y1, unsigned y2) {
-	 return (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2);
-}
 
-unsigned Gesture_Recognizer::average2Points(unsigned p1, unsigned p2) {
-	return (p1+p2) / 2;
-}
 
 void Gesture_Recognizer::gesture_detect() {
 	Direction dir = NO_MOVE;
@@ -82,7 +76,7 @@ void Gesture_Recognizer::gesture_detect() {
 		case WAIT_STOP:
 			if (dir == NO_MOVE) {
 				if (1000 * (alt_nticks() - stop_begin_ticks) / alt_ticks_per_second() < GESTURE_STOP_MS) {
-					for (int i = 0; i < (MAX_GESTURES-1); i++) {
+					for (unsigned i = 0; i < (MAX_GESTURES-1); i++) {
 						if (gestures[i] == cur_gesture){
 //							printf("Got Gesture: ");
 //							print_gesture(cur_gesture);
@@ -188,8 +182,8 @@ void Gesture_Recognizer::find_dots(void) {
 
     memset(slots, 0, sizeof(slots));
 
-    for (int y = 0; y < DOTS_MAX_Y; y++) {
-        for (int x = 0; x < DOTS_MAX_X; x++) {
+    for (unsigned y = 0; y < DOTS_MAX_Y; y++) {
+        for (unsigned x = 0; x < DOTS_MAX_X; x++) {
             struct rgba pixel;
             // Don't use IORD since we want the cache to work when using NIOS F
             *((uint32_t *) &pixel) = *data;
@@ -201,7 +195,7 @@ void Gesture_Recognizer::find_dots(void) {
                 int free_slot = -1;
                 bool found_slot = false;
 
-                for (int i = 0; i < DOTS_NUM_SLOTS; i++) {
+                for (unsigned i = 0; i < DOTS_NUM_SLOTS; i++) {
                     if (slots[i].count > 0 ) {
                         unsigned distSq = absDistanceSq(slots[i].x, x, slots[i].y, y);
 
@@ -232,7 +226,7 @@ void Gesture_Recognizer::find_dots(void) {
     unsigned int max_count = 0;
     int max_index = -1;
 
-    for (int i = 0; i < DOTS_NUM_SLOTS; i++) {
+    for (unsigned i = 0; i < DOTS_NUM_SLOTS; i++) {
         //printf("Slot %d: x = %u, y = %u, count= %d\n", i, slots[i].x, slots[i].y, slots[i].count);
 
         // Undraw previous X

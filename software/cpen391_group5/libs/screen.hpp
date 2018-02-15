@@ -55,12 +55,12 @@ public:
 	void exit(Current_Screen New_Screen);
 
 	Cursor cursor;
-	bool exited;
 
 private:
-	std::vector<Drawable*> drawables;
-	std::vector<Touchable*> touchables;
-	Current_Screen Next_Screen;
+	bool m_exited;
+	std::vector<Drawable*> m_drawables;
+	std::vector<Touchable*> m_touchables;
+	Current_Screen m_next_screen;
 
 
 };

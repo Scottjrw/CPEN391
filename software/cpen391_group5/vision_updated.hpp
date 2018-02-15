@@ -17,19 +17,6 @@
 #include <array>
 #include "cursor.hpp"
 
-#define DOTS_MAX_X 320
-#define DOTS_MAX_Y 240
-#define DOTS_NUM_SLOTS 4
-#define DOTS_RANGE 50
-#define DOTS_MARKER_SIZE 5
-#define GESTURE_JITTER_RANGE 20
-#define GESTURE_STOP_MS 1000
-#define GESTURE_START_MAX 0
-#define GESTURE_ERR_MAX 10
-#define GESTURE_MAX_MOVE 50
-
-#define MAX_GESTURES 8
-
 
 struct rgba {
 	uint8_t b;
@@ -70,12 +57,18 @@ public:
 
 	point Red_Point;
 
-
-
-
-
-
 private:
+    static constexpr unsigned DOTS_MAX_X = 320;
+    static constexpr unsigned DOTS_MAX_Y = 240;
+    static constexpr unsigned DOTS_NUM_SLOTS = 4;
+    static constexpr unsigned DOTS_RANGE = 50;
+    static constexpr unsigned DOTS_MARKER_SIZE = 5;
+    static constexpr unsigned GESTURE_JITTER_RANGE = 20;
+    static constexpr unsigned GESTURE_STOP_MS = 1000;
+    static constexpr unsigned GESTURE_START_MAX = 0;
+    static constexpr unsigned GESTURE_ERR_MAX = 10;
+    static constexpr unsigned GESTURE_MAX_MOVE = 50;
+    static constexpr unsigned MAX_GESTURES = 8;
 
 	std::array<Direction, MAX_GESTURES> gestures;
 	std::array<GestureCB, MAX_GESTURES> callbacks;
@@ -99,16 +92,13 @@ private:
 
 
 
+    inline unsigned absDistanceSq(unsigned x1, unsigned x2, unsigned y1, unsigned y2) {
+        return (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2);
+    }
 
-	/*
-	 * Absolute Distance Squared
-	 */
-	unsigned absDistanceSq(unsigned x1, unsigned x2, unsigned y1, unsigned y2);
-
-	/*
-	 * Average of two points
-	 */
-	unsigned average2Points(unsigned p1, unsigned p2);
+    inline unsigned average2Points(unsigned p1, unsigned p2) {
+        return (p1+p2) / 2;
+    }
 
 	/*
 	 * Gesture Detector
@@ -129,6 +119,7 @@ private:
 	 * Get Direction
 	 */
 	Direction pointDirection(struct point *prev, struct point *next);
+
 
 
 };

@@ -2,7 +2,10 @@
 #include "system.h"
 #include <stdio.h>
 
-#define SYNC 0x56;
+
+// Used to be a C library, give it a namespace for cleanliness
+namespace Video {
+#define VC0706_SYNC 0x56;
 
 #define VC0706_RESET  0x26
 #define VC0706_GEN_VERSION 0x11
@@ -38,56 +41,56 @@
 #define VC0706_SET_ZOOM 0x52
 #define VC0706_GET_ZOOM 0x53
 
-#define CAMERABUFFSIZ 100
-#define CAMERADELAY 10
+#define VC0706_CAMERABUFFSIZ 100
+#define VC0706_CAMERADELAY 10
 
 #define VC0706_COL_CTRL 0x3C
 #define VC0706_MIRROR_CTRL 0x3A
 
+    bool initialize(const char* file);
+    bool reset(void);
+    bool TVon(void);
+    bool TVoff(void);
+    bool takePicture(void);
+    int *readPicture(int n);
+    bool resumeVideo(void);
+    int frameLength(void);
+    char *getVersion(void);
+    int available();
+    int getDownsize(void);
+    bool setDownsize(int);
+    int getImageSize();
+    bool setImageSize(int);
+    bool getMotionDetect();
+    int getMotionStatus(int);
+    bool motionDetected();
+    bool setMotionDetect(bool f);
+    bool setMotionStatus(int x, int d1, int d2);
+    bool cameraFrameBuffCtrl(int command);
+    int getCompression();
+    bool setCompression(int c);
+    bool imageSettings(int brightness, int contrast, int off_contrast, int hue, int saturation);
+    bool colorControl(int mode);
+    void close();
+    bool mirror_mode_on(void);
 
-bool initialize(char* file);
-bool reset(void);
-bool TVon(void);
-bool TVoff(void);
-bool takePicture(void);
-int *readPicture(int n);
-bool resumeVideo(void);
-int frameLength(void);
-char *getVersion(void);
-int available();
-int getDownsize(void);
-bool setDownsize(int);
-int getImageSize();
-bool setImageSize(int);
-bool getMotionDetect();
-int getMotionStatus(int);
-bool motionDetected();
-bool setMotionDetect(bool f);
-bool setMotionStatus(int x, int d1, int d2);
-bool cameraFrameBuffCtrl(int command);
-int getCompression();
-bool setCompression(int c);
-bool imageSettings(int brightness, int contrast, int off_contrast, int hue, int saturation);
-bool colorControl(int mode);
-void close();
-bool mirror_mode_on(void);
 
+    char* setBaud9600();
+    char* setBaud19200();
+    char* setBaud38400();
+    char* setBaud57600();
+    char* setBaud115200();
 
-char* setBaud9600();
-char* setBaud19200();
-char* setBaud38400();
-char* setBaud57600();
-char* setBaud115200();
+    extern int  serialNum;
+    extern int  camerabuff[VC0706_CAMERABUFFSIZ+1];
+    extern int  bufferLen;
+    extern int frameptr;
+    extern FILE* video_uart;
 
-extern int  serialNum;
-extern int  camerabuff[CAMERABUFFSIZ+1];
-extern int  bufferLen;
-extern int frameptr;
-extern FILE* video_uart;
-
-void common_init(void);
-bool runCommand(int cmd, int args[], int argn, int resp, bool flushflag);
-void sendCommand(int cmd, int args[], int argn);
-int readResponse(int numbytes);
-bool verifyResponse(int command);
-void printBuff(void);
+    void common_init(void);
+    bool runCommand(int cmd, int args[], int argn, int resp, bool flushflag);
+    void sendCommand(int cmd, int args[], int argn);
+    int readResponse(int numbytes);
+    bool verifyResponse(int command);
+    void printBuff(void);
+};
