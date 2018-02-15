@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Wed Feb 14 00:54:08 PST 2018
+ * Generated: Wed Feb 14 20:34:18 PST 2018
  */
 
 /*
@@ -281,8 +281,8 @@
 
 #define ALT_MODULE_CLASS_graphics_controller_0 graphics_controller
 #define GRAPHICS_CONTROLLER_0_BASE 0x4000000
-#define GRAPHICS_CONTROLLER_0_IRQ -1
-#define GRAPHICS_CONTROLLER_0_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define GRAPHICS_CONTROLLER_0_IRQ 2
+#define GRAPHICS_CONTROLLER_0_IRQ_INTERRUPT_CONTROLLER_ID 0
 #define GRAPHICS_CONTROLLER_0_NAME "/dev/graphics_controller_0"
 #define GRAPHICS_CONTROLLER_0_SPAN 67108864
 #define GRAPHICS_CONTROLLER_0_TYPE "graphics_controller"

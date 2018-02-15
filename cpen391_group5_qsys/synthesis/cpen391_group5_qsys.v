@@ -135,10 +135,10 @@ module cpen391_group5_qsys (
 	wire  [31:0] mm_interconnect_1_draw_buffer_s2_writedata;                          // mm_interconnect_1:Draw_Buffer_s2_writedata -> Draw_Buffer:writedata2
 	wire         mm_interconnect_1_draw_buffer_s2_clken;                              // mm_interconnect_1:Draw_Buffer_s2_clken -> Draw_Buffer:clken2
 	wire         graphics_controller_0_avalon_master_waitrequest;                     // mm_interconnect_2:graphics_controller_0_avalon_master_waitrequest -> graphics_controller_0:wait_request
-	wire   [3:0] graphics_controller_0_avalon_master_byteenable;                      // graphics_controller_0:byteenable -> mm_interconnect_2:graphics_controller_0_avalon_master_byteenable
+	wire   [1:0] graphics_controller_0_avalon_master_byteenable;                      // graphics_controller_0:byteenable -> mm_interconnect_2:graphics_controller_0_avalon_master_byteenable
 	wire  [31:0] graphics_controller_0_avalon_master_address;                         // graphics_controller_0:address_out -> mm_interconnect_2:graphics_controller_0_avalon_master_address
 	wire         graphics_controller_0_avalon_master_write;                           // graphics_controller_0:write_master -> mm_interconnect_2:graphics_controller_0_avalon_master_write
-	wire  [31:0] graphics_controller_0_avalon_master_writedata;                       // graphics_controller_0:data_out -> mm_interconnect_2:graphics_controller_0_avalon_master_writedata
+	wire  [15:0] graphics_controller_0_avalon_master_writedata;                       // graphics_controller_0:data_out -> mm_interconnect_2:graphics_controller_0_avalon_master_writedata
 	wire  [31:0] nios2_data_master_readdata;                                          // mm_interconnect_2:nios2_data_master_readdata -> nios2:d_readdata
 	wire         nios2_data_master_waitrequest;                                       // mm_interconnect_2:nios2_data_master_waitrequest -> nios2:d_waitrequest
 	wire         nios2_data_master_debugaccess;                                       // nios2:jtag_debug_module_debugaccess_to_roms -> mm_interconnect_2:nios2_data_master_debugaccess
@@ -234,9 +234,10 @@ module cpen391_group5_qsys (
 	wire         mm_interconnect_2_video_frame_buffer_s2_write;                       // mm_interconnect_2:Video_Frame_Buffer_s2_write -> Video_Frame_Buffer:write2
 	wire  [31:0] mm_interconnect_2_video_frame_buffer_s2_writedata;                   // mm_interconnect_2:Video_Frame_Buffer_s2_writedata -> Video_Frame_Buffer:writedata2
 	wire         mm_interconnect_2_video_frame_buffer_s2_clken;                       // mm_interconnect_2:Video_Frame_Buffer_s2_clken -> Video_Frame_Buffer:clken2
-	wire         irq_mapper_receiver0_irq;                                            // jtag_uart_0:av_irq -> irq_mapper:receiver0_irq
-	wire         irq_mapper_receiver1_irq;                                            // main_timer:irq -> irq_mapper:receiver1_irq
-	wire         irq_mapper_receiver2_irq;                                            // touchscreen_uart:irq -> irq_mapper:receiver2_irq
+	wire         irq_mapper_receiver0_irq;                                            // graphics_controller_0:irq -> irq_mapper:receiver0_irq
+	wire         irq_mapper_receiver1_irq;                                            // jtag_uart_0:av_irq -> irq_mapper:receiver1_irq
+	wire         irq_mapper_receiver2_irq;                                            // main_timer:irq -> irq_mapper:receiver2_irq
+	wire         irq_mapper_receiver3_irq;                                            // touchscreen_uart:irq -> irq_mapper:receiver3_irq
 	wire  [31:0] nios2_d_irq_irq;                                                     // irq_mapper:sender_irq -> nios2:d_irq
 	wire         rst_controller_reset_out_reset;                                      // rst_controller:reset_out -> [Draw_Buffer:reset, Draw_DMA:reset, Draw_Resampler:reset, Draw_Scaler:reset, Video_Blender:reset, Video_Frame_Buffer:reset, Video_In_CSC:reset, Video_In_Chroma:reset, Video_In_Clipper:reset, Video_In_DMA:reset, Video_In_Decoder:reset, Video_In_Scaler:reset, Video_Out_DMA:reset, Video_Out_FIFO:reset_stream_in, Video_Out_Resampler:reset, Video_Out_Scaler:reset, graphics_controller_0:reset, irq_mapper:reset, jtag_uart_0:rst_n, led_out_pio:reset_n, main_timer:reset_n, mm_interconnect_0:Video_In_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_1:Draw_DMA_reset_reset_bridge_in_reset_reset, mm_interconnect_2:graphics_controller_0_reset_reset_bridge_in_reset_reset, nios2:reset_n, rst_translator:in_reset, sdram:reset_n, switch_in_pio:reset_n, touchscreen_uart:reset_n]
 	wire         rst_controller_reset_out_reset_req;                                  // rst_controller:reset_req -> [Draw_Buffer:reset_req, Video_Frame_Buffer:reset_req, nios2:reset_req, rst_translator:reset_req_in]
@@ -568,18 +569,19 @@ module cpen391_group5_qsys (
 		.rec_cmp_y   (6'b000101),
 		.rec_inc_y   (6'b010110)
 	) graphics_controller_0 (
-		.clk          (clocks_sys_clk_clk),                                   //         clock.clk
-		.reset        (rst_controller_reset_out_reset),                       //         reset.reset
-		.mm_writedata (mm_interconnect_2_graphics_controller_0_mm_writedata), //            mm.writedata
-		.mm_address   (mm_interconnect_2_graphics_controller_0_mm_address),   //              .address
-		.mm_write     (mm_interconnect_2_graphics_controller_0_mm_write),     //              .write
-		.mm_readdata  (mm_interconnect_2_graphics_controller_0_mm_readdata),  //              .readdata
-		.mm_read      (mm_interconnect_2_graphics_controller_0_mm_read),      //              .read
-		.write_master (graphics_controller_0_avalon_master_write),            // avalon_master.write
-		.wait_request (graphics_controller_0_avalon_master_waitrequest),      //              .waitrequest
-		.byteenable   (graphics_controller_0_avalon_master_byteenable),       //              .byteenable
-		.address_out  (graphics_controller_0_avalon_master_address),          //              .address
-		.data_out     (graphics_controller_0_avalon_master_writedata)         //              .writedata
+		.clk          (clocks_sys_clk_clk),                                   //            clock.clk
+		.reset        (rst_controller_reset_out_reset),                       //            reset.reset
+		.mm_writedata (mm_interconnect_2_graphics_controller_0_mm_writedata), //               mm.writedata
+		.mm_address   (mm_interconnect_2_graphics_controller_0_mm_address),   //                 .address
+		.mm_write     (mm_interconnect_2_graphics_controller_0_mm_write),     //                 .write
+		.mm_readdata  (mm_interconnect_2_graphics_controller_0_mm_readdata),  //                 .readdata
+		.mm_read      (mm_interconnect_2_graphics_controller_0_mm_read),      //                 .read
+		.write_master (graphics_controller_0_avalon_master_write),            //    avalon_master.write
+		.wait_request (graphics_controller_0_avalon_master_waitrequest),      //                 .waitrequest
+		.byteenable   (graphics_controller_0_avalon_master_byteenable),       //                 .byteenable
+		.address_out  (graphics_controller_0_avalon_master_address),          //                 .address
+		.data_out     (graphics_controller_0_avalon_master_writedata),        //                 .writedata
+		.irq          (irq_mapper_receiver0_irq)                              // interrupt_sender.irq
 	);
 
 	cpen391_group5_qsys_jtag_uart_0 jtag_uart_0 (
@@ -592,7 +594,7 @@ module cpen391_group5_qsys (
 		.av_write_n     (~mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_write),      //                  .write_n
 		.av_writedata   (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_writedata),   //                  .writedata
 		.av_waitrequest (mm_interconnect_2_jtag_uart_0_avalon_jtag_slave_waitrequest), //                  .waitrequest
-		.av_irq         (irq_mapper_receiver0_irq)                                     //               irq.irq
+		.av_irq         (irq_mapper_receiver1_irq)                                     //               irq.irq
 	);
 
 	cpen391_group5_qsys_led_out_pio led_out_pio (
@@ -614,7 +616,7 @@ module cpen391_group5_qsys (
 		.readdata   (mm_interconnect_2_main_timer_s1_readdata),   //      .readdata
 		.chipselect (mm_interconnect_2_main_timer_s1_chipselect), //      .chipselect
 		.write_n    (~mm_interconnect_2_main_timer_s1_write),     //      .write_n
-		.irq        (irq_mapper_receiver1_irq)                    //   irq.irq
+		.irq        (irq_mapper_receiver2_irq)                    //   irq.irq
 	);
 
 	cpen391_group5_qsys_nios2 nios2 (
@@ -694,7 +696,7 @@ module cpen391_group5_qsys (
 		.readyfordata  (),                                                    //                    .readyfordata
 		.rxd           (touchscreen_rxd),                                     // external_connection.export
 		.txd           (touchscreen_txd),                                     //                    .export
-		.irq           (irq_mapper_receiver2_irq)                             //                 irq.irq
+		.irq           (irq_mapper_receiver3_irq)                             //                 irq.irq
 	);
 
 	cpen391_group5_qsys_mm_interconnect_0 mm_interconnect_0 (
@@ -848,6 +850,7 @@ module cpen391_group5_qsys (
 		.receiver0_irq (irq_mapper_receiver0_irq),       // receiver0.irq
 		.receiver1_irq (irq_mapper_receiver1_irq),       // receiver1.irq
 		.receiver2_irq (irq_mapper_receiver2_irq),       // receiver2.irq
+		.receiver3_irq (irq_mapper_receiver3_irq),       // receiver3.irq
 		.sender_irq    (nios2_d_irq_irq)                 //    sender.irq
 	);
 
