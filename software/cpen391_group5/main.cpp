@@ -6,7 +6,7 @@
 #include "SimpleGraphics.hpp"
 #include "vision_updated.hpp"
 #include <iostream>
-#include "video.h"
+#include "video.hpp"
 #include "screen.hpp"
 #include "cursor.hpp"
 #include "UI.hpp"

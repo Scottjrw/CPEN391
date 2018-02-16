@@ -1,10 +1,6 @@
 /*
- * video.c
- *
- *  Created on: Feb 5, 2018
- *      Author: Daniel
  */
-#include "video.h"
+#include "video.hpp"
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
