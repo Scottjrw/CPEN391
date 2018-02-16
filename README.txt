@@ -25,6 +25,13 @@ test_pixel_cluster_qsys/ -- Qsys Generation Directory
 
 
 -- Quartus --
-cpen391_group5.qpf
-cpen391_group5.qsf
+cpen391_group5.qpf -- Project File
+cpen391_group5.qsf -- Settings File
+cpen391_group5.sv -- Top Module Verilog Source
 
+# Provided files (Needed for synthesis)
+DE1_SoC.sdc 
+DE1_SoC_Quartus_Settings_File.qsf
+
+# SOF
+output_files/cpen391_group5_time_limited.sof -- Last Synthesis (Should be same one used in Demo)
