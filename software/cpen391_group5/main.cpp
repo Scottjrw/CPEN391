@@ -18,13 +18,13 @@
 constexpr unsigned SG_MAX_WIDTH = 160;
 constexpr unsigned SG_MAX_HEIGHT = 120;
 
-int brightness = 0x00;
-int contrast = 0x80;
-int saturation = 0x40;
-
 Direction selected_gesture;
 
 int selected_action;
+
+int brightness = 0x00;
+int contrast = 0x80;
+int saturation = 102;
 
 
 void home_screen(SimpleGraphics &graphics, TouchControl &touch, Screen &screen);
@@ -116,7 +116,7 @@ int main(int argc, const char * argv[]) {
 
     pix_cluster.reset();
     pix_cluster.compare_enable(true, true, true);
-    pix_cluster.compare_value(120, 60, 60);
+    pix_cluster.compare_value(150, 60, 60);
     pix_cluster.compare_less_than(false, true, true);
     pix_cluster.range(50);
 
@@ -333,7 +333,7 @@ int main(int argc, const char * argv[]) {
 					std::cout << "Turn On Lights" << std::endl;
 					temp_action = 1;
 					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 90, action_string);
-					action_string = "LIGHT ON";
+					action_string = "LED ON";
 					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 90, action_string);
 
 					});
@@ -343,7 +343,7 @@ int main(int argc, const char * argv[]) {
 					std::cout << "Turn Off Lights" << std::endl;
 					temp_action = 2;
 					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 90, action_string);
-					action_string = "LIGHT OFF";
+					action_string = "LED OFF";
 					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 90, action_string);
 
 					});

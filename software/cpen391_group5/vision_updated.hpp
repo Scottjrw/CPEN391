@@ -64,10 +64,10 @@ private:
     static constexpr unsigned DOTS_NUM_SLOTS = 4;
     static constexpr unsigned DOTS_RANGE = 50;
     static constexpr unsigned DOTS_MARKER_SIZE = 5;
-    static constexpr unsigned GESTURE_JITTER_RANGE = 20;
-    static constexpr unsigned GESTURE_STOP_MS = 1000;
+    static constexpr unsigned GESTURE_JITTER_RANGE = 12;
+    static constexpr unsigned GESTURE_STOP_MS = 500;
     static constexpr unsigned GESTURE_START_MAX = 0;
-    static constexpr unsigned GESTURE_ERR_MAX = 10;
+    static constexpr unsigned GESTURE_ERR_MAX = 20;
     static constexpr unsigned GESTURE_MAX_MOVE = 50;
     static constexpr unsigned MAX_GESTURES = 8;
 

@@ -156,7 +156,7 @@ Direction Gesture_Recognizer::pointDirection(struct point *prev, struct point *n
 			return RIGHT;
 		else
 			return LEFT;
-	} else if (abs_slope > 2) {
+	} else if (abs_slope > 1.7) {
 		if (next->y < prev->y){
 			return UP;}
 		else

@@ -68,6 +68,9 @@ cpen391_group5_qsys sys_inst(
     .video_rxd(GPIO_1[32]),
     .video_txd(GPIO_1[34]),
 
+    .wifi_rxd(GPIO_1[29]),
+    .wifi_txd(GPIO_1[31]),
+
     // VGA
     .vga_controller_CLK(VGA_CLK),
     .vga_controller_HS(VGA_HS),
