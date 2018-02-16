@@ -13,6 +13,7 @@
 #include "touch.hpp"
 #include "PixelCluster.hpp"
 #include "io.h"
+#include "wifi.hpp"
 
 constexpr unsigned SG_MAX_WIDTH = 160;
 constexpr unsigned SG_MAX_HEIGHT = 120;
@@ -20,6 +21,11 @@ constexpr unsigned SG_MAX_HEIGHT = 120;
 int brightness = 0x00;
 int contrast = 0x80;
 int saturation = 0x40;
+
+Direction selected_gesture;
+
+int selected_action;
+
 
 void home_screen(SimpleGraphics &graphics, TouchControl &touch, Screen &screen);
 void image_settings_screen(SimpleGraphics &graphics, TouchControl &touch, Screen &screen);
@@ -57,28 +63,39 @@ int main(int argc, const char * argv[]) {
 		printf("mirror failed\n");
 	}
 
+	FILE *wifi_file = Wifi::Init(WIFI_UART_NAME);
+
 
 	/*
 	 * Gesture Initialization
 	 */
-	Gesture_Recognizer::GestureCB cb_up = []{
-		std::cout << "CB: UP" << std::endl;
+	Gesture_Recognizer::GestureCB led_on = [&wifi_file]{
+		std::cout << "CB: LED ON" << std::endl;
+		Wifi::SendCommand((char *)Wifi::LED_ON, wifi_file);
 	};
 
-	Gesture_Recognizer::GestureCB cb_down = []{
-		std::cout << "CB: DOWN" << std::endl;
+	Gesture_Recognizer::GestureCB led_off = [&wifi_file]{
+		std::cout << "CB: LED OFF" << std::endl;
+		Wifi::SendCommand((char *)Wifi::LED_OFF, wifi_file);
 	};
 
-	Gesture_Recognizer::GestureCB cb_left = []{
-		std::cout << "CB: LEFT" << std::endl;
+	Gesture_Recognizer::GestureCB light_on = [&wifi_file]{
+		std::cout << "CB: LIGHT ON" << std::endl;
+		Wifi::SendCommand((char *)Wifi::LIGHT_ON, wifi_file);
 	};
 
-	Gesture_Recognizer::GestureCB cb_right = []{
-		std::cout << "CB: RIGHT" << std::endl;
+	Gesture_Recognizer::GestureCB light_off = [&wifi_file]{
+		std::cout << "CB: LIGHT OFF" << std::endl;
+		Wifi::SendCommand((char *)Wifi::LIGHT_OFF, wifi_file);
 	};
 
 
 	Gesture_Recognizer GR;
+
+	GR.change_gesture_map(Direction(UP), led_on);
+	GR.change_gesture_map(Direction(DOWN), led_off);
+	GR.change_gesture_map(Direction(LEFT), light_on);
+	GR.change_gesture_map(Direction(RIGHT), light_off);
 
 
 
@@ -111,10 +128,19 @@ int main(int argc, const char * argv[]) {
 		switch(s) {
 		case HOME: 
         {
-        	GR.change_gesture_map(Direction(UP), cb_up);
-			GR.change_gesture_map(Direction(DOWN), cb_down);
-			GR.change_gesture_map(Direction(LEFT), cb_left);
-			GR.change_gesture_map(Direction(RIGHT), cb_right);
+
+        	if (selected_action == 1){
+				GR.change_gesture_map(selected_gesture, led_on);
+			}
+			else if (selected_action == 2){
+				GR.change_gesture_map(selected_gesture, led_off);
+			}
+			else if (selected_action == 2){
+				GR.change_gesture_map(selected_gesture, light_on);
+			}
+			else if (selected_action == 2){
+				GR.change_gesture_map(selected_gesture, light_off);
+			}
 
             Video::imageSettings(brightness, contrast, 0x80, 0x00, saturation);
 			Button title(graphics, touch, {0, 0}, {100, 30}, "LIGHT CONTROLLER",
@@ -266,9 +292,12 @@ int main(int argc, const char * argv[]) {
 
 		case GESTURE_SETTINGS: {
 			Screen gesture_settings(graphics, touch);
-			int temp_brightness;
-			int temp_contrast;
-			int temp_saturation;
+			int temp_action;
+			Direction temp_dir;
+
+			std::string action_string;
+			std::string dir_string;
+
 
 			Button back(graphics, touch, {0, 0}, {27, 120}, "exit",
 						SimpleGraphics::rgba(255, 255, 255, 255),
@@ -285,8 +314,10 @@ int main(int argc, const char * argv[]) {
 						SimpleGraphics::rgba(255, 140, 102, 255),
 						SimpleGraphics::rgba(100, 100, 100, 255));
 
-			save.onTouch([&temp_brightness, &temp_contrast, &temp_saturation, &screen] (Touchable *, Point p) {
+			save.onTouch([&temp_action, &temp_dir, &screen] (Touchable *, Point p) {
 					std::cout << "SAVE" << std::endl;
+					selected_action = temp_action;
+					selected_gesture = temp_dir;
 					screen.clear();
 					screen.exit(Current_Screen(HOME));
 
@@ -296,28 +327,44 @@ int main(int argc, const char * argv[]) {
 					SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(60, 60, 60, 255));
 
-			actions.newItem(graphics, touch, "Light On", SimpleGraphics::rgba(255, 255, 255, 255),
+			actions.newItem(graphics, touch, "LED On", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(70, 70, 70, 255),
-					[] (Touchable *, Point p) {
+					[&temp_action, &action_string, &graphics] (Touchable *, Point p) {
 					std::cout << "Turn On Lights" << std::endl;
+					temp_action = 1;
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 90, action_string);
+					action_string = "LIGHT ON";
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 90, action_string);
 
 					});
-			actions.newItem(graphics, touch, "Light Off", SimpleGraphics::rgba(255, 255, 255, 255),
+			actions.newItem(graphics, touch, "LED Off", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(80, 80, 80, 255),
-					[] (Touchable *, Point p) {
+					[&temp_action, &action_string, &graphics] (Touchable *, Point p) {
 					std::cout << "Turn Off Lights" << std::endl;
+					temp_action = 2;
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 90, action_string);
+					action_string = "LIGHT OFF";
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 90, action_string);
 
 					});
-			actions.newItem(graphics, touch, "Increase", SimpleGraphics::rgba(255, 255, 255, 255),
+			actions.newItem(graphics, touch, "SWITCH ON", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(90, 90, 90, 255),
-					[] (Touchable *, Point p) {
-					std::cout << "Increase Brightness" << std::endl;
+					[&temp_action, &action_string, &graphics] (Touchable *, Point p) {
+					std::cout << "Switch On" << std::endl;
+					temp_action = 3;
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 90, action_string);
+					action_string = "SWITCH ON";
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 90, action_string);
 
 					});
-			actions.newItem(graphics, touch, "Decrease", SimpleGraphics::rgba(255, 255, 255, 255),
+			actions.newItem(graphics, touch, "SWITCH OFF", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(100, 100, 100, 255),
-					[] (Touchable *, Point p) {
+					[&temp_action, &action_string, &graphics] (Touchable *, Point p) {
 					std::cout << "Decrease Brightness" << std::endl;
+					temp_action = 4;
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 90, action_string);
+					action_string = "SWITCH OFF";
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 90, action_string);
 
 					});
 
@@ -327,50 +374,82 @@ int main(int argc, const char * argv[]) {
 
 			gestures.newItem(graphics, touch, "Up", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(70, 70, 70, 255),
-					[] (Touchable *, Point p) {
+					[&temp_dir, &dir_string, &graphics] (Touchable *, Point p) {
 					std::cout << "Up" << std::endl;
+					temp_dir = Direction(UP);
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 100, dir_string);
+					dir_string = "UP";
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 100, dir_string);
 
 					});
 			gestures.newItem(graphics, touch, "Down", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(80, 80, 80, 255),
-					[] (Touchable *, Point p) {
+					[&temp_dir, &dir_string, &graphics] (Touchable *, Point p) {
 					std::cout << "Down" << std::endl;
+					temp_dir = Direction(DOWN);
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 100, dir_string);
+					dir_string = "DOWN";
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 100, dir_string);
 
 					});
 			gestures.newItem(graphics, touch, "Left", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(90, 90, 90, 255),
-					[] (Touchable *, Point p) {
+					[&temp_dir, &dir_string, &graphics] (Touchable *, Point p) {
 					std::cout << "Left" << std::endl;
+					temp_dir = Direction(LEFT);
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 100, dir_string);
+					dir_string = "LEFT";
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 100, dir_string);
 
 					});
 			gestures.newItem(graphics, touch, "Right", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(100, 100, 100, 255),
-					[] (Touchable *, Point p) {
+					[&temp_dir, &dir_string, &graphics] (Touchable *, Point p) {
 					std::cout << "Right" << std::endl;
+					temp_dir = Direction(RIGHT);
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 100, dir_string);
+					dir_string = "RIGHT";
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 100, dir_string);
 
 					});
 			gestures.newItem(graphics, touch, "Up-Left", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(110, 110, 110, 255),
-					[] (Touchable *, Point p) {
+					[&temp_dir, &dir_string, &graphics] (Touchable *, Point p) {
 					std::cout << "Up-Left" << std::endl;
+					temp_dir = Direction(UP_LEFT);
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 100, dir_string);
+					dir_string = "UP-LEFT";
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 100, dir_string);
 
 					});
 			gestures.newItem(graphics, touch, "Down-Left", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(120, 120, 120, 255),
-					[] (Touchable *, Point p) {
+					[&temp_dir, &dir_string, &graphics] (Touchable *, Point p) {
 					std::cout << "Down-Left" << std::endl;
+					temp_dir = Direction(DOWN_LEFT);
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 100, dir_string);
+					dir_string = "DOWN-LEFT";
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 100, dir_string);
 
 					});
 			gestures.newItem(graphics, touch, "Up-Right", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(130, 130, 130, 255),
-					[] (Touchable *, Point p) {
+					[&temp_dir, &dir_string, &graphics] (Touchable *, Point p) {
 					std::cout << "Up-Right" << std::endl;
+					temp_dir = Direction(UP_RIGHT);
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 100, dir_string);
+					dir_string = "UP-RIGHT";
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 100, dir_string);
 
 					});
-			gestures.newItem(graphics, touch, "Up-Left", SimpleGraphics::rgba(255, 255, 255, 255),
+			gestures.newItem(graphics, touch, "Down-Right", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(140, 140, 140, 255),
-					[] (Touchable *, Point p) {
+					[&temp_dir, &dir_string, &graphics] (Touchable *, Point p) {
 					std::cout << "Down-Right" << std::endl;
+					temp_dir = Direction(DOWN_RIGHT);
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 0), 30, 100, dir_string);
+					dir_string = "DOWN-RIGHT";
+					graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 30, 100, dir_string);
 
 					});
 
@@ -390,6 +469,7 @@ int main(int argc, const char * argv[]) {
 			screen.enable_touch();
 
 			graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 40, 5, "GESTURE SETTINGS");
+
 			s = screen.run();
 			break;
 		}
