@@ -15,6 +15,7 @@
 #include <utility>
 #include "UI.hpp"
 #include "cursor.hpp"
+#include "PixelCluster.hpp"
 
 using namespace UI;
 
@@ -48,19 +49,26 @@ public:
 
 	void addTouchable(Touchable* element);
 
+    void addPixelCluster(PixelCluster *pixel);
+
 	Screen(SimpleGraphics &graphics, TouchControl &touch);
 
 	Current_Screen run(void);
 
 	void exit(Current_Screen New_Screen);
 
-	Cursor cursor;
 
 private:
 	bool m_exited;
 	std::vector<Drawable*> m_drawables;
 	std::vector<Touchable*> m_touchables;
+    PixelCluster *m_cluster;
 	Current_Screen m_next_screen;
+	Cursor cursor;
+    Cursor red_dot_cursor;
+
+    static constexpr unsigned RED_DOT_POLL_MS = 50;
+
 
 
 };

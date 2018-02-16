@@ -58,8 +58,6 @@ public:
 	 */
 	void update_dots(point red_dot);
 
-	point Red_Point;
-
 private:
     static constexpr unsigned DOTS_MAX_X = 320;
     static constexpr unsigned DOTS_MAX_Y = 240;

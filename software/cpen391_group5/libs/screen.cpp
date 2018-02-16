@@ -6,6 +6,7 @@
  */
 
 
+#include <sys/alt_alarm.h>
 #include "screen.hpp"
 #include <stdio.h>
 
@@ -14,11 +15,13 @@ using namespace UI;
 Screen::Screen(SimpleGraphics &graphics, TouchControl &touch):
 	Drawable(graphics),
 	Touchable(touch),
-	cursor(m_graphics, SimpleGraphics::rgba(0, 255, 0, 255), 4),
 	m_exited(false),
 	m_drawables(),
 	m_touchables(),
-	m_next_screen()
+    m_cluster(nullptr),
+	m_next_screen(),
+	cursor(m_graphics, SimpleGraphics::rgba(0, 255, 0, 255), 4),
+    red_dot_cursor(m_graphics, SimpleGraphics::rgba(0, 0, 255, 255), 4)
 {
 }
 
@@ -48,6 +51,7 @@ void Screen::enable_touch() {
 			if (touch->touch(p)) break;
 		}
 		cursor.update(p);
+        cursor.draw();
 	});
 }
 
@@ -66,10 +70,32 @@ void Screen::addTouchable(Touchable* element) {
 	m_touchables.push_back(element);
 }
 
+void Screen::addPixelCluster(PixelCluster *pixel) {
+    m_cluster = pixel;
+}
+
 
 Current_Screen Screen::run(void) {
+    unsigned last_poll_ticks = 0;
 	while(m_exited == false){
 		m_touch.trypoll();
+
+        unsigned now = alt_nticks();
+        unsigned ms = 1000 * (now - last_poll_ticks) / alt_ticks_per_second();
+
+        if (m_cluster != nullptr && ms > RED_DOT_POLL_MS) {
+            unsigned x, y, count;
+            m_cluster->poll(x, y, count);
+
+            red_dot_cursor.undraw();
+
+            red_dot_cursor.update({x/2, y/2});
+
+            red_dot_cursor.draw();
+
+            last_poll_ticks = now;
+        }
+
 	}
 	return m_next_screen;
 

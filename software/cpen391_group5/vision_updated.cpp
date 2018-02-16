@@ -18,7 +18,6 @@
 
 
 Gesture_Recognizer::Gesture_Recognizer(void):
-			Red_Point(),
 			gestures({UP, DOWN, LEFT, RIGHT, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT}),
 			callbacks(),
 			current_point(),

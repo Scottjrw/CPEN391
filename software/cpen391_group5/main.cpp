@@ -103,17 +103,14 @@ int main(int argc, const char * argv[]) {
     pix_cluster.compare_less_than(false, true, true);
     pix_cluster.range(50);
 
-
-    pix_cluster.startIRQ();
     graphics.startIRQ();
 
 	while (1){
 		Screen screen(graphics, touch);
+        Cursor red_dot_cursor(graphics, SimpleGraphics::rgba(0, 255, 0, 255), 2);
 		switch(s) {
 		case HOME: 
         {
-        	Cursor red_dot_cursor(graphics, SimpleGraphics::rgba(255, 0, 0, 255), 4);
-
         	GR.change_gesture_map(Direction(UP), cb_up);
 			GR.change_gesture_map(Direction(DOWN), cb_down);
 			GR.change_gesture_map(Direction(LEFT), cb_left);
@@ -158,9 +155,8 @@ int main(int argc, const char * argv[]) {
 
 					});
 
-			pix_cluster.isrCB([&red_dot_cursor, &GR] (PixelCluster *, unsigned x, unsigned y, unsigned count) {
-				red_dot_cursor.update({x/2,y/2});
-				GR.update_dots({x,y,count});
+			pix_cluster.isrCB([&GR] (PixelCluster *, unsigned x, unsigned y, unsigned count) {
+                    GR.update_dots({x,y,count});
 			});
 
 			screen.addDrawable(&title);
@@ -168,12 +164,19 @@ int main(int argc, const char * argv[]) {
 			screen.addDrawable(&team_name);
 			screen.addDrawable(&menu);
 			screen.addTouchable(&menu);
+            screen.addPixelCluster(&pix_cluster);
 
 			screen.draw();
 			screen.enable_touch();
 			touch.touch_enable();
+            pix_cluster.startIRQ();
+
 			s = screen.run();
+
+            pix_cluster.stopIRQ();
+            usleep(10000);
 			pix_cluster.isrCB(nullptr);
+            usleep(10000);
 
 			break;
 		}
@@ -233,8 +236,6 @@ int main(int argc, const char * argv[]) {
 					screen.exit(Current_Screen(HOME));
 
 					});
-
-			pix_cluster.isrCB(nullptr);
 
 
 
@@ -372,9 +373,6 @@ int main(int argc, const char * argv[]) {
 					std::cout << "Down-Right" << std::endl;
 
 					});
-
-			pix_cluster.isrCB(nullptr);
-
 
 
 		//	gesture_settings.addDrawable(&background);

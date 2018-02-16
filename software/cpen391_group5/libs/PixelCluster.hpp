@@ -1,3 +1,5 @@
+#ifndef PIXELCLUSTER_HPP
+#define PIXELCLUSTER_HPP
 #include <stdint.h>
 #include <functional>
 #include <iostream>
@@ -10,6 +12,7 @@ public:
     typedef std::function<void(PixelCluster *, unsigned x, unsigned y, unsigned count)> ClusterCB;
 
     void startIRQ();
+    void stopIRQ();
 
     // Set callback
     void isrCB(ClusterCB cb);
@@ -72,3 +75,5 @@ private:
     static constexpr uintptr_t Debug_3_Register =         40;
 
 };
+
+#endif

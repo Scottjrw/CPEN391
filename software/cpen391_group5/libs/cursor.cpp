@@ -12,10 +12,11 @@ Cursor::Cursor(SimpleGraphics &graphics, SimpleGraphics::rgba_t color, int radiu
 void Cursor::draw(){
     // draw new Cursor
     // store new covered Pixcel Points
-	draw_cursor(m_color, m_center.x, m_center.y, m_radius, m_ColourPixels);
+	draw_cursor(m_color, m_center.x, m_center.y, m_radius);
 }
 
-void Cursor::draw_cursor(SimpleGraphics::rgba_t color, unsigned x, unsigned y, int radius, std::vector<ColourPoint> &pointPixels) {
+void Cursor::draw_cursor(SimpleGraphics::rgba_t color, unsigned x, unsigned y, int radius) {
+    m_ColourPixels.clear();
 	for (int i = -radius; i <= radius; i++) {
 		for (int j = -radius; j <= radius; j++) {
 			if (i == j || -i == j) {
@@ -25,7 +26,7 @@ void Cursor::draw_cursor(SimpleGraphics::rgba_t color, unsigned x, unsigned y, i
 				coveredPoint.y = y+j;
 				coveredPoint.color = m_graphics.read_pixel(coveredPoint.x, coveredPoint.y);
 
-				pointPixels.push_back(coveredPoint);
+				m_ColourPixels.push_back(coveredPoint);
 
 				m_graphics.draw_pixel(color, x + i, y + j);
 			}
@@ -46,12 +47,6 @@ void Cursor::undraw(){
 }
 
 void Cursor::update(Point center){
-
     m_center = center;
-
-    undraw();
-
-    draw();
-
 }
 

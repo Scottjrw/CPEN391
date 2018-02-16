@@ -26,7 +26,7 @@ public:
     virtual void draw();
     virtual void undraw();
 
-    void draw_cursor(SimpleGraphics::rgba_t color, unsigned x, unsigned y, int radius, std::vector<ColourPoint> &pointPixels);
+    void draw_cursor(SimpleGraphics::rgba_t color, unsigned x, unsigned y, int radius);
 
     Cursor(SimpleGraphics &graphics, SimpleGraphics::rgba_t color, int radius);
 

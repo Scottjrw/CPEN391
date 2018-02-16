@@ -9,7 +9,17 @@ void PixelCluster::startIRQ() {
 
     assert(status == 0);
 
+    status = alt_ic_irq_enable(m_ic_id, m_irq_id);
+
+    assert(status == 0);
+
     reset();
+}
+
+void PixelCluster::stopIRQ() {
+    int status = alt_ic_irq_disable(m_ic_id, m_irq_id);
+    assert(status == 0);
+
 }
 
 void PixelCluster::isrCB(PixelCluster::ClusterCB cb) {
@@ -92,8 +102,10 @@ void PixelCluster::gesture_interrupt(void *gestureptr) {
     gesture->m_last_y = IORD_32DIRECT(gesture->m_base, Max_Y_Register);
     gesture->m_last_count = IORD_32DIRECT(gesture->m_base, Max_Count_Register);
 
-    if (gesture->m_cb != nullptr)
-        gesture->m_cb(gesture, gesture->m_last_x, gesture->m_last_y, gesture->m_last_count);
+    ClusterCB cb = gesture->m_cb;
+
+    if (cb != nullptr)
+        cb(gesture, gesture->m_last_x, gesture->m_last_y, gesture->m_last_count);
 
     gesture->reset();
 
