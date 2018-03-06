@@ -2,7 +2,6 @@
 import face_recognition
 import json
 from flask import Flask, jsonify, make_response, abort, request
-from db import *
 from playhouse.shortcuts import model_to_dict, dict_to_model
 from flask.ext.uploads import UploadSet, configure_uploads, IMAGES
 
