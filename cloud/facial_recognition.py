@@ -2,7 +2,7 @@
 import face_recognition
 import json
 from flask import Flask, jsonify, make_response, abort, request
-from flask.ext.uploads import UploadSet, configure_uploads, IMAGES
+from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 app = Flask(__name__)
 
@@ -44,4 +44,4 @@ def detect():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=1000)
+    app.run(host='0.0.0.0', port=6000)
