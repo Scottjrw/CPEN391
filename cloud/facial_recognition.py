@@ -50,7 +50,8 @@ def upload():
 			flash('No selected file')
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
-			face_encoding = face_recognition.face_encodings(file)[0]
+			picture = face_recognition.load_image_file(file)
+			face_encoding = face_recognition.face_encodings(picture)[0]
 
 			text_file = open("Output.txt", "w")
 			text_file.write(face_encoding)
