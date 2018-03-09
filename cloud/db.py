@@ -12,7 +12,7 @@ class BaseModel(Model):
 
 class Users(BaseModel):
     user_id = TextField()
-    photo_encoding = TextField()
+    photo_encoding = BlobField()
     #created_date = DateTimeField(default=datetime.datetime.now)
 
 

@@ -54,7 +54,7 @@ def upload():
 			face_encoding = face_recognition.face_encodings(picture)[0]
 
 			text_file = open("Output.txt", "w")
-			text_file.write(face_encoding)
+			text_file.write(face_encoding.tostring())
 			text_file.close()
 			return
 
