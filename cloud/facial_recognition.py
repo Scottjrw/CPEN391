@@ -5,6 +5,9 @@ import os
 from flask import Flask, jsonify, make_response, abort, request, redirect, url_for
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug import secure_filename
+from os.path import expanduser
+
+home = expanduser("~")
 
 app = Flask(__name__)
 
@@ -16,6 +19,17 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.before_request
+def before_request():
+    db.connect()
+
+
+@app.after_request
+def after_request(response):
+    db.close()
+    return response
+
 
 @app.route('/')
 def hello_world():
@@ -35,18 +49,12 @@ def upload():
 			flash('No selected file')
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
-			filename = secure_filename(file.filename)
-			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-			return redirect(url_for('upload', filename='photo.jpg'))
-	return '''
-	<!doctype html>
-	<title>Upload new File</title>
-	<h1>Upload new File</h1>
-	<form method=post enctype=multipart/form-data>
-	  <p><input type=file name=file>
-		 <input type=submit value=Upload>
-	</form>
-	'''
+			face_encoding = face_recognition.face_encodings(file)[0]
+
+			text_file = open("Output.txt", "w")
+			text_file.write(face_encoding)
+			text_file.close()
+			return
 
 
 @app.route('/detect', methods=['GET'])    

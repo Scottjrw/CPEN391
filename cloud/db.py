@@ -10,16 +10,21 @@ class BaseModel(Model):
         database = db
 
 
-class User(BaseModel):
+class Users(BaseModel):
     user_id = TextField()
-    photo = TextField()
+    photo_encoding = TextField()
     #created_date = DateTimeField(default=datetime.datetime.now)
 
 
-def addUser(user_id, photo):
-    t = Transcript.create(user_id=user_id, script=transcript)
+def addUser(user_id, photo_encoding):
+    t = Users.create(user_id=user_id, photo_encoding=photo_encoding)
     t.save()
 
 
-def getTranscript(user_id):
-    return Transcript.select().where(Transcript.user_id == user_id)
+def getUser(user_id):
+    return Users.select().where(Transcript.user_id == user_id)
+
+
+def create_tables():
+    with db:
+        db.create_tables([Row])
