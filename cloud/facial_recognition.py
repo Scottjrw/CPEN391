@@ -56,7 +56,7 @@ def upload():
 			text_file = open("Output.txt", "wb")
 			text_file.write(face_encoding.tostring())
 			text_file.close()
-			return
+			return 'New Person in front of screen.'
 
 
 @app.route('/detect', methods=['GET'])    
