@@ -64,9 +64,9 @@ def detect():
 	results = face_recognition.compare_faces([my_face_encoding], unknown_face_encoding)
 
 	if results[0] == True:
-	    print("It's a picture of me!")
+	    return 'It is a picture of me!'
 	else:
-	    print("It's not a picture of me!")
+	    print 'It is not a picture of me!'
 
 
 
