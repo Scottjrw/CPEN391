@@ -4,49 +4,50 @@
 
 
 // Used to be a C library, give it a namespace for cleanliness
-namespace Video {
-#define VC0706_SYNC 0x56;
+#define VIDEO_SYNC 0x56;
 
-#define VC0706_RESET  0x26
-#define VC0706_GEN_VERSION 0x11
-#define VC0706_SET_PORT 0x24
-#define VC0706_READ_FBUF 0x32
-#define VC0706_GET_FBUF_LEN 0x34
-#define VC0706_FBUF_CTRL 0x36
-#define VC0706_DOWNSIZE_CTRL 0x54
-#define VC0706_DOWNSIZE_STATUS 0x55
-#define VC0706_READ_DATA 0x30
-#define VC0706_WRITE_DATA 0x31
-#define VC0706_COMM_MOTION_CTRL 0x37
-#define VC0706_COMM_MOTION_STATUS 0x38
-#define VC0706_COMM_MOTION_DETECTED 0x39
-#define VC0706_MOTION_CTRL 0x42
-#define VC0706_MOTION_STATUS 0x43
-#define VC0706_TVOUT_CTRL 0x44
-#define VC0706_OSD_ADD_CHAR 0x45
+#define VIDEO_RESET  0x26
+#define VIDEO_GEN_VERSION 0x11
+#define VIDEO_SET_PORT 0x24
+#define VIDEO_READ_FBUF 0x32
+#define VIDEO_GET_FBUF_LEN 0x34
+#define VIDEO_FBUF_CTRL 0x36
+#define VIDEO_DOWNSIZE_CTRL 0x54
+#define VIDEO_DOWNSIZE_STATUS 0x55
+#define VIDEO_READ_DATA 0x30
+#define VIDEO_WRITE_DATA 0x31
+#define VIDEO_COMM_MOTION_CTRL 0x37
+#define VIDEO_COMM_MOTION_STATUS 0x38
+#define VIDEO_COMM_MOTION_DETECTED 0x39
+#define VIDEO_MOTION_CTRL 0x42
+#define VIDEO_MOTION_STATUS 0x43
+#define VIDEO_TVOUT_CTRL 0x44
+#define VIDEO_OSD_ADD_CHAR 0x45
 
-#define VC0706_STOPCURRENTFRAME 0x0
-#define VC0706_STOPNEXTFRAME 0x1
-#define VC0706_RESUMEFRAME 0x3
-#define VC0706_STEPFRAME 0x2
+#define VIDEO_STOPCURRENTFRAME 0x0
+#define VIDEO_STOPNEXTFRAME 0x1
+#define VIDEO_RESUMEFRAME 0x3
+#define VIDEO_STEPFRAME 0x2
 
-#define VC0706_640x480 0x00
-#define VC0706_320x240 0x11
-#define VC0706_160x120 0x22
+#define VIDEO_640x480 0x00
+#define VIDEO_320x240 0x11
+#define VIDEO_160x120 0x22
 
-#define VC0706_MOTIONCONTROL 0x0
-#define VC0706_UARTMOTION 0x01
-#define VC0706_ACTIVATEMOTION 0x01
+#define VIDEO_MOTIONCONTROL 0x0
+#define VIDEO_UARTMOTION 0x01
+#define VIDEO_ACTIVATEMOTION 0x01
 
-#define VC0706_SET_ZOOM 0x52
-#define VC0706_GET_ZOOM 0x53
+#define VIDEO_SET_ZOOM 0x52
+#define VIDEO_GET_ZOOM 0x53
 
-#define VC0706_CAMERABUFFSIZ 100
-#define VC0706_CAMERADELAY 10
+#define VIDEO_CAMERABUFFSIZ 100
+#define VIDEO_CAMERADELAY 10
 
-#define VC0706_COL_CTRL 0x3C
-#define VC0706_MIRROR_CTRL 0x3A
+#define VIDEO_COL_CTRL 0x3C
+#define VIDEO_MIRROR_CTRL 0x3A
 
+class Video{
+public:
     bool initialize(const char* file);
     bool reset(void);
     bool TVon(void);
@@ -74,23 +75,23 @@ namespace Video {
     void close();
     bool mirror_mode_on(void);
 
-
     char* setBaud9600();
     char* setBaud19200();
     char* setBaud38400();
     char* setBaud57600();
     char* setBaud115200();
 
-    extern int  serialNum;
-    extern int  camerabuff[VC0706_CAMERABUFFSIZ+1];
-    extern int  bufferLen;
-    extern int frameptr;
-    extern FILE* video_uart;
+    Video(const char* file);
+private:
+    int  serialNum;
+	int  camerabuff[VIDEO_CAMERABUFFSIZ+1];
+	int  bufferLen;
+	int  frameptr;
+	FILE* video_uart;
 
-    void common_init(void);
-    bool runCommand(int cmd, int args[], int argn, int resp, bool flushflag);
-    void sendCommand(int cmd, int args[], int argn);
-    int readResponse(int numbytes);
-    bool verifyResponse(int command);
-    void printBuff(void);
+	bool runCommand(int cmd, int args[], int argn, int resp, bool flushflag);
+	void sendCommand(int cmd, int args[], int argn);
+	int readResponse(int numbytes);
+	bool verifyResponse(int command);
+	void printBuff(void);
 };

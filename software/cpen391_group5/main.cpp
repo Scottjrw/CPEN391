@@ -42,51 +42,53 @@ int main(int argc, const char * argv[]) {
 	/*
 	 * Only initialize this camera stuff the first time
 	 */
-	if (Video::initialize(VIDEO_UART_NAME)) {
+	Video video(VIDEO_UART_NAME);
+	/*if (Video::initialize(VIDEO_UART_NAME)) {
 		printf("File Opened Successfully\n");
 	}
 	else {
 		printf("File Failed to Open\n");
-	}
+	}*/
 
-	if (Video::imageSettings(brightness, contrast, 0x80, 0x00, saturation)) {
+	if (video.imageSettings(brightness, contrast, 0x80, 0x00, saturation)) {
 		printf("changed colors\n");
 	}
 	else {
 		printf("changed colors failed\n");
 	}
 
-	if (Video::mirror_mode_on()) {
+	if (video.mirror_mode_on()) {
 		printf("mirror successful\n");
 	}
 	else {
 		printf("mirror failed\n");
 	}
 
-	FILE *wifi_file = Wifi::Init(WIFI_UART_NAME);
+	//FILE *wifi_file = Wifi::Init(WIFI_UART_NAME);
+	Wifi wifi(WIFI_UART_NAME);
 
 
 	/*
 	 * Gesture Initialization
 	 */
-	Gesture_Recognizer::GestureCB led_on = [&wifi_file]{
+	Gesture_Recognizer::GestureCB led_on = [&wifi]{
 		std::cout << "CB: LED ON" << std::endl;
-		Wifi::SendCommand((char *)Wifi::LED_ON, wifi_file);
+		wifi.LedOn();
 	};
 
-	Gesture_Recognizer::GestureCB led_off = [&wifi_file]{
+	Gesture_Recognizer::GestureCB led_off = [&wifi]{
 		std::cout << "CB: LED OFF" << std::endl;
-		Wifi::SendCommand((char *)Wifi::LED_OFF, wifi_file);
+		wifi.LedOff();
 	};
 
-	Gesture_Recognizer::GestureCB light_on = [&wifi_file]{
+	Gesture_Recognizer::GestureCB light_on = [&wifi]{
 		std::cout << "CB: LIGHT ON" << std::endl;
-		Wifi::SendCommand((char *)Wifi::LIGHT_ON, wifi_file);
+		wifi.LightOn();
 	};
 
-	Gesture_Recognizer::GestureCB light_off = [&wifi_file]{
+	Gesture_Recognizer::GestureCB light_off = [&wifi]{
 		std::cout << "CB: LIGHT OFF" << std::endl;
-		Wifi::SendCommand((char *)Wifi::LIGHT_OFF, wifi_file);
+		wifi.LightOff();
 	};
 
 
@@ -142,7 +144,7 @@ int main(int argc, const char * argv[]) {
 				GR.change_gesture_map(selected_gesture, light_off);
 			}
 
-            Video::imageSettings(brightness, contrast, 0x80, 0x00, saturation);
+            video.imageSettings(brightness, contrast, 0x80, 0x00, saturation);
 			Button title(graphics, touch, {0, 0}, {100, 30}, "LIGHT CONTROLLER",
 					SimpleGraphics::rgba(0, 0, 0, 255),
 					SimpleGraphics::rgba(255, 255, 153, 175));
@@ -158,19 +160,19 @@ int main(int argc, const char * argv[]) {
 
 			menu.newItem(graphics, touch, "Change IMG", SimpleGraphics::rgba(255, 255, 255, 255),
 					SimpleGraphics::rgba(166, 166, 166, 100),
-					[&screen] (Touchable *, Point p) {
+					[&screen,&video] (Touchable *, Point p) {
 					std::cout << "Change Image Settings" << std::endl;
 					screen.clear();
-                    Video::imageSettings(0x7F, contrast, 0x0A, 0x00, 0x00);
+                    video.imageSettings(0x7F, contrast, 0x0A, 0x00, 0x00);
 					screen.exit(IMAGE_SETTINGS);
 
 					});
 			menu.newItem(graphics, touch, "Gestures", SimpleGraphics::rgba(255, 255, 255, 255),
 						SimpleGraphics::rgba(166, 166, 166, 100),
-						[&screen] (Touchable *, Point p) {
+						[&screen,&video] (Touchable *, Point p) {
 						std::cout << "Change Gesture Mappings" << std::endl;
 						screen.clear();
-                        Video::imageSettings(0x7F, contrast, 0x0A, 0x00, 0x00);
+                        video.imageSettings(0x7F, contrast, 0x0A, 0x00, 0x00);
 						screen.exit(Current_Screen(GESTURE_SETTINGS));
 
 						});

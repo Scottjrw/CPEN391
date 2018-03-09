@@ -8,27 +8,57 @@
 #include <string.h>
 #include "wifi.hpp"
 
-namespace Wifi {
 
-    void SendCommand(char command[], FILE *f) {
-        int status;
-        status = fwrite(command, strlen(command), 1, f);
-        if (status != 1) {
-            printf("wifi: failed to send message, status = %d\n", status);
-        }
-    }
+/*void Wifi::SendCommand(char command[]) {
+	int status;
+	status = fwrite(command, strlen(command), 1, Wifi::wifi_uart);
+	if (status != 1) {
+		printf("wifi: failed to send message, status = %d\n", status);
+	}
+}*/
 
-    FILE* Init(char name[]) {
-        FILE *wifi_uart = NULL;
-        wifi_uart = fopen(name, "r+");
+void Wifi::LedOn(){
+	char command[] = "led_on()\r\n";
+	int status = fwrite(command, strlen(command), 1, Wifi::wifi_uart);
+	if (status != 1) {
+		printf("wifi: failed to send message, status = %d\n", status);
+	}
+}
 
-        if (wifi_uart == NULL) {
-            printf("Failed to open UART device\n");
-            while (1)
-                ;
-        }
+void Wifi::LedOff(){
+	char command[] = "led_off()\r\n";
+	int status = fwrite(command, strlen(command), 1, Wifi::wifi_uart);
+	if (status != 1) {
+		printf("wifi: failed to send message, status = %d\n", status);
+	}
+}
 
-        return wifi_uart;
-    }
+void Wifi::LightOn(){
+	char command[] = "light_on()\r\n";
+	int status = fwrite(command, strlen(command), 1, Wifi::wifi_uart);
+	if (status != 1) {
+		printf("wifi: failed to send message, status = %d\n", status);
+	}
+}
 
-};
+void Wifi::LightOff(){
+	char command[] = "light_off()\r\n";
+	int status = fwrite(command, strlen(command), 1, Wifi::wifi_uart);
+	if (status != 1) {
+		printf("wifi: failed to send message, status = %d\n", status);
+	}
+}
+
+Wifi::Wifi(const char name[]) {
+	//FILE *wifi_uart = NULL;
+	Wifi::wifi_uart = fopen(name, "r+");
+
+	if (wifi_uart == NULL) {
+		printf("Failed to open UART device\n");
+		while (1)
+			;
+	}
+
+	//return wifi_uart;
+}
+

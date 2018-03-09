@@ -11,16 +11,18 @@
 #include <stdio.h>
 #include <system.h>
 
-namespace Wifi {
+class Wifi {
+	public:
+		Wifi(const char name[]);
 
-    constexpr const char * LED_ON = "led_on()\r\n";
-    constexpr const char * LED_OFF = "led_off()\r\n";
-    constexpr const char * LIGHT_ON = "light_on()\r\n";
-    constexpr const char * LIGHT_OFF = "light_off()\r\n";
+		//void SendCommand(char command[]);
+		void LedOn();
+		void LedOff();
+		void LightOn();
+		void LightOff();
 
-    void SendCommand(char command[], FILE *f);
-
-    FILE* Init(char name[]);
+	private:
+		FILE *wifi_uart;
 
 };
 
