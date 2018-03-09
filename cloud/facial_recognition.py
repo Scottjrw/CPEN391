@@ -17,10 +17,11 @@ def hello_world():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
-	print("Upload")
     if request.method == 'POST' and 'photo' in request.files:
         filename = photos.save(request.files['photo'])
         return filename
+    else:
+    	return 'Upload did not work'
 
 
 @app.route('/detect', methods=['GET'])    
