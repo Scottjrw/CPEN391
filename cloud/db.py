@@ -23,8 +23,3 @@ def addUser(user_id, photo_encoding):
 
 def getUser(user_id):
     return Users.select().where(Transcript.user_id == user_id)
-
-
-def create_tables():
-    with db:
-        db.create_tables([Row])
