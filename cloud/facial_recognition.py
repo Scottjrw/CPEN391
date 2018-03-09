@@ -1,13 +1,14 @@
 #!flask/bin/python
 import face_recognition
 import json
+import os
 from flask import Flask, jsonify, make_response, abort, request
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug import secure_filename
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = '/path/to/the/uploads'
+UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -22,12 +23,9 @@ def hello_world():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
-	print("upload")
 	if request.method == 'POST':
-		print("post")
 		file = request.files['file']
 		if file and allowed_file(file.filename):
-			print("file")
 			filename = secure_filename(file.filename)
 			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 			return redirect(url_for('index'))
