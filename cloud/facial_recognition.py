@@ -22,9 +22,12 @@ def hello_world():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
+	print("upload")
 	if request.method == 'POST':
+		print("post")
 		file = request.files['file']
 		if file and allowed_file(file.filename):
+			print("file")
 			filename = secure_filename(file.filename)
 			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 			return redirect(url_for('index'))
