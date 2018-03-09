@@ -66,7 +66,7 @@ def detect():
 	if results[0] == True:
 	    return 'It is a picture of me!'
 	else:
-	    print 'It is not a picture of me!'
+	    return 'It is not a picture of me!'
 
 
 
