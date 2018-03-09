@@ -37,7 +37,7 @@ def upload():
 		if file and allowed_file(file.filename):
 			filename = secure_filename(file.filename)
 			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-			return redirect(url_for('upload', filename='uknownUser.jpg'))
+			return redirect(url_for('upload', filename='photo.jpg'))
 	return '''
 	<!doctype html>
 	<title>Upload new File</title>
@@ -56,7 +56,7 @@ def detect():
 
 	# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
 
-	unknown_picture = face_recognition.load_image_file("uploads/uknownUser.jpg")
+	unknown_picture = face_recognition.load_image_file("uploads/photo.jpg")
 	unknown_face_encoding = face_recognition.face_encodings(unknown_picture)[0]
 
 	# Now we can see the two face encodings are of the same person with `compare_faces`!
