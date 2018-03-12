@@ -11,9 +11,9 @@ class BaseModel(Model):
 
 
 class Users(BaseModel):
-    user_id = TextField()
+    username = CharField(unique=True)
+    password = CharField()
     photo_encoding = BlobField()
-    #created_date = DateTimeField(default=datetime.datetime.now)
 
 
 def addUser(user_id, photo_encoding):
@@ -23,3 +23,7 @@ def addUser(user_id, photo_encoding):
 
 def getUser(user_id):
     return Users.select().where(Transcript.user_id == user_id)
+
+def create_tables():
+    with db:
+        db.create_tables([Users])

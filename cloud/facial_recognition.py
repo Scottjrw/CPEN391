@@ -59,6 +59,42 @@ def upload():
 			return 'New Person in front of screen.'
 
 
+@app.route('/join', methods=['GET', 'POST'])
+def addUser():
+	if request.method == 'POST' and request.form['username']:
+		# check if the post request has the file part
+		if 'file' not in request.files:
+			flash('No file part')
+			return redirect(request.url)
+		file = request.files['file']
+		# if user does not select file, browser also
+		# submit a empty part without filename
+		if file.filename == '':
+			flash('No selected file')
+			return redirect(request.url)
+		if file and allowed_file(file.filename):
+			picture = face_recognition.load_image_file(file)
+			face_encoding = face_recognition.face_encodings(picture)[0]
+
+			try:
+				with database.atomic():
+					# Attempt to create the user. If the username is taken, due to the
+					# unique constraint, the database will raise an IntegrityError.
+					user = User.create(
+						username=request.form['username'],
+						password=md5((request.form['password']).encode('utf-8')).hexdigest(),
+						email=request.form['email'],
+						join_date=datetime.datetime.now())
+
+				# mark the user as being 'authenticated' by setting the session vars
+				auth_user(user)
+				return redirect(url_for('homepage'))
+
+			except IntegrityError:
+				flash('That username is already taken')
+			return 'User joined.'
+
+
 @app.route('/detect', methods=['GET'])    
 def detect():
 	picture_of_me = face_recognition.load_image_file("known.jpg")
