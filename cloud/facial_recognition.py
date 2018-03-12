@@ -123,7 +123,7 @@ def detect():
 				if results[0] == True:
 				    return 'It is a picture of ' + row["id"].tostring()
 				else:
-					print 'It is not a picture of ' + row["id"].tostring()
+					print ('It is not a picture of ' + row["id"].tostring())
 
 			return 'No user found.'
 
