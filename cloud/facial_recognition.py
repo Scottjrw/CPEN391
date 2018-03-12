@@ -119,12 +119,12 @@ def detect():
 			cursor.execute("SELECT id, photo_encoding FROM users")
 			result_set = cursor.fetchall()
 			for row in result_set:
-				encoding = np.fromstring(row["photo_encoding"], dtype=my_face_encoding[0].dtype)
+				encoding = np.fromstring(row[1], dtype=my_face_encoding[0].dtype)
 				results = face_recognition.compare_faces([my_face_encoding], encoding)
 				if results[0] == True:
-				    return 'It is a picture of ' + row["id"].tostring()
+				    return 'It is a picture of ' + row[0].tostring()
 				else:
-					print ('It is not a picture of ' + row["id"].tostring())
+					print ('It is not a picture of ' + row[0].tostring())
 
 			return 'No user found.'
 
