@@ -76,7 +76,6 @@ def addUser():
 		if file and allowed_file(file.filename):
 			picture = face_recognition.load_image_file(file)
 			face_encoding = face_recognition.face_encodings(picture)[0]
-			print(face_encoding.tostring())
 
 			try:
 				with db.atomic():
@@ -98,17 +97,16 @@ def addUser():
 
 @app.route('/detect', methods=['GET'])    
 def detect():
+	with open('output.txt', 'r') as myfile:
+  		uknown_encoding = myfile.read()
 	picture_of_me = face_recognition.load_image_file("known.jpg")
 	my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
 
 	# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
 
-	unknown_picture = face_recognition.load_image_file("uploads/photo.jpg")
-	unknown_face_encoding = face_recognition.face_encodings(unknown_picture)[0]
-
 	# Now we can see the two face encodings are of the same person with `compare_faces`!
 
-	results = face_recognition.compare_faces([my_face_encoding], unknown_face_encoding)
+	results = face_recognition.compare_faces([my_face_encoding], uknown_encoding)
 
 	if results[0] == True:
 	    return 'It is a picture of me!'
