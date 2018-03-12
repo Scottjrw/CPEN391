@@ -99,7 +99,7 @@ def addUser():
 def detect():
 	enc='utf-8'
 	with open('Output.txt', 'rb') as myfile:
-		uknown_encoding = myfile.read()
+		uknown_encoding = myfile.read().encode("UTF-8")
 	picture_of_me = face_recognition.load_image_file("known.jpg")
 	my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
 
