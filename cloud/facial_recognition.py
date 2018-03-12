@@ -98,8 +98,7 @@ def addUser():
 @app.route('/detect', methods=['GET'])    
 def detect():
 	with open('Output.txt', 'r') as myfile:
-		uknown_encoding = myfile.read()
-	uknown_encoding = uknown_encoding.encode("UTF-8")
+		uknown_encoding = myfile.read().encode("UTF-8")
 	picture_of_me = face_recognition.load_image_file("known.jpg")
 	my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
 
