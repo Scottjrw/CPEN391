@@ -122,9 +122,9 @@ def detect():
 				encoding = np.fromstring(row[1], dtype=my_face_encoding[0].dtype)
 				results = face_recognition.compare_faces([my_face_encoding], encoding)
 				if results[0] == True:
-				    return 'It is a picture of ' + row[0].tostring()
+				    return 'It is a picture of ' + row[0]
 				else:
-					print ('It is not a picture of ' + row[0].tostring())
+					print ('It is not a picture of ' + row[0])
 
 			return 'No user found.'
 
