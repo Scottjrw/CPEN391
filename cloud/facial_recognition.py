@@ -110,7 +110,7 @@ def detect():
 			print('No selected file')
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
-			picture_of_me = face_recognition.load_image_file("known.jpg")
+			picture_of_me = face_recognition.load_image_file(file)
 			my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
 
 			# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
