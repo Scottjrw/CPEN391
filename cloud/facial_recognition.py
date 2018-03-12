@@ -37,27 +37,27 @@ def after_request(response):
 def hello_world():
     return 'Hello, World!'
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
-	if request.method == 'POST':
-		# check if the post request has the file part
-		if 'file' not in request.files:
-			print('No file part')
-			return redirect(request.url)
-		file = request.files['file']
-		# if user does not select file, browser also
-		# submit a empty part without filename
-		if file.filename == '':
-			print('No selected file')
-			return redirect(request.url)
-		if file and allowed_file(file.filename):
-			picture = face_recognition.load_image_file(file)
-			face_encoding = face_recognition.face_encodings(picture)[0]
+# @app.route('/upload', methods=['GET', 'POST'])
+# def upload():
+# 	if request.method == 'POST':
+# 		# check if the post request has the file part
+# 		if 'file' not in request.files:
+# 			print('No file part')
+# 			return redirect(request.url)
+# 		file = request.files['file']
+# 		# if user does not select file, browser also
+# 		# submit a empty part without filename
+# 		if file.filename == '':
+# 			print('No selected file')
+# 			return redirect(request.url)
+# 		if file and allowed_file(file.filename):
+# 			picture = face_recognition.load_image_file(file)
+# 			face_encoding = face_recognition.face_encodings(picture)[0]
 
-			text_file = open("Output.txt", "wb")
-			text_file.write(face_encoding.tostring())
-			text_file.close()
-			return 'New Person in front of screen.'
+# 			text_file = open("Output.txt", "wb")
+# 			text_file.write(face_encoding.tostring())
+# 			text_file.close()
+# 			return 'New Person in front of screen.'
 
 
 @app.route('/join', methods=['GET', 'POST'])
@@ -95,24 +95,38 @@ def addUser():
 			return 'User failed to join.'
 
 
-@app.route('/detect', methods=['GET'])    
+@app.route('/detect', methods=['GET', 'POST'])    
 def detect():
-	enc='utf-8'
-	with open('Output.txt', 'rb') as myfile:
-		uknown_encoding = myfile.read().encode("UTF-8")
-	picture_of_me = face_recognition.load_image_file("known.jpg")
-	my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
+	if request.method == 'POST':
+		# check if the post request has the file part
+		if 'file' not in request.files:
+			print('No file part')
+			return redirect(request.url)
+		file = request.files['file']
+		# if user does not select file, browser also
+		# submit a empty part without filename
+		if file.filename == '':
+			print('No selected file')
+			return redirect(request.url)
+		if file and allowed_file(file.filename):
+			picture_of_me = face_recognition.load_image_file("known.jpg")
+			my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
 
-	# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
+			# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
 
-	# Now we can see the two face encodings are of the same person with `compare_faces`!
+			cursor = db.cursor()
+			cursor.execute("SELECT id, photo_encoding FROM users")
+			result_set = cursor.fetchall()
+			for row in result_set:
+				encoding = np.fromstring(row["photo_encoding"], dtype=unknown_face_encodings[0].dtype)
+				results = face_recognition.compare_faces([my_face_encoding], encoding)
+				print "%s, %s" % (row["id"], row["photo_encoding"])
+				if results[0] == True:
+				    return 'It is a picture of ' + "%s" % row["id"]
+				else:
+					print 'It is not a picture of ' + "%s" % row["id"]
 
-	results = face_recognition.compare_faces([my_face_encoding], uknown_encoding)
-
-	if results[0] == True:
-	    return 'It is a picture of me!'
-	else:
-	    return 'It is not a picture of me!'
+			return 'No user found.'
 
 
 
