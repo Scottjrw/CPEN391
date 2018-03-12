@@ -7,6 +7,7 @@ from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug import secure_filename
 from os.path import expanduser
 from db import *
+from hashlib import md5
 
 home = expanduser("~")
 
