@@ -87,7 +87,7 @@ def addUser():
 						photo_encoding=face_encoding.tostring())
 
 				# mark the user as being 'authenticated' by setting the session vars
-				auth_user(user)
+				# auth_user(user)
 				return redirect(url_for('homepage'))
 
 			except IntegrityError:
