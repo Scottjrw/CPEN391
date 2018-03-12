@@ -116,7 +116,7 @@ def detect():
 			# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
 
 			cursor = db.cursor()
-			cursor.execute("SELECT id, photo_encoding FROM users")
+			cursor.execute("SELECT username, photo_encoding FROM users")
 			result_set = cursor.fetchall()
 			for row in result_set:
 				encoding = np.fromstring(row[1], dtype=my_face_encoding[0].dtype)
