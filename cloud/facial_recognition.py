@@ -8,6 +8,7 @@ from werkzeug import secure_filename
 from os.path import expanduser
 from db import *
 from hashlib import md5
+import numpy as np
 
 home = expanduser("~")
 
