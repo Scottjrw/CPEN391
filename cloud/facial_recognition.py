@@ -42,13 +42,13 @@ def upload():
 	if request.method == 'POST':
 		# check if the post request has the file part
 		if 'file' not in request.files:
-			flash('No file part')
+			print('No file part')
 			return redirect(request.url)
 		file = request.files['file']
 		# if user does not select file, browser also
 		# submit a empty part without filename
 		if file.filename == '':
-			flash('No selected file')
+			print('No selected file')
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
 			picture = face_recognition.load_image_file(file)
@@ -65,13 +65,13 @@ def addUser():
 	if request.method == 'POST' and request.form['username']:
 		# check if the post request has the file part
 		if 'file' not in request.files:
-			flash('No file part')
+			print('No file part')
 			return redirect(request.url)
 		file = request.files['file']
 		# if user does not select file, browser also
 		# submit a empty part without filename
 		if file.filename == '':
-			flash('No selected file')
+			print('No selected file')
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
 			picture = face_recognition.load_image_file(file)
@@ -91,7 +91,7 @@ def addUser():
 				return redirect(url_for('homepage'))
 
 			except IntegrityError:
-				flash('That username is already taken')
+				print('That username is already taken')
 			return 'User joined.'
 
 
