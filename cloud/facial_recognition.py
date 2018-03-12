@@ -88,11 +88,11 @@ def addUser():
 
 				# mark the user as being 'authenticated' by setting the session vars
 				# auth_user(user)
-				return redirect(url_for('homepage'))
+				return 'User joined.'
 
 			except IntegrityError:
 				print('That username is already taken')
-			return 'User joined.'
+			return 'User failed to join.'
 
 
 @app.route('/detect', methods=['GET'])    
