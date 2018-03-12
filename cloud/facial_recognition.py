@@ -77,7 +77,7 @@ def addUser():
 			face_encoding = face_recognition.face_encodings(picture)[0]
 
 			try:
-				with database.atomic():
+				with db.atomic():
 					# Attempt to create the user. If the username is taken, due to the
 					# unique constraint, the database will raise an IntegrityError.
 					user = User.create(
