@@ -16,9 +16,9 @@ class Users(BaseModel):
 	photo_encoding = BlobField()
 
 
-def addUser(user_id, photo_encoding):
-	t = Users.create(user_id=user_id, photo_encoding=photo_encoding)
-	t.save()
+# def addUser(user_id, photo_encoding):
+# 	t = Users.create(user_id=user_id, photo_encoding=photo_encoding)
+# 	t.save()
 
 
 def getUser(user_id):

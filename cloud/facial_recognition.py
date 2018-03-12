@@ -83,8 +83,7 @@ def addUser():
 					user = User.create(
 						username=request.form['username'],
 						password=md5((request.form['password']).encode('utf-8')).hexdigest(),
-						email=request.form['email'],
-						join_date=datetime.datetime.now())
+						photo_encoding=face_encoding.tostring())
 
 				# mark the user as being 'authenticated' by setting the session vars
 				auth_user(user)
