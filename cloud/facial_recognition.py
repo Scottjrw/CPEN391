@@ -114,7 +114,7 @@ def loginByFace():
 				results = face_recognition.compare_faces([my_face_encoding], encoding)
 				if results[0] == True:
 					auth_user(user)
-				    return 'It is a picture of ' + str(row[0])
+					return 'It is a picture of ' + str(row[0])
 				else:
 					print ('It is not a picture of ' + str(row[0]))
 
