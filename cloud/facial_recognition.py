@@ -161,6 +161,7 @@ def addApplet():
 
 	cursor = db.cursor()
 	cursor.execute("SELECT id, username FROM users")
+	result_set = cursor.fetchall()
 	for row in result_set:
 		if (row[1] == username):
 		    user_id = row[0]
