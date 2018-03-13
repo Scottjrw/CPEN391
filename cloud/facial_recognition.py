@@ -15,6 +15,7 @@ import requests
 home = expanduser("~")
 
 app = Flask(__name__)
+sess = Session()
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
