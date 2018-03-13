@@ -142,7 +142,7 @@ def detect():
 		cursor.execute("SELECT username, password FROM users")
 		result_set = cursor.fetchall()
 		for row in result_set:
-			if (row[0] == username) && (row[1] == password):
+			if (row[0] == username) and (row[1] == password):
 			    return 'Logged in as ' + str(row[0])
 
 		return 'No user found.'
