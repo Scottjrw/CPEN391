@@ -79,7 +79,7 @@ def addUser():
 						ifttt_requests="")
 
 				# mark the user as being 'authenticated' by setting the session vars
-				auth_user(user)
+				# auth_user(user)
 				return 'User joined.'
 
 			except IntegrityError:
