@@ -4,6 +4,7 @@ import json
 import os
 from flask import Flask, jsonify, make_response, abort, request, redirect, url_for
 from flask_uploads import UploadSet, configure_uploads, IMAGES
+from flask.ext.session import Session
 from flask import session
 from werkzeug import secure_filename
 from os.path import expanduser
