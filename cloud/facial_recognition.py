@@ -4,6 +4,7 @@ import json
 import os
 from flask import Flask, jsonify, make_response, abort, request, redirect, url_for
 from flask_uploads import UploadSet, configure_uploads, IMAGES
+from flask import session
 from werkzeug import secure_filename
 from os.path import expanduser
 from db import *
@@ -39,6 +40,16 @@ def after_request(response):
 def hello_world():
     return 'Hello, World!'
 
+def auth_user(user):
+    session['logged_in'] = True
+    session['user_id'] = user.id
+    session['username'] = user.username
+    print('You are logged in as %s' % (user.username))
+
+def get_current_user():
+    if session.get('logged_in'):
+        return User.get(User.id == session['user_id'])
+
 
 @app.route('/join', methods=['GET', 'POST'])
 def addUser():
@@ -64,10 +75,11 @@ def addUser():
 					user = Users.create(
 						username=request.form['username'],
 						password=md5((request.form['password']).encode('utf-8')).hexdigest(),
-						photo_encoding=face_encoding.tostring())
+						photo_encoding=face_encoding.tostring(),
+						ifttt_requests="")
 
 				# mark the user as being 'authenticated' by setting the session vars
-				# auth_user(user)
+				auth_user(user)
 				return 'User joined.'
 
 			except IntegrityError:
@@ -112,11 +124,12 @@ def loginByFace():
 def loginByPassword():
 	if request.method == 'POST':
 
-		print(request.form['username'])
-		print(request.form['password'])
+		print(request.args['username'])
+		print(request.args['password'])
 
-		username=request.form['username']
-		password=md5((request.form['password']).encode('utf-8')).hexdigest()
+		username=request.args['username']
+		
+		password=md5((request.args['password']).encode('utf-8')).hexdigest()
 
 		# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
 
@@ -128,6 +141,23 @@ def loginByPassword():
 			    return 'Logged in as ' + str(row[0])
 
 		return 'No user found.'
+
+
+@app.route('/addApplet', methods=['POST'])
+def addApplet():
+	username = get_current_user()
+
+	cursor = db.cursor()
+	cursor.execute("SELECT username, ifttt_requests FROM users")
+	result_set = cursor.fetchall()
+	for row in result_set:
+		if (row[0] == username):
+		    row[1] = row[1] + "@" str(request.form['applet'])
+		    print(row[1])
+
+	return 'No user found.'
+
+
 
 
 @app.route('/applet', methods=['POST'])

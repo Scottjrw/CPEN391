@@ -14,6 +14,7 @@ class Users(BaseModel):
 	username = CharField(unique=True)
 	password = CharField()
 	photo_encoding = BlobField()
+	ifttt_requests = CharField()
 
 
 # def addUser(user_id, photo_encoding):
