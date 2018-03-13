@@ -138,13 +138,13 @@ def loginByPassword():
 
 		try:
 			user = Users.get(
-	                (User.username == username) &
-	                (User.password == password))
+					(User.username == username) &
+					User.password == password))
 		except Users.DoesNotExist:
-            print('The password entered is incorrect')
+			print('The password entered is incorrect')
         else:
-            auth_user(user)
-            return 'Logged in as ' + str(username)
+			auth_user(user)
+			return 'Logged in as ' + str(username)
 
 
 		cursor = db.cursor()
