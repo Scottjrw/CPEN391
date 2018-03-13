@@ -152,11 +152,11 @@ def loginByPassword():
 @app.route('/testApplet', methods=['POST'])
 def testApplet():
 	if request.method == 'POST':
-	    report = {}
-	    report["value1"] = request.form['value1']
-	    report["value2"] = request.form['value2']
-	    report["value3"] = request.form['value3']
-	    requests.post("https://maker.ifttt.com/testApplet/nXaQGn1Tfn2onJkvCvcjjNcgNGw9lu1M2SDKFMlxijL", data=report)
+	    # report = {}
+	    # report["value1"] = request.form['value1']
+	    # report["value2"] = request.form['value2']
+	    # report["value3"] = request.form['value3']
+	    requests.post("https://maker.ifttt.com/testApplet/nXaQGn1Tfn2onJkvCvcjjNcgNGw9lu1M2SDKFMlxijL")
 	    return 'testApplet successful'
 
 
