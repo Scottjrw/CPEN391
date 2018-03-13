@@ -79,7 +79,7 @@ def addUser():
 						ifttt_requests="")
 
 				# mark the user as being 'authenticated' by setting the session vars
-				# auth_user(user)
+				auth_user(user)
 				return 'User joined.'
 
 			except IntegrityError:
@@ -113,6 +113,7 @@ def loginByFace():
 				encoding = np.fromstring(row[1], dtype=my_face_encoding[0].dtype)
 				results = face_recognition.compare_faces([my_face_encoding], encoding)
 				if results[0] == True:
+					auth_user(user)
 				    return 'It is a picture of ' + str(row[0])
 				else:
 					print ('It is not a picture of ' + str(row[0]))
@@ -139,6 +140,7 @@ def loginByPassword():
 		result_set = cursor.fetchall()
 		for row in result_set:
 			if (row[0] == username) and (row[1] == password):
+				auth_user(user)
 			    return 'Logged in as ' + str(row[0])
 
 		return 'No user found.'
