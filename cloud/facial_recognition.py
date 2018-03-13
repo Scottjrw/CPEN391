@@ -141,7 +141,7 @@ def loginByPassword():
 		for row in result_set:
 			if (row[0] == username) and (row[1] == password):
 				auth_user(user)
-			    return 'Logged in as ' + str(row[0])
+				return 'Logged in as ' + str(row[0])
 
 		return 'No user found.'
 
