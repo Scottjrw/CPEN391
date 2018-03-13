@@ -137,9 +137,7 @@ def loginByPassword():
 		# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
 
 		try:
-			user = Users.get(
-					(User.username == username) &
-					User.password == password))
+			user = Users.get((User.username == username) & (User.password == password))
 		except Users.DoesNotExist:
 			print('The password entered is incorrect')
         else:
