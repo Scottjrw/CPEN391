@@ -10,7 +10,7 @@ from db import *
 from hashlib import md5
 import numpy as np
 import requests
-from urllib.parse import urlparse
+import urllib.parse 
 
 home = expanduser("~")
 
@@ -157,7 +157,7 @@ def applet():
 	    # report["value1"] = request.form['value1']
 	    # report["value2"] = request.form['value2']
 	    # report["value3"] = request.form['value3']
-	    applet_name = urlparse.quote_plus(request.form['applet'])
+	    applet_name = urllib.parse.quote_plus(request.form['applet'])
 	    request_name = "https://maker.ifttt.com/trigger/{applet}/with/key/egyN_jF6pzR88s9b8rFg0jTYXbbIpEGH-rB_zGobz_i".format(applet=applet_name)
 	    print(request_name)
 		# requests.post(request_name)
