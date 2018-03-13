@@ -113,7 +113,7 @@ def loginByFace():
 				encoding = np.fromstring(row[1], dtype=my_face_encoding[0].dtype)
 				results = face_recognition.compare_faces([my_face_encoding], encoding)
 				if results[0] == True:
-					user = Users.get(User.username == row[0])
+					user = Users.get(Users.username == row[0])
 					auth_user(user)
 					return 'It is a picture of ' + str(row[0])
 				else:
@@ -137,7 +137,7 @@ def loginByPassword():
 		# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
 
 		try:
-			user = Users.get((User.username == username) & (User.password == password))
+			user = Users.get((Users.username == username) & (Users.password == password))
 		except Users.DoesNotExist:
 			print('The password entered is incorrect')
 		else:
