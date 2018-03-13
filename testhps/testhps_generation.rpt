@@ -1,0 +1,138 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate /home/guoj/Documents/Year-3/CPEN-391/repo/testhps.qsys --block-symbol-file --output-directory=/home/guoj/Documents/Year-3/CPEN-391/repo/testhps --family="Cyclone V" --part=5CSEMA5F31C6
+Progress: Loading repo/testhps.qsys
+Progress: Reading input file
+Progress: Adding clk_0 [clock_source 15.0]
+Progress: Parameterizing module clk_0
+Progress: Adding hps_0 [altera_hps 15.0]
+Progress: Parameterizing module hps_0
+Progress: Adding onchip_memory2_0 [altera_avalon_onchip_memory2 15.0]
+Progress: Parameterizing module onchip_memory2_0
+Progress: Adding video_dma_controller_0 [altera_up_avalon_video_dma_controller 15.0]
+Progress: Parameterizing module video_dma_controller_0
+Progress: Adding video_dual_clock_buffer_0 [altera_up_avalon_video_dual_clock_buffer 15.0]
+Progress: Parameterizing module video_dual_clock_buffer_0
+Progress: Adding video_pll_0 [altera_up_avalon_video_pll 15.0]
+Progress: Parameterizing module video_pll_0
+Progress: Adding video_rgb_resampler_0 [altera_up_avalon_video_rgb_resampler 15.0]
+Progress: Parameterizing module video_rgb_resampler_0
+Progress: Adding video_scaler_0 [altera_up_avalon_video_scaler 15.0]
+Progress: Parameterizing module video_scaler_0
+Progress: Adding video_vga_controller_0 [altera_up_avalon_video_vga_controller 15.0]
+Progress: Parameterizing module video_vga_controller_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: testhps.hps_0: HPS Main PLL counter settings: n = 0  m = 73
+Info: testhps.hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
+Warning: testhps.hps_0: "Configuration/HPS-to-FPGA user 0 clock frequency" (desired_cfg_clk_mhz) requested 100.0 MHz, but only achieved 97.368421 MHz
+Warning: testhps.hps_0: "QSPI clock frequency" (desired_qspi_clk_mhz) requested 400.0 MHz, but only achieved 370.0 MHz
+Warning: testhps.hps_0: 1 or more output clock frequencies cannot be achieved precisely, consider revising desired output clock frequencies.
+Info: testhps.video_rgb_resampler_0: RGB Resampling: 8 (bits) x 3 (planes) -> 10 (bits) x 3 (planes)
+Info: testhps.video_scaler_0: Change in Resolution: 160 x 120 -> 640 x 480
+Info: testhps.video_vga_controller_0: Video Output Stream: Format: 640 x 480 with Color: 10 (bits) x 3 (planes) converted to 8 (bits) per color plane
+Warning: testhps.video_dma_controller_0: video_dma_controller_0.avalon_dma_control_slave must be connected to an Avalon-MM master
+Info: ip-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate /home/guoj/Documents/Year-3/CPEN-391/repo/testhps.qsys --synthesis=VERILOG --output-directory=/home/guoj/Documents/Year-3/CPEN-391/repo/testhps/synthesis --family="Cyclone V" --part=5CSEMA5F31C6
+Progress: Loading repo/testhps.qsys
+Progress: Reading input file
+Progress: Adding clk_0 [clock_source 15.0]
+Progress: Parameterizing module clk_0
+Progress: Adding hps_0 [altera_hps 15.0]
+Progress: Parameterizing module hps_0
+Progress: Adding onchip_memory2_0 [altera_avalon_onchip_memory2 15.0]
+Progress: Parameterizing module onchip_memory2_0
+Progress: Adding video_dma_controller_0 [altera_up_avalon_video_dma_controller 15.0]
+Progress: Parameterizing module video_dma_controller_0
+Progress: Adding video_dual_clock_buffer_0 [altera_up_avalon_video_dual_clock_buffer 15.0]
+Progress: Parameterizing module video_dual_clock_buffer_0
+Progress: Adding video_pll_0 [altera_up_avalon_video_pll 15.0]
+Progress: Parameterizing module video_pll_0
+Progress: Adding video_rgb_resampler_0 [altera_up_avalon_video_rgb_resampler 15.0]
+Progress: Parameterizing module video_rgb_resampler_0
+Progress: Adding video_scaler_0 [altera_up_avalon_video_scaler 15.0]
+Progress: Parameterizing module video_scaler_0
+Progress: Adding video_vga_controller_0 [altera_up_avalon_video_vga_controller 15.0]
+Progress: Parameterizing module video_vga_controller_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: testhps.hps_0: HPS Main PLL counter settings: n = 0  m = 73
+Info: testhps.hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
+Warning: testhps.hps_0: "Configuration/HPS-to-FPGA user 0 clock frequency" (desired_cfg_clk_mhz) requested 100.0 MHz, but only achieved 97.368421 MHz
+Warning: testhps.hps_0: "QSPI clock frequency" (desired_qspi_clk_mhz) requested 400.0 MHz, but only achieved 370.0 MHz
+Warning: testhps.hps_0: 1 or more output clock frequencies cannot be achieved precisely, consider revising desired output clock frequencies.
+Info: testhps.video_rgb_resampler_0: RGB Resampling: 8 (bits) x 3 (planes) -> 10 (bits) x 3 (planes)
+Info: testhps.video_scaler_0: Change in Resolution: 160 x 120 -> 640 x 480
+Info: testhps.video_vga_controller_0: Video Output Stream: Format: 640 x 480 with Color: 10 (bits) x 3 (planes) converted to 8 (bits) per color plane
+Warning: testhps.video_dma_controller_0: video_dma_controller_0.avalon_dma_control_slave must be connected to an Avalon-MM master
+Info: testhps: Generating testhps "testhps" for QUARTUS_SYNTH
+Info: Interconnect is inserted between master video_dma_controller_0.avalon_dma_master and slave onchip_memory2_0.s2 because the master has address signal 32 bit wide, but the slave is 15 bit wide.
+Info: Interconnect is inserted between master video_dma_controller_0.avalon_dma_master and slave onchip_memory2_0.s2 because the master has waitrequest signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master video_dma_controller_0.avalon_dma_master and slave onchip_memory2_0.s2 because the master has lock signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master video_dma_controller_0.avalon_dma_master and slave onchip_memory2_0.s2 because the master has read signal 1 bit wide, but the slave is 0 bit wide.
+Info: Interconnect is inserted between master video_dma_controller_0.avalon_dma_master and slave onchip_memory2_0.s2 because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
+Warning: hps_0.f2h_irq0: Cannot connect clock for irq_mapper.sender
+Warning: hps_0.f2h_irq0: Cannot connect reset for irq_mapper.sender
+Warning: hps_0.f2h_irq1: Cannot connect clock for irq_mapper_001.sender
+Warning: hps_0.f2h_irq1: Cannot connect reset for irq_mapper_001.sender
+Info: hps_0: "Running  for module: hps_0"
+Info: hps_0: HPS Main PLL counter settings: n = 0  m = 73
+Info: hps_0: HPS peripherial PLL counter settings: n = 0  m = 39
+Warning: hps_0: "Configuration/HPS-to-FPGA user 0 clock frequency" (desired_cfg_clk_mhz) requested 100.0 MHz, but only achieved 97.368421 MHz
+Warning: hps_0: "QSPI clock frequency" (desired_qspi_clk_mhz) requested 400.0 MHz, but only achieved 370.0 MHz
+Warning: hps_0: 1 or more output clock frequencies cannot be achieved precisely, consider revising desired output clock frequencies.
+Info: hps_0: "testhps" instantiated altera_hps "hps_0"
+Info: onchip_memory2_0: Starting RTL generation for module 'testhps_onchip_memory2_0'
+Info: onchip_memory2_0:   Generation command is [exec /home/guoj/altera/15.0/quartus/linux64/perl/bin/perl -I /home/guoj/altera/15.0/quartus/linux64/perl/lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/europa -I /home/guoj/altera/15.0/quartus/sopc_builder/bin/perl_lib -I /home/guoj/altera/15.0/quartus/sopc_builder/bin -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- /home/guoj/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=testhps_onchip_memory2_0 --dir=/tmp/alt7603_2286558004590990604.dir/0001_onchip_memory2_0_gen/ --quartus_dir=/home/guoj/altera/15.0/quartus --verilog --config=/tmp/alt7603_2286558004590990604.dir/0001_onchip_memory2_0_gen//testhps_onchip_memory2_0_component_configuration.pl  --do_build_sim=0  ]
+Info: onchip_memory2_0: Done RTL generation for module 'testhps_onchip_memory2_0'
+Info: onchip_memory2_0: "testhps" instantiated altera_avalon_onchip_memory2 "onchip_memory2_0"
+Info: video_dma_controller_0: Starting Generation of Video DMA Controller
+Info: video_dma_controller_0: "testhps" instantiated altera_up_avalon_video_dma_controller "video_dma_controller_0"
+Info: video_dual_clock_buffer_0: Starting Generation of the Dual Clock Buffer
+Info: video_dual_clock_buffer_0: "testhps" instantiated altera_up_avalon_video_dual_clock_buffer "video_dual_clock_buffer_0"
+Info: video_pll_0: "testhps" instantiated altera_up_avalon_video_pll "video_pll_0"
+Info: video_rgb_resampler_0: Starting Generation of Video RGB Resampler
+Info: video_rgb_resampler_0: "testhps" instantiated altera_up_avalon_video_rgb_resampler "video_rgb_resampler_0"
+Info: video_scaler_0: Starting Generation of Video Scaler
+Info: video_scaler_0: "testhps" instantiated altera_up_avalon_video_scaler "video_scaler_0"
+Info: video_vga_controller_0: Starting Generation of VGA Controller
+Info: video_vga_controller_0: "testhps" instantiated altera_up_avalon_video_vga_controller "video_vga_controller_0"
+Info: mm_interconnect_0: "testhps" instantiated altera_mm_interconnect "mm_interconnect_0"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_1: "testhps" instantiated altera_mm_interconnect "mm_interconnect_1"
+Info: irq_mapper: "testhps" instantiated altera_irq_mapper "irq_mapper"
+Info: rst_controller: "testhps" instantiated altera_reset_controller "rst_controller"
+Info: fpga_interfaces: "hps_0" instantiated altera_interface_generator "fpga_interfaces"
+Info: hps_io: "hps_0" instantiated altera_hps_io "hps_io"
+Info: video_pll: "video_pll_0" instantiated altera_pll "video_pll"
+Info: reset_from_locked: "video_pll_0" instantiated altera_up_avalon_reset_from_locked_signal "reset_from_locked"
+Info: video_dma_controller_0_avalon_dma_master_translator: "mm_interconnect_0" instantiated altera_merlin_master_translator "video_dma_controller_0_avalon_dma_master_translator"
+Info: onchip_memory2_0_s2_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "onchip_memory2_0_s2_translator"
+Info: hps_0_h2f_axi_master_agent: "mm_interconnect_1" instantiated altera_merlin_axi_master_ni "hps_0_h2f_axi_master_agent"
+Info: onchip_memory2_0_s1_agent: "mm_interconnect_1" instantiated altera_merlin_slave_agent "onchip_memory2_0_s1_agent"
+Info: onchip_memory2_0_s1_agent_rsp_fifo: "mm_interconnect_1" instantiated altera_avalon_sc_fifo "onchip_memory2_0_s1_agent_rsp_fifo"
+Info: router: "mm_interconnect_1" instantiated altera_merlin_router "router"
+Info: router_002: "mm_interconnect_1" instantiated altera_merlin_router "router_002"
+Info: router_004: "mm_interconnect_1" instantiated altera_merlin_router "router_004"
+Info: onchip_memory2_0_s1_burst_adapter: "mm_interconnect_1" instantiated altera_merlin_burst_adapter "onchip_memory2_0_s1_burst_adapter"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/testhps/synthesis/submodules/altera_merlin_address_alignment.sv
+Info: cmd_demux: "mm_interconnect_1" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_mux: "mm_interconnect_1" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: rsp_demux: "mm_interconnect_1" instantiated altera_merlin_demultiplexer "rsp_demux"
+Info: rsp_mux: "mm_interconnect_1" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/testhps/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: hps_0_h2f_axi_master_wr_rsp_width_adapter: "mm_interconnect_1" instantiated altera_merlin_width_adapter "hps_0_h2f_axi_master_wr_rsp_width_adapter"
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/testhps/synthesis/submodules/altera_merlin_address_alignment.sv
+Info: Reusing file /home/guoj/Documents/Year-3/CPEN-391/repo/testhps/synthesis/submodules/altera_merlin_burst_uncompressor.sv
+Info: avalon_st_adapter: "mm_interconnect_1" instantiated altera_avalon_st_adapter "avalon_st_adapter"
+Info: border: "hps_io" instantiated altera_interface_generator "border"
+Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
+Info: testhps: Done "testhps" with 34 modules, 100 files
+Info: ip-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

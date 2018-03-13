@@ -10,3 +10,6 @@ db/
 *.swp
 *.out
 *.qdf
+hps_isw_handoff
+hps_sdram_p0_all_pins.txt
+tb2_ie_info.xml
