@@ -167,6 +167,12 @@ def addApplet():
 			user_id = row[0]
 			cursor.execute("UPDATE users SET ifttt_requests = ? WHERE id = ?", (request.form['applet'], user_id))
 
+	cursor.execute("SELECT ifttt_requests, username FROM users")
+	result_set = cursor.fetchall()
+	for row in result_set:
+		if (row[1] == username):
+			print(row[0])
+
 	return 'Added applet'
 
 
