@@ -9,6 +9,7 @@ from os.path import expanduser
 from db import *
 from hashlib import md5
 import numpy as np
+import requests
 
 home = expanduser("~")
 
@@ -146,6 +147,15 @@ def loginByPassword():
 			    return 'Logged in as ' + str(row[0])
 
 		return 'No user found.'
+
+
+@app.route('/appTest', methods=['POST'])
+def appTest():
+    report = {}
+    report["value1"] = request.form['value1']
+    report["value2"] = request.form['value2']
+    report["value3"] = request.form['value3']
+    requests.post("https://maker.ifttt.com/use/nXaQGn1Tfn2onJkvCvcjjNcgNGw9lu1M2SDKFMlxijL", data=report)
 
 
 if __name__ == '__main__':
