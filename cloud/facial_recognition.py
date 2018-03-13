@@ -96,7 +96,7 @@ def addUser():
 			return 'User failed to join.'
 
 
-@app.route('/detect', methods=['GET', 'POST'])    
+@app.route('/login-by-face', methods=['GET', 'POST'])    
 def detect():
 	if request.method == 'POST':
 		# check if the post request has the file part
@@ -128,6 +128,24 @@ def detect():
 
 			return 'No user found.'
 
+
+@app.route('/login-by-password', methods=['GET', 'POST'])    
+def detect():
+	if request.method == 'POST':
+
+		username=request.form['username']
+		password=md5((request.form['password']).encode('utf-8')).hexdigest()
+
+		# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
+
+		cursor = db.cursor()
+		cursor.execute("SELECT username, password FROM users")
+		result_set = cursor.fetchall()
+		for row in result_set:
+			if (row[0] == username) && (row[1] == password):
+			    return 'Logged in as ' + str(row[0])
+
+		return 'No user found.'
 
 
 if __name__ == '__main__':
