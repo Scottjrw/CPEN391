@@ -156,6 +156,7 @@ def appTest():
     report["value2"] = request.form['value2']
     report["value3"] = request.form['value3']
     requests.post("https://maker.ifttt.com/use/nXaQGn1Tfn2onJkvCvcjjNcgNGw9lu1M2SDKFMlxijL", data=report)
+    return 'appTest successful'
 
 
 if __name__ == '__main__':
