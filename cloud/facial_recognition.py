@@ -128,7 +128,7 @@ def loginByPassword():
 		print(request.args['password'])
 
 		username=request.args['username']
-		
+
 		password=md5((request.args['password']).encode('utf-8')).hexdigest()
 
 		# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
@@ -152,8 +152,8 @@ def addApplet():
 	result_set = cursor.fetchall()
 	for row in result_set:
 		if (row[0] == username):
-		    row[1] = row[1] + "@" str(request.form['applet'])
-		    print(row[1])
+			row[1] = row[1] + "@" str(request.form['applet'])
+			print(row[1])
 
 	return 'No user found.'
 
