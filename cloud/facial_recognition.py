@@ -158,7 +158,7 @@ def applet():
 	    # report["value3"] = request.form['value3']
 		request_name = "https://maker.ifttt.com/trigger/{applet}/with/key/egyN_jF6pzR88s9b8rFg0jTYXbbIpEGH-rB_zGobz_i".format(applet=request.form['applet'])
 		requests.post(request_name)
-	    return 'applet successful'
+		return 'applet successful'
 
 
 if __name__ == '__main__':
