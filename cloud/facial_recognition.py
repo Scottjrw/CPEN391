@@ -140,7 +140,7 @@ def loginByPassword():
 			user = Users.get((User.username == username) & (User.password == password))
 		except Users.DoesNotExist:
 			print('The password entered is incorrect')
-        else:
+		else:
 			auth_user(user)
 			return 'Logged in as ' + str(username)
 
