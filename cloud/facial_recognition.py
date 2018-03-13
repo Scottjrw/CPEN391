@@ -158,8 +158,7 @@ def loginByPassword():
 @app.route('/addApplet', methods=['POST'])
 def addApplet():
 	if request.method == 'POST':
-		username = get_current_user()
-		print(username)
+		user_id = get_current_user()
 
 		cursor = db.cursor()
 		cursor.execute("UPDATE users SET ifttt_requests = ? WHERE id = ?", (request.form['applet'], user_id))
