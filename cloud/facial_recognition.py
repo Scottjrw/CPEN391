@@ -41,6 +41,7 @@ def hello_world():
 
 def auth_user(user):
     session['logged_in'] = True
+    print(user.id)
     session['user_id'] = user.id
     session['username'] = user.username
     print('You are logged in as %s' % (user.username))
