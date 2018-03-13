@@ -159,6 +159,7 @@ def loginByPassword():
 def addApplet():
 	if request.method == 'POST':
 		username = get_current_user()
+		print(username)
 
 		cursor = db.cursor()
 		cursor.execute("SELECT id, username FROM users")
