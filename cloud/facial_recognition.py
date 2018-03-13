@@ -157,7 +157,7 @@ def applet():
 	    # report["value2"] = request.form['value2']
 	    # report["value3"] = request.form['value3']
 	    request_name = "https://maker.ifttt.com/trigger/%s/with/key/egyN_jF6pzR88s9b8rFg0jTYXbbIpEGH-rB_zGobz_i" % request.form['applet']
-	    print(request_name)
+	    print("https://maker.ifttt.com/trigger/%s/with/key/egyN_jF6pzR88s9b8rFg0jTYXbbIpEGH-rB_zGobz_i" % request.form['applet'])
 		# requests.post(request_name)
 	    return 'applet successful'
 
