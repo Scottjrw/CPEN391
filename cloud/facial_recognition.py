@@ -97,7 +97,7 @@ def addUser():
 
 
 @app.route('/login-by-face', methods=['GET', 'POST'])    
-def detect():
+def login-by-face():
 	if request.method == 'POST':
 		# check if the post request has the file part
 		if 'file' not in request.files:
@@ -130,7 +130,7 @@ def detect():
 
 
 @app.route('/login-by-password', methods=['GET', 'POST'])    
-def detect():
+def login-by-password():
 	if request.method == 'POST':
 
 		username=request.form['username']
