@@ -124,12 +124,12 @@ def loginByFace():
 def loginByPassword():
 	if request.method == 'POST':
 
-		print(request.args['username'])
-		print(request.args['password'])
+		print(request.get_json['username'])
+		print(request.get_json['password'])
 
-		username=request.args['username']
+		username=request.get_json['username']
 
-		password=md5((request.args['password']).encode('utf-8')).hexdigest()
+		password=md5((request.get_json['password']).encode('utf-8')).hexdigest()
 
 		# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
 
