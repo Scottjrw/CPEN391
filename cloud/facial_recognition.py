@@ -41,14 +41,13 @@ def hello_world():
 
 def auth_user(user):
     session['logged_in'] = True
-    print(user.id)
     session['user_id'] = user.id
     session['username'] = user.username
     print('You are logged in as %s' % (user.username))
 
 def get_current_user():
     if session.get('logged_in'):
-        return Users.get(Users.id == session['user_id'])
+        return session['user_id']
 
 
 @app.route('/join', methods=['GET', 'POST'])
