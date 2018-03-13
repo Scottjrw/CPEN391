@@ -39,28 +39,6 @@ def after_request(response):
 def hello_world():
     return 'Hello, World!'
 
-# @app.route('/upload', methods=['GET', 'POST'])
-# def upload():
-# 	if request.method == 'POST':
-# 		# check if the post request has the file part
-# 		if 'file' not in request.files:
-# 			print('No file part')
-# 			return redirect(request.url)
-# 		file = request.files['file']
-# 		# if user does not select file, browser also
-# 		# submit a empty part without filename
-# 		if file.filename == '':
-# 			print('No selected file')
-# 			return redirect(request.url)
-# 		if file and allowed_file(file.filename):
-# 			picture = face_recognition.load_image_file(file)
-# 			face_encoding = face_recognition.face_encodings(picture)[0]
-
-# 			text_file = open("Output.txt", "wb")
-# 			text_file.write(face_encoding.tostring())
-# 			text_file.close()
-# 			return 'New Person in front of screen.'
-
 
 @app.route('/join', methods=['GET', 'POST'])
 def addUser():
@@ -133,6 +111,9 @@ def loginByFace():
 @app.route('/loginByPassword', methods=['GET', 'POST'])    
 def loginByPassword():
 	if request.method == 'POST':
+
+		print(request.form['username'])
+		print(request.form['password'])
 
 		username=request.form['username']
 		password=md5((request.form['password']).encode('utf-8')).hexdigest()
