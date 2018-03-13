@@ -4,6 +4,7 @@ import json
 import os
 from flask import Flask, jsonify, make_response, abort, request, redirect, url_for
 from flask_uploads import UploadSet, configure_uploads, IMAGES
+from flask_session import Session
 from flask import session
 from werkzeug import secure_filename
 from os.path import expanduser
@@ -15,7 +16,7 @@ import requests
 home = expanduser("~")
 
 app = Flask(__name__)
-SECRET_KEY = 'hin6bab8ge25*r=x&amp;+5$0kn=-#log$pt^#@vrqjld!^2ci@g*b'
+sess = Session()
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -184,6 +185,10 @@ def applet():
 		requests.post(request_name)
 		return 'applet successful'
 
+
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SECRET_KEY'] = 'reds209ndsldssdsljdsldsdsljdsldksdksdsdfsfsfsfis'
+sess.init_app(app)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=6000)
