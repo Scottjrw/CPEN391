@@ -149,15 +149,15 @@ def loginByPassword():
 		return 'No user found.'
 
 
-@app.route('/smsTester', methods=['POST'])
-def smsTester():
+@app.route('/applet', methods=['POST'])
+def applet():
 	if request.method == 'POST':
 	    # report = {}
 	    # report["value1"] = request.form['value1']
 	    # report["value2"] = request.form['value2']
 	    # report["value3"] = request.form['value3']
-	    requests.post("https://maker.ifttt.com/trigger/smsTester/with/key/egyN_jF6pzR88s9b8rFg0jTYXbbIpEGH-rB_zGobz_i")
-	    return 'smsTester successful'
+	    requests.post("https://maker.ifttt.com/trigger/" + request.form['applet'] + "/with/key/egyN_jF6pzR88s9b8rFg0jTYXbbIpEGH-rB_zGobz_i")
+	    return 'applet successful'
 
 
 if __name__ == '__main__':
