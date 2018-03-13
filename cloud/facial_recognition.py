@@ -96,8 +96,8 @@ def addUser():
 			return 'User failed to join.'
 
 
-@app.route('/login-by-face', methods=['GET', 'POST'])    
-def login-by-face():
+@app.route('/loginByFace', methods=['GET', 'POST'])    
+def loginByFace():
 	if request.method == 'POST':
 		# check if the post request has the file part
 		if 'file' not in request.files:
@@ -129,8 +129,8 @@ def login-by-face():
 			return 'No user found.'
 
 
-@app.route('/login-by-password', methods=['GET', 'POST'])    
-def login-by-password():
+@app.route('/loginByPassword', methods=['GET', 'POST'])    
+def loginByPassword():
 	if request.method == 'POST':
 
 		username=request.form['username']
