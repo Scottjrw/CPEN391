@@ -3,8 +3,8 @@ import face_recognition
 import json
 import os
 from flask import Flask, jsonify, make_response, abort, request, redirect, url_for, session
-from flask_uploads import UploadSet, configure_uploads, IMAGES
 from flask_session import Session
+from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug import secure_filename
 from os.path import expanduser
 from db import *
