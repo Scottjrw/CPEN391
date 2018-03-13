@@ -47,7 +47,7 @@ def auth_user(user):
 
 def get_current_user():
     if session.get('logged_in'):
-        return User.get(User.id == session['user_id'])
+        return Users.get(User.id == session['user_id'])
 
 
 @app.route('/join', methods=['GET', 'POST'])
