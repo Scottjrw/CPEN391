@@ -162,7 +162,7 @@ def addApplet():
 		cursor = db.cursor()
 
 		cursor.execute('''SELECT ifttt_requests FROM users WHERE id=?''', (user_id,))
-		requests = cursor.fetchone()
+		requests = str(cursor.fetchone())
 
 		requests = requests + "@", + str(request.form['applet'])
 
