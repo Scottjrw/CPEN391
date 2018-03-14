@@ -159,9 +159,14 @@ def loginByPassword():
 def addApplet():
 	if request.method == 'POST':
 		user_id = get_current_user()
-
 		cursor = db.cursor()
-		cursor.execute("UPDATE users SET ifttt_requests = ? WHERE id = ?", (request.form['applet'], user_id))
+
+		cursor.execute('''SELECT ifttt_requests FROM users WHERE id=?''', (user_id,))
+		requests = cursor.fetchone()
+
+		requests = requests + "@" + request.form['applet']
+
+		cursor.execute("UPDATE users SET ifttt_requests = ? WHERE id = ?", (requests, user_id))
 
 		return 'Added applet'
 
