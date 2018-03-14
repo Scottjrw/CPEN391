@@ -164,7 +164,8 @@ def addApplet():
 		cursor.execute('''SELECT ifttt_requests FROM users WHERE id=?''', (user_id,))
 		requests = str(cursor.fetchone())
 
-		requests = requests + "@", + str(request.form['applet'])
+
+		requests = (requests + "@", + str(request.form['applet']))
 
 		cursor.execute("UPDATE users SET ifttt_requests = ? WHERE id = ?", (requests, user_id))
 
