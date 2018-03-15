@@ -15,6 +15,8 @@ home = expanduser("~")
 
 app = Flask(__name__)
 
+applet_count = 0
+
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
@@ -162,7 +164,7 @@ def addApplet():
 
 		cursor = db.cursor()
 
-		cursor.execute('''INSERT INTO applets VALUES (?, ?)''', (user_id,request.form['applet']))
+		cursor.execute('''INSERT INTO applets VALUES (?, ?)''', (applet_count++, user_id,request.form['applet']))
 		requests = str(cursor.fetchone()[0])
 
 		return 'Added applet'
