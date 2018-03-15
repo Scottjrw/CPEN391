@@ -14,6 +14,9 @@ class Users(BaseModel):
 	username = CharField(unique=True)
 	password = CharField()
 	photo_encoding = BlobField()
+
+class Applets(BaseModel):
+	person_id = IntegerField()
 	ifttt_requests = CharField()
 
 
@@ -21,10 +24,6 @@ class Users(BaseModel):
 # 	t = Users.create(user_id=user_id, photo_encoding=photo_encoding)
 # 	t.save()
 
-
-def getUser(user_id):
-	return Users.select().where(Transcript.user_id == user_id)
-
 def create_tables():
 	with db:
-		db.create_tables([Users])
+		db.create_tables([Users, Applets])
