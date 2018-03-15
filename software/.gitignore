@@ -3,3 +3,4 @@
 **/*.map
 **/*.objdump
 **/*.a
+**/.color_coded
