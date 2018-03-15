@@ -164,7 +164,9 @@ def addApplet():
 
 		cursor = db.cursor()
 
-		cursor.execute('''INSERT INTO applets VALUES (?, ?)''', (applet_count++, user_id,request.form['applet']))
+		applet_count = applet_count + 1
+
+		cursor.execute('''INSERT INTO applets VALUES (?, ?)''', (applet_count, user_id,request.form['applet']))
 		requests = str(cursor.fetchone()[0])
 
 		return 'Added applet'
