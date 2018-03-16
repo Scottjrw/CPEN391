@@ -10,6 +10,7 @@ from db import *
 from hashlib import md5
 import numpy as np
 import requests
+from PIL import Image
 
 home = expanduser("~")
 
@@ -23,6 +24,46 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def auth_user(user):
+    session['logged_in'] = True
+    session['user_id'] = user.id
+    session['username'] = user.username
+    print('You are logged in as %s' % (user.username))
+
+def get_current_user():
+    if session.get('logged_in'):
+        return session['user_id']
+
+
+def hex_to_bin(hex_string):
+	scale = 16 ## equals to hexadecimal
+	num_of_bits = 8
+	return bin(int(hex_string, scale))[2:].zfill(num_of_bits)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+	if request.method == 'POST':
+		# check if the post request has the file part
+		if 'file' not in request.files:
+			print('No file part')
+			return redirect(request.url)
+		file = request.files['file']
+		# if user does not select file, browser also
+		# submit a empty part without filename
+		if file.filename == '':
+			print('No selected file')
+			return redirect(request.url)
+		if file and allowed_file(file.filename):
+			img = PIL.Image.open(file)
+			raw = img.tobytes()
+
+			text_file = open("Output.txt", "wb")
+			text_file.write(raw)
+			text_file.close()
+			return 'Upload complete.'
+
 
 @app.before_request
 def before_request():
@@ -38,16 +79,6 @@ def after_request(response):
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
-
-def auth_user(user):
-    session['logged_in'] = True
-    session['user_id'] = user.id
-    session['username'] = user.username
-    print('You are logged in as %s' % (user.username))
-
-def get_current_user():
-    if session.get('logged_in'):
-        return session['user_id']
 
 
 @app.route('/join', methods=['GET', 'POST'])
