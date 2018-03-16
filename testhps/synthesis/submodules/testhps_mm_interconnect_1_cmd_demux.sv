@@ -28,8 +28,8 @@
 // ------------------------------------------
 // Generation parameters:
 //   output_name:         testhps_mm_interconnect_1_cmd_demux
-//   ST_DATA_W:           123
-//   ST_CHANNEL_W:        4
+//   ST_DATA_W:           112
+//   ST_CHANNEL_W:        2
 //   NUM_OUTPUTS:         1
 //   VALID_WIDTH:         1
 // ------------------------------------------
@@ -46,8 +46,8 @@ module testhps_mm_interconnect_1_cmd_demux
     // Sink
     // -------------------
     input  [1-1      : 0]   sink_valid,
-    input  [123-1    : 0]   sink_data, // ST_DATA_W=123
-    input  [4-1 : 0]   sink_channel, // ST_CHANNEL_W=4
+    input  [112-1    : 0]   sink_data, // ST_DATA_W=112
+    input  [2-1 : 0]   sink_channel, // ST_CHANNEL_W=2
     input                         sink_startofpacket,
     input                         sink_endofpacket,
     output                        sink_ready,
@@ -56,8 +56,8 @@ module testhps_mm_interconnect_1_cmd_demux
     // Sources 
     // -------------------
     output reg                      src0_valid,
-    output reg [123-1    : 0] src0_data, // ST_DATA_W=123
-    output reg [4-1 : 0] src0_channel, // ST_CHANNEL_W=4
+    output reg [112-1    : 0] src0_data, // ST_DATA_W=112
+    output reg [2-1 : 0] src0_channel, // ST_CHANNEL_W=2
     output reg                      src0_startofpacket,
     output reg                      src0_endofpacket,
     input                           src0_ready,
@@ -94,7 +94,7 @@ module testhps_mm_interconnect_1_cmd_demux
     // -------------------
     assign ready_vector[0] = src0_ready;
 
-    assign sink_ready = |(sink_channel & {{3{1'b0}},{ready_vector[NUM_OUTPUTS - 1 : 0]}});
+    assign sink_ready = |(sink_channel & {{1{1'b0}},{ready_vector[NUM_OUTPUTS - 1 : 0]}});
 
 endmodule
 

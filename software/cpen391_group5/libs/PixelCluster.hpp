@@ -60,10 +60,10 @@ private:
     unsigned m_accumulate_count;
     ClusterCB m_cb;
 
-    static void gesture_interrupt(void *);
+    static void interrupt_handler(void *);
 
-    static constexpr uintptr_t Control_Reg =              0;
-    static constexpr uintptr_t Compare_En_Reg =           4;
+    static constexpr uintptr_t Control_Register =         0;
+    static constexpr uintptr_t Compare_En_Register =      4;
     static constexpr uintptr_t Compare_Color_Register =   8;
     static constexpr uintptr_t Range_Register =           12;
     static constexpr uintptr_t Max_X_Register =           16;

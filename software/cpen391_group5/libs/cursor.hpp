@@ -15,12 +15,9 @@
 #include <utility>
 #include "UI.hpp"
 
+namespace UI {
 
-
-using namespace UI;
-
-class Cursor : public Drawable{
-
+class Cursor : public Drawable {
 public:
 
     virtual void draw();
@@ -33,10 +30,18 @@ public:
     void update(Point center);
 
 private:
+    typedef struct {
+        unsigned x;
+        unsigned y;
+        SimpleGraphics::rgba_t color;
+    } ColourPoint;
+
     Point m_center;
     SimpleGraphics::rgba_t m_color;
     int m_radius;
     std::vector<ColourPoint> m_ColourPixels;
+
+};
 
 };
 

@@ -18,12 +18,6 @@ namespace UI {
  */
 typedef struct {unsigned x; unsigned y;} Point;
 
-typedef struct {
-    unsigned x;
-    unsigned y;
-    SimpleGraphics::rgba_t color;
-} ColourPoint;
-
 /* ------------------------------------------------------------------
  * An abstract class which represents anything that can be drawn
  */
@@ -34,8 +28,6 @@ public:
      * Draw the object on the screen
      */
     virtual void draw() = 0;
-
-    virtual ~Drawable(){};
 
     /*
      * Undraw the object efficiently, so we don't need to clear the entire screen
@@ -51,13 +43,16 @@ public:
     virtual void translateY(int amount, unsigned sleepUs=0) { throw std::logic_error("Cannot be moved"); }
 
     Drawable(SimpleGraphics &graphics):
-        m_graphics(graphics)
+        m_graphics(graphics),
+        m_is_showing(false)
     {}
+
+    virtual ~Drawable(){};
 
 protected:
     // Subclasses need access to these to draw themselves
     SimpleGraphics &m_graphics;
-    bool m_is_showing = false;
+    bool m_is_showing;
 };
 
 /* ------------------------------------------------------------------
@@ -77,8 +72,6 @@ public:
      */
     virtual bool touch(Point p) = 0;
 
-    virtual ~Touchable(){};
-
     /* 
      * Set the function to be called when touched
      *
@@ -89,6 +82,8 @@ public:
     Touchable(TouchControl &touch):
         m_touch(touch)
     {}
+
+    virtual ~Touchable(){};
 
 protected:
     TouchControl &m_touch;
@@ -102,9 +97,9 @@ public:
     virtual void draw();
     virtual void undraw();
 
-    virtual ~Rectangle(){};
-
     Rectangle(SimpleGraphics &graphics, Point p1, Point p2, SimpleGraphics::rgba_t color);
+
+    virtual ~Rectangle(){};
 
 protected:
     Point m_p1, m_p2;
@@ -142,12 +137,11 @@ public:
     virtual bool touch(Point p);
     virtual void onTouch(TouchCB callback);
 
+    int value() { return chosen_value; }
+
     Slider(SimpleGraphics &graphics, TouchControl &touch,
             Point p1, Point p2, SimpleGraphics::rgba_t text_color,
             SimpleGraphics::rgba_t background_color, int min, int max);
-
-    int chosen_value = 50;
-    int min, max;
 
 private:
     std::string m_text;
@@ -157,6 +151,8 @@ private:
     Point slider_bar_p1, slider_bar_p2;
     SimpleGraphics::rgba_t m_background_color;
     bool initial_state;
+    int chosen_value;
+    int min, max;
 };
 
 

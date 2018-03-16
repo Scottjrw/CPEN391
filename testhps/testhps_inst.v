@@ -1,30 +1,5 @@
 	testhps u0 (
 		.clk_clk                         (<connected-to-clk_clk>),                         //     clk.clk
-		.hps_mem_mem_a                   (<connected-to-hps_mem_mem_a>),                   // hps_mem.mem_a
-		.hps_mem_mem_ba                  (<connected-to-hps_mem_mem_ba>),                  //        .mem_ba
-		.hps_mem_mem_ck                  (<connected-to-hps_mem_mem_ck>),                  //        .mem_ck
-		.hps_mem_mem_ck_n                (<connected-to-hps_mem_mem_ck_n>),                //        .mem_ck_n
-		.hps_mem_mem_cke                 (<connected-to-hps_mem_mem_cke>),                 //        .mem_cke
-		.hps_mem_mem_cs_n                (<connected-to-hps_mem_mem_cs_n>),                //        .mem_cs_n
-		.hps_mem_mem_ras_n               (<connected-to-hps_mem_mem_ras_n>),               //        .mem_ras_n
-		.hps_mem_mem_cas_n               (<connected-to-hps_mem_mem_cas_n>),               //        .mem_cas_n
-		.hps_mem_mem_we_n                (<connected-to-hps_mem_mem_we_n>),                //        .mem_we_n
-		.hps_mem_mem_reset_n             (<connected-to-hps_mem_mem_reset_n>),             //        .mem_reset_n
-		.hps_mem_mem_dq                  (<connected-to-hps_mem_mem_dq>),                  //        .mem_dq
-		.hps_mem_mem_dqs                 (<connected-to-hps_mem_mem_dqs>),                 //        .mem_dqs
-		.hps_mem_mem_dqs_n               (<connected-to-hps_mem_mem_dqs_n>),               //        .mem_dqs_n
-		.hps_mem_mem_odt                 (<connected-to-hps_mem_mem_odt>),                 //        .mem_odt
-		.hps_mem_mem_dm                  (<connected-to-hps_mem_mem_dm>),                  //        .mem_dm
-		.hps_mem_oct_rzqin               (<connected-to-hps_mem_oct_rzqin>),               //        .oct_rzqin
-		.reset_reset_n                   (<connected-to-reset_reset_n>),                   //   reset.reset_n
-		.vga_CLK                         (<connected-to-vga_CLK>),                         //     vga.CLK
-		.vga_HS                          (<connected-to-vga_HS>),                          //        .HS
-		.vga_VS                          (<connected-to-vga_VS>),                          //        .VS
-		.vga_BLANK                       (<connected-to-vga_BLANK>),                       //        .BLANK
-		.vga_SYNC                        (<connected-to-vga_SYNC>),                        //        .SYNC
-		.vga_R                           (<connected-to-vga_R>),                           //        .R
-		.vga_G                           (<connected-to-vga_G>),                           //        .G
-		.vga_B                           (<connected-to-vga_B>),                           //        .B
 		.hps_io_hps_io_emac1_inst_TX_CLK (<connected-to-hps_io_hps_io_emac1_inst_TX_CLK>), //  hps_io.hps_io_emac1_inst_TX_CLK
 		.hps_io_hps_io_emac1_inst_TXD0   (<connected-to-hps_io_hps_io_emac1_inst_TXD0>),   //        .hps_io_emac1_inst_TXD0
 		.hps_io_hps_io_emac1_inst_TXD1   (<connected-to-hps_io_hps_io_emac1_inst_TXD1>),   //        .hps_io_emac1_inst_TXD1
@@ -66,6 +41,31 @@
 		.hps_io_hps_io_uart0_inst_RX     (<connected-to-hps_io_hps_io_uart0_inst_RX>),     //        .hps_io_uart0_inst_RX
 		.hps_io_hps_io_uart0_inst_TX     (<connected-to-hps_io_hps_io_uart0_inst_TX>),     //        .hps_io_uart0_inst_TX
 		.hps_io_hps_io_i2c0_inst_SDA     (<connected-to-hps_io_hps_io_i2c0_inst_SDA>),     //        .hps_io_i2c0_inst_SDA
-		.hps_io_hps_io_i2c0_inst_SCL     (<connected-to-hps_io_hps_io_i2c0_inst_SCL>)      //        .hps_io_i2c0_inst_SCL
+		.hps_io_hps_io_i2c0_inst_SCL     (<connected-to-hps_io_hps_io_i2c0_inst_SCL>),     //        .hps_io_i2c0_inst_SCL
+		.hps_mem_mem_a                   (<connected-to-hps_mem_mem_a>),                   // hps_mem.mem_a
+		.hps_mem_mem_ba                  (<connected-to-hps_mem_mem_ba>),                  //        .mem_ba
+		.hps_mem_mem_ck                  (<connected-to-hps_mem_mem_ck>),                  //        .mem_ck
+		.hps_mem_mem_ck_n                (<connected-to-hps_mem_mem_ck_n>),                //        .mem_ck_n
+		.hps_mem_mem_cke                 (<connected-to-hps_mem_mem_cke>),                 //        .mem_cke
+		.hps_mem_mem_cs_n                (<connected-to-hps_mem_mem_cs_n>),                //        .mem_cs_n
+		.hps_mem_mem_ras_n               (<connected-to-hps_mem_mem_ras_n>),               //        .mem_ras_n
+		.hps_mem_mem_cas_n               (<connected-to-hps_mem_mem_cas_n>),               //        .mem_cas_n
+		.hps_mem_mem_we_n                (<connected-to-hps_mem_mem_we_n>),                //        .mem_we_n
+		.hps_mem_mem_reset_n             (<connected-to-hps_mem_mem_reset_n>),             //        .mem_reset_n
+		.hps_mem_mem_dq                  (<connected-to-hps_mem_mem_dq>),                  //        .mem_dq
+		.hps_mem_mem_dqs                 (<connected-to-hps_mem_mem_dqs>),                 //        .mem_dqs
+		.hps_mem_mem_dqs_n               (<connected-to-hps_mem_mem_dqs_n>),               //        .mem_dqs_n
+		.hps_mem_mem_odt                 (<connected-to-hps_mem_mem_odt>),                 //        .mem_odt
+		.hps_mem_mem_dm                  (<connected-to-hps_mem_mem_dm>),                  //        .mem_dm
+		.hps_mem_oct_rzqin               (<connected-to-hps_mem_oct_rzqin>),               //        .oct_rzqin
+		.reset_reset_n                   (<connected-to-reset_reset_n>),                   //   reset.reset_n
+		.vga_CLK                         (<connected-to-vga_CLK>),                         //     vga.CLK
+		.vga_HS                          (<connected-to-vga_HS>),                          //        .HS
+		.vga_VS                          (<connected-to-vga_VS>),                          //        .VS
+		.vga_BLANK                       (<connected-to-vga_BLANK>),                       //        .BLANK
+		.vga_SYNC                        (<connected-to-vga_SYNC>),                        //        .SYNC
+		.vga_R                           (<connected-to-vga_R>),                           //        .R
+		.vga_G                           (<connected-to-vga_G>),                           //        .G
+		.vga_B                           (<connected-to-vga_B>)                            //        .B
 	);
 

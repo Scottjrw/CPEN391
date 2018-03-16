@@ -5,7 +5,7 @@
 void PixelCluster::startIRQ() {
 
     reset();
-    int status = alt_ic_isr_register(m_ic_id, m_irq_id, gesture_interrupt, this, nullptr);
+    int status = alt_ic_isr_register(m_ic_id, m_irq_id, interrupt_handler, this, nullptr);
 
     assert(status == 0);
 
@@ -27,7 +27,7 @@ void PixelCluster::isrCB(PixelCluster::ClusterCB cb) {
 }
 
 void PixelCluster::reset() {
-    IOWR_32DIRECT(m_base, Control_Reg, 0);
+    IOWR_32DIRECT(m_base, Control_Register, 0);
 }
 
 void PixelCluster::poll(unsigned &x, unsigned &y, unsigned &count) {
@@ -57,7 +57,7 @@ void PixelCluster::compare_value(uint8_t r, uint8_t g, uint8_t b) {
 }
 
 void PixelCluster::compare_enable(bool r, bool g, bool b) {
-    uint32_t prev = IORD_32DIRECT(m_base, Compare_En_Reg);
+    uint32_t prev = IORD_32DIRECT(m_base, Compare_En_Register);
 
     // Preserve the less than bits
     prev &= 0xFF00;
@@ -67,11 +67,11 @@ void PixelCluster::compare_enable(bool r, bool g, bool b) {
     en_val |= g ? 0b010 : 0;
     en_val |= b ? 0b001 : 0;
 
-    IOWR_32DIRECT(m_base, Compare_En_Reg, prev | en_val);
+    IOWR_32DIRECT(m_base, Compare_En_Register, prev | en_val);
 }
 
 void PixelCluster::compare_less_than(bool r, bool g, bool b) {
-    uint32_t prev = IORD_32DIRECT(m_base, Compare_En_Reg);
+    uint32_t prev = IORD_32DIRECT(m_base, Compare_En_Register);
 
     // Preserve the enable bits
     prev &= 0xFF;
@@ -81,32 +81,32 @@ void PixelCluster::compare_less_than(bool r, bool g, bool b) {
     lt_val |= g ? 0b010 : 0;
     lt_val |= b ? 0b001 : 0;
 
-    IOWR_32DIRECT(m_base, Compare_En_Reg, prev | (lt_val << 8));
+    IOWR_32DIRECT(m_base, Compare_En_Register, prev | (lt_val << 8));
 }
 
 void PixelCluster::range(uint16_t range) {
     IOWR_32DIRECT(m_base, Range_Register, range);
 }
 
-void PixelCluster::gesture_interrupt(void *gestureptr) {
+void PixelCluster::interrupt_handler(void *pxcluster) {
 
-    PixelCluster *gesture = static_cast<PixelCluster*>(gestureptr);
+    PixelCluster *pixel = static_cast<PixelCluster*>(pxcluster);
 
     // Frequency calculation
-    unsigned ticks_diff = alt_nticks() - gesture->m_last_isr_ticks;
-    gesture->m_accumlate_isr_ticks += ticks_diff;
-    gesture->m_accumulate_count++;
-    gesture->m_last_isr_ticks = alt_nticks();
+    unsigned ticks_diff = alt_nticks() - pixel->m_last_isr_ticks;
+    pixel->m_accumlate_isr_ticks += ticks_diff;
+    pixel->m_accumulate_count++;
+    pixel->m_last_isr_ticks = alt_nticks();
 
-    gesture->m_last_x = IORD_32DIRECT(gesture->m_base, Max_X_Register);
-    gesture->m_last_y = IORD_32DIRECT(gesture->m_base, Max_Y_Register);
-    gesture->m_last_count = IORD_32DIRECT(gesture->m_base, Max_Count_Register);
+    pixel->m_last_x = IORD_32DIRECT(pixel->m_base, Max_X_Register);
+    pixel->m_last_y = IORD_32DIRECT(pixel->m_base, Max_Y_Register);
+    pixel->m_last_count = IORD_32DIRECT(pixel->m_base, Max_Count_Register);
 
-    ClusterCB cb = gesture->m_cb;
+    ClusterCB cb = pixel->m_cb;
 
     if (cb != nullptr)
-        cb(gesture, gesture->m_last_x, gesture->m_last_y, gesture->m_last_count);
+        cb(pixel, pixel->m_last_x, pixel->m_last_y, pixel->m_last_count);
 
-    gesture->reset();
+    pixel->reset();
 
 }

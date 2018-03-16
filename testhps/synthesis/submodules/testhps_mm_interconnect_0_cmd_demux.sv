@@ -27,11 +27,11 @@
 
 // ------------------------------------------
 // Generation parameters:
-//   output_name:         testhps_mm_interconnect_1_rsp_demux
-//   ST_DATA_W:           112
+//   output_name:         testhps_mm_interconnect_0_cmd_demux
+//   ST_DATA_W:           114
 //   ST_CHANNEL_W:        2
 //   NUM_OUTPUTS:         2
-//   VALID_WIDTH:         1
+//   VALID_WIDTH:         2
 // ------------------------------------------
 
 //------------------------------------------
@@ -40,13 +40,13 @@
 // 15610 - Warning: Design contains x input pin(s) that do not drive logic
 //------------------------------------------
 
-module testhps_mm_interconnect_1_rsp_demux
+module testhps_mm_interconnect_0_cmd_demux
 (
     // -------------------
     // Sink
     // -------------------
-    input  [1-1      : 0]   sink_valid,
-    input  [112-1    : 0]   sink_data, // ST_DATA_W=112
+    input  [2-1      : 0]   sink_valid,
+    input  [114-1    : 0]   sink_data, // ST_DATA_W=114
     input  [2-1 : 0]   sink_channel, // ST_CHANNEL_W=2
     input                         sink_startofpacket,
     input                         sink_endofpacket,
@@ -56,14 +56,14 @@ module testhps_mm_interconnect_1_rsp_demux
     // Sources 
     // -------------------
     output reg                      src0_valid,
-    output reg [112-1    : 0] src0_data, // ST_DATA_W=112
+    output reg [114-1    : 0] src0_data, // ST_DATA_W=114
     output reg [2-1 : 0] src0_channel, // ST_CHANNEL_W=2
     output reg                      src0_startofpacket,
     output reg                      src0_endofpacket,
     input                           src0_ready,
 
     output reg                      src1_valid,
-    output reg [112-1    : 0] src1_data, // ST_DATA_W=112
+    output reg [114-1    : 0] src1_data, // ST_DATA_W=114
     output reg [2-1 : 0] src1_channel, // ST_CHANNEL_W=2
     output reg                      src1_startofpacket,
     output reg                      src1_endofpacket,
@@ -92,14 +92,14 @@ module testhps_mm_interconnect_1_rsp_demux
         src0_endofpacket   = sink_endofpacket;
         src0_channel       = sink_channel >> NUM_OUTPUTS;
 
-        src0_valid         = sink_channel[0] && sink_valid;
+        src0_valid         = sink_channel[0] && sink_valid[0];
 
         src1_data          = sink_data;
         src1_startofpacket = sink_startofpacket;
         src1_endofpacket   = sink_endofpacket;
         src1_channel       = sink_channel >> NUM_OUTPUTS;
 
-        src1_valid         = sink_channel[1] && sink_valid;
+        src1_valid         = sink_channel[1] && sink_valid[1];
 
     end
 

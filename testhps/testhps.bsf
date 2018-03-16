@@ -574,7 +574,7 @@ agreement for further details.
 		(text "R" (rect 197 923 400 1856)(font "Arial" (color 0 0 0)))
 		(text "G" (rect 197 939 400 1888)(font "Arial" (color 0 0 0)))
 		(text "B" (rect 197 955 400 1920)(font "Arial" (color 0 0 0)))
-		(text " testhps " (rect 558 976 1170 1962)(font "Arial" ))
+		(text " system " (rect 557 976 1162 1962)(font "Arial" ))
 		(line (pt 192 32)(pt 400 32)(line_width 1))
 		(line (pt 400 32)(pt 400 976)(line_width 1))
 		(line (pt 192 976)(pt 400 976)(line_width 1))

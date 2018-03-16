@@ -2,6 +2,8 @@
 #include "UI.hpp"
 #include "SimpleGraphics.hpp"
 
+namespace UI {
+
 Cursor::Cursor(SimpleGraphics &graphics, SimpleGraphics::rgba_t color, int radius):
 	Drawable(graphics),
 	m_color(color),
@@ -50,3 +52,4 @@ void Cursor::update(Point center){
     m_center = center;
 }
 
+}

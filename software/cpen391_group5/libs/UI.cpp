@@ -3,11 +3,15 @@
 #include <stdio.h>
 
 
-#define     CHAR_HEIGHT 7
-#define     MENU_ITEM_WIDTH     30
-#define     MENU_ITEM_HEIGHT    15
-#define     MENU_ITEM_SPACE     5
-using namespace UI;
+
+namespace UI {
+
+namespace Settings {
+    constexpr unsigned CHAR_HEIGHT = 7;
+    constexpr unsigned MENU_ITEM_WIDTH = 30;
+    constexpr unsigned MENU_ITEM_HEIGHT = 15;
+    constexpr unsigned MENU_ITEM_SPACE = 5;
+};
 
 Rectangle::Rectangle(SimpleGraphics &graphics, Point p1, Point p2, SimpleGraphics::rgba_t color):
     Drawable(graphics),
@@ -59,8 +63,8 @@ void Button::draw(){
 
 	unsigned remaining_space_y;
 
-	if ((m_p2.y - m_p1.y) > CHAR_HEIGHT) {
-		remaining_space_y = (m_p2.y - m_p1.y) - CHAR_HEIGHT;
+	if ((m_p2.y - m_p1.y) > Settings::CHAR_HEIGHT) {
+		remaining_space_y = (m_p2.y - m_p1.y) - Settings::CHAR_HEIGHT;
 	} else
 		remaining_space_y = 4;
 
@@ -87,8 +91,8 @@ void Button::undraw(){
 
 	unsigned remaining_space_y;
 
-	if ((m_p2.y - m_p1.y) > CHAR_HEIGHT) {
-		remaining_space_y = (m_p2.y - m_p1.y) - CHAR_HEIGHT;
+	if ((m_p2.y - m_p1.y) > Settings::CHAR_HEIGHT) {
+		remaining_space_y = (m_p2.y - m_p1.y) - Settings::CHAR_HEIGHT;
 	} else
 		remaining_space_y = 4;
 
@@ -120,9 +124,6 @@ Slider::Slider(SimpleGraphics &graphics, TouchControl &touch,
         SimpleGraphics::rgba_t background_color, int min, int max):
 	Rectangle(graphics, p1, p2, background_color),
     Touchable(touch),
-    chosen_value(),
-    min(min),
-    max(max),
     m_text("00"),
     m_text_color(text_color),
     m_cb(nullptr),
@@ -131,7 +132,10 @@ Slider::Slider(SimpleGraphics &graphics, TouchControl &touch,
     slider_bar_p1(),
     slider_bar_p2(),
     m_background_color(background_color),
-    initial_state()
+    initial_state(),
+    chosen_value(min),
+    min(min),
+    max(max)
 {
 	initial_state = true;
 }
@@ -154,8 +158,8 @@ void Slider::draw(){
 
 	unsigned remaining_space_y;
 
-	if ((m_p2.y - m_p1.y) > CHAR_HEIGHT) {
-		remaining_space_y = (m_p2.y - m_p1.y) - CHAR_HEIGHT;
+	if ((m_p2.y - m_p1.y) > Settings::CHAR_HEIGHT) {
+		remaining_space_y = (m_p2.y - m_p1.y) - Settings::CHAR_HEIGHT;
 	} else
 		remaining_space_y = 4;
 
@@ -201,8 +205,8 @@ void Slider::undraw(){
 
 	unsigned remaining_space_y;
 
-	if ((m_p2.y - m_p1.y) > CHAR_HEIGHT) {
-		remaining_space_y = (m_p2.y - m_p1.y) - CHAR_HEIGHT;
+	if ((m_p2.y - m_p1.y) > Settings::CHAR_HEIGHT) {
+		remaining_space_y = (m_p2.y - m_p1.y) - Settings::CHAR_HEIGHT;
 	} else
 		remaining_space_y = 4;
 
@@ -221,20 +225,14 @@ bool Slider::touch(Point P){
 
 			unsigned remaining_space_y;
 
-			if ((m_p2.y - m_p1.y) > CHAR_HEIGHT) {
-				remaining_space_y = (m_p2.y - m_p1.y) - CHAR_HEIGHT;
+			if ((m_p2.y - m_p1.y) > Settings::CHAR_HEIGHT) {
+				remaining_space_y = (m_p2.y - m_p1.y) - Settings::CHAR_HEIGHT;
 			} else
 				remaining_space_y = 4;
 
 			unsigned strStartYPos = (remaining_space_y/2) +  m_p1.y;
 
-
-	//		Rectangle undraw_slider(m_graphics, slider_p1, slider_p2, m_background_color);
-	//		undraw_slider.draw();
-	//		Rectangle slider_bar(m_graphics, {slider_p1.x, slider_bar_p1.y}, {slider_p2.x, slider_bar_p2.y}, SimpleGraphics::rgba(255, 255, 255, 255));
-	//		slider_bar.draw();
-	//		m_graphics.draw_string(m_background_color, strStartXPos, strStartYPos, m_text);
-			Slider::draw();
+			draw();
 
 			slider_p1.x = P.x - 1;
 			slider_p1.y = m_p1.y + 2;
@@ -319,15 +317,10 @@ bool DropdownMenu::touch(Point p){
 
 void DropdownMenu::expand(){
 
-    //unsigned menu_width = m_p2.x - m_p1.x;
-    //unsigned menu_height = m_buttons.size() * (MENU_ITEM_HEIGHT + MENU_ITEM_SPACE);
-
     // for now we just consider on direction: downward dropdown menu
     switch(m_expandDir){
         case TOP:
-
         case BOTTOM:
-
             for(int i = 0; i < (int)m_buttons.size(); i++){
                 m_buttons[i].draw();
             }
@@ -358,3 +351,5 @@ void DropdownMenu::newItem(SimpleGraphics &graphics, TouchControl &touch, std::s
 	button.onTouch(callback);
 	m_buttons.push_back(button);
 }
+
+};

@@ -1,31 +1,6 @@
 
 module testhps (
 	clk_clk,
-	hps_mem_mem_a,
-	hps_mem_mem_ba,
-	hps_mem_mem_ck,
-	hps_mem_mem_ck_n,
-	hps_mem_mem_cke,
-	hps_mem_mem_cs_n,
-	hps_mem_mem_ras_n,
-	hps_mem_mem_cas_n,
-	hps_mem_mem_we_n,
-	hps_mem_mem_reset_n,
-	hps_mem_mem_dq,
-	hps_mem_mem_dqs,
-	hps_mem_mem_dqs_n,
-	hps_mem_mem_odt,
-	hps_mem_mem_dm,
-	hps_mem_oct_rzqin,
-	reset_reset_n,
-	vga_CLK,
-	vga_HS,
-	vga_VS,
-	vga_BLANK,
-	vga_SYNC,
-	vga_R,
-	vga_G,
-	vga_B,
 	hps_io_hps_io_emac1_inst_TX_CLK,
 	hps_io_hps_io_emac1_inst_TXD0,
 	hps_io_hps_io_emac1_inst_TXD1,
@@ -67,34 +42,34 @@ module testhps (
 	hps_io_hps_io_uart0_inst_RX,
 	hps_io_hps_io_uart0_inst_TX,
 	hps_io_hps_io_i2c0_inst_SDA,
-	hps_io_hps_io_i2c0_inst_SCL);	
+	hps_io_hps_io_i2c0_inst_SCL,
+	hps_mem_mem_a,
+	hps_mem_mem_ba,
+	hps_mem_mem_ck,
+	hps_mem_mem_ck_n,
+	hps_mem_mem_cke,
+	hps_mem_mem_cs_n,
+	hps_mem_mem_ras_n,
+	hps_mem_mem_cas_n,
+	hps_mem_mem_we_n,
+	hps_mem_mem_reset_n,
+	hps_mem_mem_dq,
+	hps_mem_mem_dqs,
+	hps_mem_mem_dqs_n,
+	hps_mem_mem_odt,
+	hps_mem_mem_dm,
+	hps_mem_oct_rzqin,
+	reset_reset_n,
+	vga_CLK,
+	vga_HS,
+	vga_VS,
+	vga_BLANK,
+	vga_SYNC,
+	vga_R,
+	vga_G,
+	vga_B);	
 
 	input		clk_clk;
-	output	[14:0]	hps_mem_mem_a;
-	output	[2:0]	hps_mem_mem_ba;
-	output		hps_mem_mem_ck;
-	output		hps_mem_mem_ck_n;
-	output		hps_mem_mem_cke;
-	output		hps_mem_mem_cs_n;
-	output		hps_mem_mem_ras_n;
-	output		hps_mem_mem_cas_n;
-	output		hps_mem_mem_we_n;
-	output		hps_mem_mem_reset_n;
-	inout	[31:0]	hps_mem_mem_dq;
-	inout	[3:0]	hps_mem_mem_dqs;
-	inout	[3:0]	hps_mem_mem_dqs_n;
-	output		hps_mem_mem_odt;
-	output	[3:0]	hps_mem_mem_dm;
-	input		hps_mem_oct_rzqin;
-	input		reset_reset_n;
-	output		vga_CLK;
-	output		vga_HS;
-	output		vga_VS;
-	output		vga_BLANK;
-	output		vga_SYNC;
-	output	[7:0]	vga_R;
-	output	[7:0]	vga_G;
-	output	[7:0]	vga_B;
 	output		hps_io_hps_io_emac1_inst_TX_CLK;
 	output		hps_io_hps_io_emac1_inst_TXD0;
 	output		hps_io_hps_io_emac1_inst_TXD1;
@@ -137,4 +112,29 @@ module testhps (
 	output		hps_io_hps_io_uart0_inst_TX;
 	inout		hps_io_hps_io_i2c0_inst_SDA;
 	inout		hps_io_hps_io_i2c0_inst_SCL;
+	output	[14:0]	hps_mem_mem_a;
+	output	[2:0]	hps_mem_mem_ba;
+	output		hps_mem_mem_ck;
+	output		hps_mem_mem_ck_n;
+	output		hps_mem_mem_cke;
+	output		hps_mem_mem_cs_n;
+	output		hps_mem_mem_ras_n;
+	output		hps_mem_mem_cas_n;
+	output		hps_mem_mem_we_n;
+	output		hps_mem_mem_reset_n;
+	inout	[31:0]	hps_mem_mem_dq;
+	inout	[3:0]	hps_mem_mem_dqs;
+	inout	[3:0]	hps_mem_mem_dqs_n;
+	output		hps_mem_mem_odt;
+	output	[3:0]	hps_mem_mem_dm;
+	input		hps_mem_oct_rzqin;
+	input		reset_reset_n;
+	output		vga_CLK;
+	output		vga_HS;
+	output		vga_VS;
+	output		vga_BLANK;
+	output		vga_SYNC;
+	output	[7:0]	vga_R;
+	output	[7:0]	vga_G;
+	output	[7:0]	vga_B;
 endmodule
