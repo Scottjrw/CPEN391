@@ -3,6 +3,7 @@ import face_recognition
 import json
 import os
 import io
+import sys
 from flask import Flask, jsonify, make_response, abort, request, redirect, url_for, session
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug import secure_filename
