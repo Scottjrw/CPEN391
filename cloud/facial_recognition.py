@@ -56,7 +56,7 @@ def upload():
 			print('No selected file')
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
-			img = PIL.Image.open(file)
+			img = Image.open(file)
 			raw = img.tobytes()
 
 			text_file = open("Output.txt", "wb")
