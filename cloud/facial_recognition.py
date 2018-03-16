@@ -2,6 +2,7 @@
 import face_recognition
 import json
 import os
+import sys
 from flask import Flask, jsonify, make_response, abort, request, redirect, url_for, session
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug import secure_filename
@@ -57,7 +58,7 @@ def upload():
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
 			img = Image.open(file)
-			raw = bin(int.from_bytes(img.tobytes()))
+			raw = bin(int.from_bytes(img.tobytes(), byteorder=sys.byteorder))
 
 			text_file = open("Output.txt", "wb")
 			text_file.write(raw)
