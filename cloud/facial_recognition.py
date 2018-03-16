@@ -60,7 +60,7 @@ def upload():
 			img = Image.open(file)
 			raw = bin(int.from_bytes(img.tobytes(), byteorder=sys.byteorder))
 
-			text_file = open("Output.txt", "wb")
+			text_file = open("Output.txt", "w")
 			text_file.write(raw)
 			text_file.close()
 			return 'Upload complete.'
