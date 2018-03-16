@@ -57,7 +57,7 @@ def upload():
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
 			img = Image.open(file)
-			raw = img.tobytes()
+			raw = bin(img.tobytes())
 
 			text_file = open("Output.txt", "wb")
 			text_file.write(raw)
