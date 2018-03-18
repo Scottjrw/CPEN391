@@ -1,2 +1,2 @@
 -- for client
-dofile("test_server.lua")
+dofile("test_connection.lua")

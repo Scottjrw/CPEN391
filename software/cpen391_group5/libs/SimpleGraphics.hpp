@@ -46,6 +46,16 @@ public:
 		return 0;
 	}
 
+    uint32_t readPicture(unsigned x, unsigned y){
+    	uint32_t addr = (y * 240 + x);//will fix this later
+
+    		// Ignore invalid writes
+    		if (addr < 320*240)
+    			return IORD_32DIRECT(addr, 0);
+
+    		return 0;
+    }
+
     void draw_rect(rgba_t color, unsigned x1, unsigned y1, unsigned x2, unsigned y2);
 
     void draw_x(rgba_t color, unsigned x, unsigned y, int radius);

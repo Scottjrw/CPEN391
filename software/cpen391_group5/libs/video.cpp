@@ -294,6 +294,16 @@ int* Video::readPicture(int n) {
 	return camerabuff;
 }
 
+uint32_t Video::readPixel(unsigned x, unsigned y){
+	int addr = (y * 240 + x);//will fix this later
+
+		// Ignore invalid writes
+		if (addr < 320*240)
+			return IORD_32DIRECT(addr, 0);
+
+		return 0;
+}
+
 /**************** low level commands */
 
 

@@ -1,6 +1,8 @@
 #include <stdbool.h>
 #include "system.h"
 #include <stdio.h>
+#include "io.h"
+#include <stdint.h>
 
 
 // Used to be a C library, give it a namespace for cleanliness
@@ -74,6 +76,7 @@ public:
     bool colorControl(int mode);
     void close();
     bool mirror_mode_on(void);
+    uint32_t readPixel(unsigned x, unsigned y);
 
     char* setBaud9600();
     char* setBaud19200();

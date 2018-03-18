@@ -13,9 +13,9 @@ tmr.delay(1000000) -- wait 1,000,000 us = 1 second
 
 tmr.alarm(0, 1000, 1, function()
    if wifi.sta.getip() == nil then
-      print("Connecting to AP...\n")
+      --print("Connecting to AP...\n")
    else
-      print("connected\n")
+      --print("connected\n")
       tmr.stop(0)
    end
 end)
@@ -61,7 +61,7 @@ function light_on()
     end
     ok, data_on = pcall(cjson.encode, {method="passthrough", params=cjson.decode(json1)})
     if ok then
-      print(json)
+      print(data_on)
     else
       print("failed to encode!")
     end
@@ -87,7 +87,7 @@ function light_off()
     end
     ok, data_off = pcall(cjson.encode, {method="passthrough", params=cjson.decode(json1)})
     if ok then
-      print(data1)
+      print(data_off)
     else
       print("failed to encode!")
     end
@@ -101,4 +101,35 @@ function light_off()
     end
   end)
 
+end
+
+function send_username(username, password)
+    url = "http://104.198.97.189:6000/loginByPassword"
+    --header = "Content-Type:application/json\r\n"
+    header = "Content-Type:application/json\r\n"
+    ok, data = pcall(cjson.encode, {username = username, password = password})
+    if ok then
+      --print(data)
+    else
+      --print("failed to encode!")
+    end
+    --data = "{username=\""..username.."\",\r\n\r\npassword=\""..password.."\"}"
+
+
+    http.request(url,"POST",header,data,
+        function(code, data)
+        if (code < 0) then
+          print("HTTP request failed")
+        else
+          print(code, data)
+        end
+    end)
+end
+
+function send_picture(raw_picture)
+    --print(string.len(raw_picture))
+    for i = 1,255 do 
+        print()
+    end
+    print("$done")
 end

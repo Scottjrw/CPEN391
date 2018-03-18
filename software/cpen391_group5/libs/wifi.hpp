@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <system.h>
+#include <string>
 
 class Wifi {
 	public:
@@ -20,6 +21,9 @@ class Wifi {
 		void LedOff();
 		void LightOn();
 		void LightOff();
+		void SendUsername(std::string username, std::string password);
+		void SendPicture(std::string picture);
+		std::string ReadResponse();
 
 	private:
 		FILE *wifi_uart;
