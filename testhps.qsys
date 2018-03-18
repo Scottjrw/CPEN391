@@ -29,35 +29,19 @@
    {
       datum _sortIndex
       {
-         value = "1";
-         type = "int";
-      }
-   }
-   element video_dma_controller_0
-   {
-      datum _sortIndex
-      {
          value = "2";
          type = "int";
       }
    }
-   element video_dual_clock_buffer_0
+   element master_0
    {
       datum _sortIndex
       {
-         value = "5";
+         value = "1";
          type = "int";
       }
    }
-   element video_pll_0
-   {
-      datum _sortIndex
-      {
-         value = "7";
-         type = "int";
-      }
-   }
-   element video_rgb_resampler_0
+   element uart_0
    {
       datum _sortIndex
       {
@@ -65,7 +49,20 @@
          type = "int";
       }
    }
-   element video_scaler_0
+   element uart_0.s1
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+      datum baseAddress
+      {
+         value = "4096";
+         type = "String";
+      }
+   }
+   element video_dma_controller_0
    {
       datum _sortIndex
       {
@@ -73,11 +70,51 @@
          type = "int";
       }
    }
-   element video_vga_controller_0
+   element video_dma_controller_0.avalon_dma_control_slave
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+   }
+   element video_dual_clock_buffer_0
+   {
+      datum _sortIndex
+      {
+         value = "7";
+         type = "int";
+      }
+   }
+   element video_pll_0
+   {
+      datum _sortIndex
+      {
+         value = "9";
+         type = "int";
+      }
+   }
+   element video_rgb_resampler_0
    {
       datum _sortIndex
       {
          value = "6";
+         type = "int";
+      }
+   }
+   element video_scaler_0
+   {
+      datum _sortIndex
+      {
+         value = "5";
+         type = "int";
+      }
+   }
+   element video_vga_controller_0
+   {
+      datum _sortIndex
+      {
+         value = "8";
          type = "int";
       }
    }
@@ -106,6 +143,11 @@
  <interface name="hps_io" internal="hps_0.hps_io" type="conduit" dir="end" />
  <interface name="hps_mem" internal="hps_0.memory" type="conduit" dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
+ <interface
+   name="test_uart"
+   internal="uart_0.external_connection"
+   type="conduit"
+   dir="end" />
  <interface
    name="vga"
    internal="video_vga_controller_0.external_interface"
@@ -225,10 +267,10 @@
   <parameter name="F2SCLK_SDRAMCLK_Enable" value="false" />
   <parameter name="F2SCLK_SDRAMCLK_FREQ" value="0" />
   <parameter name="F2SCLK_WARMRST_Enable" value="false" />
-  <parameter name="F2SDRAM_Type" value="AXI-3" />
-  <parameter name="F2SDRAM_Width" value="64" />
+  <parameter name="F2SDRAM_Type">Avalon-MM Bidirectional,Avalon-MM Bidirectional</parameter>
+  <parameter name="F2SDRAM_Width" value="32,32" />
   <parameter name="F2SINTERRUPT_Enable" value="true" />
-  <parameter name="F2S_Width" value="2" />
+  <parameter name="F2S_Width" value="1" />
   <parameter name="FORCED_NON_LDC_ADDR_CMD_MEM_CK_INVERT" value="false" />
   <parameter name="FORCED_NUM_WRITE_FR_CYCLE_SHIFTS" value="0" />
   <parameter name="FORCE_DQS_TRACKING" value="AUTO" />
@@ -486,7 +528,7 @@
   <parameter name="S2FINTERRUPT_UART_Enable" value="false" />
   <parameter name="S2FINTERRUPT_USB_Enable" value="false" />
   <parameter name="S2FINTERRUPT_WATCHDOG_Enable" value="false" />
-  <parameter name="S2F_Width" value="2" />
+  <parameter name="S2F_Width" value="1" />
   <parameter name="SDIO_Mode" value="4-bit Data" />
   <parameter name="SDIO_PinMuxing" value="HPS I/O Set 0" />
   <parameter name="SEQUENCER_TYPE" value="NIOS" />
@@ -644,6 +686,36 @@
   <parameter name="use_default_mpu_clk" value="true" />
  </module>
  <module
+   name="master_0"
+   kind="altera_jtag_avalon_master"
+   version="15.0"
+   enabled="1">
+  <parameter name="AUTO_DEVICE" value="5CSEMA5F31C6" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
+  <parameter name="COMPONENT_CLOCK" value="0" />
+  <parameter name="FAST_VER" value="0" />
+  <parameter name="FIFO_DEPTHS" value="2" />
+  <parameter name="PLI_PORT" value="50000" />
+  <parameter name="USE_PLI" value="0" />
+ </module>
+ <module name="uart_0" kind="altera_avalon_uart" version="15.0" enabled="1">
+  <parameter name="baud" value="115200" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="dataBits" value="8" />
+  <parameter name="fixedBaud" value="false" />
+  <parameter name="parity" value="NONE" />
+  <parameter name="simCharStream" value="" />
+  <parameter name="simInteractiveInputEnable" value="false" />
+  <parameter name="simInteractiveOutputEnable" value="false" />
+  <parameter name="simTrueBaud" value="false" />
+  <parameter name="stopBits" value="1" />
+  <parameter name="syncRegDepth" value="2" />
+  <parameter name="useCtsRts" value="false" />
+  <parameter name="useEopRegister" value="false" />
+  <parameter name="useRelativePathForSimFile" value="false" />
+ </module>
+ <module
    name="video_dma_controller_0"
    kind="altera_up_avalon_video_dma_controller"
    version="15.0"
@@ -736,10 +808,42 @@
  <connection
    kind="avalon"
    version="15.0"
+   start="hps_0.h2f_axi_master"
+   end="video_dma_controller_0.avalon_dma_control_slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="15.0"
+   start="hps_0.h2f_axi_master"
+   end="uart_0.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x1000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="15.0"
    start="hps_0.h2f_lw_axi_master"
    end="video_dma_controller_0.avalon_dma_control_slave">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="15.0"
+   start="hps_0.h2f_lw_axi_master"
+   end="uart_0.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x1000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection kind="avalon" version="15.0" start="master_0.master" end="uart_0.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x1000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -772,6 +876,8 @@
    version="15.0"
    start="clk_0.clk"
    end="video_scaler_0.clk" />
+ <connection kind="clock" version="15.0" start="clk_0.clk" end="uart_0.clk" />
+ <connection kind="clock" version="15.0" start="clk_0.clk" end="master_0.clk" />
  <connection
    kind="clock"
    version="15.0"
@@ -813,6 +919,18 @@
    start="video_pll_0.vga_clk"
    end="video_dual_clock_buffer_0.clock_stream_out" />
  <connection
+   kind="interrupt"
+   version="15.0"
+   start="hps_0.f2h_irq0"
+   end="uart_0.irq">
+  <parameter name="irqNumber" value="0" />
+ </connection>
+ <connection
+   kind="reset"
+   version="15.0"
+   start="clk_0.clk_reset"
+   end="master_0.clk_reset" />
+ <connection
    kind="reset"
    version="15.0"
    start="clk_0.clk_reset"
@@ -836,7 +954,22 @@
    kind="reset"
    version="15.0"
    start="clk_0.clk_reset"
+   end="uart_0.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="clk_0.clk_reset"
    end="video_dual_clock_buffer_0.reset_stream_in" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="hps_0.h2f_reset"
+   end="video_dma_controller_0.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="master_0.master_reset"
+   end="uart_0.reset" />
  <connection
    kind="reset"
    version="15.0"

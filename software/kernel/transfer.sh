@@ -13,7 +13,7 @@ DE1ALTADDR=10.0.0.1
 DESTFOLDER=/home/ubuntu/Desktop
 SRCFOLDER=/home/guoj/Documents/Year-3/CPEN-391/repo/software
 
-OPTS="--delete -cuvzPtlxr"
+OPTS="--delete -cvzPtlxr"
 
 FILES=(
 transfer.sh
@@ -22,6 +22,9 @@ vgabuffer.c
 Makefile
 .ycm_extra_conf.py
 .color_coded
+linux-4.5/drivers/tty/serial/altera_uart.c
+testvga.c
+testuart.c
 )
 
 tryaddresses() {

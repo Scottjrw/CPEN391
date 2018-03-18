@@ -97,12 +97,9 @@ module cpen391_group5(
 
 wire reset = ~KEY[0];
 
-/*
 cpen391_group5_qsys sys_inst(
     .clk_clk(CLOCK_50),
     .reset_reset(reset),
-    .led_out_export(), // EMPTY
-    .switch_in_export(SW[7:0]),
 
     // SDRAM
     .sdram_clk_clk(DRAM_CLK),
@@ -116,15 +113,15 @@ cpen391_group5_qsys sys_inst(
     .sdram_wire_ras_n(DRAM_RAS_N),
     .sdram_wire_we_n(DRAM_WE_N),
 
-    // Touchscreen UART
-    .touchscreen_rxd(GPIO_1[33]),
-    .touchscreen_txd(GPIO_1[35]),
-	 
-    .video_rxd(GPIO_1[32]),
-    .video_txd(GPIO_1[34]),
-
-    .wifi_rxd(GPIO_1[29]),
+    // UART
+    .uart_4_rxd(GPIO_1[28]),
+    .uart_4_txd(GPIO_1[29]),
+    .wifi_rxd(GPIO_1[30]),
     .wifi_txd(GPIO_1[31]),
+    .video_rxd(GPIO_1[32]),
+    .video_txd(GPIO_1[33]),
+    .touchscreen_rxd(GPIO_1[34]),
+    .touchscreen_txd(GPIO_1[35]),
 
     // VGA
     .vga_controller_CLK(VGA_CLK),
@@ -143,14 +140,15 @@ cpen391_group5_qsys sys_inst(
     .video_in_decoder_TD_VS(TD_VS),
     .video_in_decoder_clk27_reset(reset),
     .video_in_decoder_TD_RESET(TD_RESET_N),
-    .video_in_decoder_overflow_flag()
+    .video_in_decoder_overflow_flag(),
 
+/*
 );
-*/
 
 testhps sys_inst(
     .clk_clk(CLOCK_50),
     .reset_reset_n(~reset),
+*/
 
     // HPS IO
     .hps_io_hps_io_emac1_inst_TX_CLK(HPS_ENET_GTX_CLK),
@@ -225,8 +223,9 @@ testhps sys_inst(
     .hps_mem_mem_dqs_n(HPS_DDR3_DQS_N),
     .hps_mem_mem_odt(HPS_DDR3_ODT),
     .hps_mem_mem_dm(HPS_DDR3_DM),
-    .hps_mem_oct_rzqin(HPS_DDR3_RZQ),
+    .hps_mem_oct_rzqin(HPS_DDR3_RZQ)
 
+/*
     // VGA
     .vga_CLK(VGA_CLK),
     .vga_HS(VGA_HS),
@@ -235,15 +234,17 @@ testhps sys_inst(
     .vga_SYNC(VGA_SYNC_N),
     .vga_R(VGA_R),
     .vga_G(VGA_G),
-    .vga_B(VGA_B)
-);
+    .vga_B(VGA_B),
 
-/*
+    .test_uart_rxd(GPIO_1[32]),
+    .test_uart_txd(GPIO_1[34])
+
 test_pixel_cluster_qsys sys_inst(
     .clk_clk(CLOCK_50),
     .reset_reset_n(~reset),
     .pixel_cluster_leds(LEDR)
-);
 */
+
+);
 
 endmodule

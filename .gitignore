@@ -4,6 +4,7 @@ PLLJ_PLLSPE_INFO.txt
 incremental_db/
 output_files/*
 ! output_files/*.sof
+! output_files/*.rbf
 simulation/
 .qsys_edit/
 db/
@@ -14,3 +15,9 @@ hps_isw_handoff
 hps_sdram_p0_all_pins.txt
 tb2_ie_info.xml
 hps_sdram_p0_summary.csv
+serv_req_info.txt
+test_pixel_cluster_qsys
+testhps
+cpen391_group5_qsys
+cpen391_group5_qsys_draw
+cpen391_group5_qsys_video
