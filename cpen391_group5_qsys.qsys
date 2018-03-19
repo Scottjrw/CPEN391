@@ -494,7 +494,7 @@
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
   <parameter name="AUTO_DMA_MASTER_ADDRESS_MAP"><![CDATA[<address-map><slave name='hps_0_bridges.f2h_sdram0_data' start='0x0' end='0x100000000' /></address-map>]]></parameter>
-  <parameter name="AUTO_DMA_MASTER_ADDRESS_WIDTH">com.altera.entityinterfaces.moduleext.AddressWidthType@206877eb</parameter>
+  <parameter name="AUTO_DMA_MASTER_ADDRESS_WIDTH" value="AddressWidth = 32" />
   <parameter name="AUTO_GENERATION_ID" value="0" />
   <parameter name="AUTO_UNIQUE_ID">$${FILENAME}_Draw_Subsystem</parameter>
  </module>
@@ -1311,7 +1311,7 @@
   <parameter name="baud" value="9600" />
   <parameter name="clockRate" value="50000000" />
   <parameter name="dataBits" value="8" />
-  <parameter name="fixedBaud" value="true" />
+  <parameter name="fixedBaud" value="false" />
   <parameter name="parity" value="NONE" />
   <parameter name="simCharStream" value="" />
   <parameter name="simInteractiveInputEnable" value="false" />
@@ -1327,7 +1327,7 @@
   <parameter name="baud" value="115200" />
   <parameter name="clockRate" value="50000000" />
   <parameter name="dataBits" value="8" />
-  <parameter name="fixedBaud" value="true" />
+  <parameter name="fixedBaud" value="false" />
   <parameter name="parity" value="NONE" />
   <parameter name="simCharStream" value="" />
   <parameter name="simInteractiveInputEnable" value="false" />
@@ -1347,7 +1347,7 @@
   <parameter name="baud" value="38400" />
   <parameter name="clockRate" value="50000000" />
   <parameter name="dataBits" value="8" />
-  <parameter name="fixedBaud" value="true" />
+  <parameter name="fixedBaud" value="false" />
   <parameter name="parity" value="NONE" />
   <parameter name="simCharStream" value="" />
   <parameter name="simInteractiveInputEnable" value="false" />
@@ -1363,7 +1363,7 @@
   <parameter name="baud" value="115200" />
   <parameter name="clockRate" value="50000000" />
   <parameter name="dataBits" value="8" />
-  <parameter name="fixedBaud" value="true" />
+  <parameter name="fixedBaud" value="false" />
   <parameter name="parity" value="NONE" />
   <parameter name="simCharStream" value="" />
   <parameter name="simInteractiveInputEnable" value="false" />

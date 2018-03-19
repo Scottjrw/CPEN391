@@ -4,12 +4,12 @@
  kind="cpen391_group5_qsys"
  version="1.0"
  fabric="QSYS">
- <!-- Format version 15.0 145 (Future versions may contain additional information.) -->
- <!-- 2018.03.18.02:44:33 -->
+ <!-- Format version 15.0 153 (Future versions may contain additional information.) -->
+ <!-- 2018.03.18.17:38:11 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1521366257</value>
+  <value>1521419883</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -108,7 +108,7 @@
 the requested settings for a module instance. -->
   <parameter name="AUTO_GENERATION_ID">
    <type>java.lang.Integer</type>
-   <value>1521366257</value>
+   <value>1521419883</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -193,7 +193,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="AUTO_DMA_MASTER_ADDRESS_WIDTH">
    <type>com.altera.entityinterfaces.moduleext.AddressWidthType</type>
-   <value>com.altera.entityinterfaces.moduleext.AddressWidthType@1ae0aa74</value>
+   <value>AddressWidth = 32</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -3042,7 +3042,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="AUTO_GENERATION_ID">
    <type>java.lang.Integer</type>
-   <value>1521366257</value>
+   <value>1521419883</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -98303,7 +98303,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.FIXED_BAUD</name>
-   <value>1</value>
+   <value>0</value>
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.FREQ</name>
@@ -98379,7 +98379,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="fixedBaud">
    <type>boolean</type>
-   <value>true</value>
+   <value>false</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -99144,7 +99144,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.FIXED_BAUD</name>
-   <value>1</value>
+   <value>0</value>
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.FREQ</name>
@@ -99220,7 +99220,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="fixedBaud">
    <type>boolean</type>
-   <value>true</value>
+   <value>false</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -99989,7 +99989,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.FIXED_BAUD</name>
-   <value>1</value>
+   <value>0</value>
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.FREQ</name>
@@ -100065,7 +100065,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="fixedBaud">
    <type>boolean</type>
-   <value>true</value>
+   <value>false</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -100834,7 +100834,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.FIXED_BAUD</name>
-   <value>1</value>
+   <value>0</value>
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.FREQ</name>
@@ -100910,7 +100910,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="fixedBaud">
    <type>boolean</type>
-   <value>true</value>
+   <value>false</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -116608,6 +116608,6 @@ parameters are a RESULT of the module parameters. -->
   <displayName>Interrupt Connection</displayName>
   <version>15.0</version>
  </plugin>
- <reportVersion>15.0 145</reportVersion>
+ <reportVersion>15.0 153</reportVersion>
  <uniqueIdentifier></uniqueIdentifier>
 </EnsembleReport>
