@@ -7,9 +7,12 @@ else
 		KERNELDIR ?= linux-4.5
 		PWD := $(shell pwd)
 		ALTERA_UART_DIR ?= drivers/tty/serial
+
+# Build vgabuffer driver
 default:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 
+# Build the altera_uart driver, needed to support the UART (RS-232) Qsys Module in Linux
 altera_uart: fixmoduleversion altera_uart_clean altera_uart_link
 	$(MAKE) -C $(KERNELDIR) M=$(ALTERA_UART_DIR) modules
 	cp $(KERNELDIR)/$(ALTERA_UART_DIR)/altera_uart.ko $(PWD)
@@ -21,7 +24,11 @@ altera_uart_link:
 altera_uart_clean:
 	cd $(KERNELDIR)/$(ALTERA_UART_DIR) && rm -f altera_uart.ko altera_uart.o altera_uart.mod.o altera_uart.mod.c
 
-endif
+altera_uart_install: altera_uart
+	sudo modprobe -r altera_uart
+	sudo cp altera_uart.ko /lib/modules/4.5.0-00183-g4647b69-dirty/
+	sudo depmod -a
+	sudo modprobe altera_uart
 
 # Hack the module version so that it works on the de1's kernel
 fixmoduleversion:
@@ -37,16 +44,11 @@ rmmod:
 clean:
 	rm -f .*.cmd *.o *.ko -r .tmp*
 
-altera_uart_install:
-	sudo modprobe -r altera_uart
-	sudo cp altera_uart.ko /lib/modules/4.5.0-00183-g4647b69-dirty/
-	sudo depmod -a
-	sudo modprobe altera_uart
-
 testvga: testvga.o
 	$(CC) -o testvga testvga.o -std=c99
 
 testuart: testuart.o
 	$(CC) -o testuart testuart.o -std=c99
 
+endif
 
