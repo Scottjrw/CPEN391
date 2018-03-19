@@ -8,6 +8,9 @@ File Structure
 # Main Qsys System
 cpen391_group5_qsys.qsys -- Qsys File
 
+ip/ -- Qsys subsystems
+ip/presets/ -- Presets for some Qsys modules
+
 # Hardware Accelerated Vision
 pixel_cluster/ -- Verilog source for hardware vision algorithm
 pixel_cluster/sim/ -- ModelSim simulations for pixel_cluster
@@ -29,13 +32,14 @@ testhps.qsys
 cpen391_group5.qpf -- Project File
 cpen391_group5.qsf -- Settings File
 cpen391_group5.sv -- Top Module Verilog Source
+rbf_soc_system.cof -- Settings for Convert Programming Files to generate a soc_system.rbf needed by the HPS
 
 # Provided files (Needed for synthesis)
 DE1_SoC.sdc 
 DE1_SoC_Quartus_Settings_File.qsf
 
 # SOF (Included for convenience)
-output_files/cpen391_group5_time_limited.sof -- Last Synthesis (Should be same one used in Demo)
+output_files/cpen391_group5.sof -- Last Synthesis (Should be same one used in Demo)
 
 -- Software --
 software/ -- All software here
