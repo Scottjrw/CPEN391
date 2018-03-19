@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>15-Feb-2018 4:59:27 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1518742767802</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Mar 19, 2018 3:11:04 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1521497464906</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>/home/guoj/Documents/Year-3/CPEN-391/repo/software/cpen391_group5_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>../../cpen391_group5_qsys.sopcinfo</SopcDesignFile>
@@ -911,80 +911,38 @@
                 <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
         </Setting>
         <MemoryMap>
-                <slaveDescriptor>Video_Frame_Buffer</slaveDescriptor>
+                <slaveDescriptor>Video_Subsystem_Video_Frame_Buffer</slaveDescriptor>
                 <addressRange>0x00000000 - 0x0004AFFF</addressRange>
                 <addressSpan>307200</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>Draw_Buffer</slaveDescriptor>
-                <addressRange>0x00080000 - 0x000895FF</addressRange>
-                <addressSpan>38400</addressSpan>
-                <attributes>memory</attributes>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>pixel_cluster_0</slaveDescriptor>
-                <addressRange>0x00091000 - 0x0009103F</addressRange>
+                <slaveDescriptor>pixel_cluster_1</slaveDescriptor>
+                <addressRange>0x00081000 - 0x0008103F</addressRange>
                 <addressSpan>64</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>wifi_uart</slaveDescriptor>
-                <addressRange>0x00091040 - 0x0009105F</addressRange>
-                <addressSpan>32</addressSpan>
-                <attributes>printable</attributes>
+                <slaveDescriptor>pixel_cluster_0</slaveDescriptor>
+                <addressRange>0x00081040 - 0x0008107F</addressRange>
+                <addressSpan>64</addressSpan>
+                <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>video_uart</slaveDescriptor>
-                <addressRange>0x00091060 - 0x0009107F</addressRange>
-                <addressSpan>32</addressSpan>
-                <attributes>printable</attributes>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>touchscreen_uart</slaveDescriptor>
-                <addressRange>0x00091080 - 0x0009109F</addressRange>
+                <slaveDescriptor>nios_hps_uart</slaveDescriptor>
+                <addressRange>0x00081080 - 0x0008109F</addressRange>
                 <addressSpan>32</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>main_timer</slaveDescriptor>
-                <addressRange>0x000910A0 - 0x000910BF</addressRange>
+                <addressRange>0x000810A0 - 0x000810BF</addressRange>
                 <addressSpan>32</addressSpan>
                 <attributes>timer</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>switch_in_pio</slaveDescriptor>
-                <addressRange>0x000910C0 - 0x000910CF</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>led_out_pio</slaveDescriptor>
-                <addressRange>0x000910D0 - 0x000910DF</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>Draw_DMA</slaveDescriptor>
-                <addressRange>0x000910E0 - 0x000910EF</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>Video_Out_DMA</slaveDescriptor>
-                <addressRange>0x000910F0 - 0x000910FF</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>Video_In_DMA</slaveDescriptor>
-                <addressRange>0x00091100 - 0x0009110F</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
                 <slaveDescriptor>jtag_uart_0</slaveDescriptor>
-                <addressRange>0x00091110 - 0x00091117</addressRange>
+                <addressRange>0x000810E0 - 0x000810E7</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>

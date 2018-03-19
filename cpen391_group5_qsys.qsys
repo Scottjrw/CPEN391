@@ -182,7 +182,23 @@
          type = "int";
       }
    }
-   element hps_to_nios_mail
+   element hps_0.f2h_sdram0_data
+   {
+      datum baseAddress
+      {
+         value = "0";
+         type = "String";
+      }
+   }
+   element hps_0.f2h_sdram1_data
+   {
+      datum baseAddress
+      {
+         value = "0";
+         type = "String";
+      }
+   }
+   element hps_nios_uart
    {
       datum _sortIndex
       {
@@ -190,15 +206,7 @@
          type = "int";
       }
    }
-   element hps_to_nios_mail.avmm_msg_receiver
-   {
-      datum baseAddress
-      {
-         value = "528560";
-         type = "String";
-      }
-   }
-   element hps_to_nios_mail.avmm_msg_sender
+   element hps_nios_uart.s1
    {
       datum _lockedAddress
       {
@@ -207,7 +215,7 @@
       }
       datum baseAddress
       {
-         value = "528384";
+         value = "1064960";
          type = "String";
       }
    }
@@ -223,7 +231,7 @@
    {
       datum baseAddress
       {
-         value = "528576";
+         value = "528608";
          type = "String";
       }
    }
@@ -239,7 +247,7 @@
    {
       datum baseAddress
       {
-         value = "528512";
+         value = "528544";
          type = "String";
       }
    }
@@ -259,7 +267,7 @@
          type = "String";
       }
    }
-   element nios_to_hps_mail
+   element nios_hps_uart
    {
       datum _sortIndex
       {
@@ -267,24 +275,11 @@
          type = "int";
       }
    }
-   element nios_to_hps_mail.avmm_msg_receiver
-   {
-      datum _lockedAddress
-      {
-         value = "1";
-         type = "boolean";
-      }
-      datum baseAddress
-      {
-         value = "524288";
-         type = "String";
-      }
-   }
-   element nios_to_hps_mail.avmm_msg_sender
+   element nios_hps_uart.s1
    {
       datum baseAddress
       {
-         value = "528544";
+         value = "528512";
          type = "String";
       }
    }
@@ -449,6 +444,16 @@
  <interface name="clk" internal="clocks.ref_clk" type="clock" dir="end" />
  <interface name="hps_io" internal="hps_0.hps_io" type="conduit" dir="end" />
  <interface name="hps_mem" internal="hps_0.memory" type="conduit" dir="end" />
+ <interface
+   name="hps_uart"
+   internal="hps_nios_uart.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="nios_uart"
+   internal="nios_hps_uart.external_connection"
+   type="conduit"
+   dir="end" />
  <interface name="reset" internal="clocks.ref_reset" type="reset" dir="end" />
  <interface name="sdram_clk" internal="clocks.sdram_clk" type="clock" dir="start" />
  <interface name="sdram_wire" internal="sdram.wire" type="conduit" dir="end" />
@@ -494,7 +499,7 @@
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
   <parameter name="AUTO_DMA_MASTER_ADDRESS_MAP"><![CDATA[<address-map><slave name='hps_0_bridges.f2h_sdram0_data' start='0x0' end='0x100000000' /></address-map>]]></parameter>
-  <parameter name="AUTO_DMA_MASTER_ADDRESS_WIDTH" value="AddressWidth = 32" />
+  <parameter name="AUTO_DMA_MASTER_ADDRESS_WIDTH">com.altera.entityinterfaces.moduleext.AddressWidthType@70ad7f86</parameter>
   <parameter name="AUTO_GENERATION_ID" value="0" />
   <parameter name="AUTO_UNIQUE_ID">$${FILENAME}_Draw_Subsystem</parameter>
  </module>
@@ -1069,14 +1074,24 @@
   <parameter name="use_default_mpu_clk" value="true" />
  </module>
  <module
-   name="hps_to_nios_mail"
-   kind="altera_avalon_mailbox_simple"
+   name="hps_nios_uart"
+   kind="altera_avalon_uart"
    version="15.0"
    enabled="1">
-  <parameter name="AWIDTH" value="2" />
-  <parameter name="DWIDTH" value="32" />
-  <parameter name="MSG_ARRIVAL_NOTIFY" value="1" />
-  <parameter name="MSG_SPACE_NOTIFY" value="0" />
+  <parameter name="baud" value="115200" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="dataBits" value="8" />
+  <parameter name="fixedBaud" value="true" />
+  <parameter name="parity" value="NONE" />
+  <parameter name="simCharStream" value="" />
+  <parameter name="simInteractiveInputEnable" value="false" />
+  <parameter name="simInteractiveOutputEnable" value="false" />
+  <parameter name="simTrueBaud" value="false" />
+  <parameter name="stopBits" value="1" />
+  <parameter name="syncRegDepth" value="2" />
+  <parameter name="useCtsRts" value="false" />
+  <parameter name="useEopRegister" value="false" />
+  <parameter name="useRelativePathForSimFile" value="false" />
  </module>
  <module
    name="jtag_uart_0"
@@ -1123,7 +1138,7 @@
   <parameter name="cpuReset" value="false" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
   <parameter name="dataAddrWidth" value="28" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Subsystem_Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='nios2.jtag_debug_module' start='0x80800' end='0x81000' /><slave name='pixel_cluster_1.mm' start='0x81000' end='0x81040' /><slave name='pixel_cluster_0.mm' start='0x81040' end='0x81080' /><slave name='main_timer.s1' start='0x81080' end='0x810A0' /><slave name='nios_to_hps_mail.avmm_msg_sender' start='0x810A0' end='0x810B0' /><slave name='hps_to_nios_mail.avmm_msg_receiver' start='0x810B0' end='0x810C0' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x810C0' end='0x810C8' /><slave name='graphics_controller_0.mm' start='0x4000000' end='0x8000000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='Video_Subsystem_Video_Frame_Buffer.s2' start='0x0' end='0x4B000' /><slave name='nios2.jtag_debug_module' start='0x80800' end='0x81000' /><slave name='pixel_cluster_1.mm' start='0x81000' end='0x81040' /><slave name='pixel_cluster_0.mm' start='0x81040' end='0x81080' /><slave name='nios_hps_uart.s1' start='0x81080' end='0x810A0' /><slave name='main_timer.s1' start='0x810A0' end='0x810C0' /><slave name='jtag_uart_0.avalon_jtag_slave' start='0x810E0' end='0x810E8' /><slave name='graphics_controller_0.mm' start='0x4000000' end='0x8000000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
   <parameter name="dcache_bursts" value="true" />
   <parameter name="dcache_lineSize" value="32" />
   <parameter name="dcache_numTCDM" value="0" />
@@ -1151,7 +1166,7 @@
   <parameter name="impl" value="Tiny" />
   <parameter name="instAddrWidth" value="28" />
   <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='nios2.jtag_debug_module' start='0x80800' end='0x81000' /><slave name='sdram.s1' start='0x8000000' end='0xC000000' /></address-map>]]></parameter>
-  <parameter name="internalIrqMaskSystemInfo" value="63" />
+  <parameter name="internalIrqMaskSystemInfo" value="111" />
   <parameter name="manuallyAssignCpuID" value="true" />
   <parameter name="mmu_TLBMissExcOffset" value="0" />
   <parameter name="mmu_TLBMissExcSlave" value="None" />
@@ -1241,14 +1256,24 @@
   <parameter name="userDefinedSettings" value="" />
  </module>
  <module
-   name="nios_to_hps_mail"
-   kind="altera_avalon_mailbox_simple"
+   name="nios_hps_uart"
+   kind="altera_avalon_uart"
    version="15.0"
    enabled="1">
-  <parameter name="AWIDTH" value="2" />
-  <parameter name="DWIDTH" value="32" />
-  <parameter name="MSG_ARRIVAL_NOTIFY" value="1" />
-  <parameter name="MSG_SPACE_NOTIFY" value="0" />
+  <parameter name="baud" value="115200" />
+  <parameter name="clockRate" value="50000000" />
+  <parameter name="dataBits" value="8" />
+  <parameter name="fixedBaud" value="true" />
+  <parameter name="parity" value="NONE" />
+  <parameter name="simCharStream" value="" />
+  <parameter name="simInteractiveInputEnable" value="false" />
+  <parameter name="simInteractiveOutputEnable" value="false" />
+  <parameter name="simTrueBaud" value="false" />
+  <parameter name="stopBits" value="1" />
+  <parameter name="syncRegDepth" value="2" />
+  <parameter name="useCtsRts" value="false" />
+  <parameter name="useEopRegister" value="false" />
+  <parameter name="useRelativePathForSimFile" value="false" />
  </module>
  <module name="pixel_cluster_0" kind="pixel_cluster" version="1.0" enabled="1">
   <parameter name="ADDR_BITS" value="4" />
@@ -1390,25 +1415,7 @@
    start="nios2.data_master"
    end="jtag_uart_0.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000810c0" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="15.0"
-   start="nios2.data_master"
-   end="hps_to_nios_mail.avmm_msg_receiver">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000810b0" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="15.0"
-   start="nios2.data_master"
-   end="nios_to_hps_mail.avmm_msg_sender">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x000810a0" />
+  <parameter name="baseAddress" value="0x000810e0" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1458,6 +1465,15 @@
    start="nios2.data_master"
    end="main_timer.s1">
   <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x000810a0" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="15.0"
+   start="nios2.data_master"
+   end="nios_hps_uart.s1">
+  <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00081080" />
   <parameter name="defaultConnection" value="false" />
  </connection>
@@ -1477,24 +1493,6 @@
    end="hps_0.f2h_sdram0_data">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="15.0"
-   start="hps_0.h2f_axi_master"
-   end="nios_to_hps_mail.avmm_msg_receiver">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00080000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
- <connection
-   kind="avalon"
-   version="15.0"
-   start="hps_0.h2f_axi_master"
-   end="hps_to_nios_mail.avmm_msg_sender">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00081000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1558,6 +1556,15 @@
    end="touchscreen_uart.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00100000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="15.0"
+   start="hps_0.h2f_axi_master"
+   end="hps_nios_uart.s1">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00104000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1628,16 +1635,6 @@
    kind="clock"
    version="15.0"
    start="clocks.sys_clk"
-   end="nios_to_hps_mail.clk" />
- <connection
-   kind="clock"
-   version="15.0"
-   start="clocks.sys_clk"
-   end="hps_to_nios_mail.clk" />
- <connection
-   kind="clock"
-   version="15.0"
-   start="clocks.sys_clk"
    end="touchscreen_uart.clk" />
  <connection
    kind="clock"
@@ -1650,6 +1647,16 @@
    start="clocks.sys_clk"
    end="wifi_uart.clk" />
  <connection kind="clock" version="15.0" start="clocks.sys_clk" end="uart_4.clk" />
+ <connection
+   kind="clock"
+   version="15.0"
+   start="clocks.sys_clk"
+   end="hps_nios_uart.clk" />
+ <connection
+   kind="clock"
+   version="15.0"
+   start="clocks.sys_clk"
+   end="nios_hps_uart.clk" />
  <connection
    kind="clock"
    version="15.0"
@@ -1703,13 +1710,6 @@
    kind="interrupt"
    version="15.0"
    start="nios2.d_irq"
-   end="hps_to_nios_mail.interrupt_msg_pending">
-  <parameter name="irqNumber" value="4" />
- </connection>
- <connection
-   kind="interrupt"
-   version="15.0"
-   start="nios2.d_irq"
    end="graphics_controller_0.interrupt_sender">
   <parameter name="irqNumber" value="5" />
  </connection>
@@ -1730,9 +1730,9 @@
  <connection
    kind="interrupt"
    version="15.0"
-   start="hps_0.f2h_irq0"
-   end="nios_to_hps_mail.interrupt_msg_pending">
-  <parameter name="irqNumber" value="0" />
+   start="nios2.d_irq"
+   end="nios_hps_uart.irq">
+  <parameter name="irqNumber" value="6" />
  </connection>
  <connection
    kind="interrupt"
@@ -1761,6 +1761,13 @@
    start="hps_0.f2h_irq1"
    end="uart_4.irq">
   <parameter name="irqNumber" value="3" />
+ </connection>
+ <connection
+   kind="interrupt"
+   version="15.0"
+   start="hps_0.f2h_irq1"
+   end="hps_nios_uart.irq">
+  <parameter name="irqNumber" value="4" />
  </connection>
  <connection
    kind="reset"
@@ -1801,12 +1808,12 @@
    kind="reset"
    version="15.0"
    start="hps_0.h2f_reset"
-   end="hps_to_nios_mail.rst_n" />
+   end="hps_nios_uart.reset" />
  <connection
    kind="reset"
    version="15.0"
    start="hps_0.h2f_reset"
-   end="nios_to_hps_mail.rst_n" />
+   end="nios_hps_uart.reset" />
  <connection
    kind="reset"
    version="15.0"
@@ -1831,17 +1838,17 @@
    kind="reset"
    version="15.0"
    start="nios2.jtag_debug_module_reset"
+   end="hps_nios_uart.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
+   end="nios_hps_uart.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
    end="nios2.reset_n" />
- <connection
-   kind="reset"
-   version="15.0"
-   start="nios2.jtag_debug_module_reset"
-   end="hps_to_nios_mail.rst_n" />
- <connection
-   kind="reset"
-   version="15.0"
-   start="nios2.jtag_debug_module_reset"
-   end="nios_to_hps_mail.rst_n" />
  <connection
    kind="reset"
    version="15.0"
@@ -1906,17 +1913,17 @@
    kind="reset"
    version="15.0"
    start="clocks.reset_source"
+   end="hps_nios_uart.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="clocks.reset_source"
+   end="nios_hps_uart.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="clocks.reset_source"
    end="nios2.reset_n" />
- <connection
-   kind="reset"
-   version="15.0"
-   start="clocks.reset_source"
-   end="hps_to_nios_mail.rst_n" />
- <connection
-   kind="reset"
-   version="15.0"
-   start="clocks.reset_source"
-   end="nios_to_hps_mail.rst_n" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />

@@ -229,7 +229,7 @@
    version="15.0"
    enabled="1">
   <parameter name="allowInSystemMemoryContentEditor" value="false" />
-  <parameter name="autoInitializationFileName">cpen391_group5_qsys_video_Video_Frame_Buffer</parameter>
+  <parameter name="autoInitializationFileName">$${FILENAME}_Video_Frame_Buffer</parameter>
   <parameter name="blockType" value="M10K" />
   <parameter name="copyInitFile" value="false" />
   <parameter name="dataWidth" value="32" />

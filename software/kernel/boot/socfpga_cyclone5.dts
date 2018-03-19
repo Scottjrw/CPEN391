@@ -1204,20 +1204,6 @@
             reg = <0x0 0x4B000>;
         };
 
-        nios_hps_mbox: mailbox@0x80000 {
-            compatible = "altr,mailbox-1.0";
-            reg = <0x80000 0x10>;
-            interrupts = <0x0 40 0x4>;
-            #mbox-cells = <1>;
-         };
-
-        hps_nios_mbox: mailbox@0x81000 {
-            compatible = "altr,mailbox-1.0";
-            reg = <0x81000 0x10>;
-            interrupts;
-            #mbox-cells = <1>;
-         };
-
         touchscreen_uart: serial@0x100000 {
             compatible = "altr,uart-1.0", "ALTR,uart-1.0";
             reg = <0x100000 0x20>;
@@ -1246,6 +1232,14 @@
             compatible = "altr,uart-1.0", "ALTR,uart-1.0";
             reg = <0x103000 0x20>;
             interrupts = <0x0 75 0x4>;
+            clock-frequency = <50000000>;
+            status = "okay";
+        };
+
+        nios_comms_uart: serial@0x104000 {
+            compatible = "altr,uart-1.0", "ALTR,uart-1.0";
+            reg = <0x104000 0x20>;
+            interrupts = <0x0 76 0x4>;
             clock-frequency = <50000000>;
             status = "okay";
         };

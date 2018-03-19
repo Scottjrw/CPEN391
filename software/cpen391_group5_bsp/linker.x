@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Sun Feb 11 17:59:40 PST 2018
+ * Generated: Mon Mar 19 15:11:01 PDT 2018
  */
 
 /*
@@ -50,15 +50,13 @@
 
 MEMORY
 {
-    Video_Frame_Buffer : ORIGIN = 0x0, LENGTH = 307200
-    Draw_Buffer : ORIGIN = 0x80000, LENGTH = 38400
+    Video_Subsystem_Video_Frame_Buffer : ORIGIN = 0x0, LENGTH = 307200
     reset : ORIGIN = 0x8000000, LENGTH = 32
     sdram : ORIGIN = 0x8000020, LENGTH = 67108832
 }
 
 /* Define symbols for each memory base-address */
-__alt_mem_Video_Frame_Buffer = 0x0;
-__alt_mem_Draw_Buffer = 0x80000;
+__alt_mem_Video_Subsystem_Video_Frame_Buffer = 0x0;
 __alt_mem_sdram = 0x8000000;
 
 OUTPUT_FORMAT( "elf32-littlenios2",
@@ -311,15 +309,15 @@ SECTIONS
      *
      */
 
-    .Video_Frame_Buffer : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
+    .Video_Subsystem_Video_Frame_Buffer : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
     {
-        PROVIDE (_alt_partition_Video_Frame_Buffer_start = ABSOLUTE(.));
-        *(.Video_Frame_Buffer .Video_Frame_Buffer. Video_Frame_Buffer.*)
+        PROVIDE (_alt_partition_Video_Subsystem_Video_Frame_Buffer_start = ABSOLUTE(.));
+        *(.Video_Subsystem_Video_Frame_Buffer .Video_Subsystem_Video_Frame_Buffer. Video_Subsystem_Video_Frame_Buffer.*)
         . = ALIGN(4);
-        PROVIDE (_alt_partition_Video_Frame_Buffer_end = ABSOLUTE(.));
-    } > Video_Frame_Buffer
+        PROVIDE (_alt_partition_Video_Subsystem_Video_Frame_Buffer_end = ABSOLUTE(.));
+    } > Video_Subsystem_Video_Frame_Buffer
 
-    PROVIDE (_alt_partition_Video_Frame_Buffer_load_addr = LOADADDR(.Video_Frame_Buffer));
+    PROVIDE (_alt_partition_Video_Subsystem_Video_Frame_Buffer_load_addr = LOADADDR(.Video_Subsystem_Video_Frame_Buffer));
 
     /*
      *
@@ -328,24 +326,7 @@ SECTIONS
      *
      */
 
-    .Draw_Buffer : AT ( LOADADDR (.Video_Frame_Buffer) + SIZEOF (.Video_Frame_Buffer) )
-    {
-        PROVIDE (_alt_partition_Draw_Buffer_start = ABSOLUTE(.));
-        *(.Draw_Buffer .Draw_Buffer. Draw_Buffer.*)
-        . = ALIGN(4);
-        PROVIDE (_alt_partition_Draw_Buffer_end = ABSOLUTE(.));
-    } > Draw_Buffer
-
-    PROVIDE (_alt_partition_Draw_Buffer_load_addr = LOADADDR(.Draw_Buffer));
-
-    /*
-     *
-     * This section's LMA is set to the .text region.
-     * crt0 will copy to this section's specified mapped region virtual memory address (VMA)
-     *
-     */
-
-    .sdram LOADADDR (.Draw_Buffer) + SIZEOF (.Draw_Buffer) : AT ( LOADADDR (.Draw_Buffer) + SIZEOF (.Draw_Buffer) )
+    .sdram LOADADDR (.Video_Subsystem_Video_Frame_Buffer) + SIZEOF (.Video_Subsystem_Video_Frame_Buffer) : AT ( LOADADDR (.Video_Subsystem_Video_Frame_Buffer) + SIZEOF (.Video_Subsystem_Video_Frame_Buffer) )
     {
         PROVIDE (_alt_partition_sdram_start = ABSOLUTE(.));
         *(.sdram .sdram. sdram.*)
