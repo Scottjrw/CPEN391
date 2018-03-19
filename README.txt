@@ -7,7 +7,6 @@ File Structure
 
 # Main Qsys System
 cpen391_group5_qsys.qsys -- Qsys File
-cpen391_group5_qsys/ -- Qsys Generation Directory
 
 # Hardware Accelerated Vision
 pixel_cluster/ -- Verilog source for hardware vision algorithm
@@ -22,8 +21,9 @@ graphics_hw.tcl~
 
 # Test System (Not very interesting)
 test_pixel_cluster.qsys -- Qsys File
-test_pixel_cluster_qsys/ -- Qsys Generation Directory
 
+# HPS Test System (Also not very interesting)
+testhps.qsys
 
 -- Quartus --
 cpen391_group5.qpf -- Project File
@@ -45,7 +45,9 @@ software/cpen391_group5/libs/ -- Libraries we built
 
 software/cpen391_group5_bsp/ -- Main Project BSP
 
-wifi_scripts/ -- Lua sources for the Wifi Module
+software/kernel/ -- Development of our Linux kernel driver(s) see the readme in the directory for more info
+
+software/wifi_scripts/ -- Lua sources for the Wifi Module
 
 software/<other files> -- Ignore these, just some configurations for vim
 
