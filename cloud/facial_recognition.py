@@ -175,18 +175,18 @@ def loginByPassword():
 			print('The password entered is incorrect')
 		else:
 			auth_user(user)
-			return 'Logged in as ' + str(username)
+			return 1
 
 
-		cursor = db.cursor()
-		cursor.execute("SELECT username, password FROM users")
-		result_set = cursor.fetchall()
-		for row in result_set:
-			if (row[0] == username) and (row[1] == password):
-				auth_user(user)
-				return 'Logged in as ' + str(row[0])
+		# cursor = db.cursor()
+		# cursor.execute("SELECT username, password FROM users")
+		# result_set = cursor.fetchall()
+		# for row in result_set:
+		# 	if (row[0] == username) and (row[1] == password):
+		# 		auth_user(user)
+		# 		return 'Logged in as ' + str(row[0])
 
-		return 'No user found.'
+		return 0
 
 
 @app.route('/addApplet', methods=['POST'])
