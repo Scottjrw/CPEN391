@@ -175,7 +175,7 @@ def loginByPassword():
 			print('The password entered is incorrect')
 		else:
 			auth_user(user)
-			return 1
+			return 'Success'
 
 
 		# cursor = db.cursor()
@@ -186,7 +186,7 @@ def loginByPassword():
 		# 		auth_user(user)
 		# 		return 'Logged in as ' + str(row[0])
 
-		return 0
+		return 'Fail'
 
 
 @app.route('/addApplet', methods=['POST'])
