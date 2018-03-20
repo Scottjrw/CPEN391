@@ -92,7 +92,7 @@ def addUser():
 
 
 @app.route('/loginByFacePicture', methods=['GET', 'POST'])    
-def loginByFace():
+def loginByFacePicture():
 	if request.method == 'POST':
 		r = request.get_json()
 
@@ -129,7 +129,7 @@ def loginByFace():
 
 
 @app.route('/loginByFaceHex', methods=['GET', 'POST'])    
-def loginByFace():
+def loginByFaceHex():
 	if request.method == 'POST':
 		r = request.get_json()
 
