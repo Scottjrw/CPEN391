@@ -27,6 +27,11 @@ testuart.c
 testregs.c
 )
 
+RESULTFILES=(
+altera_uart.ko
+cpen391_vgabuffer.ko
+)
+
 tryaddresses() {
     if ping -W 5 -c 1 "$DE1ADDR"; then
         return 0
@@ -45,6 +50,12 @@ commasepfiles() {
     local IFS=,
 
     echo "${FILES[*]}"
+}
+
+commasepresult() {
+    local IFS=,
+
+    echo "${RESULTFILES[*]}"
 }
 
 case "$1" in
@@ -80,6 +91,14 @@ case "$1" in
 		fi
 		;;
 
+    pullresult)
+		if tryaddresses; then
+            rsync $OPTS "$DE1USER@$DE1ADDR:$DESTFOLDER/kernel/{$(commasepresult)}" "$SRCFOLDER/kernel"
+        else
+		    echo "Cannot reach de1"
+		fi
+        ;;
+
     boot)
 		if tryaddresses; then
 		    scp ./boot/soc_system.rbf ./boot/socfpga.dtb "$DE1USER@$DE1ADDR:/tmp/"
@@ -89,7 +108,7 @@ case "$1" in
 		fi
 		;;
     *)
-        echo "Usage: $0 pushfiles|pullfiles|pushall|pullall|boot"
+        echo "Usage: $0 pushfiles|pullfiles|pushall|pullall|pullresult|boot"
         exit 1
         ;;
 esac
