@@ -98,7 +98,7 @@
   <parameter name="back_start_address" value="0" />
   <parameter name="color_bits" value="8" />
   <parameter name="color_planes" value="4" />
-  <parameter name="dma_enabled" value="true" />
+  <parameter name="dma_enabled" value="false" />
   <parameter name="height" value="480" />
   <parameter name="mode">From Memory to Stream</parameter>
   <parameter name="start_address" value="0" />

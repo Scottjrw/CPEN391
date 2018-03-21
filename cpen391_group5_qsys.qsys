@@ -21,7 +21,7 @@
    {
       datum _sortIndex
       {
-         value = "9";
+         value = "10";
          type = "int";
       }
    }
@@ -42,7 +42,7 @@
    {
       datum _sortIndex
       {
-         value = "10";
+         value = "11";
          type = "int";
       }
    }
@@ -158,11 +158,19 @@
          type = "String";
       }
    }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
    element graphics_controller_0
    {
       datum _sortIndex
       {
-         value = "8";
+         value = "9";
          type = "int";
       }
    }
@@ -202,7 +210,7 @@
    {
       datum _sortIndex
       {
-         value = "6";
+         value = "7";
          type = "int";
       }
    }
@@ -223,7 +231,7 @@
    {
       datum _sortIndex
       {
-         value = "13";
+         value = "14";
          type = "int";
       }
    }
@@ -239,7 +247,7 @@
    {
       datum _sortIndex
       {
-         value = "14";
+         value = "15";
          type = "int";
       }
    }
@@ -251,11 +259,27 @@
          type = "String";
       }
    }
+   element mm_reset_0
+   {
+      datum _sortIndex
+      {
+         value = "2";
+         type = "int";
+      }
+   }
+   element mm_reset_0.mm
+   {
+      datum _lockedAddress
+      {
+         value = "1";
+         type = "boolean";
+      }
+   }
    element nios2
    {
       datum _sortIndex
       {
-         value = "15";
+         value = "16";
          type = "int";
       }
    }
@@ -271,7 +295,7 @@
    {
       datum _sortIndex
       {
-         value = "7";
+         value = "8";
          type = "int";
       }
    }
@@ -287,7 +311,7 @@
    {
       datum _sortIndex
       {
-         value = "11";
+         value = "12";
          type = "int";
       }
    }
@@ -303,7 +327,7 @@
    {
       datum _sortIndex
       {
-         value = "12";
+         value = "13";
          type = "int";
       }
    }
@@ -319,7 +343,7 @@
    {
       datum _sortIndex
       {
-         value = "16";
+         value = "17";
          type = "int";
       }
    }
@@ -340,7 +364,7 @@
    {
       datum _sortIndex
       {
-         value = "2";
+         value = "3";
          type = "int";
       }
    }
@@ -361,7 +385,7 @@
    {
       datum _sortIndex
       {
-         value = "5";
+         value = "6";
          type = "int";
       }
    }
@@ -382,7 +406,7 @@
    {
       datum _sortIndex
       {
-         value = "3";
+         value = "4";
          type = "int";
       }
    }
@@ -403,7 +427,7 @@
    {
       datum _sortIndex
       {
-         value = "4";
+         value = "5";
          type = "int";
       }
    }
@@ -499,7 +523,7 @@
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
   <parameter name="AUTO_DMA_MASTER_ADDRESS_MAP"><![CDATA[<address-map><slave name='hps_0_bridges.f2h_sdram0_data' start='0x0' end='0x100000000' /></address-map>]]></parameter>
-  <parameter name="AUTO_DMA_MASTER_ADDRESS_WIDTH">com.altera.entityinterfaces.moduleext.AddressWidthType@70ad7f86</parameter>
+  <parameter name="AUTO_DMA_MASTER_ADDRESS_WIDTH">com.altera.entityinterfaces.moduleext.AddressWidthType@23ad2eb4</parameter>
   <parameter name="AUTO_GENERATION_ID" value="0" />
   <parameter name="AUTO_UNIQUE_ID">$${FILENAME}_Draw_Subsystem</parameter>
  </module>
@@ -656,7 +680,7 @@
   <parameter name="F2SCLK_SDRAMCLK_FREQ" value="0" />
   <parameter name="F2SCLK_WARMRST_Enable" value="false" />
   <parameter name="F2SDRAM_Type">Avalon-MM Bidirectional,Avalon-MM Bidirectional</parameter>
-  <parameter name="F2SDRAM_Width" value="32,32" />
+  <parameter name="F2SDRAM_Width" value="64,64" />
   <parameter name="F2SINTERRUPT_Enable" value="true" />
   <parameter name="F2S_Width" value="1" />
   <parameter name="FORCED_NON_LDC_ADDR_CMD_MEM_CK_INVERT" value="false" />
@@ -1128,6 +1152,12 @@
   <parameter name="timeoutPulseOutput" value="false" />
   <parameter name="watchdogPulse" value="2" />
  </module>
+ <module name="mm_reset_0" kind="mm_reset" version="1.0" enabled="1">
+  <parameter name="ADDR_BITS" value="2" />
+  <parameter name="CYCLES" value="1000000" />
+  <parameter name="N_REGS" value="4" />
+  <parameter name="REG_BITS" value="32" />
+ </module>
  <module name="nios2" kind="altera_nios2_qsys" version="15.0" enabled="1">
   <parameter name="bht_ramBlockType" value="Automatic" />
   <parameter name="breakOffset" value="32" />
@@ -1517,6 +1547,15 @@
    kind="avalon"
    version="15.0"
    start="hps_0.h2f_axi_master"
+   end="mm_reset_0.mm">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00300000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="15.0"
+   start="hps_0.h2f_axi_master"
    end="sdram.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x08000000" />
@@ -1676,6 +1715,11 @@
    kind="clock"
    version="15.0"
    start="clocks.sys_clk"
+   end="mm_reset_0.clock" />
+ <connection
+   kind="clock"
+   version="15.0"
+   start="clocks.sys_clk"
    end="hps_0.f2h_axi_clock" />
  <connection
    kind="clock"
@@ -1817,6 +1861,11 @@
  <connection
    kind="reset"
    version="15.0"
+   start="hps_0.h2f_reset"
+   end="mm_reset_0.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
    start="nios2.jtag_debug_module_reset"
    end="sdram.reset" />
  <connection
@@ -1919,6 +1968,36 @@
    version="15.0"
    start="clocks.reset_source"
    end="nios_hps_uart.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="clocks.reset_source"
+   end="mm_reset_0.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.reset_source"
+   end="Draw_Subsystem.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.reset_source"
+   end="graphics_controller_0.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.reset_source"
+   end="Video_Subsystem.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.reset_source"
+   end="pixel_cluster_0.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.reset_source"
+   end="pixel_cluster_1.reset" />
  <connection
    kind="reset"
    version="15.0"

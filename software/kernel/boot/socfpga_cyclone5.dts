@@ -1192,6 +1192,8 @@
 		#size-cells = <0x1>;
         interrupt-parent = <0x2>;
 		ranges = <0x0       0xC0000000 0x4B000
+                  0x200000  0xC0200000 0x10
+                  0x300000  0xC0200000 0x10
                   0x80000   0xC0080000 0x10
                   0x81000   0xC0081000 0x10
                   0x100000  0xC0100000 0x20
@@ -1202,6 +1204,11 @@
 
         video_frame_buffer: memory@0x0 {
             reg = <0x0 0x4B000>;
+        };
+
+        myvgabuffer: vgabuffer@0x200000 {
+            compatible = "cpen391_group5,vgabuffer";
+            reg = <0x200000 0x10 0x300000 0x4>;
         };
 
         touchscreen_uart: serial@0x100000 {

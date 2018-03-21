@@ -1,0 +1,20 @@
+module name: cpen391_vgabuffer
+
+This module is used to allocate a video frame buffer in RAM on the HPS. This module is designed with device tree in mind, and can only be configured via device tree.
+
+Device tree configuration
+Only need two lines:
+compatile: allows the kernel to match this device tree declaration to the module
+reg: [0] address of the DMA controller's registers, span should be 0x10
+     [1] address of the reset register, span should be 0x4
+     Overall format: <dma_base 0x10 reset_reg 0x4>
+
+Example: DMA Controller at base 0x123000, reset register at 0x300000
+myvgabuffer: vgabuffer@0x123000 {
+    compatible = "cpen391_group5,vgabuffer";
+    reg = <0x123000 0x10 0x300000 0x4>;
+};
+
+Functionality: The module upon loading will fetch the screen parameters such as width, height, color properties of the DMA Controller. Once the module's device file is opened it will allocate a framebuffer and point the DMA Controller at it. If it fails, view /var/log/kern.log for error messages.
+
+Interfacing: The module creates a device file /dev/cpen391_vgabuffer which represents the framebuffer. The buffer can be mapped into the process's address space with mmap. This allows direct writing of pixels. Note that the mmap should always start at offset 0 and go to offset width * height * bytes_per_pixel. TODO: ioctl for obtaining the buffer size.

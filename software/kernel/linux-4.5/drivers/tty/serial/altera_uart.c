@@ -588,6 +588,7 @@ static int altera_uart_remove(struct platform_device *pdev)
 	return 0;
 }
 
+
 #ifdef CONFIG_OF
 static const struct of_device_id altera_uart_match[] = {
 	{ .compatible = "ALTR,uart-1.0", },
