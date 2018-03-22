@@ -134,7 +134,7 @@ def loginByFaceHex():
 	if request.method == 'POST':
 		r = request.get_json()
 
-		byte_array = bytearray.fromhex('hex-string')
+		byte_array = bytearray.fromhex(r.get('hex-string'))
 		img = Image.open(io.BytesIO(byte_array))
 		img.save('/home/dchau/img.jpg')
 
