@@ -133,7 +133,7 @@ def loginByFaceHex():
 	if request.method == 'POST':
 		r = request.get_json()
 
-		byte_array = bytearray.fromhex(r.get('hex_string'))
+		byte_array = bytearray.fromhex(r.get('hex-string'))
 		img = Image.open(io.BytesIO(byte_array))
 
 		picture_of_me = face_recognition.load_image_file(img)
