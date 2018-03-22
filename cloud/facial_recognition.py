@@ -72,25 +72,25 @@ def addUser():
 		img = Image.open(io.BytesIO(byte_array))
 		img.save('/home/dchau/img.jpg');
 
-		picture = face_recognition.load_image_file('/home/dchau/img.jpg')
-		face_encoding = face_recognition.face_encodings(picture)[0]
+		# picture = face_recognition.load_image_file('/home/dchau/img.jpg')
+		# face_encoding = face_recognition.face_encodings(picture)[0]
 
-		try:
-			with db.atomic():
-				# Attempt to create the user. If the username is taken, due to the
-				# unique constraint, the database will raise an IntegrityError.
-				user = Users.create(
-					username=r.get('username'),
-					password=md5((r.get('password')).encode('utf-8')).hexdigest(),
-					photo_encoding=face_encoding.tostring(),
-					ifttt_requests="")
+		# try:
+		# 	with db.atomic():
+		# 		# Attempt to create the user. If the username is taken, due to the
+		# 		# unique constraint, the database will raise an IntegrityError.
+		# 		user = Users.create(
+		# 			username=r.get('username'),
+		# 			password=md5((r.get('password')).encode('utf-8')).hexdigest(),
+		# 			photo_encoding=face_encoding.tostring(),
+		# 			ifttt_requests="")
 
-			# mark the user as being 'authenticated' by setting the session vars
-			auth_user(user)
-			return 'User joined.'
+		# 	# mark the user as being 'authenticated' by setting the session vars
+		# 	auth_user(user)
+		# 	return 'User joined.'
 
-		except IntegrityError:
-			print('That username is already taken')
+		# except IntegrityError:
+		# 	print('That username is already taken')
 		return 'User failed to join.'
 
 
