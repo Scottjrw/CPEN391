@@ -63,7 +63,7 @@ def hello_world():
 
 @app.route('/join', methods=['GET', 'POST'])
 def addUser():
-	if request.method == 'POST' and r.get('username'):
+	if request.method == 'POST':
 		r = request.get_json()
 
 		byte_array = bytearray.fromhex(hex_string)
