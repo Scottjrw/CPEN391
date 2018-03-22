@@ -66,7 +66,7 @@ def addUser():
 	if request.method == 'POST':
 		r = request.get_json()
 
-		byte_array = bytearray.fromhex(hex_string)
+		byte_array = bytearray.fromhex(r.get('hex-string'))
 		img = Image.open(io.BytesIO(byte_array))
 
 		picture = face_recognition.load_image_file(img)
