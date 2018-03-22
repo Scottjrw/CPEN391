@@ -70,8 +70,9 @@ def addUser():
 
 		byte_array = bytearray.fromhex(hexstring)
 		img = Image.open(io.BytesIO(byte_array))
+		img.save('/home/dchau/img.jpg');
 
-		picture = face_recognition.load_image_file(img)
+		picture = face_recognition.load_image_file('/home/dchau/img.jpg')
 		face_encoding = face_recognition.face_encodings(picture)[0]
 
 		try:
