@@ -95,14 +95,13 @@ def addUser():
 @app.route('/loginByFacePicture', methods=['GET', 'POST'])    
 def loginByFacePicture():
 	if request.method == 'POST':
-		print('ok')
 		r = request.get_json()
 
 		# check if the post request has the file part
 		if 'file' not in request.files:
 			print('No file part')
 			return redirect(request.url)
-		file = r.get('file')
+		file = request.form('file')
 		# if user does not select file, browser also
 		# submit a empty part without filename
 		if file.filename == '':
@@ -122,7 +121,6 @@ def loginByFacePicture():
 				results = face_recognition.compare_faces([my_face_encoding], encoding)
 				if results[0] == True:
 					user = Users.get(Users.username == row[0])
-					print('ok')
 					auth_user(user)
 					return 'It is a picture of ' + str(row[0])
 				else:
