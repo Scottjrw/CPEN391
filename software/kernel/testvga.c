@@ -15,7 +15,7 @@ void set_pixel(volatile uint32_t *buf, unsigned x, unsigned y, uint32_t pixel) {
 }
 
 int main(void) {
-    int fd = open("/dev/cpen391_vgabuffer", (O_RDWR));
+    int fd = open("/dev/cpen391_vgabuffer", (O_RDWR | O_SYNC));
     if (fd == -1) {
         printf("Failed to open vgabuffer, errno = %d\n", errno);
         return -1;
@@ -24,7 +24,7 @@ int main(void) {
     printf("file opened\n");
 
 	unsigned size = 640 * 480 * 4;
-    void *vga_buf = mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED, fd, 0);
+    void *vga_buf = mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED | MAP_LOCKED, fd, 0);
     if (vga_buf == MAP_FAILED) {
         printf("Failed to mmap, errno = %d\n", errno);
         close(fd);
@@ -40,14 +40,15 @@ int main(void) {
     for (int i = 0; i < 400; i++)
         set_pixel(vga_buf, i, i, 0xFFFFFFFF);
 
+    sleep(1);
+
     for (int y = 100; y < 300; y++) {
         for (int x = 400; x < 600; x++) {
-            usleep(1);
             set_pixel(vga_buf, x, y, 0xFFFF0000);
         }
     }
 
-    while(1) usleep(1000);
+    while(1) usleep(100000);
 
 
     munmap(vga_buf, size);
