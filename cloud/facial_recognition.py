@@ -95,7 +95,7 @@ def addUser():
 @app.route('/loginByFacePicture', methods=['GET', 'POST'])    
 def loginByFacePicture():
 	if request.method == 'POST':
-		r = request.get_json()
+		# r = request.get_json()
 
 		# check if the post request has the file part
 		if 'file' not in request.files:
