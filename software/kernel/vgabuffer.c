@@ -112,14 +112,11 @@ static void cpen391_vgabuffer_vclose(struct vm_area_struct *vma) {
 
 static int cpen391_vgabuffer_vfault(struct vm_area_struct *vma, struct vm_fault *vmf) {
     mutex_lock(&vgabuf.lock);
-    if (vgabuf.framebuffer) {
-        void *fault_kaddr = ((u8 *) vgabuf.framebuffer) + vmf->pgoff * PAGE_SIZE;
-        //printk(KERN_ALERT DRV_NAME ": fault at 0x%x, user 0x%x\n", (u32) fault_kaddr, (u32) vmf->virtual_address);
+    void *fault_kaddr = ((u8 *) vgabuf.framebuffer) + vmf->pgoff * PAGE_SIZE;
 
-        struct page *page = virt_to_page(fault_kaddr);    
-        get_page(page);
-        vmf->page = page; 
-    }
+    struct page *page = virt_to_page(fault_kaddr);    
+    get_page(page);
+    vmf->page = page; 
     mutex_unlock(&vgabuf.lock);
     return 0;
 }
@@ -152,30 +149,18 @@ static int cpen391_vgabuffer_fopen(struct inode *inode, struct file *filp) {
 
     mutex_lock(&vgabuf.lock);
 
-    u32 framebuffer_pa = __pa(vgabuf.framebuffer);
-    printk(KERN_ALERT DRV_NAME ": allocated buffer at virtual address 0x%x, physical address 0x%x\n",
-            (u32) vgabuf.framebuffer, framebuffer_pa);
+    if (!vgabuf.in_use) {
+        u32 framebuffer_pa = __pa(vgabuf.framebuffer);
+        printk(KERN_ALERT DRV_NAME ": allocated buffer at virtual address 0x%x, physical address 0x%x\n",
+                (u32) vgabuf.framebuffer, framebuffer_pa);
 
-    // Directly enable the bridge, a todo would be to use the proper driver to enable it
-    iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
-    barrier();
-    iowrite32(FPGA_SDRAM_BRIDGE_ENABLE, vgabuf.sdram_bridge_base);
-    msleep(25);
+        // Directly enable the bridge, a todo would be to use the proper driver to enable it
+        iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
+        barrier();
+        iowrite32(FPGA_SDRAM_BRIDGE_ENABLE, vgabuf.sdram_bridge_base);
+        msleep(25);
 
-    // Put the address in before enabling
-    video_dma_write_reg(VIDEO_DMA_BACKBUFFER_OFFSET, framebuffer_pa);
-    udelay(100);
-    video_dma_write_reg(VIDEO_DMA_BUFFER_OFFSET, 0);
-    udelay(100);
-    video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_ENABLE);
-    udelay(100);
-
-    if (video_dma_setup(framebuffer_pa)) {
-        // DMA Controller may still be stuck even after enabling the sdram bridge, reset it
-        // Note that resetting too many times leaves the device unrecoverable, in that case rebooting is the only option
-        video_dma_reset();
-        msleep(50);
-
+        // Put the address in before enabling
         video_dma_write_reg(VIDEO_DMA_BACKBUFFER_OFFSET, framebuffer_pa);
         udelay(100);
         video_dma_write_reg(VIDEO_DMA_BUFFER_OFFSET, 0);
@@ -183,12 +168,27 @@ static int cpen391_vgabuffer_fopen(struct inode *inode, struct file *filp) {
         video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_ENABLE);
         udelay(100);
 
-        if ((ret = video_dma_setup(framebuffer_pa))) {
-            printk(KERN_ERR DRV_NAME ": DMA Controller not responding\n");
-            goto fail;
-        }
-    }
+        if (video_dma_setup(framebuffer_pa)) {
+            // DMA Controller may still be stuck even after enabling the sdram bridge, reset it
+            // Note that resetting too many times leaves the device unrecoverable, in that case rebooting is the only option
+            video_dma_reset();
+            msleep(50);
 
+            video_dma_write_reg(VIDEO_DMA_BACKBUFFER_OFFSET, framebuffer_pa);
+            udelay(100);
+            video_dma_write_reg(VIDEO_DMA_BUFFER_OFFSET, 0);
+            udelay(100);
+            video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_ENABLE);
+            udelay(100);
+
+            if ((ret = video_dma_setup(framebuffer_pa))) {
+                printk(KERN_ERR DRV_NAME ": DMA Controller not responding\n");
+                goto fail;
+            }
+        }
+
+        vgabuf.in_use = true;
+    }
     mutex_unlock(&vgabuf.lock);
     return 0;
 
@@ -204,6 +204,7 @@ fail:
 static int cpen391_vgabuffer_frelease(struct inode *inode, struct file *filp) {
     // Disable the sdram bridge to prevent the DMA controller from dumping random kernel memory
     mutex_lock(&vgabuf.lock);
+    vgabuf.in_use = false;
     video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_DISABLE);
     msleep(25);
     iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
@@ -332,7 +333,7 @@ static int cpen391_vgabuffer_probe(struct platform_device *pdev) {
 
     printk(KERN_ALERT DRV_NAME ": DMA Controller framebuffer of size %d, order %d\n", vgabuf.framebuffer_size, vgabuf.framebuffer_order);
 
-    vgabuf.framebuffer = (void __kernel *) __get_free_pages(__GFP_DIRECT_RECLAIM|__GFP_REPEAT, vgabuf.framebuffer_order);
+    vgabuf.framebuffer = (void __kernel *) __get_free_pages(__GFP_REPEAT, vgabuf.framebuffer_order);
     if (!vgabuf.framebuffer) {
         printk(KERN_ERR DRV_NAME ": framebuffer not allocated, giving up...\n");
         ret = -ENOMEM;
@@ -345,7 +346,6 @@ static int cpen391_vgabuffer_probe(struct platform_device *pdev) {
         goto fail_free_framebuffer;
     }
 
-    vgabuf.in_use = true;
     printk(KERN_ALERT DRV_NAME ": Successfully probed vgabuffer\n");
     mutex_unlock(&vgabuf.lock);
     return 0;
