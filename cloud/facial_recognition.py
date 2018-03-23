@@ -121,6 +121,7 @@ def loginByFacePicture():
 				results = face_recognition.compare_faces([my_face_encoding], encoding)
 				if results[0] == True:
 					user = Users.get(Users.username == row[0])
+					print('ok')
 					auth_user(user)
 					return 'It is a picture of ' + str(row[0])
 				else:
