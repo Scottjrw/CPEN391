@@ -95,13 +95,11 @@ def addUser():
 @app.route('/loginByFacePicture', methods=['GET', 'POST'])    
 def loginByFacePicture():
 	if request.method == 'POST':
-		# r = request.get_json()
-
 		# check if the post request has the file part
 		if 'file' not in request.files:
 			print('No file part')
 			return redirect(request.url)
-		file = request.form['file']
+		file = request.files['file']
 		# if user does not select file, browser also
 		# submit a empty part without filename
 		if file.filename == '':
@@ -127,6 +125,7 @@ def loginByFacePicture():
 					print ('It is not a picture of ' + str(row[0]))
 
 			return 'No user found.'
+
 
 
 @app.route('/loginByFaceHex', methods=['GET', 'POST'])    
