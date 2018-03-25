@@ -17,27 +17,16 @@
 #include "cursor.hpp"
 //#include "PixelCluster.hpp"
 
-using namespace UI;
-
-typedef enum {
-		HOME,
-		IMAGE_SETTINGS,
-		GESTURE_SETTINGS
-	} Current_Screen;
+namespace UI {
 
 class Screen : public Drawable, public Touchable {
 public:
-
-
 	/*
 	 * draw all elements part of the screen
 	 */
 	virtual void draw();
 
-	/*
-	 * clear all the elements part of the screen
-	 */
-	void clear();
+    virtual void undraw();
 
     virtual bool touch(Point p) { throw std::logic_error("Cannot Touch Screen"); }
 
@@ -49,29 +38,31 @@ public:
 
 	void addTouchable(Touchable* element);
 
+	int run(void);
+
+	void exit(int ret_code);
+
     //void addPixelCluster(PixelCluster *pixel);
 
-	Screen(SimpleGraphics &graphics, TouchControl &touch);
-
-	Current_Screen run(void);
-
-	void exit(Current_Screen New_Screen);
-
+	Screen(SimpleGraphics &graphics, TouchControl &touch,
+            unsigned width, unsigned height);
 
 private:
+    const unsigned m_width, m_height;
 	bool m_exited;
 	std::vector<Drawable*> m_drawables;
 	std::vector<Touchable*> m_touchables;
     //PixelCluster *m_cluster;
-	Current_Screen m_next_screen;
-	Cursor cursor;
-    Cursor red_dot_cursor;
+	int m_next_screen;
+	Cursor m_cursor;
+    Cursor m_red_dot_cursor;
 
     static constexpr unsigned RED_DOT_POLL_MS = 50;
 
-
+    void touchCB(TouchControl *, unsigned x, unsigned y);
 
 };
 
+};
 
 #endif /* SCREEN_HPP_ */

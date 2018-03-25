@@ -1,6 +1,5 @@
 #include "SimpleGraphics.hpp"
 #include <assert.h>
-#include "Fonts.c"
 
 #ifdef HW_GRAPHICS
     #include <sys/alt_irq.h>
