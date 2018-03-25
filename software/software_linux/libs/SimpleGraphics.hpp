@@ -18,15 +18,6 @@
 
 class SimpleGraphics {
 public:
-    // typedef uint16_t rgba_t;
-    
-    // static constexpr rgba_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-    //     return (convert_8bit(b, pixel_bits))
-    //         | (convert_8bit(g, pixel_bits) << pixel_bits / 4)
-    //         | (convert_8bit(r, pixel_bits) << (2 * pixel_bits / 4))
-    //         | (convert_8bit(a, pixel_bits) << (3 * pixel_bits / 4));
-    // }
-
     typedef uint32_t rgba_t;
 
     static constexpr rgba_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a){
@@ -69,39 +60,43 @@ public:
 
     void startIRQ();
 
-// #ifdef HW_GRAPHICS
-//     SimpleGraphics(char *graphics_base, int ic_id, int irq_id, 
-//             rgba_t *buffer_base, unsigned int width, unsigned int height) :
-//         m_graphics_base(graphics_base),
-//         m_ic_id(ic_id),
-//         m_irq_id(irq_id),
-//         m_buffer_base(buffer_base),
-//         m_max_addr(buffer_base + width * height),
-//         m_width(width),
-//         m_height(height),
-//         m_pending_irq(false)
-//     { 
-//         assert(ic_id != -1);
-//         assert(irq_id != -1);
-//     }
-// #else
-//     SimpleGraphics(unsigned int width, unsigned int height);
-// #endif
-    SimpleGraphics(unsigned int width, unsigned int height);
+    unsigned width() { return m_width; }
+    unsigned height() { return m_height; }
 
-
+ #ifdef HW_GRAPHICS
+     SimpleGraphics(char *graphics_base, int ic_id, int irq_id, 
+             rgba_t *buffer_base, unsigned int width, unsigned int height) :
+         m_graphics_base(graphics_base),
+         m_ic_id(ic_id),
+         m_irq_id(irq_id),
+         m_buffer_base(buffer_base),
+         m_max_addr(buffer_base + width * height),
+         m_width(width),
+         m_height(height),
+         m_pending_irq(false)
+     { 
+         assert(ic_id != -1);
+         assert(irq_id != -1);
+     }
+ #else
+     SimpleGraphics(unsigned int width, unsigned int height);
+ #endif
 
 private:
+    rgba_t *m_buffer_base;
+    rgba_t *m_max_addr;
+    const unsigned int m_width, m_height;
+
+    static constexpr unsigned pixel_bits = sizeof(rgba_t) * 8;
+    static constexpr uint32_t convert_8bit(uint8_t val, unsigned int pixel_bits) {
+        return ((val >> (8 - pixel_bits / 4)) & ((1 << pixel_bits / 4) - 1));
+    }
+
 #ifdef HW_GRAPHICS
     char *const m_graphics_base;
     alt_u32 m_ic_id; 
     alt_u32 m_irq_id;
     volatile bool m_pending_irq;
-#endif
-    rgba_t * m_buffer_base;
-    rgba_t * m_max_addr;
-    unsigned int m_width, m_height;
-
     typedef struct {
     	unsigned X1;
     	unsigned X2;
@@ -112,14 +107,7 @@ private:
     } CMD;
     std::queue<CMD> commands;
 
-    static constexpr unsigned pixel_bits = sizeof(rgba_t) * 8;
-    static constexpr uint32_t convert_8bit(uint8_t val, unsigned int pixel_bits) {
-        return ((val >> (8 - pixel_bits / 4)) & ((1 << pixel_bits / 4) - 1));
-    }
-
-#ifdef HW_GRAPHICS
 	static void graphics_interrupt(void *graphicsctrl);
-#endif
 
 	static constexpr unsigned DRAW_PIXEL = 1;
 	static constexpr unsigned DRAW_RECT = 2;
@@ -134,6 +122,7 @@ private:
 	static constexpr unsigned IRQ_DISABLE = 32;
 
     static constexpr unsigned queue_max = 64;
+#endif
 };
 
 

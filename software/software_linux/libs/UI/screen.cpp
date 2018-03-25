@@ -11,12 +11,9 @@
 
 namespace UI {
 
-Screen::Screen(SimpleGraphics &graphics, TouchControl &touch,
-        unsigned width, unsigned height):
+Screen::Screen(SimpleGraphics &graphics, TouchControl &touch):
 	Drawable(graphics),
 	Touchable(touch),
-    m_width(width),
-    m_height(height),
 	m_exited(false),
 	m_drawables(),
 	m_touchables(),
@@ -80,12 +77,12 @@ void Screen::addTouchable(Touchable* element) {
 int Screen::run(void) {
     using namespace std::chrono;
 
-    auto last_poll_ticks = high_resolution_clock::now();
+    //auto last_poll_ticks = high_resolution_clock::now();
 	while(m_exited == false){
 		m_touch.trypoll();
 
-        auto now = high_resolution_clock::now();
-        milliseconds ms = duration_cast<milliseconds>(now - last_poll_ticks);
+        //auto now = high_resolution_clock::now();
+        //milliseconds ms = duration_cast<milliseconds>(now - last_poll_ticks);
 
         //if (ms.count() > RED_DOT_POLL_MS) {
         //    unsigned x, y, count;

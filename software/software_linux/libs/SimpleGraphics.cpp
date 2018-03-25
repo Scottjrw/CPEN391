@@ -1,11 +1,18 @@
 #include "SimpleGraphics.hpp"
+#include "SimpleGraphicsFonts.cpp"
 #include <assert.h>
 
 #ifdef HW_GRAPHICS
     #include <sys/alt_irq.h>
 #endif
 
-#ifdef HW_GRAPHICS
+#ifndef HW_GRAPHICS
+void SimpleGraphics::draw_rect(rgba_t color, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2) {
+    for (unsigned int i = x1; i < x2; i++)
+        for (unsigned int j = y1; j < y2; j++)
+            draw_pixel(color, i, j);
+}
+#else
 void SimpleGraphics::draw_rect(rgba_t color, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2) {
 
 	CMD cmd = {x1, x2, y1, y2, color, DRAW_RECT};
@@ -15,12 +22,6 @@ void SimpleGraphics::draw_rect(rgba_t color, unsigned int x1, unsigned int y1, u
 	if (!m_pending_irq)
 		graphics_interrupt(this);
 
-}
-#else
-    void SimpleGraphics::draw_rect(rgba_t color, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2) {
-    for (unsigned int i = x1; i < x2; i++)
-        for (unsigned int j = y1; j < y2; j++)
-            draw_pixel(color, i, j);
 }
 #endif
 
@@ -57,7 +58,7 @@ void SimpleGraphics::draw_char(rgba_t color, unsigned x, unsigned y, char c) {
 void SimpleGraphics::draw_string(rgba_t color, unsigned x, unsigned y, std::string str) {
     for (unsigned i = 0; i < str.length(); i++) {
         draw_char(color, x, y, str[i]);
-        x += 10;
+        x += 11;
     }
 }
 
@@ -101,25 +102,25 @@ void SimpleGraphics::graphics_interrupt(void* graphicsctrl){
 #endif
 
 #ifndef HW_GRAPHICS
-    SimpleGraphics::SimpleGraphics(unsigned int width, unsigned int height){ 
-        int fd = open("/dev/cpen391_vgabuffer", (O_RDWR));
-        if (fd == -1) {
-            printf("Failed to open vgabuffer, errno = %d\n", errno);
-        }
-
-        m_width = width;
-        m_height = height;
-
-        printf("file opened\n");
-
-        unsigned size = m_width * m_height * 4;
-        m_buffer_base = reinterpret_cast<SimpleGraphics::rgba_t *>(mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED, fd, 0));
-        if (m_buffer_base == MAP_FAILED) {
-            printf("Failed to mmap, errno = %d\n", errno);
-            close(fd);
-        }
-
-        printf("mmap done\n");
-        m_max_addr = m_buffer_base + width * height;
+SimpleGraphics::SimpleGraphics(unsigned int width, unsigned int height):
+    m_width(width),
+    m_height(height)
+{ 
+    int fd = open("/dev/cpen391_vgabuffer", (O_RDWR));
+    if (fd == -1) {
+        printf("Failed to open vgabuffer, errno = %d\n", errno);
     }
+
+    printf("file opened\n");
+
+    unsigned size = m_width * m_height * sizeof(rgba_t);
+    m_buffer_base = reinterpret_cast<SimpleGraphics::rgba_t *>(mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED, fd, 0));
+    if (m_buffer_base == MAP_FAILED) {
+        printf("Failed to mmap, errno = %d\n", errno);
+        close(fd);
+    }
+
+    printf("mmap done\n");
+    m_max_addr = m_buffer_base + width * height;
+}
 #endif

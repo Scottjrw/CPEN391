@@ -44,11 +44,9 @@ public:
 
     //void addPixelCluster(PixelCluster *pixel);
 
-	Screen(SimpleGraphics &graphics, TouchControl &touch,
-            unsigned width, unsigned height);
+	Screen(SimpleGraphics &graphics, TouchControl &touch);
 
 private:
-    const unsigned m_width, m_height;
 	bool m_exited;
 	std::vector<Drawable*> m_drawables;
 	std::vector<Touchable*> m_touchables;
