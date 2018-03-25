@@ -20,7 +20,7 @@ run: main
 	sudo ./main
 
 $(OBJ_DIR)/%.o: %.cpp
-	$(MKDIR) $(dir $@)
+	mkdir -p $(dir $@)
 	$(C++) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 clean:
