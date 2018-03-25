@@ -58,6 +58,8 @@ public:
 
     void draw_string(rgba_t color, unsigned x, unsigned y, std::string str);
 
+    void clear();
+
     void startIRQ();
 
     unsigned width() { return m_width; }

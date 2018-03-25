@@ -62,6 +62,10 @@ void SimpleGraphics::draw_string(rgba_t color, unsigned x, unsigned y, std::stri
     }
 }
 
+void SimpleGraphics::clear() {
+    draw_rect(rgba(0, 0, 0, 0), 0, 0, m_width, m_height);
+}
+
 #ifdef HW_GRAPHICS
 void SimpleGraphics::startIRQ() {
     // Enable Interrupt on CPU

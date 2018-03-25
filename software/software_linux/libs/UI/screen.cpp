@@ -24,6 +24,8 @@ Screen::Screen(SimpleGraphics &graphics, TouchControl &touch):
 }
 
 void Screen::draw() {
+    m_graphics.clear();
+
 	for (unsigned i = 0; i < m_drawables.size(); i++) {
 		m_drawables[i]->draw();
 	}
@@ -33,6 +35,8 @@ void Screen::undraw() {
 	for (unsigned i = 0; i < m_drawables.size(); i++) {
 		m_drawables[i]->undraw();
 	}
+
+    m_graphics.clear();
 }
 
 void Screen::enable_touch() {
