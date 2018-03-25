@@ -21,7 +21,7 @@ run: main
 
 $(OBJ_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)
-	$(C++) $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
+	g++ $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 clean:
 	$(RM) $(OBJ)
