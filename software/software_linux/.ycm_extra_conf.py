@@ -74,7 +74,7 @@ def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
 
 
 def FlagsForFile( filename, **kwargs ):
-    relative_to = os.path.join(DirectoryOfThisScript(), 'linux-4.5')
+    relative_to = DirectoryOfThisScript()
     final_flags = MakeRelativePathsInFlagsAbsolute( flags, relative_to )
 
     color_coded_file = os.path.join(DirectoryOfThisScript(), '.color_coded')
