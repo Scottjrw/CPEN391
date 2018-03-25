@@ -23,10 +23,10 @@ class Wifi {
 		void SendUsername(std::string username, std::string password);
 		void SendPicture(std::string picture);
 		std::string ReadResponse();
-		int wifi_uart;
+		int GetFd();
 
 	private:
-	 	//int wifi_uart;
+	 	int wifi_uart;
 
 };
 

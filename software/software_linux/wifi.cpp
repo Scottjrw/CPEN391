@@ -64,6 +64,11 @@ std::string Wifi::ReadResponse(){
 	return response;
 }
 
+Wifi::GetFd(){
+	int i = wifi_uart;
+	return i;
+}
+
 Wifi::Wifi(const char name[]) {
 	wifi_uart = open(name, O_RDWR);
 

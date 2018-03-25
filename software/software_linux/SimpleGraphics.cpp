@@ -36,16 +36,16 @@ void SimpleGraphics::draw_x(rgba_t color, unsigned int x, unsigned int y, int ra
 }
 
 void SimpleGraphics::draw_char(rgba_t color, unsigned x, unsigned y, char c) {
-    if (x >= m_width - 5 || y >= m_height - 7)
+    if (x >= m_width - 10 || y >= m_height - 14)
         return;
 
     if (c >= ' ' && c <= '~') {
         unsigned font_index = c - ' ';
-        for (unsigned row = 0; row < 7; row ++) {
-            unsigned pixels = Font5x7[font_index][row] ;
-            unsigned bit = 0b10000;
+        for (unsigned row = 0; row < 14; row ++) {
+            unsigned pixels = Font10x14[font_index][row] ;
+            unsigned bit = 0b1000000000;
 
-            for (unsigned column = 0; column < 5; column++)  {
+            for (unsigned column = 0; column < 10; column++)  {
                 if (pixels & bit)
                     draw_pixel(color, x+column, y+row) ;
 
@@ -58,7 +58,7 @@ void SimpleGraphics::draw_char(rgba_t color, unsigned x, unsigned y, char c) {
 void SimpleGraphics::draw_string(rgba_t color, unsigned x, unsigned y, std::string str) {
     for (unsigned i = 0; i < str.length(); i++) {
         draw_char(color, x, y, str[i]);
-        x += 5;
+        x += 10;
     }
 }
 

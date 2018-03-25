@@ -9,10 +9,10 @@
 #include "SimpleGraphics.hpp"
 //#include "vision_updated.hpp"
 //#include "video.hpp"
-//#include "screen.hpp"
-//#include "cursor.hpp"
-//#include "UI.hpp"
-//#include "touch.hpp"
+#include "screen.hpp"
+#include "cursor.hpp"
+#include "UI.hpp"
+#include "touch.hpp"
 //#include "PixelCluster.hpp"
 //#include "io.h"
 #include "wifi.hpp"
@@ -489,12 +489,72 @@ int main(int argc, const char * argv[]) {
 //
 //	}
 
+	// graphics.draw_rect(SimpleGraphics::rgba(255,0,0,255),0,0,50,50);
+	// graphics.draw_rect(SimpleGraphics::rgba(0,255,0,255),50,50,100,100);
+	// graphics.draw_rect(SimpleGraphics::rgba(0,0,255,255),100,100,150,150);
+	// graphics.draw_rect(SimpleGraphics::rgba(0,0,0,255),150,150,200,200);
+
 	SimpleGraphics graphics(640, 480);
-	graphics.draw_rect(SimpleGraphics::rgba(255,0,0,255),0,0,50,50);
-	graphics.draw_rect(SimpleGraphics::rgba(0,255,0,255),50,50,100,100);
-	graphics.draw_rect(SimpleGraphics::rgba(0,0,255,255),100,100,150,150);
-	graphics.draw_rect(SimpleGraphics::rgba(0,0,0,255),150,150,200,200);
-	while(1) usleep(1000);
+	graphics.draw_rect(SimpleGraphics::rgba(0,0,0,255),0,0,640,480);
+	graphics.draw_string(SimpleGraphics::rgba(255,0,0,255),200,200,"test string");
+	TouchControl touch("/dev/ttyAL2", -1, -1,
+		SG_MAX_WIDTH, SG_MAX_HEIGHT, false);
+	TermiosUtil::SetSpeed(touch.GetFd(), (Baudrate)B9K);
+
+
+	while(1){
+		Screen screen(graphics, touch);
+
+		UI::Button title(graphics, touch, {0, 0}, {300, 90}, "LIGHT CONTROLLER",
+						SimpleGraphics::rgba(0, 0, 0, 255),
+						SimpleGraphics::rgba(255, 255, 153, 175));
+		UI::DropdownMenu menu(graphics, touch, DropdownMenu::TOP, {300, 30}, {480, 90}, "Menu",
+						SimpleGraphics::rgba(255, 255, 255, 255),
+						SimpleGraphics::rgba(89, 89, 89, 150));
+		menu.newItem(graphics, touch, "Change IMG", SimpleGraphics::rgba(255, 255, 255, 255),
+			SimpleGraphics::rgba(166, 166, 166, 100),
+			[&screen] (Touchable *, Point p) {
+			std::cout << "Change Image Settings" << std::endl;
+			screen.clear();
+			screen.exit(IMAGE_SETTINGS);
+
+			});
+		menu.newItem(graphics, touch, "Gestures", SimpleGraphics::rgba(255, 255, 255, 255),
+					SimpleGraphics::rgba(166, 166, 166, 100),
+					[&screen] (Touchable *, Point p) {
+					std::cout << "Change Gesture Mappings" << std::endl;
+					screen.clear();
+					screen.exit(Current_Screen(GESTURE_SETTINGS));
+
+					});
+
+		title.onTouch([] (Touchable *, Point p) {
+			std::cout << "LIGHT CONTROLLER" << std::endl;
+
+			});
+
+
+		screen.addDrawable(&menu);
+		screen.addTouchable(&menu);
+		screen.addDrawable(&title);
+		screen.addTouchable(&title);
+
+		screen.draw();
+		touch.touch_enable();
+		screen.enable_touch();
+
+		screen.run();
+	}
+
+	// std::cout<<"starting wifi"<<std::endl;
+	// Wifi wifi("/dev/ttyAL2");
+	// TermiosUtil::SetSpeed(wifi.GetFd(), (Baudrate)B115K);
+	// //wifi.SendPicture("output");
+	// wifi.SendUsername("obama","hello");
+	// usleep(100);
+	// std::string response = wifi.ReadResponse();
+	// std::cout<<response.size()<<" "<<response<<std::endl;
+	// std::cout<<"send finished"<<std::endl;
 //	graphics.startIRQ();
 //	uint32_t data;
 //	std::string result;
@@ -514,16 +574,6 @@ int main(int argc, const char * argv[]) {
 //	}
 //
 //	std::cout<<"finished"<<std::endl;
-	// std::cout<<"starting"<<std::endl;
-	// Wifi wifi("/dev/ttyAL2");
-	// TermiosUtil::SetSpeed(wifi.wifi_uart, (Baudrate)B115K);
-	// //wifi.SendPicture("output");
-	// wifi.SendUsername("obama","hello");
-	// usleep(100);
-	// std::string response = wifi.ReadResponse();
-	// std::cout<<response.size()<<" "<<response<<std::endl;
-	// std::cout<<"send finished"<<std::endl;
-
 
     return 0;
 }
