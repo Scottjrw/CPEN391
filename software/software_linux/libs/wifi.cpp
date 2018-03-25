@@ -64,7 +64,7 @@ std::string Wifi::ReadResponse(){
 	return response;
 }
 
-Wifi::GetFd(){
+int Wifi::GetFd(){
 	int i = wifi_uart;
 	return i;
 }

@@ -20,11 +20,7 @@
 #include <sstream>
 
 using namespace TermiosUtil;
-
-constexpr unsigned SG_MAX_WIDTH = 160;
-constexpr unsigned SG_MAX_HEIGHT = 120;
-
-//Direction selected_gesture;
+using namespace UI;
 
 int selected_action;
 
@@ -32,17 +28,9 @@ int brightness = 0x00;
 int contrast = 0x80;
 int saturation = 102;
 
+#define SG_MAX_WIDTH 640
+#define SG_MAX_HEIGHT 480
 
-//void home_screen(SimpleGraphics &graphics, TouchControl &touch, Screen &screen);
-//void image_settings_screen(SimpleGraphics &graphics, TouchControl &touch, Screen &screen);
-//void gestures_settings_screen(SimpleGraphics &graphics, TouchControl &touch, Screen &screen);
-
-#define DEBOUNCE_MS 100
-
-#define SG_MAX_WIDTH 160
-#define SG_MAX_HEIGHT 120
-
-#define MIN_COUNT 150
 
 int main(int argc, const char * argv[]) {
 	/*
@@ -501,21 +489,26 @@ int main(int argc, const char * argv[]) {
 		SG_MAX_WIDTH, SG_MAX_HEIGHT, false);
 	TermiosUtil::SetSpeed(touch.GetFd(), (Baudrate)B9K);
 
+	enum Current_Screen:int{
+		IMAGE_SETTINGS,
+		GESTURE_SETTINGS,
+		HOME
+	};
+
 
 	while(1){
 		Screen screen(graphics, touch);
 
-		UI::Button title(graphics, touch, {0, 0}, {300, 90}, "LIGHT CONTROLLER",
+		Button title(graphics, touch, {0, 0}, {300, 90}, "LIGHT CONTROLLER",
 						SimpleGraphics::rgba(0, 0, 0, 255),
 						SimpleGraphics::rgba(255, 255, 153, 175));
-		UI::DropdownMenu menu(graphics, touch, DropdownMenu::TOP, {300, 30}, {480, 90}, "Menu",
+		DropdownMenu menu(graphics, touch, DropdownMenu::TOP, {300, 30}, {480, 90}, "Menu",
 						SimpleGraphics::rgba(255, 255, 255, 255),
 						SimpleGraphics::rgba(89, 89, 89, 150));
 		menu.newItem(graphics, touch, "Change IMG", SimpleGraphics::rgba(255, 255, 255, 255),
 			SimpleGraphics::rgba(166, 166, 166, 100),
 			[&screen] (Touchable *, Point p) {
 			std::cout << "Change Image Settings" << std::endl;
-			screen.clear();
 			screen.exit(IMAGE_SETTINGS);
 
 			});
@@ -523,8 +516,7 @@ int main(int argc, const char * argv[]) {
 					SimpleGraphics::rgba(166, 166, 166, 100),
 					[&screen] (Touchable *, Point p) {
 					std::cout << "Change Gesture Mappings" << std::endl;
-					screen.clear();
-					screen.exit(Current_Screen(GESTURE_SETTINGS));
+					screen.exit(GESTURE_SETTINGS);
 
 					});
 

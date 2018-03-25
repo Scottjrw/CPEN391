@@ -72,9 +72,9 @@ private:
 
     inline bool debounce_ok() {
         std::chrono::time_point<std::chrono::high_resolution_clock> now = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> time_from_last = (1000 * (now - m_last_touch)) ;
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(now - m_last_touch);
 
-        if (time_from_last.count() >= TOUCH_DEBOUNCE_MS) {
+        if (duration.count() >= TOUCH_DEBOUNCE_MS) {
             m_last_touch = now;
             return true;
         }

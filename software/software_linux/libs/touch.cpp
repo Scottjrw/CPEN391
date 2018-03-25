@@ -324,7 +324,7 @@ static void touch_print(touch_updown *msg) {
     std::cout << "X: " << msg->x << "\nY: " << msg->y << '\n';
 }
 
-int GetFd(){
+int TouchControl::GetFd(){
     int i = m_uart;
     return i;
 }
