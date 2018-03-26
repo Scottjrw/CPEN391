@@ -68,6 +68,7 @@ def addUser():
 
 		list_of_pixels = list()
 		hex_string = r.get('hex-string');
+		print(len(hex_string))
 
 		for i, c in enumerate(hex_string):
 			if (i <= len(hex_string) - 6):
