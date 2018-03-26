@@ -112,7 +112,7 @@ SimpleGraphics::SimpleGraphics(unsigned int width, unsigned int height):
 { 
     int fd = open("/dev/cpen391_vgabuffer", (O_RDWR));
     if (fd == -1) {
-        printf("Failed to open vgabuffer, errno = %d\n", errno);
+        perror("Failed to open vgabuffer, errno = %d\n", errno);
     }
 
     printf("file opened\n");
@@ -120,8 +120,7 @@ SimpleGraphics::SimpleGraphics(unsigned int width, unsigned int height):
     unsigned size = m_width * m_height * sizeof(rgba_t);
     m_buffer_base = reinterpret_cast<SimpleGraphics::rgba_t *>(mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED, fd, 0));
     if (m_buffer_base == MAP_FAILED) {
-        printf("Failed to mmap, errno = %d\n", errno);
-        close(fd);
+        perror("Failed to mmap, errno = %d\n", errno);
     }
 
     printf("mmap done\n");

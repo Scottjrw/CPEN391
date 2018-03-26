@@ -14,16 +14,17 @@ OBJ_DIR := obj
 
 OBJ_FILES := $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
-main: $(OBJ_FILES)
+prog: $(OBJ_FILES)
+	g++ $(LDFLAGS) -o $@ $^
 
-run: main
-	sudo ./main
+run: prog
+	sudo ./$<
 
 $(OBJ_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)
 	g++ $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 clean:
-	$(RM) $(OBJ)
-	$(RM) main
+	$(RM) $(OBJ_FILES)
+	$(RM) prog
 	

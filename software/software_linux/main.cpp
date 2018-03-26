@@ -486,7 +486,7 @@ int main(int argc, const char * argv[]) {
 	graphics.draw_rect(SimpleGraphics::rgba(0,0,0,255),0,0,640,480);
 	graphics.draw_string(SimpleGraphics::rgba(255,0,0,255),200,200,"test string");
 	TouchControl touch("/dev/ttyAL2", -1, -1,
-		SG_MAX_WIDTH, SG_MAX_HEIGHT, false);
+		SG_MAX_WIDTH, SG_MAX_HEIGHT, true);
 	TermiosUtil::SetSpeed(touch.GetFd(), (Baudrate)B9K);
 
 	enum Current_Screen:int{
@@ -495,8 +495,6 @@ int main(int argc, const char * argv[]) {
 		HOME
 	};
 
-
-	while(1){
 		Screen screen(graphics, touch);
 
 		Button title(graphics, touch, {0, 0}, {300, 90}, "LIGHT CONTROLLER",
@@ -525,18 +523,31 @@ int main(int argc, const char * argv[]) {
 
 			});
 
+		int temp_brightness;
+		Slider brightness_slider(graphics, touch, {30, 300}, {230, 400},
+			SimpleGraphics::rgba(0, 0, 0, 255),
+			SimpleGraphics::rgba(163, 163, 163, 255), 0, 99);
+		brightness_slider.onTouch([&temp_brightness, &brightness_slider] (Touchable *, Point p) {
+			std::cout << "brightness changing" << std::endl;
+			temp_brightness = (float)(brightness_slider.value())/(float)(99 - 0)*127;
+
+			});
+
 
 		screen.addDrawable(&menu);
 		screen.addTouchable(&menu);
 		screen.addDrawable(&title);
 		screen.addTouchable(&title);
+		screen.addDrawable(&brightness_slider);
+		screen.addTouchable(&brightness_slider);
 
 		screen.draw();
 		touch.touch_enable();
 		screen.enable_touch();
 
 		screen.run();
-	}
+
+		while(1);
 
 	// std::cout<<"starting wifi"<<std::endl;
 	// Wifi wifi("/dev/ttyAL2");
