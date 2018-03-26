@@ -77,6 +77,7 @@ def addUser():
 					g_value = int(hex_string[i+2:i+4], 16)
 					b_value = int(hex_string[i+4:i+6], 16)
 					rgb_tuple = (r_value,g_value,b_value)
+					print(rgb_tuple)
 					list_of_pixels.append(rgb_tuple)
 
 		im = Image.new('RGB', (136,136))
