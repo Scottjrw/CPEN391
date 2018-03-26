@@ -9,6 +9,7 @@ SRC_FILES += libs/UI/UI.cpp
 SRC_FILES += libs/UI/cursor.cpp
 SRC_FILES += libs/UI/screen.cpp
 SRC_FILES += libs/wifi.cpp
+SRC_FILES += libs/video.cpp
 
 OBJ_DIR := obj
 
