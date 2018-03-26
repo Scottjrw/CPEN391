@@ -4,7 +4,7 @@
 
 # List of include directories for -I compiler option (-I added when used).
 # Includes the BSP.
-ALT_INCLUDE_DIRS :=  libs
+ALT_INCLUDE_DIRS := libs ../shared_libs
 
 # List of library directories for -L linker option (-L added when used).
 # Includes the BSP.
@@ -29,8 +29,8 @@ ALT_LDDEPS :=
 MAKEABLE_LIBRARY_ROOT_DIRS :=
 
 # Generic flags passed to the compiler for different types of input files.
-ALT_CFLAGS := -std=c++11
-ALT_CXXFLAGS := -std=c++11
+ALT_CFLAGS := -std=c++14
+ALT_CXXFLAGS := -std=c++14
 ALT_CPPFLAGS :=
 ALT_ASFLAGS :=
 ALT_LDFLAGS :=
@@ -142,17 +142,10 @@ ACDS_VERSION := 15.0
 ELF := cpen391_group5.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS := libs/Fonts.c
+C_SRCS := 
 CXX_SRCS += main.cpp
-CXX_SRCS += libs/SimpleGraphics.cpp
-CXX_SRCS += libs/UI.cpp
-CXX_SRCS += libs/touch.cpp
-CXX_SRCS += libs/screen.cpp
-CXX_SRCS += libs/cursor.cpp
 CXX_SRCS += vision_updated.cpp
-CXX_SRCS += libs/video.cpp
 CXX_SRCS += libs/PixelCluster.cpp
-CXX_SRCS += libs/wifi.cpp
 ASM_SRCS :=
 
 

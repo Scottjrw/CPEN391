@@ -1,4 +1,4 @@
-INCFLAGS := -Ilibs -Ilibs/UI
+INCFLAGS := -Ilibs -Ilibs/UI -I../shared_libs
 CPPFLAGS := -Wall -std=c++14 -O3 $(INCFLAGS)
 
 SRC_FILES := main.cpp
@@ -10,8 +10,9 @@ SRC_FILES += libs/UI/cursor.cpp
 SRC_FILES += libs/UI/screen.cpp
 SRC_FILES += libs/wifi.cpp
 SRC_FILES += libs/video.cpp
+#SRC_FILES += ../shared_libs/
 
-OBJ_DIR := obj
+OBJ_DIR := obj/software_linux
 
 OBJ_FILES := $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 

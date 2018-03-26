@@ -11,7 +11,7 @@ def DirectoryOfThisScript():
 def CreateFlags(project_folder, project_bsp_folder):
     flags = [
         '-Wall',
-        '-std=c++11',
+        '-std=c++14',
         '-DALT_NO_INSTRUCTION_EMULATION',
         '-DALT_SINGLE_THREADED',
         '-D__hal__',
