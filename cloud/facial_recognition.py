@@ -72,9 +72,9 @@ def addUser():
 		for i, c in enumerate(hex_string):
 			if (i < hex_string.size() - 6):
 				if (i % 6 == 0):
-					r_value = (int)strtol(hex_string[i:i+2], NULL, 16)
-					g_value = (int)strtol(hex_string[i+2:i+4], NULL, 16)
-					b_value = (int)strtol(hex_string[i+4:i+6], NULL, 16)
+					r_value = int(hex_string[i:i+2], 16)
+					g_value = int(hex_string[i+2:i+4], 16)
+					b_value = int(hex_string[i+4:i+6], 16)
 					list_of_pixels.append(hex_string[(r_value,g_value,b_value)])
 
 		im = Image.new(5, 5)
