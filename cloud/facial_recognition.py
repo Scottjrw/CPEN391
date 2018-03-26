@@ -70,7 +70,7 @@ def addUser():
 		hex_string = r.get('hex-string');
 
 		for i, c in enumerate(hex_string):
-			if (i < len(hex_string) - 6):
+			if (i <= len(hex_string) - 6):
 				if (i % 6 == 0):
 					r_value = int(hex_string[i:i+2], 16)
 					g_value = int(hex_string[i+2:i+4], 16)
