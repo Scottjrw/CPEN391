@@ -66,11 +66,27 @@ def addUser():
 	if request.method == 'POST':
 		r = request.get_json()
 
-		byte_array = bytearray.fromhex(r.get('hex-string'))
-		img = Image.open(io.BytesIO(byte_array))
-		img.save('/home/dchau/img.jpg')
+		list_of_pixels = list()
+		hex_string = r.get('hex-string');
 
-		picture = face_recognition.load_image_file('/home/dchau/img.jpg')
+		for i, c in enumerate(hex_string):
+			if (i < hex_string.size() - 6):
+				if (i % 6 == 0):
+					r_value = (int)strtol(hex_string[i:i+2], NULL, 16)
+					g_value = (int)strtol(hex_string[i+2:i+4], NULL, 16)
+					b_value = (int)strtol(hex_string[i+4:i+6], NULL, 16)
+					list_of_pixels.append(hex_string[(r_value,g_value,b_value)])
+
+		im = Image.new(5, 5)
+		im.putdata(list_of_pixels)
+		im.save('/home/dchau/img.png')
+
+
+		# byte_array = bytearray.fromhex(r.get('hex-string'))
+		# img = Image.open(io.BytesIO(byte_array))
+		# img.save('/home/dchau/img.jpg')
+
+		picture = face_recognition.load_image_file('/home/dchau/img.png')
 		face_encoding = face_recognition.face_encodings(picture)[0]
 
 		try:
@@ -203,7 +219,19 @@ def addApplet():
 
 		return 'Added applet'
 
+@app.route('/addApplet', methods=['POST'])
+def deleteApplet():
+	if request.method == 'POST':
+		r = request.get_json()
 
+		user_id = get_current_user()
+
+		cursor = db.cursor()
+
+
+		cursor.execute('''DELETE FROM applets WHERE person_id AND ifttt_requests=?''', (user_id, r.get('applet')))
+
+		return 'Removed applet'
 
 
 @app.route('/applet', methods=['POST'])
