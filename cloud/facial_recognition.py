@@ -78,7 +78,7 @@ def addUser():
 					rgb_tuple = (r_value,g_value,b_value)
 					list_of_pixels.append(rgb_tuple)
 
-		im = Image.new('RGB', (5,5))
+		im = Image.new('RGB', (163,163))
 		im.putdata(list_of_pixels)
 		im.save('/home/dchau/img.png')
 
