@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Mar 19, 2018 3:11:04 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1521497464906</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Mar 26, 2018 1:36:50 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1522096610390</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>/home/guoj/Documents/Year-3/CPEN-391/repo/software/cpen391_group5_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>../../cpen391_group5_qsys.sopcinfo</SopcDesignFile>
@@ -863,30 +863,6 @@
                 <Group>none</Group>
         </Setting>
         <Setting>
-                <SettingName>altera_avalon_uart_driver.enable_small_driver</SettingName>
-                <Identifier>ALTERA_AVALON_UART_SMALL</Identifier>
-                <Type>BooleanDefineOnly</Type>
-                <Value>false</Value>
-                <DefaultValue>false</DefaultValue>
-                <DestinationFile>public_mk_define</DestinationFile>
-                <Description>Small-footprint (polled mode) driver</Description>
-                <Restrictions>none</Restrictions>
-                <Enabled>false</Enabled>
-                <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
-        </Setting>
-        <Setting>
-                <SettingName>altera_avalon_uart_driver.enable_ioctl</SettingName>
-                <Identifier>ALTERA_AVALON_UART_USE_IOCTL</Identifier>
-                <Type>BooleanDefineOnly</Type>
-                <Value>false</Value>
-                <DefaultValue>false</DefaultValue>
-                <DestinationFile>public_mk_define</DestinationFile>
-                <Description>Enable driver ioctl() support. This feature is not compatible with the 'small' driver; ioctl() support will not be compiled if either the UART 'enable_small_driver' or HAL 'enable_reduced_device_drivers' settings are enabled.</Description>
-                <Restrictions>none</Restrictions>
-                <Enabled>false</Enabled>
-                <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
-        </Setting>
-        <Setting>
                 <SettingName>altera_avalon_jtag_uart_driver.enable_small_driver</SettingName>
                 <Identifier>ALTERA_AVALON_JTAG_UART_SMALL</Identifier>
                 <Type>BooleanDefineOnly</Type>
@@ -929,22 +905,40 @@
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>nios_hps_uart</slaveDescriptor>
+                <slaveDescriptor>hps_nios_fifo_out_csr</slaveDescriptor>
                 <addressRange>0x00081080 - 0x0008109F</addressRange>
                 <addressSpan>32</addressSpan>
-                <attributes>printable</attributes>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>nios_hps_fifo_in_csr</slaveDescriptor>
+                <addressRange>0x000810A0 - 0x000810BF</addressRange>
+                <addressSpan>32</addressSpan>
+                <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>main_timer</slaveDescriptor>
-                <addressRange>0x000810A0 - 0x000810BF</addressRange>
+                <addressRange>0x000810E0 - 0x000810FF</addressRange>
                 <addressSpan>32</addressSpan>
                 <attributes>timer</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>jtag_uart_0</slaveDescriptor>
-                <addressRange>0x000810E0 - 0x000810E7</addressRange>
+                <addressRange>0x00081100 - 0x00081107</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>hps_nios_fifo_out</slaveDescriptor>
+                <addressRange>0x00081108 - 0x0008110B</addressRange>
+                <addressSpan>4</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>nios_hps_fifo_in</slaveDescriptor>
+                <addressRange>0x0008110C - 0x0008110F</addressRange>
+                <addressSpan>4</addressSpan>
+                <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>graphics_controller_0</slaveDescriptor>

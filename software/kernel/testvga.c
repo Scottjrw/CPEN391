@@ -45,6 +45,7 @@ int main(void) {
     for (int y = 100; y < 300; y++) {
         for (int x = 400; x < 600; x++) {
             set_pixel(vga_buf, x, y, 0xFFFF0000);
+            usleep(1);
         }
     }
 

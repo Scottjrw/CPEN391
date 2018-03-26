@@ -97,8 +97,6 @@ module cpen391_group5(
 
 wire reset = ~KEY[0];
 
-wire hps_txd_nios_rxd, hps_rxd_nios_txd;
-
 cpen391_group5_qsys sys_inst(
     .clk_clk(CLOCK_50),
     .reset_reset(reset),
@@ -124,12 +122,6 @@ cpen391_group5_qsys sys_inst(
     .video_txd(GPIO_1[33]),
     .touchscreen_rxd(GPIO_1[34]),
     .touchscreen_txd(GPIO_1[35]),
-
-    // HPS <-> NIOS Communication Channel
-    .hps_uart_rxd(hps_rxd_nios_txd),
-    .hps_uart_txd(hps_txd_nios_rxd),
-    .nios_uart_rxd(hps_txd_nios_rxd),
-    .nios_uart_txd(hps_rxd_nios_txd),
 
     // VGA
     .vga_controller_CLK(VGA_CLK),

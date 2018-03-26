@@ -111,20 +111,24 @@ static void cpen391_vgabuffer_vclose(struct vm_area_struct *vma) {
 }
 
 static int cpen391_vgabuffer_vfault(struct vm_area_struct *vma, struct vm_fault *vmf) {
+    int ret = 0;
     mutex_lock(&vgabuf.lock);
-    if (vgabuf.in_use) {
+    if (likely(vgabuf.in_use)) {
         void *fault_kaddr = ((u8 *) vgabuf.framebuffer) + vmf->pgoff * PAGE_SIZE;
 
         struct page *page = virt_to_page(fault_kaddr);    
-        if (page) {
+        if (likely(page)) {
+            vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
             get_page(page);
             vmf->page = page; 
         } else {
-            //printk(KERN_ERR DRV_NAME "No page at 0x%x\n", (unsigned) fault_kaddr);
+            ret = VM_FAULT_NOPAGE;
         }
+    } else {
+        ret = VM_FAULT_ERROR;
     }
     mutex_unlock(&vgabuf.lock);
-    return 0;
+    return ret;
 
 }
 
@@ -158,13 +162,13 @@ static int cpen391_vgabuffer_fopen(struct inode *inode, struct file *filp) {
 
     if (!vgabuf.in_use) {
         // Most of the time this module gets loaded at boot REPEAT should suffice
-        vgabuf.framebuffer = (void __kernel *) __get_free_pages(__GFP_DIRECT_RECLAIM | __GFP_REPEAT, vgabuf.framebuffer_order);
+        vgabuf.framebuffer = (void __kernel *) __get_free_pages(GFP_KERNEL | __GFP_REPEAT, vgabuf.framebuffer_order);
         if (!vgabuf.framebuffer) {
             // Use NOFAIL only after REPEAT fails
             printk(KERN_ALERT DRV_NAME ": framebuffer not allocated, retrying with NOFAIL\n");
-            vgabuf.framebuffer = (void __kernel *) __get_free_pages(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL, vgabuf.framebuffer_order);
+            vgabuf.framebuffer = (void __kernel *) __get_free_pages(GFP_KERNEL | __GFP_NOFAIL, vgabuf.framebuffer_order);
             if (!vgabuf.framebuffer) {
-                printk(KERN_ERR DRV_NAME ": framebuffer not allocated still, giving up...\n");
+                printk(KERN_ERR DRV_NAME ": framebuffer still not allocated, giving up...\n");
                 ret = -ENOMEM;
                 goto fail;
             }
@@ -176,7 +180,7 @@ static int cpen391_vgabuffer_fopen(struct inode *inode, struct file *filp) {
 
         // Directly enable the bridge, a todo would be to use the proper driver to enable it
         iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
-        barrier();
+        wmb();
         iowrite32(FPGA_SDRAM_BRIDGE_ENABLE, vgabuf.sdram_bridge_base);
         msleep(25);
 
@@ -218,7 +222,7 @@ fail_free_framebuffer:
     vgabuf.framebuffer = NULL;
     video_dma_reset();
     iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
-    barrier();
+    wmb();
     iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
 fail:
     mutex_unlock(&vgabuf.lock);
@@ -234,7 +238,7 @@ static int cpen391_vgabuffer_frelease(struct inode *inode, struct file *filp) {
     video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_DISABLE);
     msleep(25);
     iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
-    barrier();
+    wmb();
     iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
     __free_pages(vgabuf.framebuffer, vgabuf.framebuffer_order);
     vgabuf.framebuffer = NULL;
@@ -255,8 +259,9 @@ static int cpen391_vgabuffer_fmmap(struct file *filp, struct vm_area_struct *vma
         printk(KERN_ERR DRV_NAME "Invalid mmap for %d pages\n", num_pages);
         return -EINVAL;
     }
+
     vma->vm_ops = &cpen391_vgabuffer_vmops;
-    vma->vm_flags |= VM_DONTDUMP | VM_DONTEXPAND ;
+    vma->vm_flags |= VM_DONTDUMP | VM_DONTEXPAND | VM_IO;
 
     mutex_unlock(&vgabuf.lock);
 

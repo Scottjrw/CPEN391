@@ -22,10 +22,10 @@
 <td width="20%" bgcolor="#77BBFF">BSP Version:</td><td>default</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>Mar 19, 2018 3:11:04 PM</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>Mar 26, 2018 1:36:50 PM</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1521497464906</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1522096610390</td>
 </tr>
 <tr mode="wrap">
 <td width="20%" bgcolor="#77BBFF">BSP Generated Location:</td><td>/home/guoj/Documents/Year-3/CPEN-391/repo/software/cpen391_group5_bsp</td>
@@ -44,13 +44,22 @@
 <td>graphics_controller_0</td><td>0x04000000 - 0x07FFFFFF</td><td>67108864</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>jtag_uart_0</td><td>0x000810E0 - 0x000810E7</td><td>8</td><td class="listing">printable</td>
+<td>nios_hps_fifo_in</td><td>0x0008110C - 0x0008110F</td><td>4</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>main_timer</td><td>0x000810A0 - 0x000810BF</td><td>32</td><td class="listing">timer</td>
+<td>hps_nios_fifo_out</td><td>0x00081108 - 0x0008110B</td><td>4</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>nios_hps_uart</td><td>0x00081080 - 0x0008109F</td><td>32</td><td class="listing">printable</td>
+<td>jtag_uart_0</td><td>0x00081100 - 0x00081107</td><td>8</td><td class="listing">printable</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>main_timer</td><td>0x000810E0 - 0x000810FF</td><td>32</td><td class="listing">timer</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>nios_hps_fifo_in_csr</td><td>0x000810A0 - 0x000810BF</td><td>32</td><td class="listing">&nbsp;</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>hps_nios_fifo_out_csr</td><td>0x00081080 - 0x0008109F</td><td>32</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
 <td>pixel_cluster_0</td><td>0x00081040 - 0x0008107F</td><td>64</td><td class="listing">&nbsp;</td>
@@ -130,60 +139,6 @@
 </tr>
 <tr>
 <td width="20%">Identifier:</td><td>ALTERA_AVALON_JTAG_UART_SMALL</td>
-</tr>
-<tr>
-<td width="20%">Default Value:</td><td>false</td>
-</tr>
-<tr>
-<td width="20%">Value:</td><td>false</td>
-</tr>
-<tr>
-<td width="20%">Type:</td><td>BooleanDefineOnly</td>
-</tr>
-<tr mode="wrap">
-<td width="20%">Destination:</td><td>public_mk_define</td>
-</tr>
-<tr mode="wrap">
-<td width="20%">Description:</td><td>Small-footprint (polled mode) driver</td>
-</tr>
-<tr mode="wrap">
-<td width="20%">Restrictions:</td><td>none</td>
-</tr>
-</table>
-<br>
-<table border="1" bgcolor="#FFFFCC" width="60%">
-<tr bgcolor="#77BBFF">
-<td align="left" width="15%">Setting Name:</td><td align="left">altera_avalon_uart_driver.enable_ioctl</td>
-</tr>
-<tr>
-<td width="20%">Identifier:</td><td>ALTERA_AVALON_UART_USE_IOCTL</td>
-</tr>
-<tr>
-<td width="20%">Default Value:</td><td>false</td>
-</tr>
-<tr>
-<td width="20%">Value:</td><td>false</td>
-</tr>
-<tr>
-<td width="20%">Type:</td><td>BooleanDefineOnly</td>
-</tr>
-<tr mode="wrap">
-<td width="20%">Destination:</td><td>public_mk_define</td>
-</tr>
-<tr mode="wrap">
-<td width="20%">Description:</td><td>Enable driver ioctl() support. This feature is not compatible with the 'small' driver; ioctl() support will not be compiled if either the UART 'enable_small_driver' or HAL 'enable_reduced_device_drivers' settings are enabled.</td>
-</tr>
-<tr mode="wrap">
-<td width="20%">Restrictions:</td><td>none</td>
-</tr>
-</table>
-<br>
-<table border="1" bgcolor="#FFFFCC" width="60%">
-<tr bgcolor="#77BBFF">
-<td align="left" width="15%">Setting Name:</td><td align="left">altera_avalon_uart_driver.enable_small_driver</td>
-</tr>
-<tr>
-<td width="20%">Identifier:</td><td>ALTERA_AVALON_UART_SMALL</td>
 </tr>
 <tr>
 <td width="20%">Default Value:</td><td>false</td>
