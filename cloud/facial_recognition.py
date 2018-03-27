@@ -170,6 +170,7 @@ def loginByFaceHex():
 
 		list_of_pixels = list()
 		hex_string = r.get('hex_string')
+		print(hex_string[0:30])
 
 		for i, c in enumerate(hex_string):
 			if (i <= len(hex_string) - 6):
