@@ -20,14 +20,11 @@ def CreateFlags(project_folder, project_bsp_folder):
         '-I'+os.path.join(project_bsp_folder,'drivers/inc'),
         '-I'+os.path.join(project_folder,'libs'),
         '-I'+project_folder,
+        '-I'+os.path.join(project_folder, '../shared_libs'),
         '-include',
-        os.path.join(project_folder,'../ycm.h'),
+        os.path.join(project_folder,'.ycm.h'),
         '-isystem',
-        os.path.join(project_bsp_folder,'HAL/inc'),
-#        '-isystem',
-#        '/home/guoj/altera/15.0/nios2eds/bin/gnu/H-x86_64-pc-linux-gnu/nios2-elf/include',
-#        '-isystem',
-#        '/home/guoj/altera/15.0/nios2eds/bin/gnu/nios2-elf/include/c++/4.9.1'
+        os.path.join(project_bsp_folder,'HAL/inc')
     ]
 
     return flags
@@ -35,7 +32,7 @@ def CreateFlags(project_folder, project_bsp_folder):
 
 
 def FlagsForFile( filename, **kwargs ):
-    relative_to = DirectoryOfThisScript()
+    relative_to = os.path.join(DirectoryOfThisScript(), '..')
 
     project_name = os.path.relpath(filename, relative_to).split(os.path.sep)[0]
     if project_name[-4:] == '_bsp':

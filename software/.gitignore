@@ -4,3 +4,6 @@
 **/*.objdump
 **/*.a
 **/.color_coded
+**/..DS_Store
+**/summary.html
+**/.force_rebuild_all
