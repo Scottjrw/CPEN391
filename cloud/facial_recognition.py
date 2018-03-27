@@ -88,7 +88,20 @@ def addUser():
 		# img.save('/home/dchau/img.jpg')
 
 		picture = face_recognition.load_image_file('/home/dchau/img.png')
-		face_encoding = face_recognition.face_encodings(picture)[0]
+		try:
+			face_encoding = face_recognition.face_encodings(picture)[0]
+		except:
+			print('no face appeared')
+			return 'User failed to join'
+
+		if (r.get('username') == ""):
+			print('no username')
+			return 'User failed to join'
+
+		if (r.get('password') == ""):
+			print('no password')
+			return 'User failed to join'
+
 
 		try:
 			with db.atomic():
@@ -124,7 +137,12 @@ def loginByFacePicture():
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
 			picture_of_me = face_recognition.load_image_file(file)
-			my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
+
+			try:
+				my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
+			except:
+				print('no face appeared')
+				return 'login failed'
 
 			# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
 
@@ -167,7 +185,12 @@ def loginByFaceHex():
 		im.save('/home/dchau/img.png')
 
 		picture_of_me = face_recognition.load_image_file('/home/dchau/img.png')
-		my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
+		
+		try:
+			my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
+		except:
+			print('no face appeared')
+			return 'login failed'
 
 		# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
 
