@@ -150,11 +150,23 @@ def loginByFaceHex():
 	if request.method == 'POST':
 		r = request.get_json()
 
-		byte_array = bytearray.fromhex(r.get('hex-string'))
-		img = Image.open(io.BytesIO(byte_array))
-		img.save('/home/dchau/img.jpg')
+		list_of_pixels = list()
+		hex_string = r.get('hex-string')
 
-		picture_of_me = face_recognition.load_image_file('/home/dchau/img.jpg')
+		for i, c in enumerate(hex_string):
+			if (i <= len(hex_string) - 6):
+				if (i % 6 == 0):
+					r_value = int(hex_string[i:i+2], 16)
+					g_value = int(hex_string[i+2:i+4], 16)
+					b_value = int(hex_string[i+4:i+6], 16)
+					rgb_tuple = (r_value,g_value,b_value)
+					list_of_pixels.append(rgb_tuple)
+
+		im = Image.new('RGB', (80,60))
+		im.putdata(list_of_pixels)
+		im.save('/home/dchau/img.png')
+
+		picture_of_me = face_recognition.load_image_file('/home/dchau/img.png')
 		my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
 
 		# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
