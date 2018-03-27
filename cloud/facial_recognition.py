@@ -67,7 +67,7 @@ def addUser():
 		r = request.get_json()
 
 		list_of_pixels = list()
-		hex_string = r.get('hex-string')
+		hex_string = r.get('hex_string')
 
 		for i, c in enumerate(hex_string):
 			if (i <= len(hex_string) - 6):
@@ -169,7 +169,7 @@ def loginByFaceHex():
 		r = request.get_json()
 
 		list_of_pixels = list()
-		hex_string = r.get('hex-string')
+		hex_string = r.get('hex_string')
 
 		for i, c in enumerate(hex_string):
 			if (i <= len(hex_string) - 6):
@@ -185,7 +185,7 @@ def loginByFaceHex():
 		im.save('/home/dchau/img.png')
 
 		picture_of_me = face_recognition.load_image_file('/home/dchau/img.png')
-		
+
 		try:
 			my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
 		except:
