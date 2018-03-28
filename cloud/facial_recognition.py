@@ -76,7 +76,7 @@ def pictureSegement():
 
 		print(max_id)
 
-		if (int(max_id) < 18):
+		if max_id is None:
 			tempPicture.create(picture_segment = hex_string)
 			return 'string added'
 		else:
