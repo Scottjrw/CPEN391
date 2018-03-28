@@ -71,9 +71,12 @@ def pictureSegement():
 
 		cursor = db.cursor()
 
-		print(cursor.lastrowid)
+		temp = cursor.execute('SELECT max(id) FROM tempPicture')
+		max_id = temp.fetchone()[0]
 
-		if (int(cursor.lastrowid) < 18):
+		print(max_id)
+
+		if (int(max_id) < 18):
 			tempPicture.create(picture_segment = hex_string)
 			return 'string added'
 		else:
