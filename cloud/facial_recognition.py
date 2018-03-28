@@ -71,7 +71,9 @@ def pictureSegement():
 
 		cursor = db.cursor()
 
-		if (cursor.lastrowid != 18):
+		print(cursor.lastrowid)
+
+		if ((int)cursor.lastrowid < 18):
 			tempPicture.create(picture_segment = hex_string)
 			return 'string added'
 		else:
@@ -95,8 +97,6 @@ def joinWithSegments():
 			cursor.execute("SELECT id,picture_segment FROM tempPicture")
 			result_set = cursor.fetchall()
 			for row in result_set:
-				print(i)
-				print(str(row[1]))
 				hex_string = hex_string + str(row[1])
 
 		list_of_pixels = list()
@@ -316,8 +316,6 @@ def loginByFaceHexSegments():
 			cursor.execute("SELECT id,picture_segment FROM tempPicture")
 			result_set = cursor.fetchall()
 			for row in result_set:
-				print(i)
-				print(str(row[1]))
 				hex_string = hex_string + str(row[1])
 
 		list_of_pixels = list()
