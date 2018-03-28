@@ -80,7 +80,7 @@ def pictureSegement():
 			tempPicture.create(picture_segment = hex_string)
 			return 'string added'
 		else:
-			cursor.execute('''TRUNCATE TABLE tempPicture''')
+			cursor.execute('''DELETE FROM tempPicture''')
 			tempPicture.create(picture_segment = hex_string)
 			print('table reset')
 			return 'string added and new table'
