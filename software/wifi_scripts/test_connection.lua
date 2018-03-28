@@ -13,9 +13,9 @@ tmr.delay(1000000) -- wait 1,000,000 us = 1 second
 
 tmr.alarm(0, 1000, 1, function()
    if wifi.sta.getip() == nil then
-      print("Connecting to AP...\n")
+      --print("Connecting to AP...\n")
    else
-      print("connected\n")
+      --print("connected\n")
       tmr.stop(0)
    end
 end)
@@ -24,6 +24,8 @@ end)
 address = "http://192.168.43.196"
 header = 'Content-Type: application/json\r\n'
 URL = 'https://use1-wap.tplinkcloud.com/?token=2d2c8422-A6AWd80Sco51JaW7L7yQ5B0'
+
+raw_picture = ''
 
 function led_on()
 
@@ -61,7 +63,7 @@ function light_on()
     end
     ok, data_on = pcall(cjson.encode, {method="passthrough", params=cjson.decode(json1)})
     if ok then
-      print(json)
+      print(data_on)
     else
       print("failed to encode!")
     end
@@ -87,7 +89,7 @@ function light_off()
     end
     ok, data_off = pcall(cjson.encode, {method="passthrough", params=cjson.decode(json1)})
     if ok then
-      print(data1)
+      print(data_off)
     else
       print("failed to encode!")
     end
@@ -101,4 +103,67 @@ function light_off()
     end
   end)
 
+end
+
+function send_username(username, password)
+    url = "http://104.198.97.189:6000/loginByPassword"
+    header = "Content-Type:application/json\r\n"
+    ok, data = pcall(cjson.encode, {username = username, password = password})
+
+    http.request(url,"POST",header,data,
+        function(code, data)
+        if data=="Success" then
+            for i = 1,255 do 
+                print()
+            end
+            print("$done")
+        else
+            for i = 1,255 do 
+                print()
+            end
+            print("$fail")
+        end
+    end)
+end
+
+function send_picture_part(subpicture)
+    raw_picture = raw_picture .. subpicture
+end
+
+function send_picture()
+    url = "http://104.198.97.189:7000/loginByFaceHex"
+    header = "Content-Type:application/json\r\n"
+    data ='{"hex_string":"'..raw_picture..'"}'
+
+    http.request(url,"POST",header,data,
+        function(code, data)
+--        if data=="Success" then
+--            for i = 1,255 do 
+--                print()
+--            end
+--            print("$done")
+--        else
+--            for i = 1,255 do 
+--                print()
+--            end
+--            print("$fail")
+--        end
+        print(code, data)
+    end)
+
+    raw_picture = ''
+end
+
+function send_test()
+    url = "http://192.168.43.79:8080/Servlet/login"
+    header = "Content-Type:application/json\r\n"
+    data ='{"hex_string":"'..raw_picture..'"}'
+
+    http.request(url,"POST",header,data,
+        function(code, data)
+          print(code, data)
+    end)
+
+    raw_picture = ''
+    
 end

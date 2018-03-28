@@ -1,5 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <string>
+#include <sstream>
 
 
 // Used to be a C library, give it a namespace for cleanliness
@@ -80,6 +82,8 @@ public:
     char* setBaud57600();
     char* setBaud115200();
 
+    std::string takeRawPicture();
+
     Video(const char* file);
 private:
     int  serialNum;
@@ -87,6 +91,10 @@ private:
 	int  bufferLen;
 	int  frameptr;
 	int video_uart;
+    uint32_t * base;
+
+    static constexpr unsigned width = 320;
+    static constexpr unsigned height = 240;
 
 	bool runCommand(int cmd, int args[], int argn, int resp, bool flushflag);
 	void sendCommand(int cmd, int args[], int argn);

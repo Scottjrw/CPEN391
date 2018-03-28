@@ -1,6 +1,6 @@
 #include <assert.h>
 #include "touch.hpp"
-//#include "os/alt_syscall.h"
+#include "TermiosUtil.hpp"
 
 using namespace TouchUart;
 
@@ -19,6 +19,8 @@ TouchControl::TouchControl(const char *uart_name, uint32_t alt_irq_id, uint32_t 
 {
     m_recv_buf.TYPE = INVALID;
     assert(m_uart >= 0);
+    TermiosUtil::SetSpeed(m_uart, B9K);
+
 }
 
 void TouchControl::touch_enable() {

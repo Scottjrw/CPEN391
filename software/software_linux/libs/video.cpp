@@ -7,6 +7,11 @@
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <sys/mman.h>
+#include <stdint.h>
+#include <errno.h>
+#include <TermiosUtil.hpp>
 
 
 Video::Video(const char* file) {
@@ -16,12 +21,26 @@ Video::Video(const char* file) {
 	bufferLen = 0;
 
 	if (video_uart < 0) {
-		printf("Failed to open UART device\n");
-		while(1);
+		perror("failed to open video fd");
 	}
-	else {
-		printf("opened\n");
-	}
+
+	TermiosUtil::SetSpeed(video_uart, B38K);//set baudrate
+
+	const uint32_t hpsfpga_bridge = 0xC0000000;
+    //const uint32_t lw_bridge = 0xFF200000;
+    const uint32_t base_addr = hpsfpga_bridge;
+	unsigned size = 320 * 240 * 4;
+
+    int fd = open("/dev/mem", (O_RDWR));
+    if (fd == -1) {
+        perror("Failed to open mem");
+    }
+
+    base = reinterpret_cast<uint32_t *> (mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED, fd, base_addr));
+    if (base == MAP_FAILED) {
+        perror("Failed to mmap video");
+    }
+    printf("camera memory initialized\n");
 }
 
 bool Video::imageSettings(int brightness, int contrast, int off_contrast, int hue, int saturation) {
@@ -306,7 +325,7 @@ bool Video::runCommand(int cmd, int *args, int argn,
 	return true;
 }
 
-void Video::sendCommand(int cmd, int args[], int argn) {
+void Video::sendCommand(int cmd, int args[], int command_length) {
 	int i;
 
 	char string_out[50];
@@ -314,11 +333,12 @@ void Video::sendCommand(int cmd, int args[], int argn) {
 	string_out[1] = serialNum;
 	string_out[2] = cmd;
 
-	for (i = 0; i < argn; i++) {
+	for (i = 0; i < command_length; i++) {
 		string_out[3+i] = args[i];
 	}
 
-	write(video_uart, string_out, argn+3);
+	if(write(video_uart, string_out, command_length+3)<0)
+		printf("video write failed\n");
 }
 
 int Video::readResponse(int numbytes) {
@@ -356,5 +376,33 @@ void Video::printBuff() {
 		printf("%x", camerabuff[i]);
 	}
 	printf("\n");
+}
+
+std::string Video::takeRawPicture(){
+	uint32_t * data;
+	int size_compensate, k;
+	std::string result;
+	std::string output;
+	std::stringstream ss;
+
+	for(int j=0;j<60;j++){
+		for(int i=0;i<80;i++){
+			data = base + (j * width + i);
+			ss << std::hex <<*data;
+			ss >> result;
+			size_compensate = 6 - result.length();
+			if(size_compensate < 0){
+				printf("pixel size > 6!! This is wired\n");
+				break;
+			}else{
+				for(k=0;k<size_compensate;k++){
+					result = "0"+result;
+				}
+			}
+			output+=result;
+		}
+	}
+	printf("string done, size is %d\n", output.length());
+	return output;
 }
 

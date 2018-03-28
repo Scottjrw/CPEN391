@@ -27,6 +27,7 @@ class Wifi {
 
 	private:
 	 	int wifi_uart;
+	 	void SendPicture_part(std::string picture);
 
 };
 
