@@ -77,6 +77,7 @@ def pictureSegement():
 		else:
 			cursor.execute('''TRUNCATE TABLE tempPicture''')
 			tempPicture.create(picture_segment = hex_string)
+			print('table reset')
 			return 'string added and new table'
 
 	return 'string failed'
@@ -94,10 +95,9 @@ def joinWithSegments():
 			cursor.execute("SELECT id,picture_segment FROM tempPicture")
 			result_set = cursor.fetchall()
 			for row in result_set:
-				for i in range(1, row[0]+1):
-					print(i)
-					print(str(row[1]))
-					hex_string = hex_string + str(row[1])
+				print(i)
+				print(str(row[1]))
+				hex_string = hex_string + str(row[1])
 
 		list_of_pixels = list()
 
@@ -316,12 +316,12 @@ def loginByFaceHexSegments():
 			cursor.execute("SELECT id,picture_segment FROM tempPicture")
 			result_set = cursor.fetchall()
 			for row in result_set:
-				for i in range(1, row[0]+1):
-					print(i)
-					print(str(row[1]))
-					hex_string = hex_string + str(row[1])
+				print(i)
+				print(str(row[1]))
+				hex_string = hex_string + str(row[1])
 
 		list_of_pixels = list()
+		print(len(hex_string))
 
 		for i, c in enumerate(hex_string):
 			if (i <= len(hex_string) - 6):
