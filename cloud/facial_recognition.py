@@ -73,7 +73,7 @@ def pictureSegement():
 
 		print(cursor.lastrowid)
 
-		if ((int)cursor.lastrowid < 18):
+		if (int(cursor.lastrowid) < 18):
 			tempPicture.create(picture_segment = hex_string)
 			return 'string added'
 		else:
