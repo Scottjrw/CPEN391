@@ -94,7 +94,7 @@ def joinWithSegments():
 			cursor.execute("SELECT id,picture_segment FROM tempPicture")
 			result_set = cursor.fetchall()
 			for row in result_set:
-				for i in enumerate(1, row[0]):
+				for i in range(1, row[0]+1):
 					print(i)
 					print(str(row[1]))
 					hex_string = hex_string + str(row[1])
@@ -316,7 +316,7 @@ def loginByFaceHexSegments():
 			cursor.execute("SELECT id,picture_segment FROM tempPicture")
 			result_set = cursor.fetchall()
 			for row in result_set:
-				for i in enumerate(1, row[0]):
+				for i in range(1, row[0]+1):
 					print(i)
 					print(str(row[1]))
 					hex_string = hex_string + str(row[1])
