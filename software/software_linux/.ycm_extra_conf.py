@@ -37,7 +37,8 @@ flags = [
     '-Ilibs',
     '-Ilibs/UI',
     '-Wall',
-    '-std=c++14'
+    '-std=c++14',
+    '-I../shared_libs'
 ]
 
 def DirectoryOfThisScript():

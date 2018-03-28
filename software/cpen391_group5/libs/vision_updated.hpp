@@ -15,7 +15,6 @@
 #include <stdexcept>
 #include <utility>
 #include <array>
-#include "cursor.hpp"
 
 
 struct rgba {

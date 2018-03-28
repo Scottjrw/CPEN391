@@ -1,7 +1,9 @@
-INCFLAGS := -Ilibs -Ilibs/UI -I../shared_libs
-CPPFLAGS := -Wall -std=c++14 -O3 $(INCFLAGS)
+INCFLAGS := -Ilibs -Ilibs/UI -Ishared_libs
+DEPFLAGS := -MMD
+CPPFLAGS := -g -Wall -std=c++14 -O3 $(INCFLAGS) $(DEPFLAGS)
 
 SRC_FILES := main.cpp
+#SRC_FILES := testmain.cpp
 SRC_FILES += libs/SimpleGraphics.cpp
 SRC_FILES += libs/touch.cpp
 SRC_FILES += libs/TermiosUtil.cpp
@@ -10,11 +12,13 @@ SRC_FILES += libs/UI/cursor.cpp
 SRC_FILES += libs/UI/screen.cpp
 SRC_FILES += libs/wifi.cpp
 SRC_FILES += libs/video.cpp
+SRC_FILES += libs/NIOS_Processor.cpp
 #SRC_FILES += ../shared_libs/
 
 OBJ_DIR := obj/software_linux
 
 OBJ_FILES := $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
+DEP_FILES := $(patsubst %.cpp,$(OBJ_DIR)/%.d,$(SRC_FILES))
 
 prog: $(OBJ_FILES)
 	g++ $(LDFLAGS) -o $@ $^
@@ -30,3 +34,4 @@ clean:
 	$(RM) $(OBJ_FILES)
 	$(RM) prog
 	
+include $(wildcard $(DEP_FILES))

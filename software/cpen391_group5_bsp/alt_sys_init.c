@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2' in SOPC Builder design 'cpen391_group5_qsys'
  * SOPC Builder design path: ../../cpen391_group5_qsys.sopcinfo
  *
- * Generated: Mon Mar 26 13:36:51 PDT 2018
+ * Generated: Tue Mar 27 18:59:39 PDT 2018
  */
 
 /*
@@ -69,7 +69,6 @@
 
 ALTERA_NIOS2_QSYS_IRQ_INSTANCE ( NIOS2, nios2);
 ALTERA_AVALON_FIFO_INSTANCE ( HPS_NIOS_FIFO, hps_nios_fifo);
-ALTERA_AVALON_FIFO_INSTANCE ( NIOS_HPS_FIFO, nios_hps_fifo);
 ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG_UART_0, jtag_uart_0);
 ALTERA_AVALON_TIMER_INSTANCE ( MAIN_TIMER, main_timer);
 
@@ -96,6 +95,5 @@ void alt_sys_init( void )
 {
     ALTERA_AVALON_TIMER_INIT ( MAIN_TIMER, main_timer);
     ALTERA_AVALON_FIFO_INIT ( HPS_NIOS_FIFO, hps_nios_fifo);
-    ALTERA_AVALON_FIFO_INIT ( NIOS_HPS_FIFO, nios_hps_fifo);
     ALTERA_AVALON_JTAG_UART_INIT ( JTAG_UART_0, jtag_uart_0);
 }

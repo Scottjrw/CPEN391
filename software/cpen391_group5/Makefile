@@ -144,8 +144,9 @@ ELF := cpen391_group5.elf
 # Paths to C, C++, and assembly source files.
 C_SRCS := 
 CXX_SRCS += main.cpp
-CXX_SRCS += vision_updated.cpp
+CXX_SRCS += libs/vision_updated.cpp
 CXX_SRCS += libs/PixelCluster.cpp
+CXX_SRCS += libs/Hard_Processor_System.cpp
 ASM_SRCS :=
 
 
