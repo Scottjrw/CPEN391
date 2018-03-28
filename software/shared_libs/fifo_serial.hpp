@@ -1,15 +1,18 @@
 #ifndef FIFO_SERIAL_HPP
 #define FIFO_SERIAL_HPP
 
-#undef __hal__ // TEMP
 #ifdef __hal__
 #define FIFO_NIOS
 #else
 #define FIFO_ARM
 #endif
 
+#ifdef FIFO_DEBUG_PRINT
+#include <cstdio>
 #include <cstdint>
+#endif
 #include <unistd.h>
+#include <iostream>
 
 #ifdef FIFO_NIOS
 #include "io.h"
@@ -33,34 +36,39 @@
  *
  *
  * Functions:
- * read/write - read/write to/from a buffer, blocks until count number of words is read. Returns the number of words read or negative on error.
- * read/writeAsync - same as the blocking, but returns if operation would block. If the block happens in the middle then the number of words read is returned. On error it returns negative.
+ * read/write - read/write to/from a buffer, blocks until count number of words is read.
+ * read/writeAsync - same as the blocking, but returns if operation would block. If the block happens in the middle then the number of words read is returned.
+ * clear - clean out the read buffer
  *
  */
 
 class FIFO_Serial {
 public:
-    int read(uint32_t *buf, unsigned count) {
-        for (unsigned i = 0; i < count; i++) {
-            while (Status_IsEmpty(read_reg(m_recv_status_base, Status_Status)));
+    inline uint32_t read() {
+        while (Status_IsEmpty(read_reg(m_recv_status_base, Status_Status)));
 
-            buf[i] = read_reg(m_recv_base, Base_Data);
-        }
-
-        return count;
+        return read_reg(m_recv_base, Base_Data);
     }
 
-    int write(const uint32_t *buf, unsigned count) {
+    void read(uint32_t *buf, unsigned count) {
         for (unsigned i = 0; i < count; i++) {
-            while (Status_IsFull(read_reg(m_send_status_base, Status_Status)));
-
-            write_reg(m_send_base, Base_Data, buf[i]);
+            buf[i] = read();
         }
-
-        return count;
     }
 
-    int readAsync(uint32_t *buf, unsigned count) {
+    inline void write(uint32_t val) {
+        while (Status_IsFull(read_reg(m_send_status_base, Status_Status)));
+
+        write_reg(m_send_base, Base_Data, val);
+    }
+
+    void write(const uint32_t *buf, unsigned count) {
+        for (unsigned i = 0; i < count; i++) {
+            write(buf[i]);
+        }
+    }
+
+    unsigned readAsync(uint32_t *buf, unsigned count) {
         for (unsigned i = 0; i < count; i++) {
             if (!Status_IsEmpty(read_reg(m_recv_status_base, Status_Status))) {
                 buf[i] = read_reg(m_recv_base, Base_Data);
@@ -72,7 +80,7 @@ public:
         return count;
     }
 
-    int writeASync(const uint32_t *buf, unsigned count) {
+    unsigned writeASync(const uint32_t *buf, unsigned count) {
         for (unsigned i = 0; i < count; i++) {
             if (!Status_IsFull(read_reg(m_send_status_base, Status_Status))) {
                 write_reg(m_send_base, Base_Data, buf[i]);
@@ -82,6 +90,11 @@ public:
         }
 
         return count;
+    }
+
+    void clear() {
+        uint32_t buf[4];
+        while (readAsync(buf, 4) > 0);
     }
 
     FIFO_Serial(uintptr_t recv_base, uintptr_t recv_status_base,
@@ -96,43 +109,69 @@ public:
 #else 
     {
         mem_fd = open("/dev/mem", (O_RDWR | O_SYNC));
-        if (mem_fd == -1)
-            throw std::system_error(std::error_code(errno, std::system_category()));
+        if (mem_fd < 0)
+            throw errno_error(errno, "FIFO_Serial: open /dev/mem");
 
-        m_recv_base = reinterpret_cast<uint32_t *>(mmap(NULL, base_size, 
-                    (PROT_READ|PROT_WRITE), MAP_SHARED, mem_fd, recv_base));
-        if (m_recv_base == MAP_FAILED)
-            throw std::system_error(std::error_code(errno, std::system_category()));
+        m_recv_page = mmap_regs(mem_fd, recv_base, base_size, &m_recv_base);
+        if (m_recv_page == MAP_FAILED)
+            throw errno_error(errno, "FIFO_Serial: mmap recv_base");
 
-        m_recv_status_base = reinterpret_cast<uint32_t *>(mmap(NULL, status_base_size, 
-                    (PROT_READ|PROT_WRITE), MAP_SHARED, mem_fd, recv_status_base));
-        if (m_recv_status_base == MAP_FAILED)
-            throw std::system_error(std::error_code(errno, std::system_category()));
+        m_recv_status_page = mmap_regs(mem_fd, recv_status_base, status_base_size, &m_recv_status_base);
+        if (m_recv_status_page == MAP_FAILED)
+            throw errno_error(errno, "FIFO_Serial: mmap recv_status_base");
 
-        m_recv_base = reinterpret_cast<uint32_t *>(mmap(NULL, base_size, 
-                    (PROT_READ|PROT_WRITE), MAP_SHARED, mem_fd, send_base));
-        if (m_send_base == MAP_FAILED)
-            throw std::system_error(std::error_code(errno, std::system_category()));
+        m_send_page = mmap_regs(mem_fd, send_base, base_size, &m_send_base);
+        if (m_send_page == MAP_FAILED)
+            throw errno_error(errno, "FIFO_Serial: mmap send_base");
 
-        m_send_status_base = reinterpret_cast<uint32_t *>(mmap(NULL, status_base_size, 
-                    (PROT_READ|PROT_WRITE), MAP_SHARED, mem_fd, send_status_base));
-        if (m_send_status_base == MAP_FAILED)
-            throw std::system_error(std::error_code(errno, std::system_category()));
+        m_send_status_page = mmap_regs(mem_fd, send_status_base, status_base_size, &m_send_status_base);
+        if (m_send_status_page == MAP_FAILED)
+            throw errno_error(errno, "FIFO_Serial: mmap send_status_base");
     }
+
+    ~FIFO_Serial() {
+        munmap(m_recv_base, base_size);
+        munmap(m_recv_status_base, status_base_size);
+        munmap(m_send_base, base_size);
+        munmap(m_send_status_base, status_base_size);
+        close(mem_fd);
+    }
+
 #endif
 
 private:
-    volatile uint32_t *m_recv_base;
-    volatile uint32_t *m_recv_status_base;
-    volatile uint32_t *m_send_base;
-    volatile uint32_t *m_send_status_base;
+    uint32_t *m_recv_base;
+    uint32_t *m_recv_status_base;
+    uint32_t *m_send_base;
+    uint32_t *m_send_status_base;
 
 #ifdef FIFO_ARM
     int mem_fd;
+    void *m_recv_page;
+    void *m_recv_status_page;
+    void *m_send_page;
+    void *m_send_status_page;
 
     // mmap sizes
     static constexpr unsigned base_size = 4;
     static constexpr unsigned status_base_size = 24;
+
+    static void *mmap_regs(int mem_fd, uintptr_t addr, unsigned size, uint32_t **base) {
+        uintptr_t addr_aligned = addr & (~(getpagesize() - 1));
+        size += addr - addr_aligned;
+
+        void *ret = mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED, 
+                mem_fd, addr_aligned);
+
+        if (ret != MAP_FAILED)
+            *base = reinterpret_cast<uint32_t *>(static_cast<uint8_t *>(ret) + addr - addr_aligned);
+
+        return ret;
+    }
+
+    static std::system_error errno_error(int errno_val, const char *context) {
+        return std::system_error(errno_val, std::system_category(), context);
+    }
 #endif
 
     // Platform independent register read/write functions

@@ -14,7 +14,6 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
-#include "screen.hpp"
 
 
 Gesture_Recognizer::Gesture_Recognizer(void):
