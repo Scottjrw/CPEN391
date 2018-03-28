@@ -73,9 +73,13 @@ def pictureSegement():
 
 		if (cursor.lastrowid != 18):
 			cursor.execute('''INSERT INTO tempPicture VALUES ?''', (hex_string))
+			return 'string added'
 		else:
 			cursor.execute('''TRUNCATE TABLE tempPicture''')
 			cursor.execute('''INSERT INTO tempPicture VALUES ?''', (hex_string))
+			return 'string added and new table'
+
+	return 'string failed'
 
 
 
