@@ -167,7 +167,7 @@ def join():
 					rgb_tuple = (r_value,g_value,b_value)
 					list_of_pixels.append(rgb_tuple)
 
-		im = Image.new('RGB', (80,60))
+		im = Image.new('RGB', (136,136))
 		im.putdata(list_of_pixels)
 		im.save('/home/dchau/img.png')
 
