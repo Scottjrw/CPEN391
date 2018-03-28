@@ -79,6 +79,9 @@ def pictureSegement():
 		if max_id is None:
 			tempPicture.create(picture_segment = hex_string)
 			return 'string added'
+		else if (int(max_id) < 18):
+			tempPicture.create(picture_segment = hex_string)
+			return 'string added'
 		else:
 			cursor.execute('''DELETE FROM tempPicture''')
 			tempPicture.create(picture_segment = hex_string)
