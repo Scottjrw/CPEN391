@@ -19,6 +19,9 @@ class Applets(BaseModel):
 	person_id = IntegerField()
 	ifttt_requests = CharField()
 
+class tempPicture(BaseModel):
+	picture_segment = CharField()
+
 
 # def addUser(user_id, photo_encoding):
 # 	t = Users.create(user_id=user_id, photo_encoding=photo_encoding)
@@ -26,4 +29,4 @@ class Applets(BaseModel):
 
 def create_tables():
 	with db:
-		db.create_tables([Users, Applets])
+		db.create_tables([Users, Applets, tempPicture])

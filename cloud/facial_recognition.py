@@ -61,8 +61,97 @@ def hello_world():
     return 'Hello, World!'
 
 
+@app.route('/pictureSegment', methods=['POST'])
+def pictureSegement():
+	if request.method == 'POST':
+		r = request.get_json()
+
+		list_of_pixels = list()
+		hex_string = r.get('picture_segment')
+
+		cursor = db.cursor()
+
+		if (cursor.lastrowid != 18):
+			cursor.execute('''INSERT INTO tempPicture VALUES ?''', (hex_string))
+		else:
+			cursor.execute('''TRUNCATE TABLE tempPicture''')
+			cursor.execute('''INSERT INTO tempPicture VALUES ?''', (hex_string))
+
+
+
+@app.route('/joinWithSegments', methods=['GET', 'POST'])
+def joinWithSegments():
+	if request.method == 'POST':
+		r = request.get_json()
+		hex_string = ""
+
+		if (r.get('hex_string') == "done"):
+			cursor = db.cursor()
+			cursor.execute("SELECT id,picture_segment FROM tempPicture")
+			result_set = cursor.fetchall()
+			for row in result_set:
+				for i in enumerate(1, row[0]):
+					print(i)
+					print(str(row[1]))
+					hex_string = hex_string + str(row[1])
+
+		list_of_pixels = list()
+
+		for i, c in enumerate(hex_string):
+			if (i <= len(hex_string) - 6):
+				if (i % 6 == 0):
+					r_value = int(hex_string[i:i+2], 16)
+					g_value = int(hex_string[i+2:i+4], 16)
+					b_value = int(hex_string[i+4:i+6], 16)
+					rgb_tuple = (r_value,g_value,b_value)
+					list_of_pixels.append(rgb_tuple)
+
+		im = Image.new('RGB', (80,60))
+		im.putdata(list_of_pixels)
+		im.save('/home/dchau/img.png')
+
+
+		# byte_array = bytearray.fromhex(r.get('hex-string'))
+		# img = Image.open(io.BytesIO(byte_array))
+		# img.save('/home/dchau/img.jpg')
+
+		picture = face_recognition.load_image_file('/home/dchau/img.png')
+		try:
+			face_encoding = face_recognition.face_encodings(picture)[0]
+		except:
+			print('no face appeared')
+			return 'User failed to join'
+
+		if (r.get('username') == ""):
+			print('no username')
+			return 'User failed to join'
+
+		if (r.get('password') == ""):
+			print('no password')
+			return 'User failed to join'
+
+
+		try:
+			with db.atomic():
+				# Attempt to create the user. If the username is taken, due to the
+				# unique constraint, the database will raise an IntegrityError.
+				user = Users.create(
+					username=r.get('username'),
+					password=md5((r.get('password')).encode('utf-8')).hexdigest(),
+					photo_encoding=face_encoding.tostring(),
+					ifttt_requests="")
+
+			# mark the user as being 'authenticated' by setting the session vars
+			auth_user(user)
+			return 'User joined.'
+
+		except IntegrityError:
+			print('That username is already taken')
+		return 'User failed to join.'
+
+
 @app.route('/join', methods=['GET', 'POST'])
-def addUser():
+def join():
 	if request.method == 'POST':
 		r = request.get_json()
 
@@ -171,6 +260,64 @@ def loginByFaceHex():
 		list_of_pixels = list()
 		hex_string = r.get('hex_string')
 		print(hex_string[0:30])
+
+		for i, c in enumerate(hex_string):
+			if (i <= len(hex_string) - 6):
+				if (i % 6 == 0):
+					r_value = int(hex_string[i:i+2], 16)
+					g_value = int(hex_string[i+2:i+4], 16)
+					b_value = int(hex_string[i+4:i+6], 16)
+					rgb_tuple = (r_value,g_value,b_value)
+					list_of_pixels.append(rgb_tuple)
+
+		im = Image.new('RGB', (80,60))
+		im.putdata(list_of_pixels)
+		im.save('/home/dchau/img.png')
+
+		picture_of_me = face_recognition.load_image_file('/home/dchau/img.png')
+
+		try:
+			my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
+		except:
+			print('no face appeared')
+			return 'login failed'
+
+		# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
+
+		cursor = db.cursor()
+		cursor.execute("SELECT username, photo_encoding FROM users")
+		result_set = cursor.fetchall()
+		for row in result_set:
+			encoding = np.fromstring(row[1], dtype=my_face_encoding[0].dtype)
+			results = face_recognition.compare_faces([my_face_encoding], encoding)
+			if results[0] == True:
+				user = Users.get(Users.username == row[0])
+				auth_user(user)
+				return 'It is a picture of ' + str(row[0])
+			else:
+				print ('It is not a picture of ' + str(row[0]))
+
+		return 'No user found.'
+
+
+@app.route('/loginByFaceHexSegments', methods=['GET', 'POST'])    
+def loginByFaceHexSegments():
+	if request.method == 'POST':
+		r = request.get_json()
+
+		hex_string = ""
+
+		if (r.get('hex_string') == "done"):
+			cursor = db.cursor()
+			cursor.execute("SELECT id,picture_segment FROM tempPicture")
+			result_set = cursor.fetchall()
+			for row in result_set:
+				for i in enumerate(1, row[0]):
+					print(i)
+					print(str(row[1]))
+					hex_string = hex_string + str(row[1])
+
+		list_of_pixels = list()
 
 		for i, c in enumerate(hex_string):
 			if (i <= len(hex_string) - 6):
