@@ -26,10 +26,6 @@
 #define FPGA_SDRAM_BRIDGE_ENABLE 0x3FFF
 #define FPGA_SDRAM_BRIDGE_DISABLE 0x0
 
-// Reset Manager for the FPGA
-#define RESET_MANAGER_RESET_REGISTER 0xFFD05020
-#define RESET_MANAGER_RESET_FPGA_VALUE (BIT(6))
-
 // Registers for the DMA Controller
 #define VIDEO_DMA_SPAN 16
 #define VIDEO_DMA_BUFFER_OFFSET 0
@@ -60,7 +56,6 @@
 struct cpen391_vgabuffer {
     // Base address of DMA Controller Registers,
     void __iomem *video_dma_base;
-    void __iomem *reset_base;
     void __iomem *sdram_bridge_base;
     // Starting address of the framebuffer, allocated as contiguous physical pages
     void __kernel *framebuffer;
@@ -96,10 +91,6 @@ static unsigned video_dma_calc_bytes_per_pixel(unsigned pix_bits, unsigned pix_p
         printk(KERN_ERR DRV_NAME "Non-byte aligned pixel size: %d bits\n", total_bits);
         return 0;
     }
-}
-
-static inline void video_dma_reset(void) {
-    iowrite32(0, vgabuf.reset_base);
 }
 
 static void cpen391_vgabuffer_vopen(struct vm_area_struct *vma) {
@@ -192,23 +183,9 @@ static int cpen391_vgabuffer_fopen(struct inode *inode, struct file *filp) {
         video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_ENABLE);
         udelay(100);
 
-        if (video_dma_setup(framebuffer_pa)) {
-            // DMA Controller may still be stuck even after enabling the sdram bridge, reset it
-            // Note that resetting too many times leaves the device unrecoverable, in that case rebooting is the only option
-            video_dma_reset();
-            msleep(50);
-
-            video_dma_write_reg(VIDEO_DMA_BACKBUFFER_OFFSET, framebuffer_pa);
-            udelay(100);
-            video_dma_write_reg(VIDEO_DMA_BUFFER_OFFSET, 0);
-            udelay(100);
-            video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_ENABLE);
-            udelay(100);
-
-            if ((ret = video_dma_setup(framebuffer_pa))) {
-                printk(KERN_ERR DRV_NAME ": DMA Controller not responding\n");
-                goto fail_free_framebuffer;
-            }
+        if ((ret = video_dma_setup(framebuffer_pa))) {
+            printk(KERN_ERR DRV_NAME ": DMA Controller not responding, hard reset required\n");
+            goto fail_free_framebuffer;
         }
 
         vgabuf.in_use = true;
@@ -218,12 +195,13 @@ static int cpen391_vgabuffer_fopen(struct inode *inode, struct file *filp) {
     return 0;
 
 fail_free_framebuffer:
-    __free_pages(vgabuf.framebuffer, vgabuf.framebuffer_order);
-    vgabuf.framebuffer = NULL;
-    video_dma_reset();
+    video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_DISABLE);
+    msleep(25);
     iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
     wmb();
     iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
+    __free_pages(vgabuf.framebuffer, vgabuf.framebuffer_order);
+    vgabuf.framebuffer = NULL;
 fail:
     mutex_unlock(&vgabuf.lock);
     return ret;
@@ -299,16 +277,6 @@ static int cpen391_vgabuffer_probe(struct platform_device *pdev) {
     resource_size_t video_dma_span = video_dma_res->end - video_dma_res->start;
     WARN(video_dma_span != VIDEO_DMA_SPAN, DRV_NAME ": span of 0x%x is unexpected for DMA controller, changing to 0x%x\n", video_dma_span, VIDEO_DMA_SPAN);
 
-    struct resource *reset_res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-    if (!reset_res) {
-        printk(KERN_ERR DRV_NAME ": no base address for reset controller\n");
-        ret = -EINVAL;
-        goto fail;
-    }
-
-    resource_size_t reset_span = reset_res->end - reset_res->start;
-    WARN(reset_span != 4, DRV_NAME ": span of 0x%x is unexpected for reset controller, changing to 0x%x\n", reset_span, 4);
-
     vgabuf.video_dma_base = ioremap(video_dma_res->start, VIDEO_DMA_SPAN);
     if (!vgabuf.video_dma_base) {
         printk(KERN_ERR DRV_NAME ": could not ioremap the dma controller\n");
@@ -317,18 +285,11 @@ static int cpen391_vgabuffer_probe(struct platform_device *pdev) {
     }
     printk(KERN_ALERT DRV_NAME ": DMA Base Address at 0x%x\n", video_dma_res->start);
 
-    vgabuf.reset_base = ioremap(reset_res->start, 4);
-    if (!vgabuf.reset_base) {
-        printk(KERN_ERR DRV_NAME ": could not ioremap the reset controller\n");
-        ret = -ENOMEM;
-        goto fail_iounmap_video;
-    }
-
     vgabuf.sdram_bridge_base = ioremap(FPGA_SDRAM_BRIDGE_REGISTER, 4);
     if (!vgabuf.sdram_bridge_base) {
         printk(KERN_ERR DRV_NAME ": could not ioremap the sdram bridge\n");
         ret = -ENOMEM;
-        goto fail_iounmap_reset;
+        goto fail_iounmap_video;
     };
 
     u32 resolution_reg = video_dma_read_reg(VIDEO_DMA_RESOLUTION_OFFSET);
@@ -380,9 +341,6 @@ static int cpen391_vgabuffer_probe(struct platform_device *pdev) {
 fail_iounmap:
     iounmap(vgabuf.sdram_bridge_base);
     vgabuf.sdram_bridge_base = NULL;
-fail_iounmap_reset:
-    iounmap(vgabuf.reset_base);
-    vgabuf.reset_base = NULL;
 fail_iounmap_video:
     iounmap(vgabuf.video_dma_base);
     vgabuf.video_dma_base = NULL;
@@ -399,8 +357,6 @@ static int cpen391_vgabuffer_remove(struct platform_device *pdev) {
     misc_deregister(&cpen391_vgabuffer_device);
     iounmap(vgabuf.sdram_bridge_base);
     vgabuf.sdram_bridge_base = NULL;
-    iounmap(vgabuf.reset_base);
-    vgabuf.reset_base = NULL;
     iounmap(vgabuf.video_dma_base);
     vgabuf.video_dma_base = NULL;
 
@@ -433,7 +389,6 @@ static int __init vgabuffer_init(void) {
     int ret;
 
     vgabuf.video_dma_base = NULL;
-    vgabuf.reset_base = NULL;
     vgabuf.sdram_bridge_base = NULL;
     vgabuf.framebuffer = NULL;
     vgabuf.framebuffer_order = 0;
