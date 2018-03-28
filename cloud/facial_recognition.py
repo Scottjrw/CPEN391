@@ -102,6 +102,8 @@ def joinWithSegments():
 			for row in result_set:
 				hex_string = hex_string + str(row[1])
 
+			cursor.execute('''DELETE FROM tempPicture''')
+
 		list_of_pixels = list()
 
 		for i, c in enumerate(hex_string):
