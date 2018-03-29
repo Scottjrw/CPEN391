@@ -13,10 +13,9 @@ DE1ALTADDR=10.0.0.1
 DESTFOLDER=/home/ubuntu/Desktop
 SRCFOLDER=/home/guoj/Documents/Year-3/CPEN-391/repo/software
 
-OPTS="--delete -cvzPtlxr"
+OPTS="--delete -cvzPlxr"
 
 FILES=(
-transfer.sh
 utsrelease.h
 vgabuffer.c
 Makefile
@@ -44,6 +43,10 @@ tryaddresses() {
     fi
 
     return 1
+}
+
+fixtime() {
+    ssh "$DE1USER@$DE1ADDR" sudo date +%Y%m%d -s "$(date +%Y%m%d)" && sudo date +%T -s "$(date +%T)"
 }
 
 commasepfiles() {
@@ -99,6 +102,14 @@ case "$1" in
 		fi
         ;;
 
+    fixtime)
+		if tryaddresses; then
+            fixtime
+        else
+		    echo "Cannot reach de1"
+		fi
+        ;;
+
     boot)
 		if tryaddresses; then
 		    scp ./boot/soc_system.rbf ./boot/socfpga.dtb "$DE1USER@$DE1ADDR:/tmp/"
@@ -108,7 +119,7 @@ case "$1" in
 		fi
 		;;
     *)
-        echo "Usage: $0 pushfiles|pullfiles|pushall|pullall|pullresult|boot"
+        echo "Usage: $0 pushfiles|pullfiles|pushall|pullall|pullresult|fixtime|boot"
         exit 1
         ;;
 esac

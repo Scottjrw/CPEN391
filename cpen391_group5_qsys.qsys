@@ -174,6 +174,22 @@
          type = "String";
       }
    }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element cpen391_group5_qsys
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
    element graphics_controller_0
    {
       datum _sortIndex
@@ -623,7 +639,7 @@
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
   <parameter name="AUTO_DMA_MASTER_ADDRESS_MAP"><![CDATA[<address-map><slave name='hps_0_bridges.f2h_sdram0_data' start='0x0' end='0x100000000' /></address-map>]]></parameter>
-  <parameter name="AUTO_DMA_MASTER_ADDRESS_WIDTH">com.altera.entityinterfaces.moduleext.AddressWidthType@746a02a5</parameter>
+  <parameter name="AUTO_DMA_MASTER_ADDRESS_WIDTH">com.altera.entityinterfaces.moduleext.AddressWidthType@1f3331fd</parameter>
   <parameter name="AUTO_GENERATION_ID" value="0" />
   <parameter name="AUTO_UNIQUE_ID">$${FILENAME}_Draw_Subsystem</parameter>
  </module>
@@ -2108,6 +2124,26 @@
  <connection
    kind="reset"
    version="15.0"
+   start="hps_0.h2f_reset"
+   end="hps_nios_fifo.reset_in" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="hps_0.h2f_reset"
+   end="nios_hps_fifo.reset_in" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="hps_0.h2f_reset"
+   end="nios_hps_fifo.reset_out" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="hps_0.h2f_reset"
+   end="hps_nios_fifo.reset_out" />
+ <connection
+   kind="reset"
+   version="15.0"
    start="nios2.jtag_debug_module_reset"
    end="sdram.reset" />
  <connection
@@ -2139,6 +2175,31 @@
    kind="reset"
    version="15.0"
    start="nios2.jtag_debug_module_reset"
+   end="hps_nios_fifo.reset_in" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
+   end="nios_hps_fifo.reset_in" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
+   end="nios2.reset_n" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
+   end="hps_nios_fifo.reset_out" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
+   end="nios_hps_fifo.reset_out" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.persistent_reset_0"
    end="nios2.reset_n" />
  <connection
    kind="reset"
@@ -2218,31 +2279,6 @@
  <connection
    kind="reset"
    version="15.0"
-   start="mm_reset_0.reset_source"
-   end="Draw_Subsystem.reset" />
- <connection
-   kind="reset"
-   version="15.0"
-   start="mm_reset_0.reset_source"
-   end="graphics_controller_0.reset" />
- <connection
-   kind="reset"
-   version="15.0"
-   start="mm_reset_0.reset_source"
-   end="Video_Subsystem.reset" />
- <connection
-   kind="reset"
-   version="15.0"
-   start="mm_reset_0.reset_source"
-   end="pixel_cluster_0.reset" />
- <connection
-   kind="reset"
-   version="15.0"
-   start="mm_reset_0.reset_source"
-   end="pixel_cluster_1.reset" />
- <connection
-   kind="reset"
-   version="15.0"
    start="clocks.reset_source"
    end="nios_hps_fifo.reset_in" />
  <connection
@@ -2265,6 +2301,11 @@
    version="15.0"
    start="clocks.reset_source"
    end="nios_hps_fifo.reset_out" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.timed_reset_0"
+   end="Draw_Subsystem.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />

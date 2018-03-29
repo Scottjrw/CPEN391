@@ -2,6 +2,8 @@
 #define HARD_PROCESSOR_SYSTEM_HPP
 
 #include <functional>
+#include <string>
+#include <cstring>
 #include "fifo_serial.hpp"
 #include "nios_hps_protocol.hpp"
 
@@ -12,10 +14,27 @@
 
 class Hard_Processor_System {
 public:
+
+    /*
+     * Wait for a hello from the HPS
+     */
+    void hello();
+
     /*
      * Send a dot_location to the HPS
      */
     void dot_location(unsigned x, unsigned y);
+
+    /*
+     * Print to the HPS's Console, these are low level functions
+     * it is recommended to use HPS_Print_Stream to wrap this functionality
+     *
+     * print - send characters over to the HPS, once the HPS side buffer overflows it prints
+     * print_sync - force the HPS to print out the characters it has now
+     */
+    void print(const std::string str) { print(str.c_str(), str.length()); }
+    void print(const char *str, unsigned n);
+    void print_sync();
 
     typedef std::function<void(Hard_Processor_System *)> EventCB;
 

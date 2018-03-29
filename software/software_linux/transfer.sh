@@ -13,7 +13,7 @@ DE1ALTADDR=10.0.0.1
 DESTFOLDER=/home/ubuntu/Desktop
 SRCFOLDER=/home/guoj/Documents/Year-3/CPEN-391/repo/software
 
-OPTS="--delete -cvzPtlxr"
+OPTS="--delete -cvzPlxr"
 
 FILES=(
 Makefile
@@ -21,7 +21,9 @@ main.cpp
 testmain.cpp
 libs
 ../shared_libs
+nios
 arm_system.h
+sdram.dat
 )
 
 tryaddresses() {
@@ -32,10 +34,15 @@ tryaddresses() {
     DE1ADDR="$DE1ALTADDR"
 
     if ping -W 5 -c 1 "$DE1ADDR"; then
+        fixtime
         return 0
     fi
 
     return 1
+}
+
+fixtime() {
+    ssh -t "$DE1USER@$DE1ADDR" sudo date +%Y%m%d -s "$(date +%Y%m%d)" '&&' sudo date +%T -s "$(date +%T)"
 }
 
 if tryaddresses; then

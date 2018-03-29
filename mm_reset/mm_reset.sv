@@ -12,8 +12,8 @@ module mm_reset
 
     reset0,
     reset1,
-    reset2,
-    reset3
+    preset0,
+    preset1
 );
 input clk, reset;
 
@@ -33,8 +33,8 @@ input logic [REG_BITS-1:0] mm_writedata;
 
 output logic reset0;
 output logic reset1;
-output logic reset2;
-output logic reset3;
+output logic preset0;
+output logic preset1;
 
 // -- End of IO --
 
@@ -85,21 +85,13 @@ mm_reset_hold #(.CYCLES(CYCLES)) inst1(
     .out(reset1)
 );
 
-assign regs_read_regs[REG_BITS*2] = reset2;
-mm_reset_hold #(.CYCLES(CYCLES)) inst2(
-    .clk(clk),
-    .reset(reset),
-    .in(regs_write_trigger[2]),
-    .out(reset2)
-);
+assign regs_read_regs[REG_BITS*2] = preset0;
+always_ff @(posedge clk)
+    preset0 = |regs_write_regs[REG_BITS*2];
 
-assign regs_read_regs[REG_BITS*3] = reset3;
-mm_reset_hold #(.CYCLES(CYCLES)) inst3(
-    .clk(clk),
-    .reset(reset),
-    .in(regs_write_trigger[3]),
-    .out(reset3)
-);
+assign regs_read_regs[REG_BITS*3] = preset1;
+always_ff @(posedge clk)
+    preset1 = |regs_write_regs[REG_BITS*3];
 
 endmodule
 

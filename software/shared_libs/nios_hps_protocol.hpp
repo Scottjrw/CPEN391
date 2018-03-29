@@ -18,6 +18,8 @@ namespace NIOS_HPS_Protocol {
         App_NIOS_Control = 0xabcdef00,
         App_NIOS_Response,
         App_Dot_Location,
+        App_NIOS_Print_Data,
+        App_NIOS_Print_Flush,
     };
 
     // Control Commands from HPS to NIOS
@@ -54,12 +56,29 @@ namespace NIOS_HPS_Protocol {
         };
     };
 
+    namespace NIOS_Print_Data {
+        constexpr unsigned max_length = 64;
+
+        struct body {
+            uint32_t length;
+            char data[max_length];
+        };
+    };
+
+    namespace NIOS_Print_Flush {
+        struct body {
+            uint32_t reserved;
+        };
+    };
+
     template <typename body>
     constexpr uint32_t body_length() {
         static_assert(
-                std::is_same<body, NIOS_HPS_Protocol::NIOS_Control::body>() ||
-                std::is_same<body, NIOS_HPS_Protocol::NIOS_Response::body>() ||
-                std::is_same<body, NIOS_HPS_Protocol::Dot_Location::body>()
+                std::is_same<body, NIOS_Control::body>() ||
+                std::is_same<body, NIOS_Response::body>() ||
+                std::is_same<body, Dot_Location::body>() ||
+                std::is_same<body, NIOS_Print_Data::body>() ||
+                std::is_same<body, NIOS_Print_Flush::body>()
                 , "Bad body type");
         return sizeof(body) / sizeof(uint32_t);
     }
@@ -76,6 +95,11 @@ namespace NIOS_HPS_Protocol {
             case App_Dot_Location:
                 return sizeof(Dot_Location::body) / sizeof(uint32_t);
 
+            case App_NIOS_Print_Data:
+                return sizeof(NIOS_Print_Data::body) / sizeof(uint32_t);
+
+            case App_NIOS_Print_Flush:
+                return sizeof(NIOS_Print_Flush::body) / sizeof(uint32_t);
         }
 
         return 0;
@@ -87,6 +111,8 @@ namespace NIOS_HPS_Protocol {
             NIOS_Control::body nios_cmd;
             NIOS_Response::body nios_ack;
             Dot_Location::body dot_location;
+            NIOS_Print_Data::body nios_print_data;
+            NIOS_Print_Flush::body nios_print_flush;
         } body;
     };
 
@@ -142,8 +168,9 @@ namespace NIOS_HPS_Protocol {
             m_remaining_words(0)
         {}
 
-        private:
         FIFO_Serial &m_serial;
+
+        private:
         NIOS_HPS_Protocol::message m_recv_msg;
         uint32_t *m_recv_msg_pos;
         unsigned m_remaining_words;

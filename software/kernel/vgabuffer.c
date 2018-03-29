@@ -150,46 +150,49 @@ static int cpen391_vgabuffer_fopen(struct inode *inode, struct file *filp) {
     int ret;
 
     mutex_lock(&vgabuf.lock);
-
-    if (!vgabuf.in_use) {
-        // Most of the time this module gets loaded at boot REPEAT should suffice
-        vgabuf.framebuffer = (void __kernel *) __get_free_pages(GFP_KERNEL | __GFP_REPEAT, vgabuf.framebuffer_order);
-        if (!vgabuf.framebuffer) {
-            // Use NOFAIL only after REPEAT fails
-            printk(KERN_ALERT DRV_NAME ": framebuffer not allocated, retrying with NOFAIL\n");
-            vgabuf.framebuffer = (void __kernel *) __get_free_pages(GFP_KERNEL | __GFP_NOFAIL, vgabuf.framebuffer_order);
-            if (!vgabuf.framebuffer) {
-                printk(KERN_ERR DRV_NAME ": framebuffer still not allocated, giving up...\n");
-                ret = -ENOMEM;
-                goto fail;
-            }
-        }
-
-        u32 framebuffer_pa = __pa(vgabuf.framebuffer);
-        printk(KERN_ALERT DRV_NAME ": allocated buffer at virtual address 0x%x, physical address 0x%x\n",
-                (u32) vgabuf.framebuffer, framebuffer_pa);
-
-        // Directly enable the bridge, a todo would be to use the proper driver to enable it
-        iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
-        wmb();
-        iowrite32(FPGA_SDRAM_BRIDGE_ENABLE, vgabuf.sdram_bridge_base);
-        msleep(25);
-
-        // Put the address in before enabling
-        video_dma_write_reg(VIDEO_DMA_BACKBUFFER_OFFSET, framebuffer_pa);
-        udelay(100);
-        video_dma_write_reg(VIDEO_DMA_BUFFER_OFFSET, 0);
-        udelay(100);
-        video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_ENABLE);
-        udelay(100);
-
-        if ((ret = video_dma_setup(framebuffer_pa))) {
-            printk(KERN_ERR DRV_NAME ": DMA Controller not responding, hard reset required\n");
-            goto fail_free_framebuffer;
-        }
-
-        vgabuf.in_use = true;
+    if (vgabuf.in_use) {
+        printk(KERN_ERR DRV_NAME ": framebuffer can only be accessed by one process at a time");
+        ret = -EBUSY;
+        goto fail;
     }
+
+    // Most of the time this module gets loaded at boot REPEAT should suffice
+    vgabuf.framebuffer = (void __kernel *) __get_free_pages(GFP_KERNEL | __GFP_REPEAT, vgabuf.framebuffer_order);
+    if (!vgabuf.framebuffer) {
+        // Use NOFAIL only after REPEAT fails
+        printk(KERN_ALERT DRV_NAME ": framebuffer not allocated, retrying with NOFAIL\n");
+        vgabuf.framebuffer = (void __kernel *) __get_free_pages(GFP_KERNEL | __GFP_NOFAIL, vgabuf.framebuffer_order);
+        if (!vgabuf.framebuffer) {
+            printk(KERN_ERR DRV_NAME ": framebuffer still not allocated, giving up...\n");
+            ret = -ENOMEM;
+            goto fail;
+        }
+    }
+
+    u32 framebuffer_pa = __pa(vgabuf.framebuffer);
+    printk(KERN_ALERT DRV_NAME ": allocated buffer at virtual address 0x%x, physical address 0x%x\n",
+            (u32) vgabuf.framebuffer, framebuffer_pa);
+
+    // Directly enable the bridge, a todo would be to use the proper driver to enable it
+    iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
+    wmb();
+    iowrite32(FPGA_SDRAM_BRIDGE_ENABLE, vgabuf.sdram_bridge_base);
+    msleep(25);
+
+    // Put the address in before enabling
+    video_dma_write_reg(VIDEO_DMA_BACKBUFFER_OFFSET, framebuffer_pa);
+    udelay(100);
+    video_dma_write_reg(VIDEO_DMA_BUFFER_OFFSET, 0);
+    udelay(100);
+    video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_ENABLE);
+    udelay(100);
+
+    if ((ret = video_dma_setup(framebuffer_pa))) {
+        printk(KERN_ERR DRV_NAME ": DMA Controller not responding, hard reset required\n");
+        goto fail_free_framebuffer;
+    }
+
+    vgabuf.in_use = true;
     printk(KERN_ALERT DRV_NAME ": opening file...\n");
     mutex_unlock(&vgabuf.lock);
     return 0;

@@ -1,9 +1,9 @@
-INCFLAGS := -Ilibs -Ilibs/UI -Ishared_libs
+INCFLAGS := -Ilibs -Ilibs/UI -Ishared_libs -I.
 DEPFLAGS := -MMD
 CPPFLAGS := -g -Wall -std=c++14 -O3 $(INCFLAGS) $(DEPFLAGS)
 
-SRC_FILES := main.cpp
-#SRC_FILES := testmain.cpp
+#SRC_FILES := main.cpp
+SRC_FILES := testmain.cpp
 SRC_FILES += libs/SimpleGraphics.cpp
 SRC_FILES += libs/touch.cpp
 SRC_FILES += libs/TermiosUtil.cpp
@@ -25,6 +25,9 @@ prog: $(OBJ_FILES)
 
 run: prog
 	sudo ./$<
+
+nios_init: nios/nios_init.o
+	g++ -std=c++14 -Wall -o nios_init $^
 
 $(OBJ_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)

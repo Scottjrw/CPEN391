@@ -9,35 +9,39 @@
 #include "PixelCluster.hpp"
 #include "fifo_serial.hpp"
 #include "Hard_Processor_System.hpp"
+#include "HPS_Print_Stream.hpp"
 
 
 int main(int argc, const char * argv[]) {
-
     FIFO_Serial hps_serial(HPS_NIOS_FIFO_OUT_BASE, HPS_NIOS_FIFO_OUT_CSR_BASE,
             NIOS_HPS_FIFO_IN_BASE, NIOS_HPS_FIFO_IN_CSR_BASE);
 
     hps_serial.clear();
 
-#if 0
-    std::cout << std::hex << "Read: " << hps_serial.read() << std::endl;
-    hps_serial.write(0xdede);
-
-    while(1);
-#endif
-
     Hard_Processor_System hps(hps_serial);
+
+
+    HPS_Print_Stream hpsout(hps);
 
     usleep(1000000);
 
-    hps.start_cb([] (auto) {
-                std::cout << "Got a start from the HPS!" << std::endl;
+    hps.hello();
+    hpsout << "Hey" << std::endl;
+
+    hpsout << "Delayed hello from nios\n";
+
+    hps.start_cb([&hpsout] (auto) {
+                hpsout << "Got a start from the HPS!" << std::endl;
             });
 
-    hps.stop_cb([] (auto) {
-                std::cout << "Got a stop from the HPS!" << std::endl;
+    hps.stop_cb([&hpsout] (auto) {
+                hpsout << "Got a stop from the HPS!" << std::endl;
             });
+    usleep(1000000);
 
-    std::cout << "NIOS is ready!" << std::endl;
+    hpsout << "NIOS is ready!" << std::endl;
+
+    usleep(1000000);
 
     while (1) hps.trypoll();
 

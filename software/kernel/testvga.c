@@ -24,7 +24,7 @@ int main(void) {
     printf("file opened\n");
 
 	unsigned size = 640 * 480 * 4;
-    void *vga_buf = mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED | MAP_LOCKED, fd, 0);
+    void *vga_buf = mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED, fd, 0);
     if (vga_buf == MAP_FAILED) {
         printf("Failed to mmap, errno = %d\n", errno);
         close(fd);

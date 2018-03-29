@@ -5,11 +5,11 @@
  version="1.0"
  fabric="QSYS">
  <!-- Format version 15.0 145 (Future versions may contain additional information.) -->
- <!-- 2018.03.26.13:33:45 -->
+ <!-- 2018.03.28.20:03:51 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1522096410</value>
+  <value>1522292616</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -108,7 +108,7 @@
 the requested settings for a module instance. -->
   <parameter name="AUTO_GENERATION_ID">
    <type>java.lang.Integer</type>
-   <value>1522096410</value>
+   <value>1522292616</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -193,7 +193,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="AUTO_DMA_MASTER_ADDRESS_WIDTH">
    <type>com.altera.entityinterfaces.moduleext.AddressWidthType</type>
-   <value>com.altera.entityinterfaces.moduleext.AddressWidthType@1790e8b3</value>
+   <value>com.altera.entityinterfaces.moduleext.AddressWidthType@717b8a65</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -3042,7 +3042,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="AUTO_GENERATION_ID">
    <type>java.lang.Integer</type>
-   <value>1522096410</value>
+   <value>1522292616</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -93547,7 +93547,7 @@ parameters are a RESULT of the module parameters. -->
     <role>writedata</role>
    </port>
   </interface>
-  <interface name="reset_source" kind="reset_source" version="15.0">
+  <interface name="timed_reset_0" kind="reset_source" version="15.0">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -93608,7 +93608,7 @@ parameters are a RESULT of the module parameters. -->
     <role>reset</role>
    </port>
   </interface>
-  <interface name="reset_source_1" kind="reset_source" version="15.0">
+  <interface name="timed_reset_1" kind="reset_source" version="15.0">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -93669,7 +93669,7 @@ parameters are a RESULT of the module parameters. -->
     <role>reset</role>
    </port>
   </interface>
-  <interface name="reset_source_2" kind="reset_source" version="15.0">
+  <interface name="persistent_reset_0" kind="reset_source" version="15.0">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -93724,13 +93724,13 @@ parameters are a RESULT of the module parameters. -->
    <type>reset</type>
    <isStart>true</isStart>
    <port>
-    <name>reset2</name>
+    <name>preset0</name>
     <direction>Output</direction>
     <width>1</width>
     <role>reset</role>
    </port>
   </interface>
-  <interface name="reset_source_3" kind="reset_source" version="15.0">
+  <interface name="persistent_reset_1" kind="reset_source" version="15.0">
    <!-- The connection points exposed by a module instance for the
 particular module parameters. Connection points and their
 parameters are a RESULT of the module parameters. -->
@@ -93785,7 +93785,7 @@ parameters are a RESULT of the module parameters. -->
    <type>reset</type>
    <isStart>true</isStart>
    <port>
-    <name>reset3</name>
+    <name>preset1</name>
     <direction>Output</direction>
     <width>1</width>
     <role>reset</role>
@@ -118316,6 +118316,114 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>reset</endConnectionPoint>
  </connection>
  <connection
+   name="hps_0_bridges.h2f_reset/hps_nios_fifo.reset_in"
+   kind="reset"
+   version="15.0"
+   start="hps_0_bridges.h2f_reset"
+   end="hps_nios_fifo.reset_in">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>hps_0_bridges</startModule>
+  <startConnectionPoint>h2f_reset</startConnectionPoint>
+  <endModule>hps_nios_fifo</endModule>
+  <endConnectionPoint>reset_in</endConnectionPoint>
+ </connection>
+ <connection
+   name="hps_0_bridges.h2f_reset/nios_hps_fifo.reset_in"
+   kind="reset"
+   version="15.0"
+   start="hps_0_bridges.h2f_reset"
+   end="nios_hps_fifo.reset_in">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>hps_0_bridges</startModule>
+  <startConnectionPoint>h2f_reset</startConnectionPoint>
+  <endModule>nios_hps_fifo</endModule>
+  <endConnectionPoint>reset_in</endConnectionPoint>
+ </connection>
+ <connection
+   name="hps_0_bridges.h2f_reset/nios_hps_fifo.reset_out"
+   kind="reset"
+   version="15.0"
+   start="hps_0_bridges.h2f_reset"
+   end="nios_hps_fifo.reset_out">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>hps_0_bridges</startModule>
+  <startConnectionPoint>h2f_reset</startConnectionPoint>
+  <endModule>nios_hps_fifo</endModule>
+  <endConnectionPoint>reset_out</endConnectionPoint>
+ </connection>
+ <connection
+   name="hps_0_bridges.h2f_reset/hps_nios_fifo.reset_out"
+   kind="reset"
+   version="15.0"
+   start="hps_0_bridges.h2f_reset"
+   end="hps_nios_fifo.reset_out">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>hps_0_bridges</startModule>
+  <startConnectionPoint>h2f_reset</startConnectionPoint>
+  <endModule>hps_nios_fifo</endModule>
+  <endConnectionPoint>reset_out</endConnectionPoint>
+ </connection>
+ <connection
    name="nios2.jtag_debug_module_reset/sdram.reset"
    kind="reset"
    version="15.0"
@@ -118424,6 +118532,60 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>reset</endConnectionPoint>
  </connection>
  <connection
+   name="nios2.jtag_debug_module_reset/hps_nios_fifo.reset_in"
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
+   end="hps_nios_fifo.reset_in">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>nios2</startModule>
+  <startConnectionPoint>jtag_debug_module_reset</startConnectionPoint>
+  <endModule>hps_nios_fifo</endModule>
+  <endConnectionPoint>reset_in</endConnectionPoint>
+ </connection>
+ <connection
+   name="nios2.jtag_debug_module_reset/nios_hps_fifo.reset_in"
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
+   end="nios_hps_fifo.reset_in">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>nios2</startModule>
+  <startConnectionPoint>jtag_debug_module_reset</startConnectionPoint>
+  <endModule>nios_hps_fifo</endModule>
+  <endConnectionPoint>reset_in</endConnectionPoint>
+ </connection>
+ <connection
    name="nios2.jtag_debug_module_reset/nios2.reset_n"
    kind="reset"
    version="15.0"
@@ -118447,6 +118609,87 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <startModule>nios2</startModule>
   <startConnectionPoint>jtag_debug_module_reset</startConnectionPoint>
+  <endModule>nios2</endModule>
+  <endConnectionPoint>reset_n</endConnectionPoint>
+ </connection>
+ <connection
+   name="nios2.jtag_debug_module_reset/hps_nios_fifo.reset_out"
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
+   end="hps_nios_fifo.reset_out">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>nios2</startModule>
+  <startConnectionPoint>jtag_debug_module_reset</startConnectionPoint>
+  <endModule>hps_nios_fifo</endModule>
+  <endConnectionPoint>reset_out</endConnectionPoint>
+ </connection>
+ <connection
+   name="nios2.jtag_debug_module_reset/nios_hps_fifo.reset_out"
+   kind="reset"
+   version="15.0"
+   start="nios2.jtag_debug_module_reset"
+   end="nios_hps_fifo.reset_out">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>nios2</startModule>
+  <startConnectionPoint>jtag_debug_module_reset</startConnectionPoint>
+  <endModule>nios_hps_fifo</endModule>
+  <endConnectionPoint>reset_out</endConnectionPoint>
+ </connection>
+ <connection
+   name="mm_reset_0.persistent_reset_0/nios2.reset_n"
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.persistent_reset_0"
+   end="nios2.reset_n">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>mm_reset_0</startModule>
+  <startConnectionPoint>persistent_reset_0</startConnectionPoint>
   <endModule>nios2</endModule>
   <endConnectionPoint>reset_n</endConnectionPoint>
  </connection>
@@ -118802,141 +119045,6 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>reset</endConnectionPoint>
  </connection>
  <connection
-   name="mm_reset_0.reset_source/Draw_Subsystem_clk_0.clk_in_reset"
-   kind="reset"
-   version="15.0"
-   start="mm_reset_0.reset_source"
-   end="Draw_Subsystem_clk_0.clk_in_reset">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>mm_reset_0</startModule>
-  <startConnectionPoint>reset_source</startConnectionPoint>
-  <endModule>Draw_Subsystem_clk_0</endModule>
-  <endConnectionPoint>clk_in_reset</endConnectionPoint>
- </connection>
- <connection
-   name="mm_reset_0.reset_source/graphics_controller_0.reset"
-   kind="reset"
-   version="15.0"
-   start="mm_reset_0.reset_source"
-   end="graphics_controller_0.reset">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>mm_reset_0</startModule>
-  <startConnectionPoint>reset_source</startConnectionPoint>
-  <endModule>graphics_controller_0</endModule>
-  <endConnectionPoint>reset</endConnectionPoint>
- </connection>
- <connection
-   name="mm_reset_0.reset_source/Video_Subsystem_sys_clock.clk_in_reset"
-   kind="reset"
-   version="15.0"
-   start="mm_reset_0.reset_source"
-   end="Video_Subsystem_sys_clock.clk_in_reset">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>mm_reset_0</startModule>
-  <startConnectionPoint>reset_source</startConnectionPoint>
-  <endModule>Video_Subsystem_sys_clock</endModule>
-  <endConnectionPoint>clk_in_reset</endConnectionPoint>
- </connection>
- <connection
-   name="mm_reset_0.reset_source/pixel_cluster_0.reset"
-   kind="reset"
-   version="15.0"
-   start="mm_reset_0.reset_source"
-   end="pixel_cluster_0.reset">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>mm_reset_0</startModule>
-  <startConnectionPoint>reset_source</startConnectionPoint>
-  <endModule>pixel_cluster_0</endModule>
-  <endConnectionPoint>reset</endConnectionPoint>
- </connection>
- <connection
-   name="mm_reset_0.reset_source/pixel_cluster_1.reset"
-   kind="reset"
-   version="15.0"
-   start="mm_reset_0.reset_source"
-   end="pixel_cluster_1.reset">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>mm_reset_0</startModule>
-  <startConnectionPoint>reset_source</startConnectionPoint>
-  <endModule>pixel_cluster_1</endModule>
-  <endConnectionPoint>reset</endConnectionPoint>
- </connection>
- <connection
    name="clocks.reset_source/nios_hps_fifo.reset_in"
    kind="reset"
    version="15.0"
@@ -119070,6 +119178,33 @@ parameters are a RESULT of the module parameters. -->
   <startConnectionPoint>reset_source</startConnectionPoint>
   <endModule>nios_hps_fifo</endModule>
   <endConnectionPoint>reset_out</endConnectionPoint>
+ </connection>
+ <connection
+   name="mm_reset_0.timed_reset_0/Draw_Subsystem_clk_0.clk_in_reset"
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.timed_reset_0"
+   end="Draw_Subsystem_clk_0.clk_in_reset">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>mm_reset_0</startModule>
+  <startConnectionPoint>timed_reset_0</startConnectionPoint>
+  <endModule>Draw_Subsystem_clk_0</endModule>
+  <endConnectionPoint>clk_in_reset</endConnectionPoint>
  </connection>
  <plugin>
   <instanceCount>1</instanceCount>
@@ -119696,7 +119831,7 @@ parameters are a RESULT of the module parameters. -->
   <version>15.0</version>
  </plugin>
  <plugin>
-  <instanceCount>95</instanceCount>
+  <instanceCount>100</instanceCount>
   <name>reset</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IConnection</subtype>

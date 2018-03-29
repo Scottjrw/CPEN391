@@ -5,10 +5,15 @@
 using namespace NIOS_HPS_Protocol;
 
 
-NIOS_Processor::NIOS_Processor(FIFO_Serial &serial):
+NIOS_Processor::NIOS_Processor(FIFO_Serial &serial, std::ostream &print_stream):
     m_parser(serial),
-    m_dot_location_cb(nullptr)
-{}
+    m_dot_location_cb(nullptr),
+    m_print_enabled(true),
+    m_print_buf(),
+    m_ostream(print_stream)
+{
+    m_print_buf.reserve(PRINT_BUF_MAX);
+}
 
 void NIOS_Processor::hello() {
     NIOS_Control::body body {
@@ -19,6 +24,8 @@ void NIOS_Processor::hello() {
     do {
         m_parser.send(App_NIOS_Control, &body);
         msg = wait_for_msg(App_NIOS_Response, 10);
+        std::cout << '.';
+        std::cout.flush();
     } while (msg == nullptr);
     assert(msg->body.nios_ack.ack == NIOS_Response::NIOS_ACK_Helloback);
 }
@@ -89,6 +96,26 @@ void NIOS_Processor::handle_msg(const message &msg) {
         case App_Dot_Location:
             if (m_dot_location_cb != nullptr)
                 m_dot_location_cb(msg.body.dot_location.dot_x, msg.body.dot_location.dot_y);
+            break;
+
+        case App_NIOS_Print_Data:
+            if (m_print_enabled) {
+                if (m_print_buf.length() + msg.body.nios_print_data.length >= PRINT_BUF_MAX) {
+                    m_ostream << NIOS_PRINT_HEADER << m_print_buf;
+                    m_ostream.write(msg.body.nios_print_data.data, msg.body.nios_print_data.length);
+                    m_ostream << std::endl;
+                    m_print_buf.clear();
+                } else {
+                    m_print_buf.append(msg.body.nios_print_data.data, msg.body.nios_print_data.length);
+                }
+            }
+            break;
+
+        case App_NIOS_Print_Flush:
+            if (m_print_enabled) {
+                m_ostream << NIOS_PRINT_HEADER << m_print_buf << std::endl;
+                m_print_buf.clear();
+            }
             break;
 
         default:

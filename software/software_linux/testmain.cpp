@@ -10,14 +10,6 @@ int main(void) {
 
     nios_serial.clear();
 
-#if 0
-    std::cout << "Write" << std::endl;
-    nios_serial.write(0xabcd);
-    std::cout << std::hex << "Read: " << nios_serial.read() << std::endl;
-
-    return 0;
-#endif
-
     NIOS_Processor nios(nios_serial);
 
     std::cout << "Wait for Hello" << std::endl;
@@ -29,7 +21,6 @@ int main(void) {
     std::cout << "Send Start" << std::endl;
     nios.start();
 
-    sleep(1);
     std::cout << "Send Stop" << std::endl;
     nios.stop();
 
