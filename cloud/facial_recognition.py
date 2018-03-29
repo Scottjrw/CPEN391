@@ -97,15 +97,16 @@ def joinWithSegments():
 	if request.method == 'POST':
 		r = request.get_json()
 		hex_string = ""
+		cursor = db.cursor()
 
 		if (r.get('hex_string') == "done"):
-			cursor = db.cursor()
 			cursor.execute("SELECT id,picture_segment FROM tempPicture")
 			result_set = cursor.fetchall()
 			for row in result_set:
 				hex_string = hex_string + str(row[1])
 
-			cursor.execute('''DELETE FROM tempPicture''')
+		cursor.execute('''DELETE FROM tempPicture''')
+		print('table reset')
 
 		list_of_pixels = list()
 
