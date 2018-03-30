@@ -486,7 +486,7 @@ def loginByPassword():
 		return 'Fail'
 
 @app.route('/loginByPasswordWebsite', methods=['GET', 'POST', 'OPTIONS'])    
-def loginByPassword():
+def loginByPasswordWebsite():
 	if request.method == 'POST' or request.method == 'OPTIONS':
 
 		username=request.form['username']
