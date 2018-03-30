@@ -15,11 +15,12 @@ import requests
 from PIL import Image
 from datetime import timedelta
 from functools import update_wrapper
-from flask.ext.cors import CORS
+from flask_cors import CORS
 
 home = expanduser("~")
 
 app = Flask(__name__)
+CORS(app)
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -531,4 +532,3 @@ app.config['SECRET_KEY'] = 'reds209ndsldssdsljdsldsdsljdsldksdksdsdfsfsfsfis'
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=6000)
-	CORS(app)
