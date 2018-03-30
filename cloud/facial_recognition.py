@@ -343,11 +343,9 @@ def loginByFacePicture():
 				if results[0] == True:
 					user = Users.get(Users.username == row[0])
 					auth_user(user)
-					return 'It is a picture of ' + str(row[0])
-				else:
-					print ('It is not a picture of ' + str(row[0]))
+					return str(row[0])
 
-			return 'No user found.'
+			return 'Fail'
 
 
 
@@ -392,11 +390,9 @@ def loginByFaceHex():
 			if results[0] == True:
 				user = Users.get(Users.username == row[0])
 				auth_user(user)
-				return 'It is a picture of ' + str(row[0])
-			else:
-				print ('It is not a picture of ' + str(row[0]))
+				return str(row[0])
 
-		return 'No user found.'
+		return 'Fail'
 
 
 @app.route('/loginByFaceHexSegments', methods=['GET', 'POST'])    
@@ -458,9 +454,9 @@ def loginByFaceHexSegments():
 		return 'No user found.'
 
 
-@app.route('/loginByPassword', methods=['GET', 'POST'])    
+@app.route('/loginByPassword', methods=['GET', 'POST', 'OPTIONS'])    
 def loginByPassword():
-	if request.method == 'POST':
+	if request.method == 'POST' or request.method == 'OPTIONS':
 
 		r = request.get_json()
 
@@ -473,10 +469,10 @@ def loginByPassword():
 		try:
 			user = Users.get((Users.username == username) & (Users.password == password))
 		except Users.DoesNotExist:
-			print('The password entered is incorrect')
+			return 'Fail'
 		else:
 			auth_user(user)
-			return 'Success'
+			return username
 
 
 		# cursor = db.cursor()
