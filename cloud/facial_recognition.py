@@ -226,7 +226,7 @@ def joinByHex():
 
 @app.route('/joinByPicture', methods=['GET', 'POST'])
 def joinByPicture():
-	if request.method == 'POST' and request.form['username']:
+	if request.method == 'POST':
 		# check if the post request has the file part
 		if 'file' not in request.files:
 			print('No file part')
@@ -254,6 +254,7 @@ def joinByPicture():
 				# mark the user as being 'authenticated' by setting the session vars
 				# auth_user(user)
 				return 'User joined.'
+
 
 			except IntegrityError:
 				print('That username is already taken')
