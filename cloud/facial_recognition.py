@@ -163,8 +163,8 @@ def joinWithSegments():
 		return 'User failed to join.'
 
 
-@app.route('/join', methods=['GET', 'POST'])
-def join():
+@app.route('/joinByHex', methods=['GET', 'POST'])
+def joinByHex():
 	if request.method == 'POST':
 		r = request.get_json()
 
@@ -222,6 +222,41 @@ def join():
 		except IntegrityError:
 			print('That username is already taken')
 		return 'User failed to join.'
+
+
+@app.route('/joinByPicture', methods=['GET', 'POST'])
+def joinByPicture():
+	if request.method == 'POST' and request.form['username']:
+		# check if the post request has the file part
+		if 'file' not in request.files:
+			print('No file part')
+			return redirect(request.url)
+		file = request.files['file']
+		# if user does not select file, browser also
+		# submit a empty part without filename
+		if file.filename == '':
+			print('No selected file')
+			return redirect(request.url)
+		if file and allowed_file(file.filename):
+			picture = face_recognition.load_image_file(file)
+			face_encoding = face_recognition.face_encodings(picture)[0]
+
+			try:
+				with db.atomic():
+					# Attempt to create the user. If the username is taken, due to the
+					# unique constraint, the database will raise an IntegrityError.
+					user = Users.create(
+						username=request.form['username'],
+						password=md5((request.form['password']).encode('utf-8')).hexdigest(),
+						photo_encoding=face_encoding.tostring())
+
+				# mark the user as being 'authenticated' by setting the session vars
+				# auth_user(user)
+				return 'User joined.'
+
+			except IntegrityError:
+				print('That username is already taken')
+			return 'User failed to join.'
 
 
 @app.route('/loginByFacePicture', methods=['GET', 'POST'])    
