@@ -240,6 +240,7 @@ def joinByPicture():
 		if file and allowed_file(file.filename):
 			picture = face_recognition.load_image_file(file)
 			face_encoding = face_recognition.face_encodings(picture)[0]
+			print("face encoding done")
 
 			try:
 				with db.atomic():
