@@ -13,8 +13,6 @@ from hashlib import md5
 import numpy as np
 import requests
 from PIL import Image
-from SimpleHTTPServer import SimpleHTTPRequestHandler
-import BaseHTTPServer
 
 home = expanduser("~")
 
@@ -45,11 +43,6 @@ def hex_to_img(hex_string):
 	img = Image.frombytes(img.mode, img.size, byte_array)
 	img.save('/home/dchau/img.jpg')
 	return 'img conversion done'
-
-class CORSRequestHandler (SimpleHTTPRequestHandler):
-    def end_headers (self):
-        self.send_header('Access-Control-Allow-Origin', '*')
-        SimpleHTTPRequestHandler.end_headers(self)
 
 
 @app.before_request
@@ -231,7 +224,8 @@ def joinByHex():
 		return 'User failed to join.'
 
 
-@app.route('/joinByPicture', methods=['GET', 'POST'])    
+@app.route('/joinByPicture', methods=['GET', 'POST', 'OPTIONS'])    
+@crossdomain(origin='*')
 def joinByPicture():
 	if request.method == 'POST':
 		# check if the post request has the file part
@@ -493,4 +487,3 @@ app.config['SECRET_KEY'] = 'reds209ndsldssdsljdsldsdsljdsldksdksdsdfsfsfsfis'
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=6000)
-	BaseHTTPServer.test(CORSRequestHandler, BaseHTTPServer.HTTPServer)
