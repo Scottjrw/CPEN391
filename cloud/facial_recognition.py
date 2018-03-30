@@ -224,7 +224,7 @@ def joinByHex():
 		return 'User failed to join.'
 
 
-@app.route('/joinByPicture', methods=['GET', 'POST'])
+@app.route('/joinByPicture', methods=['GET', 'POST'])    
 def joinByPicture():
 	if request.method == 'POST':
 		# check if the post request has the file part
