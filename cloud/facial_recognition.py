@@ -227,6 +227,7 @@ def joinByHex():
 @app.route('/joinByPicture', methods=['GET', 'POST'])    
 def joinByPicture():
 	if request.method == 'POST':
+		print("POST JOINBYPICTURE")
 		# check if the post request has the file part
 		if 'file' not in request.files:
 			print('No file part')
