@@ -239,6 +239,7 @@ def joinByPicture():
 			print('No selected file')
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
+			print("file good")
 			picture = face_recognition.load_image_file(file)
 			face_encoding = face_recognition.face_encodings(picture)[0]
 			print("face encoding done")
