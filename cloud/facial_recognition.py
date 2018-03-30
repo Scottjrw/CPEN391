@@ -232,14 +232,15 @@ def joinByPicture():
 		if 'file' not in request.files:
 			print('No file part')
 			return redirect(request.url)
+		print("file good")
 		file = request.files['file']
+		print("file good")
 		# if user does not select file, browser also
 		# submit a empty part without filename
 		if file.filename == '':
 			print('No selected file')
 			return redirect(request.url)
 		if file and allowed_file(file.filename):
-			print("file good")
 			picture = face_recognition.load_image_file(file)
 			face_encoding = face_recognition.face_encodings(picture)[0]
 			print("face encoding done")
