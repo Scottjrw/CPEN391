@@ -15,6 +15,7 @@ import requests
 from PIL import Image
 from datetime import timedelta
 from functools import update_wrapper
+print(sys.path)
 from flask_cors import CORS
 
 home = expanduser("~")
