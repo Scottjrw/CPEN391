@@ -75,6 +75,7 @@ namespace DollarRecognizer
 			//	numInstancesOfGesture++;
 		//}
 		//return numInstancesOfGesture;
+		return 0;
 	}
 
 	Rectangle GeometricRecognizer::boundingBox(Path2D points)
@@ -225,7 +226,7 @@ namespace DollarRecognizer
 		if (templates.empty())
 		{
 			std::cout << "No templates loaded so no symbols to match." << std::endl;
-			return RecognitionResult("Unknown", NULL);
+			return RecognitionResult("Unknown", 0.0);
 		}
 
 		points = normalizePath(points);

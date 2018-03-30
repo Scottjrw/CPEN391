@@ -1,10 +1,11 @@
-INCFLAGS := -Ilibs -Ilibs/UI -Ishared_libs -I.
+INCFLAGS := -Ilibs -Ilibs/UI -Ishared_libs -I. -Ilibs/GestureRecognition
 DEPFLAGS := -MMD
 CPPFLAGS := -g -Wall -std=c++14 -O3 $(INCFLAGS) $(DEPFLAGS)
 
 #SRC_FILES := main.cpp
 SRC_FILES := testmain.cpp
 SRC_FILES += libs/SimpleGraphics.cpp
+SRC_FILES += libs/GestureRecognition/GeometricRecognizer.cpp
 SRC_FILES += libs/touch.cpp
 SRC_FILES += libs/TermiosUtil.cpp
 SRC_FILES += libs/UI/UI.cpp
