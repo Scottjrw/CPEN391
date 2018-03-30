@@ -275,6 +275,8 @@ def joinByHex():
 def joinByPicture():
 	if request.method == 'POST' or request.method == 'OPTIONS':
 		# check if the post request has the file part
+		print(request.form['username'])
+		print(request.form['password'])
 		if 'file' not in request.files:
 			print('No file part')
 			return redirect(request.url)
