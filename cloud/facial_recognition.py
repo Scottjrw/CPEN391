@@ -327,6 +327,9 @@ def loginByFaceHexSegments():
 			for row in result_set:
 				hex_string = hex_string + str(row[1])
 
+			cursor.execute('''DELETE FROM tempPicture''')
+			print('table reset')
+
 		list_of_pixels = list()
 		print(len(hex_string))
 
