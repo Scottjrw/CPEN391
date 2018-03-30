@@ -485,6 +485,35 @@ def loginByPassword():
 
 		return 'Fail'
 
+@app.route('/loginByPasswordWebsite', methods=['GET', 'POST', 'OPTIONS'])    
+def loginByPassword():
+	if request.method == 'POST' or request.method == 'OPTIONS':
+
+		username=request.form['username']
+
+		password=md5((request.form['password']).encode('utf-8')).hexdigest()
+
+		# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
+
+		try:
+			user = Users.get((Users.username == username) & (Users.password == password))
+		except Users.DoesNotExist:
+			return 'Fail'
+		else:
+			auth_user(user)
+			return username
+
+
+		# cursor = db.cursor()
+		# cursor.execute("SELECT username, password FROM users")
+		# result_set = cursor.fetchall()
+		# for row in result_set:
+		# 	if (row[0] == username) and (row[1] == password):
+		# 		auth_user(user)
+		# 		return 'Logged in as ' + str(row[0])
+
+		return 'Fail'
+
 
 @app.route('/addApplet', methods=['POST'])
 def addApplet():
