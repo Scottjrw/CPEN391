@@ -15,6 +15,7 @@ import requests
 from PIL import Image
 from datetime import timedelta
 from functools import update_wrapper
+from flask_cors import CORS
 
 home = expanduser("~")
 
@@ -268,7 +269,7 @@ def joinByHex():
 
 
 @app.route('/joinByPicture', methods=['GET', 'POST', 'OPTIONS'])    
-@crossdomain(origin='*')
+# @crossdomain(origin='*')
 def joinByPicture():
 	if request.method == 'POST':
 		# check if the post request has the file part
@@ -530,3 +531,4 @@ app.config['SECRET_KEY'] = 'reds209ndsldssdsljdsldsdsljdsldksdksdsdfsfsfsfis'
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', port=6000)
+	CORS(app)
