@@ -4,7 +4,7 @@ import json
 import os
 import io
 import sys
-from flask import Flask, jsonify, make_response, abort, request, redirect, url_for, session
+from flask import Flask, jsonify, make_response, abort, request, redirect, url_for, session, current_app
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 from werkzeug import secure_filename
 from os.path import expanduser
@@ -14,6 +14,7 @@ import numpy as np
 import requests
 from PIL import Image
 from datetime import timedelta
+from functools import update_wrapper
 
 home = expanduser("~")
 
@@ -45,12 +46,9 @@ def hex_to_img(hex_string):
 	img.save('/home/dchau/img.jpg')
 	return 'img conversion done'
 
-def crossdomain(origin=None, methods=None, headers=None, max_age=21600,
-                attach_to_all=True, automatic_options=True):
-    """Decorator function that allows crossdomain requests.
-      Courtesy of
-      https://blog.skyred.fi/articles/better-crossdomain-snippet-for-flask.html
-    """
+def crossdomain(origin=None, methods=None, headers=None,
+                max_age=21600, attach_to_all=True,
+                automatic_options=True):
     if methods is not None:
         methods = ', '.join(sorted(x.upper() for x in methods))
     if headers is not None and not isinstance(headers, list):
@@ -61,8 +59,6 @@ def crossdomain(origin=None, methods=None, headers=None, max_age=21600,
         max_age = max_age.total_seconds()
 
     def get_methods():
-        """ Determines which methods are allowed
-        """
         if methods is not None:
             return methods
 
@@ -70,17 +66,26 @@ def crossdomain(origin=None, methods=None, headers=None, max_age=21600,
         return options_resp.headers['allow']
 
     def decorator(f):
-        """The decorator function
-        """
         def wrapped_function(*args, **kwargs):
-            """Caries out the actual cross domain code
-            """
             if automatic_options and request.method == 'OPTIONS':
                 resp = current_app.make_default_options_response()
             else:
                 resp = make_response(f(*args, **kwargs))
             if not attach_to_all and request.method != 'OPTIONS':
                 return resp
+
+            h = resp.headers
+
+            h['Access-Control-Allow-Origin'] = origin
+            h['Access-Control-Allow-Methods'] = get_methods()
+            h['Access-Control-Max-Age'] = str(max_age)
+            if headers is not None:
+                h['Access-Control-Allow-Headers'] = headers
+            return resp
+
+        f.provide_automatic_options = False
+        return update_wrapper(wrapped_function, f)
+    return decorator
 
 
 @app.before_request
