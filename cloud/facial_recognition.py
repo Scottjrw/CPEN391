@@ -212,15 +212,14 @@ def joinWithSegments():
 @app.route('/joinByRGB', methods=['GET', 'POST'])
 def joinByHex():
 	if request.method == 'POST':
-		r = request.get_json()
 
-		width = int(r.get('width'))
-		height = int(r.get('height'))
+		width = int(request.method['width'])
+		height = int(request.method['height'])
 		print(width)
 		print(height)
 
 		list_of_pixels = list()
-		rgb_string = r.get('picture')
+		rgb_string = request.method['picture']
 		print(rgb_string)
 
 		for i in range(0, len(rgb_string)):
@@ -249,11 +248,11 @@ def joinByHex():
 			print('no face appeared')
 			return 'User failed to join'
 
-		if (r.get('username') == ""):
+		if (request.method['username'] == ""):
 			print('no username')
 			return 'User failed to join'
 
-		if (r.get('password') == ""):
+		if (request.method['password'] == ""):
 			print('no password')
 			return 'User failed to join'
 
@@ -263,8 +262,8 @@ def joinByHex():
 				# Attempt to create the user. If the username is taken, due to the
 				# unique constraint, the database will raise an IntegrityError.
 				user = Users.create(
-					username=r.get('username'),
-					password=md5((r.get('password')).encode('utf-8')).hexdigest(),
+					username=request.method['username'],
+					password=md5((request.method['password']).encode('utf-8')).hexdigest(),
 					photo_encoding=face_encoding.tostring(),
 					ifttt_requests="")
 
