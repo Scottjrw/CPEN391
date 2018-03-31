@@ -55,9 +55,9 @@ void Wifi::SendPicture(std::string picture){
 	const char * finish = s2.c_str();
 
 	int send_count = 0;
-	for(int i=0; i<80*60*6; i+=160){
+	for(int i=0; i<80*60*pixel_length; i+=subpicture_length){
 		//send picture to wifi by part (160 bytes each time)
-		std::string subpicture = picture.substr(i, 160);
+		std::string subpicture = picture.substr(i, subpicture_length);
 		std::string s= "send_picture_part(\""+subpicture+"\")\r\n";
 		const char * command = s.c_str();
 		if(write(wifi_uart, command, strlen(command))<0)

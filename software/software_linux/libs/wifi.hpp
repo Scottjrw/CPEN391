@@ -26,7 +26,8 @@ class Wifi {
 
 	private:
 	 	int wifi_uart;
-	 	void SendPicture_part(std::string picture);
+	 	static constexpr int subpicture_length = 160;
+	 	static constexpr int pixel_length = 6;
 
 };
 
