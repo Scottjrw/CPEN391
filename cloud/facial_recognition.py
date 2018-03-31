@@ -223,7 +223,7 @@ def joinByHex():
 		print(rgb_string)
 
 		for i in range(0, len(rgb_string)):
-			if (i < len(hex_string) - 4):
+			if (i < len(rgb_string) - 4):
 				if (i % 4 == 0):
 					r_value = int(rgb_string[i])
 					g_value = int(rgb_string[i+1])
