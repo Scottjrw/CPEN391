@@ -1,0 +1,90 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Home Controller</title>
+
+    <!-- Bootstrap core  CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Bootstrap Filestyle -->
+    <script type="text/javascript" src="js/bootstrap-filestyle.min.js"> </script>
+
+
+    <!-- Custom styles for this template -->
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/please-wait.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i" rel="stylesheet">
+
+  </head>
+
+  <body class="text-center">
+
+    <!-- video background -->
+    <video autoplay muted loop id="myVideo">
+      <source src="video/backgroundvideo.mp4" class="webcam" type="video/mp4">
+    </video>
+
+    <div class="homepage">
+      <img src="photos/logo.png" class="logo"></img>
+
+      <p class="login-info"><b>Login:</b> Input username and password OR picture via file or webcam.</p>
+      <p class="register-info"><b>Register:</b> Provide username, password, AND picture via file or webcam.</p>
+      <p class="webcam-info"><b>Webcam Instructions:</b> Look into camera -> Press 'Snap Photo' -> Drag and drop photo into file field.</p>
+      <br />
+      <p id="errorMessage">Enter Your Information</p>
+
+      <form class="form-signin">
+        <div class="col-sm-6" id="test">
+          <video id="webcam" width="640" height="100%" class="webcam" autoplay></video>
+          <canvas id="canvas" width="640" height="480"></canvas>
+        </div>
+        <div class="col-sm-6">
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label id="LoginByInfo" class="btn btn-secondary toggle active" style="color: white">
+              <input type="radio" name="options" id="option1" autocomplete="off" checked> Login By Info
+            </label>
+            <label id="LoginByPicture" class="btn btn-secondary toggle" style="color: white">
+              <input type="radio" name="options" id="option2" autocomplete="off"> Login By Picture
+            </label>
+            <label id="Register" class="btn btn-secondary toggle" style="color: white">
+              <input type="radio" name="options" id="option3" autocomplete="off"> Register
+            </label>
+          </div>
+          <label for="inputUsername" class="sr-only">Username</label>
+          <input type="username" id="inputUsername" class="form-control" placeholder="Username" autofocus>
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input type="password" id="inputPassword" class="form-control" placeholder="Password">
+          <button id="snap" class="btn snap" type="button" style="color: white">Snap Photo</button>
+          <input type="file" class="filestyle" id="pictureInput" text="Upload or Take a Picture">
+        </div>
+        <button id="submit-btn" class="submit-btn btn btn-lg btn-primary btn-block" type="button">Submit</button>
+      </form>
+
+
+      <script type="text/javascript" src="js/please-wait.min.js"></script>
+
+      <p class="copyright">	&copy CPEN 391 TEAM 5 2018 </p>
+
+    </div>
+
+
+    <!-- Latest compiled JavaScript -->
+    <script src="js/webcam.js"></script>
+    <script src="js/database.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  </body>
+</html>

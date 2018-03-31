@@ -1,0 +1,53 @@
+html,
+body {
+  height: 100%;
+  font-family: 'Lato', sans-serif;
+  overflow: hidden;
+  color: #000000;
+}
+
+body {
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-align: center;
+  -ms-flex-pack: center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #e8e8e8;
+}
+
+.homepage {
+  position: relative;
+  width: 50%;
+}
+
+.logo {
+  width: 70%;
+  filter: invert(100%);
+  margin-bottom: 50px;
+}
+
+.dropdown {
+  position: relative;
+  margin-bottom: 20px;
+
+}
+
+.dropdown-left {
+  left: 100%;
+  right: auto;
+  text-align: center;
+  transform: translate(-100%, 0);
+}
+
+.submit-btn {
+  margin: 0 auto;
+  
+  width: 40%;
+
+}

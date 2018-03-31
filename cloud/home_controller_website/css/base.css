@@ -1,0 +1,292 @@
+html,
+body {
+  height: 100%;
+  font-family: 'Lato', sans-serif;
+  overflow: hidden;
+}
+
+body {
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-align: center;
+  -ms-flex-pack: center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #e8e8e8;
+}
+
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    filter: brightness(10%) opacity(90%);
+    z-index: -20;
+
+}
+
+#webcam {
+  width:100%;
+  width:100%;
+}
+
+#canvas {
+  position: absolute;
+  border-radius: 10px;
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+.homepage {
+  position: relative;
+  width: 50%;
+}
+
+.logo {
+  width: 70%;
+  filter: brightness(100%) opacity(80%);
+}
+
+.login-info {
+  text-align: center;
+  font-weight: 200;
+  font-size: 15px;
+  color: #ffffff;
+  line-height: 90%;
+}
+
+.login-info b {
+  font-weight: 300;
+}
+
+.register-info {
+  text-align: center;
+  font-weight: 200;
+  font-size: 15px;
+  color: #ffffff;
+  line-height: 90%;
+}
+
+.register-info b {
+  font-weight: 300;
+}
+
+.webcam-info {
+  text-align: center;
+  font-weight: 200;
+  font-size: 15px;
+  color: #ffffff;
+  line-height: 90%;
+}
+
+.webcam-info b {
+  font-weight: 300;
+}
+
+#errorMessage {
+  text-align: center;
+  font-weight: 200;
+  font-size: 17px;
+  color: #ff9084;
+  margin-bottom: 20px;
+}
+
+.copyright {
+  text-align: center;
+  font-weight: 200;
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.form-signin {
+  position: relative;
+  width: 100%;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+
+.btn-group-toggle {
+  margin-bottom: 20px;
+}
+
+.toggle {
+  background-color: #e8787e;
+  color: #ffffff;
+  margin: 0 auto;
+}
+
+.toggle:active {
+  background-color: #ff4d4d;
+  color: #ffffff;
+  box-shadow: none !important;
+}
+
+.toggle:hover {
+  background-color: #b75f64;
+}
+
+.active {
+  background-color: #ff4d4d;
+  color: #ffffff;
+  box-shadow: none !important;
+}
+
+.active:hover {
+  background-color: #b53838;
+  color: #ffffff !important;
+}
+
+.btn-primary {
+  border:none;
+}
+
+
+.submit-btn {
+  margin: 15px;
+  width:calc(100% - 30px);
+  border: none;
+  z-index: 500;
+}
+
+.snap {
+  width: 100%;
+  background-color: #ff4d4d;
+  color: #ffffff;
+  margin-bottom: 20px;
+  margin-top:10px;
+}
+
+.snap:hover {
+  background-color: #b53838;
+  color: #ffffff;
+}
+
+.form-control {
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.input-group-btn {
+  background-color: #ff4d4d;
+  color: #ffffff;
+  border-radius: 0px 5px 5px 0px;
+}
+
+.input-group-btn:hover {
+  background-color: #b53838;
+  color: #ffffff;
+}
+
+.buttonText:hover {
+  color: #ffffff;
+}
+
+.btn-secondary:hover {
+  color: #ffffff;
+}
+
+.btn-secondary:active {
+  box-shadow: none;
+}
+
+.bootstrap-filestyle {
+  margin-bottom: 20px;
+
+}
+
+ .webcam {
+   border-radius: 10px;
+   width: 100%;
+   margin-bottom: 10px;
+   z-index: 100;
+ }
+
+ .spinner {
+  margin: 100px auto;
+  width: 300px;
+  height: 100px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.spinner > div {
+  background-color: #dbdbdb;
+  height: 100%;
+  width: 15px;
+  margin: 5px;
+  border-radius: 50px;
+  display: inline-block;
+
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+.spinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.spinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% {
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
+}
+
+.loading-message {
+  font-size: 50px;
+  font-weight: 200;
+}
