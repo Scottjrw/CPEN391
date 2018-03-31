@@ -210,7 +210,7 @@ def joinWithSegments():
 
 
 @app.route('/joinByRGB', methods=['GET', 'POST'])
-def joinByHex():
+def joinByRGB():
 	if request.method == 'POST':
 
 		width = int(request.form['width'])
@@ -311,6 +311,7 @@ def joinByPicture():
 
 			except IntegrityError:
 				print('That username is already taken')
+				return 'Username Taken'
 			return 'Fail'
 
 
@@ -353,25 +354,26 @@ def loginByFacePicture():
 
 
 
-@app.route('/loginByFaceHex', methods=['GET', 'POST'])    
-def loginByFaceHex():
+@app.route('/loginByRGB', methods=['GET', 'POST'])    
+def loginByRGB():
 	if request.method == 'POST':
-		r = request.get_json()
+		width = int(request.form['width'])
+		height = int(request.form['height'])
 
 		list_of_pixels = list()
-		hex_string = r.get('hex_string')
-		print(hex_string[0:30])
+		rgb_string = request.form['picture']
+		rgb_list = rgb_string.split(",")
 
-		for i, c in enumerate(hex_string):
-			if (i <= len(hex_string) - 6):
-				if (i % 6 == 0):
-					r_value = int(hex_string[i:i+2], 16)
-					g_value = int(hex_string[i+2:i+4], 16)
-					b_value = int(hex_string[i+4:i+6], 16)
+		for i in range(0, len(rgb_list)):
+			if (i < len(rgb_list) - 4):
+				if (i % 4 == 0):
+					r_value = int(rgb_list[i])
+					g_value = int(rgb_list[i+1])
+					b_value = int(rgb_list[i+2])
 					rgb_tuple = (r_value,g_value,b_value)
 					list_of_pixels.append(rgb_tuple)
 
-		im = Image.new('RGB', (80,60))
+		im = Image.new('RGB', (width,height))
 		im.putdata(list_of_pixels)
 		im.save('/home/dchau/img.png')
 
