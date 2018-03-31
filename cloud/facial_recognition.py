@@ -267,11 +267,11 @@ def joinByHex():
 
 			# mark the user as being 'authenticated' by setting the session vars
 			auth_user(user)
-			return 'User joined.'
+			return request.form['username']
 
 		except IntegrityError:
 			print('That username is already taken')
-		return 'User failed to join.'
+		return 'Fail'
 
 
 @app.route('/joinByPicture', methods=['GET', 'POST', 'OPTIONS'])    
