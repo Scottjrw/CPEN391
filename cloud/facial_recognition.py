@@ -214,6 +214,11 @@ def joinByHex():
 	if request.method == 'POST':
 		r = request.get_json()
 
+		width = int(r.get('width'))
+		height = int(r.get('height'))
+		print(width)
+		print(height)
+
 		list_of_pixels = list()
 		rgb_string = r.get('picture')
 		print(rgb_string)
@@ -227,8 +232,6 @@ def joinByHex():
 					rgb_tuple = (r_value,g_value,b_value)
 					list_of_pixels.append(rgb_tuple)
 
-		width = int(r.get('width'))
-		height = int(r.get('height'))
 
 		im = Image.new('RGB', (width,height))
 		im.putdata(list_of_pixels)
