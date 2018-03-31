@@ -112,6 +112,7 @@ function send_username(username, password)
 
     http.request(url,"POST",header,data,
         function(code, data)
+        -- print some space to flush the previous outputs
         if data=="Success" then
             for i = 1,255 do 
                 print()
@@ -131,29 +132,36 @@ function send_picture_part(subpicture)
 end
 
 function send_picture()
-    url = "http://104.198.97.189:7000/loginByFaceHex"
+    url = "http://104.198.97.189:6000/pictureSegment"
     header = "Content-Type:application/json\r\n"
-    data ='{"hex_string":"'..raw_picture..'"}'
+    data ='{"picture_segment":"'..raw_picture..'"}'
 
     http.request(url,"POST",header,data,
         function(code, data)
---        if data=="Success" then
---            for i = 1,255 do 
---                print()
---            end
---            print("$done")
---        else
---            for i = 1,255 do 
---                print()
---            end
---            print("$fail")
---        end
-        print(code, data)
+        
     end)
 
     raw_picture = ''
 end
 
+function send_finish()
+    url = "http://104.198.97.189:6000/loginByFaceHexSegments"
+    header = "Content-Type:application/json\r\n"
+    data ='{"hex_string":"done"}'
+
+    http.request(url,"POST",header,data,
+        function(code, data)
+        if data=="Success" then
+            print("$done")
+        else
+            print("$fail")
+        end
+--        print(code, data)
+    end)
+end
+
+-- send to local server; 
+-- for debugging only
 function send_test()
     url = "http://192.168.43.79:8080/Servlet/login"
     header = "Content-Type:application/json\r\n"

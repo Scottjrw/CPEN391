@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <errno.h>
 #include <TermiosUtil.hpp>
+#include <iomanip>
 
 
 Video::Video(const char* file) {
@@ -31,7 +32,7 @@ Video::Video(const char* file) {
     const uint32_t base_addr = hpsfpga_bridge;
 	unsigned size = 320 * 240 * 4;
 
-    int fd = open("/dev/mem", (O_RDWR));
+    int fd = open("/dev/mem", (O_RDWR | O_SYNC));
     if (fd == -1) {
         perror("Failed to open mem");
     }
@@ -379,29 +380,18 @@ void Video::printBuff() {
 }
 
 std::string Video::takeRawPicture(){
-	uint32_t * data;
-	int size_compensate, k;
-	std::string result;
-	std::string output;
+	volatile uint32_t * data;
 	std::stringstream ss;
+	std::string output;
 
-	for(int j=0;j<60;j++){
-		for(int i=0;i<80;i++){
+	// hard coded the location (upper middle) to capture
+	for(int j=0; j<60; j++){
+		for(int i=120; i<200; i++){
 			data = base + (j * width + i);
-			ss << std::hex <<*data;
-			ss >> result;
-			size_compensate = 6 - result.length();
-			if(size_compensate < 0){
-				printf("pixel size > 6!! This is wired\n");
-				break;
-			}else{
-				for(k=0;k<size_compensate;k++){
-					result = "0"+result;
-				}
-			}
-			output+=result;
+			ss << std::setw(6) << std::setfill('0') << std::hex <<*data;
 		}
 	}
+	output = ss.str();
 	printf("string done, size is %d\n", output.length());
 	return output;
 }
