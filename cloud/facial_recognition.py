@@ -209,24 +209,27 @@ def joinWithSegments():
 		return 'User failed to join.'
 
 
-@app.route('/joinByHex', methods=['GET', 'POST'])
+@app.route('/joinByRGB', methods=['GET', 'POST'])
 def joinByHex():
 	if request.method == 'POST':
 		r = request.get_json()
 
 		list_of_pixels = list()
-		hex_string = r.get('hex_string')
+		rgb_string = r.get('picture[]')
 
-		for i, c in enumerate(hex_string):
-			if (i <= len(hex_string) - 6):
-				if (i % 6 == 0):
-					r_value = int(hex_string[i:i+2], 16)
-					g_value = int(hex_string[i+2:i+4], 16)
-					b_value = int(hex_string[i+4:i+6], 16)
+		for i in range(0, len(rgb_string)):
+			if (i < len(hex_string) - 4):
+				if (i % 4 == 0):
+					r_value = int(rgb_string[i])
+					g_value = int(rgb_string[i+1])
+					b_value = int(rgb_string[i+2])
 					rgb_tuple = (r_value,g_value,b_value)
 					list_of_pixels.append(rgb_tuple)
 
-		im = Image.new('RGB', (136,136))
+		width = int(r.get('width'))
+		height = int(r.get('height'))
+
+		im = Image.new('RGB', (width,height))
 		im.putdata(list_of_pixels)
 		im.save('/home/dchau/img.png')
 
