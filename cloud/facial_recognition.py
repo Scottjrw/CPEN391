@@ -271,6 +271,7 @@ def joinByRGB():
 
 		except IntegrityError:
 			print('That username is already taken')
+				return 'Username Taken'
 		return 'Fail'
 
 
