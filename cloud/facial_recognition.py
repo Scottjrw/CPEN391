@@ -226,8 +226,11 @@ def joinByHex():
 			if (i < len(rgb_string) - 4):
 				if (i % 4 == 0):
 					r_value = int(rgb_string[i])
+					print(r_value)
 					g_value = int(rgb_string[i+1])
+					print(g_value)
 					b_value = int(rgb_string[i+2])
+					print(b_value)
 					rgb_tuple = (r_value,g_value,b_value)
 					list_of_pixels.append(rgb_tuple)
 
