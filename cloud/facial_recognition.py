@@ -220,16 +220,17 @@ def joinByHex():
 
 		list_of_pixels = list()
 		rgb_string = request.form['picture']
-		print(rgb_string)
+		rgb_list = rgb_string.split(",")
+		print(rgb_list)
 
-		for i in range(0, len(rgb_string)):
-			if (i < len(rgb_string) - 4):
+		for i in range(0, len(rgb_list)):
+			if (i < len(rgb_list) - 4):
 				if (i % 4 == 0):
-					r_value = int(rgb_string[i])
+					r_value = int(rgb_list[i])
 					print(r_value)
-					g_value = int(rgb_string[i+1])
+					g_value = int(rgb_list[i+1])
 					print(g_value)
-					b_value = int(rgb_string[i+2])
+					b_value = int(rgb_list[i+2])
 					print(b_value)
 					rgb_tuple = (r_value,g_value,b_value)
 					list_of_pixels.append(rgb_tuple)
