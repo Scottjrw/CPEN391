@@ -215,7 +215,8 @@ def joinByHex():
 		r = request.get_json()
 
 		list_of_pixels = list()
-		rgb_string = r.get('picture[]')
+		rgb_string = r.get('picture')
+		print(rgb_string)
 
 		for i in range(0, len(rgb_string)):
 			if (i < len(hex_string) - 4):
