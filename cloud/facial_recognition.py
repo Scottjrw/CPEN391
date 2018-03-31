@@ -215,23 +215,17 @@ def joinByHex():
 
 		width = int(request.form['width'])
 		height = int(request.form['height'])
-		print(width)
-		print(height)
 
 		list_of_pixels = list()
 		rgb_string = request.form['picture']
 		rgb_list = rgb_string.split(",")
-		print(rgb_list)
 
 		for i in range(0, len(rgb_list)):
 			if (i < len(rgb_list) - 4):
 				if (i % 4 == 0):
 					r_value = int(rgb_list[i])
-					print(r_value)
 					g_value = int(rgb_list[i+1])
-					print(g_value)
 					b_value = int(rgb_list[i+2])
-					print(b_value)
 					rgb_tuple = (r_value,g_value,b_value)
 					list_of_pixels.append(rgb_tuple)
 
@@ -312,12 +306,12 @@ def joinByPicture():
 
 				# mark the user as being 'authenticated' by setting the session vars
 				# auth_user(user)
-				return 'User joined.'
+				return request.form['username']
 
 
 			except IntegrityError:
 				print('That username is already taken')
-			return 'User failed to join.'
+			return 'Fail'
 
 
 @app.route('/loginByFacePicture', methods=['GET', 'POST'])    
