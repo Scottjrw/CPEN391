@@ -213,13 +213,13 @@ def joinWithSegments():
 def joinByHex():
 	if request.method == 'POST':
 
-		width = int(request.method['width'])
-		height = int(request.method['height'])
+		width = int(request.form['width'])
+		height = int(request.form['height'])
 		print(width)
 		print(height)
 
 		list_of_pixels = list()
-		rgb_string = request.method['picture']
+		rgb_string = request.form['picture']
 		print(rgb_string)
 
 		for i in range(0, len(rgb_string)):
@@ -248,11 +248,11 @@ def joinByHex():
 			print('no face appeared')
 			return 'User failed to join'
 
-		if (request.method['username'] == ""):
+		if (request.form['username'] == ""):
 			print('no username')
 			return 'User failed to join'
 
-		if (request.method['password'] == ""):
+		if (request.form['password'] == ""):
 			print('no password')
 			return 'User failed to join'
 
@@ -262,8 +262,8 @@ def joinByHex():
 				# Attempt to create the user. If the username is taken, due to the
 				# unique constraint, the database will raise an IntegrityError.
 				user = Users.create(
-					username=request.method['username'],
-					password=md5((request.method['password']).encode('utf-8')).hexdigest(),
+					username=request.form['username'],
+					password=md5((request.form['password']).encode('utf-8')).hexdigest(),
 					photo_encoding=face_encoding.tostring(),
 					ifttt_requests="")
 
