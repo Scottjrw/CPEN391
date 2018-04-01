@@ -34,7 +34,7 @@ def allowed_file(filename):
 def auth_user(user):
 	cursor = db.cursor()
 	cursor.execute('''DELETE FROM currentUser''')
-	currentUser.create(user_id = int(user.id), username_id = user.username, logged_in = 1)
+	currentUser.create(user_id = user.id, username_id = user.username, logged_in = 1)
 	return 'Authenticated'
 
 def get_current_user():
