@@ -23,6 +23,11 @@ class Applets(BaseModel):
 class tempPicture(BaseModel):
 	picture_segment = CharField()
 
+class currentUser(BaseModel):
+	user_id = IntegerField()
+	username_id = IntegerField()
+	logged_in = BooleanField()
+
 
 # def addUser(user_id, photo_encoding):
 # 	t = Users.create(user_id=user_id, photo_encoding=photo_encoding)
@@ -30,4 +35,4 @@ class tempPicture(BaseModel):
 
 def create_tables():
 	with db:
-		db.create_tables([Users, Applets, tempPicture])
+		db.create_tables([Users, Applets, tempPicture, currentUser])

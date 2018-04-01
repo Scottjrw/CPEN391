@@ -32,18 +32,18 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def auth_user(user):
-    session['logged_in'] = True
-    session['user_id'] = user.id
-    session['username'] = user.username
-    session.modified = True
-    print('You are logged in as %s' % (session['username']))
-    print('You have id %s' % (session['user_id']))
+	cursor = db.cursor()
+	cursor.execute('''DELETE FROM currentUser''')
+	currentUser.create(user_id = user.id, username_id = user.username, logged_in = True)
     return 'Authenticated'
 
 def get_current_user():
-	print(session.get('logged_in'))
-	if session.get('logged_in'):
-		return Users.get(Users.id == session['user_id'])
+	cursor = db.cursor()
+	cursor.execute("SELECT user_id, username_id, logged_in FROM currentUser")
+	result_set = cursor.fetchall()
+	for row in result_set:
+		if (row[2] == True):
+			return row[0]
 
 
 def hex_to_img(hex_string):
@@ -530,7 +530,6 @@ def addApplet():
 	if request.method == 'POST':
 
 		user_id = get_current_user()
-		print(user_id)
 
 		cursor = db.cursor()
 
