@@ -530,7 +530,7 @@ def addApplet():
 
 		cursor = db.cursor()
 
-		cursor.execute("SELECT user_id, ifttt_descriptor FROM applets")
+		cursor.execute("SELECT person_id, ifttt_descriptor FROM applets")
 		result_set = cursor.fetchall()
 		for row in result_set:
 			if (user_id == row[0]) and (request.form['descriptor'] == row[1]):
