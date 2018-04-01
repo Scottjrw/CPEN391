@@ -40,7 +40,7 @@ def auth_user(user):
     print('You have id %s' % (session['user_id']))
 
 def get_current_user():
-	print(session.get('user_id'))
+	print(session)
 	if session.get('logged_in'):
 		return session.get('user_id')
 
