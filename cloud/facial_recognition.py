@@ -36,8 +36,8 @@ def auth_user(user):
     session['logged_in'] = True
     session['user_id'] = user.id
     session['username'] = user.username
-    print('You are logged in as %s' % (user.username))
-    print('You have id %s' % (user.id))
+    print('You are logged in as %s' % (session['username']))
+    print('You have id %s' % (session['user_id']))
 
 def get_current_user():
 	print(session.get('user_id'))
