@@ -619,8 +619,8 @@ def changeCurrentMapping():
 		for i in range(0, len(mapping_list)):
 			if (i < len(mapping_list) - 2):
 				if (i % 2 == 0):
-					gesture = int(rgb_list[i])
-					action = int(rgb_list[i+1])
+					gesture = int(mapping_list[i])
+					action = int(mapping_list[i+1])
 					Mappings.create(user_id = user_id, gesture = gesture, ifttt_descriptor = action)
 
 
