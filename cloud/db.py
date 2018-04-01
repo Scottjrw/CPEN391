@@ -26,7 +26,7 @@ class tempPicture(BaseModel):
 class currentUser(BaseModel):
 	user_id = IntegerField()
 	username_id = IntegerField()
-	logged_in = BooleanField()
+	logged_in = Integer()
 
 
 # def addUser(user_id, photo_encoding):
