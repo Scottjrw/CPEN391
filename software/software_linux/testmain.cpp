@@ -25,7 +25,7 @@ int main(void) {
     SimpleGraphics sg(640, 480);
     sg.clear();
 
-    TouchControl tc("/dev/ttyAL0", 0, 0, 640, 480, true);
+    TouchControl tc("/dev/ttyAL0", sg.width(), sg.height(), true);
     tc.touch_enable();
 
     Button startBtn(sg, {20,20}, {220, 120}, "Start", rgb(0,0,0), rgb(119,119,119));

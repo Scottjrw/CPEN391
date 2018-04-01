@@ -4,11 +4,8 @@
 
 using namespace TouchUart;
 
-TouchControl::TouchControl(const char *uart_name, uint32_t alt_irq_id, uint32_t alt_ic_id,
-        unsigned x_max, unsigned y_max, bool debounce):
+TouchControl::TouchControl(const char *uart_name, unsigned x_max, unsigned y_max, bool debounce):
     m_uart(open(uart_name, O_RDWR | O_APPEND | O_NONBLOCK)),
-    m_irq_id(alt_irq_id),
-    m_ic_id(alt_ic_id),
     m_recv_buf(),
     m_recv_index(0),
     m_messageCB(nullptr),
@@ -54,43 +51,16 @@ void TouchControl::calibrate(unsigned int mode) {
     send(msg);
 }
 
-#ifdef TOUCH_UP_RS232
-void TouchControl::startIRQ() {
-    // Enable Interrupt on CPU
-#ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
-    assert(m_ic_id != -1);
-    alt_ic_isr_register(m_ic_id, m_irq_id, uart_interrupt, this, nullptr);
-#else
-    alt_irq_register(m_irq_id, this, uart_interrupt);
-#endif
-
-    // Enable interrupt on UART module
-    alt_up_rs232_enable_read_interrupt(m_uart);
-}
-#endif
-
 void TouchControl::poll() {
     do {
-#ifdef TOUCH_UP_RS232
-        if (alt_up_rs232_get_used_space_in_read_FIFO(m_uart) > 0) {
-            uint8_t val, parity_error;
-
-            int status = alt_up_rs232_read_data(m_uart, &val, &parity_error);
-            assert(status == 0 && parity_error == 0);
-
-            recv(val);
-        }
-#else
         char val;
         int num_rd = read(m_uart, &val, 1);
 
         if (num_rd == 1)
             recv(val);
-#endif
     } while (m_recv_index != 0);
 }
 
-#ifndef TOUCH_UP_RS232
 void TouchControl::trypoll() {
     int num_rd;
     char buf[RECV_BYTES];
@@ -100,24 +70,14 @@ void TouchControl::trypoll() {
             recv(buf[i]);
     }
 }
-#endif
 
 void TouchControl::send(const message &msg) {
     assert(msg.body.command.SIZE >= 1);
 
     const char *msg_arr = reinterpret_cast<const char *>(&msg);
 
-#ifdef TOUCH_UP_RS232
-    for (unsigned i = 0; i < msg.body.command.SIZE + 2; i++) {
-        while (alt_up_rs232_get_available_space_in_write_FIFO(m_uart) == 0);
-
-        int status = alt_up_rs232_write_data(m_uart, msg_arr[i]);
-        assert(status == 0);
-    }
-#else
     int status = write(m_uart, msg_arr, msg.body.command.SIZE + 2);
     assert(status == msg.body.command.SIZE + 2);
-#endif
 }
 
 void TouchControl::recv(uint8_t val) {
@@ -187,39 +147,6 @@ void TouchControl::recv(uint8_t val) {
     }
 
     m_recv_index++;
-}
-
-
-#ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
-void TouchControl::uart_interrupt(void *touchctrl) {
-#else
-void TouchControl::uart_interrupt(void *touchctrl, uint32_t irq_id) {
-    (void) irq_id;
-#endif
-#ifdef TOUCH_UP_RS232
-    TouchControl *controller = static_cast<TouchControl *>(touchctrl);
-
-#ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
-    alt_ic_irq_disable(controller->m_ic_id, controller->m_irq_id);
-#else
-    alt_irq_disable(controller->m_irq_id);
-#endif
-
-    while (alt_up_rs232_get_used_space_in_read_FIFO(controller->m_uart) > 0) {
-        uint8_t val, parity_error;
-
-        int status = alt_up_rs232_read_data(controller->m_uart, &val, &parity_error);
-        assert(status == 0 && parity_error == 0);
-
-        controller->recv(val);
-    }
-
-#ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
-    alt_ic_irq_enable(controller->m_ic_id, controller->m_irq_id);
-#else
-    alt_irq_enable(controller->m_irq_id);
-#endif
-#endif
 }
 
 
