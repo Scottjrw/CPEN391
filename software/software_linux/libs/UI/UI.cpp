@@ -271,7 +271,7 @@ DropdownMenu::DropdownMenu(SimpleGraphics &graphics,
     m_p2(p2),
     m_is_open(false)
 {
-	auto cb = [this] (auto) -> bool {
+	auto cb = [this] (auto) {
 		if (m_is_open) this->close();
 		else this->expand();
 	};

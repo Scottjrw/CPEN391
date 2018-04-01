@@ -21,7 +21,6 @@ main.cpp
 testmain.cpp
 libs
 ../shared_libs
-nios
 arm_system.h
 nios.dat
 )

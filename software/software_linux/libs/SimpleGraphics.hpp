@@ -32,7 +32,7 @@ public:
         #endif
 
         // Ignore invalid writes
-        if (addr < m_max_addr)
+        if (m_buffer_base <= addr && addr < m_max_addr)
             *addr = color;
     }
 
@@ -40,7 +40,7 @@ public:
 		volatile rgba_t *addr = m_buffer_base + (y * m_width + x);
 
 		// Ignore invalid writes
-		if (addr < m_max_addr)
+        if (m_buffer_base <= addr && addr < m_max_addr)
 			return *addr;
 
 		return 0;

@@ -51,5 +51,6 @@
 // NIOS SDRAM
 #define SDRAM_BASE (QSYS_AXI_BASE+0x08000000)
 #define SDRAM_SPAN 0x4000000
+#define SDRAM_FILE "nios.dat"
 
 #endif // ARM_SYSTEM_H

@@ -16,27 +16,26 @@ namespace DollarRecognizer
 	public:
 		GeometricRecognizer();
 
-		void addTemplate(std::string name, Path2D points);
-		RecognitionResult recognize(Path2D points);
+		void addTemplate(std::string name, const Path2D &points);
+		RecognitionResult recognize(const Path2D &points);
 		void loadSamples();
 
 	private:
-		BoundingBox boundingBox(Path2D &points);
-		PointD centroid(Path2D &points);
+		BoundingBox boundingBox(const Path2D &points);
+		PointD centroid(const Path2D &points);
 		double getDistance(PointD p1, PointD p2);
 		bool   getRotationInvariance() { return shouldIgnoreRotation; }
-		double distanceAtAngle(
-			Path2D points, GestureTemplate aTemplate, double rotation);
-		double distanceAtBestAngle(Path2D points, GestureTemplate T);
-		Path2D normalizePath(Path2D points);
-		double pathDistance(Path2D pts1, Path2D pts2);
-		double pathLength(Path2D points);
+		double distanceAtAngle(const Path2D &points, const GestureTemplate &aTemplate, double rotation);
+		double distanceAtBestAngle(const Path2D &points, const GestureTemplate &T);
+		Path2D normalizePath(const Path2D &points);
+		double pathDistance(const Path2D &pts1, const Path2D &pts2);
+		double pathLength(const Path2D &points);
 		Path2D resample(Path2D points);
-		Path2D rotateBy(Path2D points, double rotation);
-		Path2D rotateToZero(Path2D points);
-		Path2D scaleToSquare(Path2D points);
+		Path2D rotateBy(const Path2D &points, double rotation);
+		Path2D rotateToZero(const Path2D &points);
+		Path2D scaleToSquare(const Path2D &points);
 		void   setRotationInvariance(bool ignoreRotation);
-		Path2D translateToOrigin(Path2D points);
+		Path2D translateToOrigin(const Path2D &points);
 
         // constexpr square root courtesy of https://gist.github.com/alexshtf/eb5128b3e3e143187794
         static constexpr double sqrtNewtonRaphson(double x, double curr, double prev) {

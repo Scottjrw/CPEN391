@@ -15,19 +15,22 @@ NIOS_Processor::NIOS_Processor(FIFO_Serial &serial, std::ostream &print_stream):
     m_print_buf.reserve(PRINT_BUF_MAX);
 }
 
-void NIOS_Processor::hello() {
+int NIOS_Processor::hello(unsigned timeout_ms) {
     NIOS_Control::body body {
         .command = NIOS_Control::NIOS_Cmd_Hello,
     };
 
+    int countdown = timeout_ms / 10;
     const message *msg;
     do {
         m_parser.send(App_NIOS_Control, &body);
         msg = wait_for_msg(App_NIOS_Response, 10);
-        std::cout << '.';
-        std::cout.flush();
-    } while (msg == nullptr);
-    assert(msg->body.nios_ack.ack == NIOS_Response::NIOS_ACK_Helloback);
+        if (--countdown < 0)
+            return -1;
+    } while (msg == nullptr
+            || msg->body.nios_ack.ack != NIOS_Response::NIOS_ACK_Helloback);
+
+    return 0;
 }
 
 void NIOS_Processor::start() {
@@ -95,7 +98,7 @@ void NIOS_Processor::handle_msg(const message &msg) {
     switch (msg.application) {
         case App_Dot_Location:
             if (m_dot_location_cb != nullptr)
-                m_dot_location_cb(msg.body.dot_location.dot_x, msg.body.dot_location.dot_y);
+                m_dot_location_cb(msg.body.dot_location);
             break;
 
         case App_NIOS_Print_Data:

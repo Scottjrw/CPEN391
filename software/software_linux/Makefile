@@ -14,6 +14,7 @@ SRC_FILES += libs/UI/screen.cpp
 SRC_FILES += libs/wifi.cpp
 SRC_FILES += libs/video.cpp
 SRC_FILES += libs/NIOS_Processor.cpp
+SRC_FILES += libs/NIOS_Processor_Init.cpp
 #SRC_FILES += ../shared_libs/
 
 OBJ_DIR := obj/software_linux
@@ -27,15 +28,20 @@ prog: $(OBJ_FILES)
 run: prog
 	sudo ./$<
 
-nios_init: nios/nios_init.o
-	g++ -std=c++14 -Wall -o nios_init $^
-
 $(OBJ_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)
 	g++ $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
 
+dat:
+	$(MAKE) -C ../cpen391_group5 dat
+	cp -v ../cpen391_group5/mem_init/hdl_sim/sdram.dat nios.dat
+
 clean:
 	$(RM) $(OBJ_FILES)
 	$(RM) prog
+
+rebuild: clean
+	rm -r obj
+
 	
 include $(wildcard $(DEP_FILES))

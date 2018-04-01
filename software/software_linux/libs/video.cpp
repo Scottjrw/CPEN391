@@ -392,7 +392,7 @@ std::string Video::takeRawPicture(){
 		}
 	}
 	output = ss.str();
-	printf("string done, size is %d\n", output.length());
+	printf("string done, size is %u\n", output.length());
 	return output;
 }
 

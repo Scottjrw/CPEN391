@@ -36,21 +36,21 @@ namespace DollarRecognizer
 		addTemplate("X", Samples::getGestureX());
 	}
 
-	void GeometricRecognizer::addTemplate(std::string name, Path2D points)
+	void GeometricRecognizer::addTemplate(std::string name, const Path2D &points)
 	{
-		points = normalizePath(points);
+		Path2D pointnorm = normalizePath(points);
 
-		templates.push_back(GestureTemplate(name, points));
+		templates.emplace_back(name, pointnorm);
 	}
 
-	BoundingBox GeometricRecognizer::boundingBox(Path2D &points)
+	BoundingBox GeometricRecognizer::boundingBox(const Path2D &points)
 	{
 		double minX =  std::numeric_limits<double>::max();
 		double maxX = -std::numeric_limits<double>::max();
 		double minY =  std::numeric_limits<double>::max(); 
 		double maxY = -std::numeric_limits<double>::max();
 
-		for (Path2DIterator i = points.begin(); i != points.end(); i++)
+		for (auto i = points.cbegin(); i != points.cend(); i++)
 		{
 			PointD point = *i;
 			if (point.x < minX)
@@ -65,10 +65,10 @@ namespace DollarRecognizer
 		return BoundingBox(minX, minY, (maxX - minX), (maxY - minY));
 	}
 
-	PointD GeometricRecognizer::centroid(Path2D &points)
+	PointD GeometricRecognizer::centroid(const Path2D &points)
 	{
 		double x = 0.0, y = 0.0;
-		for (Path2DIterator i = points.begin(); i != points.end(); i++)
+		for (auto i = points.cbegin(); i != points.cend(); i++)
 		{
 			PointD point = *i;
 			x += point.x;
@@ -88,14 +88,14 @@ namespace DollarRecognizer
 	}
 
 	double GeometricRecognizer::distanceAtAngle(
-		Path2D points, GestureTemplate aTemplate, double rotation)
+		const Path2D &points, const GestureTemplate &aTemplate, double rotation)
 	{
 		Path2D newPointDs = rotateBy(points, rotation);
 		return pathDistance(newPointDs, aTemplate.points);
 	}	
 
 	double GeometricRecognizer::distanceAtBestAngle(
-		Path2D points, GestureTemplate aTemplate)
+		const Path2D &points, const GestureTemplate &aTemplate)
 	{
 		double startRange = -angleRange;
 		double endRange   =  angleRange;
@@ -125,7 +125,7 @@ namespace DollarRecognizer
 		return std::min(f1, f2);
 	}
 
-	Path2D GeometricRecognizer::normalizePath(Path2D points)
+	Path2D GeometricRecognizer::normalizePath(const Path2D &points)
 	{
 		/* Recognition algorithm from 
 			http://faculty.washington.edu/wobbrock/pubs/uist-07.1.pdf
@@ -137,21 +137,26 @@ namespace DollarRecognizer
 		// TODO: Switch to $N algorithm so can handle 1D shapes
 
 		//--- Make everyone have the same number of points (anchor points)
-		points = resample(points);
+        Path2D points2 = resample(points);
 		//--- Pretend that all gestures began moving from right hand side
 		//---  (degree 0). Makes matching two items easier if they're
 		//---  rotated the same
+        
+        Path2D points3;
 		if (getRotationInvariance())
-			points = rotateToZero(points);
-		//--- Pretend all shapes are the same size. 
-		//--- Note that since this is a square, our new shape probably
-		//---  won't be the same aspect ratio
-		points = scaleToSquare(points);
-		//--- Move the shape until its center is at 0,0 so that everyone
-		//---  is in the same coordinate system
-		points = translateToOrigin(points);
+			points3 = rotateToZero(points2);
+        else
+            points3 = std::move(points2);
 
-		return points;
+        //--- Pretend all shapes are the same size. 
+        //--- Note that since this is a square, our new shape probably
+        //---  won't be the same aspect ratio
+        Path2D points4 = scaleToSquare(points3);
+        //--- Move the shape until its center is at 0,0 so that everyone
+        //---  is in the same coordinate system
+        Path2D points5 = translateToOrigin(points4);
+
+        return points5;
 	}
 
 	/*  
@@ -161,7 +166,7 @@ namespace DollarRecognizer
 	 *		1. 2 gestures resampled to same size
 	 *		2. 
 	 */
-	double GeometricRecognizer::pathDistance(Path2D pts1, Path2D pts2)
+	double GeometricRecognizer::pathDistance(const Path2D &pts1, const Path2D &pts2)
 	{
 		// assumes pts1.size == pts2.size
 
@@ -175,7 +180,7 @@ namespace DollarRecognizer
 	 *  Return:
 	 *		total distance of the gesture path from the 1st point to its last point
 	 */
-	double GeometricRecognizer::pathLength(Path2D points)
+	double GeometricRecognizer::pathLength(const Path2D &points)
 	{
 		double distance = 0;
 		for (int i = 1; i < (int)points.size(); i++)
@@ -183,7 +188,7 @@ namespace DollarRecognizer
 		return distance;
 	}
 
-	RecognitionResult GeometricRecognizer::recognize(Path2D points)
+	RecognitionResult GeometricRecognizer::recognize(const Path2D &points)
 	{
 		//--- Make sure we have some templates to compare this to
 		//---  or else recognition will be impossible
@@ -193,7 +198,7 @@ namespace DollarRecognizer
 			return RecognitionResult("Unknown", 0.0);
 		}
 
-		points = normalizePath(points);
+		Path2D points2 = normalizePath(points);
 	
 		//--- Initialize best distance to the largest possible number
 		//--- That way everything will be better than that
@@ -208,7 +213,7 @@ namespace DollarRecognizer
 			//---  shape against the corresponding point in the template
 			//--- We'll rotate the shape a few degrees in each direction to
 			//---  see if that produces a better match
-			double distance = distanceAtBestAngle(points, templates[i]);
+			double distance = distanceAtBestAngle(points2, templates[i]);
 			if (distance < bestDistance)
 			{
 				bestDistance     = distance;
@@ -245,8 +250,8 @@ namespace DollarRecognizer
 		newPointDs.push_back(points.front());
 	    for(int i = 1; i < (int)points.size(); i++)
 		{
-			PointD currentPointD  = points[i];
-			PointD previousPointD = points[i-1];
+			const PointD &currentPointD  = points[i];
+			const PointD &previousPointD = points[i-1];
 			double d = getDistance(previousPointD, currentPointD);
 			if ((D + d) >= interval)
 			{
@@ -269,7 +274,7 @@ namespace DollarRecognizer
 		return newPointDs;
 	}
 
-	Path2D GeometricRecognizer::rotateBy(Path2D points, double rotation) 
+	Path2D GeometricRecognizer::rotateBy(const Path2D &points, double rotation) 
 	{
 		PointD c     = centroid(points);
 		//--- can't name cos; creates compiler error since VC++ can't
@@ -278,7 +283,7 @@ namespace DollarRecognizer
 		double sine   = sin(rotation);
 		
 		Path2D newPointDs;
-		for (Path2DIterator i = points.begin(); i != points.end(); i++)
+		for (auto i = points.cbegin(); i != points.cend(); i++)
 		{
 			PointD point = *i;
 			double qx = (point.x - c.x) * cosine - (point.y - c.y) * sine   + c.x;
@@ -288,19 +293,19 @@ namespace DollarRecognizer
 		return newPointDs;
 	}
 
-	Path2D GeometricRecognizer::rotateToZero(Path2D points)
+	Path2D GeometricRecognizer::rotateToZero(const Path2D &points)
 	{
 		PointD c = centroid(points);
 		double rotation = atan2(c.y - points[0].y, c.x - points[0].x);
 		return rotateBy(points, -rotation);
 	}
 
-	Path2D GeometricRecognizer::scaleToSquare(Path2D points)
+	Path2D GeometricRecognizer::scaleToSquare(const Path2D &points)
 	{
 		//--- Figure out the smallest box that can contain the path
 		BoundingBox box = boundingBox(points);
 		Path2D newPointDs;
-		for (Path2DIterator i = points.begin(); i != points.end(); i++)
+		for (auto i = points.cbegin(); i != points.cend(); i++)
 		{
 			PointD point = *i;
 			//--- Scale the points to fit the main box
@@ -339,11 +344,11 @@ namespace DollarRecognizer
 	 *  would have a hard time matching shapes drawn at the bottom
 	 *  of the screen
 	 */
-	Path2D GeometricRecognizer::translateToOrigin(Path2D points)
+	Path2D GeometricRecognizer::translateToOrigin(const Path2D &points)
 	{
 		PointD c = centroid(points);
 		Path2D newPointDs;
-		for (Path2DIterator i = points.begin(); i != points.end(); i++)
+		for (auto i = points.cbegin(); i != points.cend(); i++)
 		{
 			PointD point = *i;
 			double qx = point.x - c.x;
