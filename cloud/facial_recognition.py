@@ -557,6 +557,24 @@ def deleteApplet():
 		return 'Removed applet'
 
 
+@app.rout('getUserApplets', methods=['GET'])
+def getUserApplets():
+	if request.method == 'GET':
+		user_id = get_current_user()
+
+		cursor = db.cursor()
+		list_of_applets = list()
+
+		cursor.execute("SELECT person_id, ifttt_descriptor FROM applets")
+		result_set = cursor.fetchall()
+		for row in result_set:
+			list_of_applets.append(row[1])
+
+		return list_of_applets
+
+
+
+
 @app.route('/applet', methods=['POST'])
 def applet():
 	if request.method == 'POST':
