@@ -27,10 +27,6 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-session['logged_in'] = False
-session['user_id'] = 0
-session['username'] = "temp"
-
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -577,4 +573,7 @@ def applet():
 if __name__ == '__main__':
 	app.secret_key = "reds209ndsldssdsljdsldsdsljdsldksdksdsdfsfsfsfis"
 	app.run(host='0.0.0.0', port=6000)
+	session['logged_in'] = False
+	session['user_id'] = 0
+	session['username'] = "temp"
 	
