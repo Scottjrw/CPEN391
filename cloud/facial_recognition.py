@@ -33,16 +33,16 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def auth_user(user):
-    Session['logged_in'] = True
-    Session['user_id'] = user.id
-    Session['username'] = user.username
-    print('You are logged in as %s' % (Session['username']))
-    print('You have id %s' % (Session['user_id']))
+    session['logged_in'] = True
+    session['user_id'] = user.id
+    session['username'] = user.username
+    print('You are logged in as %s' % (session['username']))
+    print('You have id %s' % (session['user_id']))
 
 def get_current_user():
-	print(Session['user_id'])
-	if Session.get('logged_in'):
-		return Session['user_id']
+	print(session['user_id'])
+	if session.get('logged_in'):
+		return session['user_id']
 
 
 def hex_to_img(hex_string):
@@ -571,5 +571,6 @@ def applet():
 		return 'applet successful'
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=6000)
 	app.secret_key = "reds209ndsldssdsljdsldsdsljdsldksdksdsdfsfsfsfis"
+	app.run(host='0.0.0.0', port=6000)
+	
