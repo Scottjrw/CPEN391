@@ -33,7 +33,7 @@
 
 namespace DollarRecognizer
 {
-	typedef std::vector<Point>  Path2D;
+	typedef std::vector<PointD>  Path2D;
 	typedef Path2D::iterator Path2DIterator;
 
 	struct BoundingBox

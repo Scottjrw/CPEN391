@@ -43,7 +43,7 @@ namespace DollarRecognizer
 		templates.push_back(GestureTemplate(name, points));
 	}
 
-	BoundingBox GeometricRecognizer::boundingBox(Path2D points)
+	BoundingBox GeometricRecognizer::boundingBox(Path2D &points)
 	{
 		double minX =  std::numeric_limits<double>::max();
 		double maxX = -std::numeric_limits<double>::max();
@@ -52,7 +52,7 @@ namespace DollarRecognizer
 
 		for (Path2DIterator i = points.begin(); i != points.end(); i++)
 		{
-			Point point = *i;
+			PointD point = *i;
 			if (point.x < minX)
 				minX = point.x;
 			if (point.x > maxX)
@@ -65,21 +65,21 @@ namespace DollarRecognizer
 		return BoundingBox(minX, minY, (maxX - minX), (maxY - minY));
 	}
 
-	Point GeometricRecognizer::centroid(Path2D points)
+	PointD GeometricRecognizer::centroid(Path2D &points)
 	{
 		double x = 0.0, y = 0.0;
 		for (Path2DIterator i = points.begin(); i != points.end(); i++)
 		{
-			Point point = *i;
+			PointD point = *i;
 			x += point.x;
 			y += point.y;
 		}
 		x /= points.size();
 		y /= points.size();
-		return Point(x, y);
+		return PointD(x, y);
 	}	
 
-	double GeometricRecognizer::getDistance(Point p1, Point p2)
+	double GeometricRecognizer::getDistance(PointD p1, PointD p2)
 	{
 		double dx = p2.x - p1.x;
 		double dy = p2.y - p1.y;
@@ -90,8 +90,8 @@ namespace DollarRecognizer
 	double GeometricRecognizer::distanceAtAngle(
 		Path2D points, GestureTemplate aTemplate, double rotation)
 	{
-		Path2D newPoints = rotateBy(points, rotation);
-		return pathDistance(newPoints, aTemplate.points);
+		Path2D newPointDs = rotateBy(points, rotation);
+		return pathDistance(newPointDs, aTemplate.points);
 	}	
 
 	double GeometricRecognizer::distanceAtBestAngle(
@@ -129,7 +129,7 @@ namespace DollarRecognizer
 	{
 		/* Recognition algorithm from 
 			http://faculty.washington.edu/wobbrock/pubs/uist-07.1.pdf
-			Step 1: Resample the Point Path
+			Step 1: Resample the PointD Path
 			Step 2: Rotate Once Based on the "Indicative Angle"
 			Step 3: Scale and Translate
 			Step 4: Find the Optimal Angle for the Best Score
@@ -237,23 +237,23 @@ namespace DollarRecognizer
 
 	Path2D GeometricRecognizer::resample(Path2D points)
 	{
-		double interval = pathLength(points) / (numPointsInGesture - 1); // interval length
+		double interval = pathLength(points) / (numPointDsInGesture - 1); // interval length
 		double D = 0.0;
-		Path2D newPoints;
+		Path2D newPointDs;
 
 		//--- Store first point since we'll never resample it out of existence
-		newPoints.push_back(points.front());
+		newPointDs.push_back(points.front());
 	    for(int i = 1; i < (int)points.size(); i++)
 		{
-			Point currentPoint  = points[i];
-			Point previousPoint = points[i-1];
-			double d = getDistance(previousPoint, currentPoint);
+			PointD currentPointD  = points[i];
+			PointD previousPointD = points[i-1];
+			double d = getDistance(previousPointD, currentPointD);
 			if ((D + d) >= interval)
 			{
-				double qx = previousPoint.x + ((interval - D) / d) * (currentPoint.x - previousPoint.x);
-				double qy = previousPoint.y + ((interval - D) / d) * (currentPoint.y - previousPoint.y);
-				Point point(qx, qy);
-				newPoints.push_back(point);
+				double qx = previousPointD.x + ((interval - D) / d) * (currentPointD.x - previousPointD.x);
+				double qy = previousPointD.y + ((interval - D) / d) * (currentPointD.y - previousPointD.y);
+				PointD point(qx, qy);
+				newPointDs.push_back(point);
 				points.insert(points.begin() + i, point);
 				D = 0.0;
 			}
@@ -261,36 +261,36 @@ namespace DollarRecognizer
 		}
 
 		// somtimes we fall a rounding-error short of adding the last point, so add it if so
-		if (newPoints.size() == (numPointsInGesture - 1))
+		if (newPointDs.size() == (numPointDsInGesture - 1))
 		{
-			newPoints.push_back(points.back());
+			newPointDs.push_back(points.back());
 		}
 
-		return newPoints;
+		return newPointDs;
 	}
 
 	Path2D GeometricRecognizer::rotateBy(Path2D points, double rotation) 
 	{
-		Point c     = centroid(points);
+		PointD c     = centroid(points);
 		//--- can't name cos; creates compiler error since VC++ can't
 		//---  tell the difference between the variable and function
 		double cosine = cos(rotation);	
 		double sine   = sin(rotation);
 		
-		Path2D newPoints;
+		Path2D newPointDs;
 		for (Path2DIterator i = points.begin(); i != points.end(); i++)
 		{
-			Point point = *i;
+			PointD point = *i;
 			double qx = (point.x - c.x) * cosine - (point.y - c.y) * sine   + c.x;
 			double qy = (point.x - c.x) * sine   + (point.y - c.y) * cosine + c.y;
-			newPoints.push_back(Point(qx, qy));
+			newPointDs.push_back(PointD(qx, qy));
 		}
-		return newPoints;
+		return newPointDs;
 	}
 
 	Path2D GeometricRecognizer::rotateToZero(Path2D points)
 	{
-		Point c = centroid(points);
+		PointD c = centroid(points);
 		double rotation = atan2(c.y - points[0].y, c.x - points[0].x);
 		return rotateBy(points, -rotation);
 	}
@@ -299,10 +299,10 @@ namespace DollarRecognizer
 	{
 		//--- Figure out the smallest box that can contain the path
 		BoundingBox box = boundingBox(points);
-		Path2D newPoints;
+		Path2D newPointDs;
 		for (Path2DIterator i = points.begin(); i != points.end(); i++)
 		{
-			Point point = *i;
+			PointD point = *i;
 			//--- Scale the points to fit the main box
 			//--- So if we wanted everything 100x100 and this was 50x50,
 			//---  we'd multiply every point by 2
@@ -311,9 +311,9 @@ namespace DollarRecognizer
 			//--- Why are we adding them to a new list rather than 
 			//---  just scaling them in-place?
 			// TODO: try scaling in place (once you know this way works)
-			newPoints.push_back(Point(scaledX, scaledY));
+			newPointDs.push_back(PointD(scaledX, scaledY));
 		}
-		return newPoints;
+		return newPointDs;
 	}
 
 	void   GeometricRecognizer::setRotationInvariance(bool ignoreRotation)
@@ -341,15 +341,15 @@ namespace DollarRecognizer
 	 */
 	Path2D GeometricRecognizer::translateToOrigin(Path2D points)
 	{
-		Point c = centroid(points);
-		Path2D newPoints;
+		PointD c = centroid(points);
+		Path2D newPointDs;
 		for (Path2DIterator i = points.begin(); i != points.end(); i++)
 		{
-			Point point = *i;
+			PointD point = *i;
 			double qx = point.x - c.x;
 			double qy = point.y - c.y;
-			newPoints.push_back(Point(qx, qy));
+			newPointDs.push_back(PointD(qx, qy));
 		}
-		return newPoints;
+		return newPointDs;
 	}
 }

@@ -21,9 +21,9 @@ namespace DollarRecognizer
 		void loadSamples();
 
 	private:
-		BoundingBox boundingBox(Path2D points);
-		Point centroid(Path2D points);
-		double getDistance(Point p1, Point p2);
+		BoundingBox boundingBox(Path2D &points);
+		PointD centroid(Path2D &points);
+		double getDistance(PointD p1, PointD p2);
 		bool   getRotationInvariance() { return shouldIgnoreRotation; }
 		double distanceAtAngle(
 			Path2D points, GestureTemplate aTemplate, double rotation);
@@ -54,7 +54,7 @@ namespace DollarRecognizer
 		//numTemplates = 16;
 		//--- How many points do we use to represent a gesture
 		//--- Best results between 32-256
-		static constexpr unsigned numPointsInGesture = 128;
+		static constexpr unsigned numPointDsInGesture = 128;
 		//--- Before matching, we stretch the symbol across a square
 		//--- That way we don't have to worry about the symbol the user drew
 		//---  being smaller or larger than the one in the template
