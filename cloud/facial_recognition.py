@@ -537,7 +537,7 @@ def addApplet():
 			if (user_id == row[0]) and (request.form['descriptor'] == row[1]):
 				return 'Service Exists'
 
-		applets.create(person_id = user_id, ifttt_descriptor = request.form['descriptor'], ifttt_requests = request.form['url'])
+		Applets.create(person_id = user_id, ifttt_descriptor = request.form['descriptor'], ifttt_requests = request.form['url'])
 
 		return 'Success'
 
