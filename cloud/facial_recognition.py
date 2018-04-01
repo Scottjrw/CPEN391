@@ -537,7 +537,7 @@ def addApplet():
 			if (user_id == row[0]) and (request.form['descriptor'] == row[1]):
 				return 'Service Exists'
 
-		cursor.execute('''INSERT INTO applets VALUES (?, ?, ?, ?)''', (1, str(user_id), request.form['descriptor'], request.form['url']))
+		applets.create(person_id = user_id, ifttt_descriptor = request.form['descriptor'], ifttt_requests = request.form['url'])
 
 		return 'Success'
 
