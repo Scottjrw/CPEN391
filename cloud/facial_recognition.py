@@ -34,16 +34,15 @@ def allowed_file(filename):
 def auth_user(user):
 	cursor = db.cursor()
 	cursor.execute('''DELETE FROM currentUser''')
-	currentUser.create(user_id = user.id, username_id = user.username, logged_in = 1)
+	currentUser.create(user_id = user.id, username_id = user.username)
 	return 'Authenticated'
 
 def get_current_user():
 	cursor = db.cursor()
-	cursor.execute("SELECT user_id, username_id, logged_in FROM currentUser")
+	cursor.execute("SELECT user_id, username_id FROM currentUser")
 	result_set = cursor.fetchall()
 	for row in result_set:
-		if (row[2] == 1):
-			return row[0]
+		return row[0]
 
 
 def hex_to_img(hex_string):
