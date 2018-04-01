@@ -601,7 +601,7 @@ def getCurrentMapping():
 		for row in result_set:
 			if (user_id == row[0]):
 				user_pair = list({row[1], row[2]})
-				user_map.append(user_id)
+				user_map.append(user_pair)
 
 		return jsonify(user_map)
 
