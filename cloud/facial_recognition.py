@@ -527,6 +527,7 @@ def addApplet():
 	if request.method == 'POST':
 
 		user_id = get_current_user()
+		print(user_id)
 
 		cursor = db.cursor()
 
@@ -546,7 +547,7 @@ def deleteApplet():
 		r = request.get_json()
 
 		user_id = get_current_user()
-		print(user_id)
+		
 
 		cursor = db.cursor()
 
