@@ -307,7 +307,7 @@ def joinByPicture():
 						photo_encoding=face_encoding.tostring())
 
 				# mark the user as being 'authenticated' by setting the session vars
-				# auth_user(user)
+				auth_user(user)
 				return request.form['username']
 
 
@@ -612,10 +612,20 @@ def changeCurrentMapping():
 		user_id = get_current_user()
 
 		cursor = db.cursor()
+		cursor.execute('''DELETE FROM Mappings WHERE user_id''', (user_id))
 
-		print(request.form['mapping'])
+		mapping_list = request.form['mapping'].split(",")
 
-		return 'ok'
+		for i in range(0, len(mapping_list)):
+			if (i < len(mapping_list) - 2):
+				if (i % 2 == 0):
+					gesture = int(rgb_list[i])
+					action = int(rgb_list[i+1])
+					Mappings.create(user_id = user_id, gesture = gesture, ifttt_descriptor = action)
+
+
+
+		return 'Success'
 
 
 
