@@ -596,7 +596,7 @@ def getCurrentMapping():
 		cursor = db.cursor()
 		user_map = list()
 
-		cursor.execute("SELECT user_id, gesture, ifttt_descriptor,  FROM Mappings")
+		cursor.execute("SELECT user_id, gesture, ifttt_descriptor FROM Mappings")
 		result_set = cursor.fetchall()
 		for row in result_set:
 			if (user_id == row[0]):
