@@ -17,6 +17,7 @@ class Users(BaseModel):
 
 class Applets(BaseModel):
 	person_id = IntegerField()
+	ifttt_descriptor = CharField()
 	ifttt_requests = CharField()
 
 class tempPicture(BaseModel):

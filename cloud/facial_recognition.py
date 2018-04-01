@@ -525,17 +525,22 @@ def loginByPasswordWebsite():
 @app.route('/addApplet', methods=['POST'])
 def addApplet():
 	if request.method == 'POST':
-		r = request.get_json()
 
 		user_id = get_current_user()
 
 		cursor = db.cursor()
 
-		cursor.execute('''INSERT INTO applets VALUES (?, ?, ?)''', (1, user_id,r.get('applet')))
+		cursor.execute("SELECT user_id, ifttt_descriptor FROM applets")
+		result_set = cursor.fetchall()
+		for row in result_set:
+			if (user_id == row[0]) and (request.form['descriptor'] == row[1]):
+				return 'Service Exists'
 
-		return 'Added applet'
+		cursor.execute('''INSERT INTO applets VALUES (?, ?, ?, ?)''', (1, user_id, request.form['descriptor'], request.form['url']))
 
-@app.route('/addApplet', methods=['POST'])
+		return 'Success'
+
+@app.route('/deleteApplet', methods=['POST'])
 def deleteApplet():
 	if request.method == 'POST':
 		r = request.get_json()
