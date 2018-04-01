@@ -617,7 +617,7 @@ def changeCurrentMapping():
 		mapping_list = request.form['mapping'].split(",")
 
 		for i in range(0, len(mapping_list)):
-			if (i < len(mapping_list) - 2):
+			if (i <= len(mapping_list) - 2):
 				if (i % 2 == 0):
 					gesture = mapping_list[i]
 					action = mapping_list[i+1]
