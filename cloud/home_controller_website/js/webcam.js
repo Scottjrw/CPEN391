@@ -29,8 +29,8 @@ document.getElementById("snap").addEventListener("click", function() {
   document.getElementById("canvas").style.width = new_width;
   document.getElementById("canvas").style.height = new_height;
 
-  var link = document.createElement('a');
-  link.download = "Drag-Drop-To-Upload.png";
-  link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");;
-  link.click();
+  // var link = document.createElement('a');
+  // link.download = "Drag-Drop-To-Upload.png";
+  // link.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");;
+  // link.click();
 });

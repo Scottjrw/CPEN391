@@ -1,8 +1,11 @@
-html,
+html {
+  height: 100%;
+  overflow: hidden;
+}
 body {
   height: 100%;
   font-family: 'Lato', sans-serif;
-  overflow: hidden;
+  overflow:scroll;
 }
 
 body {
@@ -46,11 +49,14 @@ body {
 }
 
 .homepage {
+  height:100%;
   position: relative;
   width: 50%;
 }
 
 .logo {
+  position: relative;
+  margin-top: 50px;
   width: 70%;
   filter: brightness(100%) opacity(80%);
 }
@@ -160,16 +166,18 @@ body {
 }
 
 .snap {
-  width: 100%;
-  background-color: #ff4d4d;
+  width: 100px;
+  border-radius: 100%;
   color: #ffffff;
   margin-bottom: 20px;
   margin-top:10px;
+  box-shadow:none !important;
+  border: none !important;
+  outline: none !important;
 }
 
 .snap:hover {
-  background-color: #b53838;
-  color: #ffffff;
+  filter: brightness(60%);
 }
 
 .form-control {
@@ -291,4 +299,11 @@ body {
 .loading-message {
   font-size: 50px;
   font-weight: 200;
+}
+
+
+@media only screen and (max-width: 1414px) {
+  .homepage {
+    width: 720px;
+  }
 }

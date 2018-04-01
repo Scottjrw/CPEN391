@@ -1,31 +1,37 @@
 $(document).ready( function() {
 
   $("#submit-btn").click(function(){
-      $("#pictureInput").prop('required',true);
       $("#inputUsername").prop('required',true);
       $("#inputPassword").prop('required',true);
 
-      var text = $('#dtoggle').html();
       // Register
       if ($("#Register").hasClass('active')){
         var username = $('#inputUsername').val();
         var password = $('#inputPassword').val();
 
-        var form = $("#pictureInput");
-        var formdata = false;
-        if (window.FormData){
-            formdata = new FormData(form[0]);
-        }
+        // var form = $("#pictureInput");
+        // var formdata = false;
+        // if (window.FormData){
+        //     formdata = new FormData(form[0]);
+        // }
+
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+
+        var imgData = context.getImageData(0, 0, 640, 480).data;
+        console.log(imgData)
 
         var form = new FormData();
         form.append("username", username);
         form.append("password", password);
-        form.append("file", $('input[type=file]')[0].files[0]);
+        form.append("picture", imgData);
+        form.append("width", 640)
+        form.append("height", 480)
 
         var settings = {
           "async": true,
           "crossDomain": true,
-          "url": "http://104.198.97.189:6000/joinByPicture",
+          "url": "http://104.198.97.189:6000/joinByRGB",
           "method": "POST",
           "processData": false,
           "crossDomain": true,
@@ -38,23 +44,29 @@ $(document).ready( function() {
       }
       // Login
       else if ($("#LoginByPicture").hasClass('active')){
-        $("#pictureInput").prop('required',true);
         $("#inputUsername").removeAttr('required');
         $("#inputPassword").removeAttr('required');
 
-        var form = $("#pictureInput");
-        var formdata = false;
-        if (window.FormData){
-            formdata = new FormData(form[0]);
-        }
+        // var form = $("#pictureInput");
+        // var formdata = false;
+        // if (window.FormData){
+        //     formdata = new FormData(form[0]);
+        // }
+
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+
+        var imgData = context.getImageData(0, 0, 640, 480).data;
 
         var form = new FormData();
-        form.append("file", $('input[type=file]')[0].files[0]);
+        form.append("picture", imgData);
+        form.append("width", 640)
+        form.append("height", 480)
 
         var settings = {
           "async": true,
           "crossDomain": true,
-          "url": "http://104.198.97.189:6000/loginByFacePicture",
+          "url": "http://104.198.97.189:6000/loginByRGB",
           "method": "POST",
           "processData": false,
           "crossDomain": true,
@@ -68,7 +80,6 @@ $(document).ready( function() {
       else {
         $("#inputUsername").prop('required',true);
         $("#inputPassword").prop('required',true);
-        $("#pictureInput").removeAttr('required');
 
         var username = $('#inputUsername').val();
         var password = $('#inputPassword').val();
@@ -100,26 +111,32 @@ $(document).ready( function() {
     console.log("clicked");
     $("#inputUsername").prop('disabled', true);
     $("#inputPassword").prop('disabled', true);
-    $("#pictureInput").prop('disabled', false);
   });
 
   $("#LoginByInfo").click(function(){
     console.log("clicked");
     $("#inputUsername").prop('disabled', false);
     $("#inputPassword").prop('disabled', false);
-    $("#pictureInput").prop('disabled', true);
   });
 
   $("#Register").click(function(){
     console.log("clicked");
     $("#inputUsername").prop('disabled', false);
     $("#inputPassword").prop('disabled', false);
-    $("#pictureInput").prop('disabled', false);
   });
 
   function load_user_username(settings, username) {
+    window.loading_screen = window.pleaseWait({
+      logo: "photos/logo-mini.png",
+      backgroundColor: '#262626',
+      loadingHtml: "<p class='loading-message' style='color: #dbdbdb'>Please Wait</p><div class='spinner'><div class='rect1'></div><div class='rect2'></div><div class='rect3'></div><div class='rect4'></div><div class='rect5'></div></div>"
+    });
+
     $.ajax(settings).done(function (response) {
       if (response == username){
+
+
+        window.loading_screen.finish();
 
         window.loading_screen = window.pleaseWait({
           logo: "photos/logo-mini.png",
@@ -140,7 +157,14 @@ $(document).ready( function() {
         }, 5000); //7.5 seconds
 
       }
+      else if (response == "Username Taken"){
+        window.loading_screen.finish();
+        $("#errorMessage").text("Username Taken!");
+        $("#inputUsername").val("");
+        $("#inputPassword").val("");
+      }
       else {
+        window.loading_screen.finish();
         $("#errorMessage").text("Incorrect Credentials!");
         $("#inputUsername").val("");
         $("#inputPassword").val("");

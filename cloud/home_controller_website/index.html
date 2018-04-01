@@ -40,9 +40,8 @@
     <div class="homepage">
       <img src="photos/logo.png" class="logo"></img>
 
-      <p class="login-info"><b>Login:</b> Input username and password OR picture via file or webcam.</p>
-      <p class="register-info"><b>Register:</b> Provide username, password, AND picture via file or webcam.</p>
-      <p class="webcam-info"><b>Webcam Instructions:</b> Look into camera -> Press 'Snap Photo' -> Drag and drop photo into file field.</p>
+      <p class="login-info"><b>Login:</b> Input username and password OR take picture.</p>
+      <p class="register-info"><b>Register:</b> Provide username, password, AND take picture.</p>
       <br />
       <p id="errorMessage">Enter Your Information</p>
 
@@ -67,8 +66,7 @@
           <input type="username" id="inputUsername" class="form-control" placeholder="Username" autofocus>
           <label for="inputPassword" class="sr-only">Password</label>
           <input type="password" id="inputPassword" class="form-control" placeholder="Password">
-          <button id="snap" class="btn snap" type="button" style="color: white">Snap Photo</button>
-          <input type="file" class="filestyle" id="pictureInput" text="Upload or Take a Picture">
+          <input type="image" id="snap" class="btn snap" style="color: white" src="photos/photobtn.png" onclick="return false"/>
         </div>
         <button id="submit-btn" class="submit-btn btn btn-lg btn-primary btn-block" type="button">Submit</button>
       </form>
@@ -83,7 +81,7 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="js/webcam.js"></script>
-    <script src="js/database.js"></script>
+    <script src="js/login-database.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
   </body>

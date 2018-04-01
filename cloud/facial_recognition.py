@@ -40,6 +40,7 @@ def auth_user(user):
     print('You have id %s' % (session['user_id']))
 
 def get_current_user():
+	print(session.get('logged_in'))
 	if session.get('logged_in'):
 		return Users.get(Users.id == session['user_id'])
 
@@ -268,8 +269,6 @@ def joinByRGB():
 
 			# mark the user as being 'authenticated' by setting the session vars
 			auth_user(user)
-			print(session.get('logged_in'))
-			print(session.get('user_id'))
 			return request.form['username']
 
 		except IntegrityError:
@@ -528,8 +527,6 @@ def loginByPasswordWebsite():
 @app.route('/addApplet', methods=['POST'])
 def addApplet():
 	if request.method == 'POST':
-		print(session.get('logged_in'))
-		print(session.get('user_id'))
 
 		user_id = get_current_user()
 		print(user_id)
@@ -542,7 +539,7 @@ def addApplet():
 			if (user_id == row[0]) and (request.form['descriptor'] == row[1]):
 				return 'Service Exists'
 
-		cursor.execute('''INSERT INTO applets VALUES (?, ?, ?, ?)''', (1, user_id, request.form['descriptor'], request.form['url']))
+		cursor.execute('''INSERT INTO applets VALUES (?, ?, ?, ?)''', (1, str(user_id), request.form['descriptor'], request.form['url']))
 
 		return 'Success'
 
