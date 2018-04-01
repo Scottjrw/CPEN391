@@ -612,7 +612,7 @@ def changeCurrentMapping():
 		user_id = get_current_user()
 
 		cursor = db.cursor()
-		cursor.execute('''DELETE FROM Mappings WHERE user_id=?''', (user_id))
+		cursor.execute('''DELETE FROM Mappings WHERE user_id=?''', (user_id,))
 
 		mapping_list = request.form['mapping'].split(",")
 
