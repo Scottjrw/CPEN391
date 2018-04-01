@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <string>
 #include <termios.h>
+#include <map>
 
 class Wifi {
 	public:
@@ -23,6 +24,8 @@ class Wifi {
 		void SendUsername(std::string username, std::string password);
 		void SendPicture(std::string picture);
 		std::string ReadResponse();
+		std::map<std::string, std::string> GetGestureMapping();
+		void SendTriggeredGesture(std::string gesture);
 
 	private:
 	 	int wifi_uart;

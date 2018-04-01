@@ -22,7 +22,7 @@ Video::Video(const char* file) {
 	bufferLen = 0;
 
 	if (video_uart < 0) {
-		perror("failed to open video fd");
+		throw "fail to open uart";
 	}
 
 	TermiosUtil::SetSpeed(video_uart, B38K);//set baudrate
@@ -34,12 +34,12 @@ Video::Video(const char* file) {
 
     int fd = open("/dev/mem", (O_RDWR | O_SYNC));
     if (fd == -1) {
-        perror("Failed to open mem");
+        throw "fail to open mem";
     }
 
     base = reinterpret_cast<uint32_t *> (mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED, fd, base_addr));
     if (base == MAP_FAILED) {
-        perror("Failed to mmap video");
+        throw "fail to mmap video";
     }
     printf("camera memory initialized\n");
 }

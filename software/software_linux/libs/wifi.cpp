@@ -96,7 +96,7 @@ std::string Wifi::ReadResponse(){
 
 	while(1){
 		char temp = fgetc(F);
-		//printf("%c",temp);//for debug only
+		printf("%c",temp);//for debug only
 		//responses starts by $, and is always 4 chars
 		if(temp=='$'){
 			for(int i=0; i<4; i++){
@@ -107,6 +107,56 @@ std::string Wifi::ReadResponse(){
 	}
 	fclose(F);
 	return response;
+}
+
+std::map<std::string, std::string> Wifi::GetGestureMapping(){
+	std::map<std::string, std::string> gesture_mapping;
+	std::string s= "get_gesture()\r\n";
+	const char * command = s.c_str();
+	if(write(wifi_uart, command, strlen(command))<0)
+		printf("write failed\n");
+
+	FILE * F = fdopen(wifi_uart, "r+");
+	std::string key_string;
+	std::string value_string;
+
+	while(1){
+		char temp = fgetc(F);
+		//printf("%c",temp);//for debug only
+		//key format %key%
+		if(temp=='%'){
+			temp = fgetc(F);
+			while(temp != '%'){
+				key_string += temp;
+				temp = fgetc(F);
+			}
+		}
+
+		// value format &value&
+		if(temp=='&'){
+			temp = fgetc(F);
+			while(temp != '&'){
+				value_string += temp;
+				temp = fgetc(F);
+			}
+
+			gesture_mapping[key_string] = value_string;
+			key_string.clear();
+			value_string.clear();
+		}
+
+		if(temp=='^')
+			break;
+	}
+	fclose(F);
+	return gesture_mapping;
+}
+
+void Wifi::SendTriggeredGesture(std::string gesture){
+	std::string s= "send_gesture(\"" + gesture + "\")\r\n";
+	const char * command = s.c_str();
+	if(write(wifi_uart, command, strlen(command))<0)
+		printf("write failed\n");
 }
 
 Wifi::Wifi(const char name[]) {
