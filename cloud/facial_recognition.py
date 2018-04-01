@@ -572,8 +572,5 @@ def applet():
 
 if __name__ == '__main__':
 	app.secret_key = "reds209ndsldssdsljdsldsdsljdsldksdksdsdfsfsfsfis"
-	app.run(host='0.0.0.0', port=6000)
-	session['logged_in'] = False
-	session['user_id'] = 0
-	session['username'] = "temp"
+	app.run(host='104.198.97.189', port=6000)
 	
