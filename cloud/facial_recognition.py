@@ -40,7 +40,7 @@ def auth_user(user):
 
 def get_current_user():
 	if session.get('logged_in'):
-		return Users.get(Users.id == session['user_id'])
+		return Users.get(Users.id == session['username'])
 
 
 def hex_to_img(hex_string):
