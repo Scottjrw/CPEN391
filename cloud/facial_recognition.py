@@ -35,13 +35,14 @@ def auth_user(user):
     session['logged_in'] = True
     session['user_id'] = user.id
     session['username'] = user.username
+    session.modified = True
     print('You are logged in as %s' % (session['username']))
     print('You have id %s' % (session['user_id']))
 
 def get_current_user():
 	print(session.get('logged_in'))
 	if session.get('logged_in'):
-		return Users.get(Users.id == session['use_id'])
+		return Users.get(Users.id == session['user_id'])
 
 
 def hex_to_img(hex_string):
