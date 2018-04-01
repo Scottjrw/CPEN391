@@ -570,6 +570,8 @@ def getUserApplets():
 		for row in result_set:
 			list_of_applets.append(row[1])
 
+		print(list_of_applets)
+
 		return list_of_applets
 
 
