@@ -37,9 +37,10 @@ flags = [
     '-Ilibs',
     '-Ilibs/UI',
     '-Wall',
-    '-std=c++14',
+    '-std=gnu++14',
     '-I../shared_libs',
-    '-I.'
+    '-I.',
+    '-Ilibs/GestureRecognition'
 ]
 
 def DirectoryOfThisScript():

@@ -2,6 +2,7 @@
 #define SIMPLE_GRAPHICS_HPP
 
 #include <cassert>
+#include <type_traits>
 #include <functional>
 #include <iostream>
 #include <unistd.h>
@@ -13,19 +14,14 @@
 #include <sys/mman.h>
 #include <stdint.h>
 #include <errno.h>
+#include <initializer_list>
+#include "GeometricTypes.hpp"
 
 //#define HW_GRAPHICS
 
 class SimpleGraphics {
 public:
     typedef uint32_t rgba_t;
-
-    static constexpr rgba_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a){
-        return ((a << 3*pixel_bits/4) 
-            | (r << 2*pixel_bits/4) 
-            | (g << 1*pixel_bits/4) 
-            | (b << 0*pixel_bits/4));
-    }
 
     inline void draw_pixel(rgba_t color, unsigned x, unsigned y) {
 
@@ -50,11 +46,27 @@ public:
 		return 0;
 	}
 
+    void draw_rect(rgba_t color, Point &p1, Point &p2) {
+        draw_rect(color, p1.x, p1.y, p2.x, p2.y);
+    }
+
     void draw_rect(rgba_t color, unsigned x1, unsigned y1, unsigned x2, unsigned y2);
 
-    void draw_x(rgba_t color, unsigned x, unsigned y, int radius);
+    void draw_x(rgba_t color, Point &p, unsigned radius) {
+        draw_x(color, p.x, p.y, radius);
+    }
+
+    void draw_x(rgba_t color, unsigned x, unsigned y, unsigned radius);
+
+    void draw_char(rgba_t color, Point &top_left, char c) {
+        draw_char(color, top_left.x, top_left.y, c);
+    }
 
     void draw_char(rgba_t color, unsigned x, unsigned y, char c);
+
+    void draw_string(rgba_t color, Point &top_left, std::string str) {
+        draw_string(color, top_left.x, top_left.y , str);
+    }
 
     void draw_string(rgba_t color, unsigned x, unsigned y, std::string str);
 
@@ -85,14 +97,10 @@ public:
  #endif
 
 private:
+
     rgba_t *m_buffer_base;
     rgba_t *m_max_addr;
     const unsigned int m_width, m_height;
-
-    static constexpr unsigned pixel_bits = sizeof(rgba_t) * 8;
-    static constexpr uint32_t convert_8bit(uint8_t val, unsigned int pixel_bits) {
-        return ((val >> (8 - pixel_bits / 4)) & ((1 << pixel_bits / 4) - 1));
-    }
 
 #ifdef HW_GRAPHICS
     char *const m_graphics_base;
@@ -124,8 +132,20 @@ private:
 	static constexpr unsigned IRQ_DISABLE = 32;
 
     static constexpr unsigned queue_max = 64;
+
 #endif
 };
 
+constexpr SimpleGraphics::rgba_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+    constexpr unsigned pixel_bits = sizeof(SimpleGraphics::rgba_t) * 8;
+    return ((a << 3*pixel_bits/4) 
+            | (r << 2*pixel_bits/4) 
+            | (g << 1*pixel_bits/4) 
+            | (b << 0*pixel_bits/4));
+}
+
+constexpr SimpleGraphics::rgba_t rgb(uint8_t r, uint8_t g, uint8_t b) {
+    return rgba(r, g, b, 255);
+}
 
 #endif

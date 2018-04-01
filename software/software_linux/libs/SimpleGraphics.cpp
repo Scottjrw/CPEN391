@@ -25,9 +25,9 @@ void SimpleGraphics::draw_rect(rgba_t color, unsigned int x1, unsigned int y1, u
 }
 #endif
 
-void SimpleGraphics::draw_x(rgba_t color, unsigned int x, unsigned int y, int radius) {
-    for (int i = -radius; i <= radius; i++) {
-        for (int j = -radius; j <= radius; j++) {
+void SimpleGraphics::draw_x(rgba_t color, unsigned int x, unsigned int y, unsigned radius) {
+    for (int i = -(int) radius; i <= radius; i++) {
+        for (int j = -(int) radius; j <= radius; j++) {
             if (i == j || -i == j) {
                 draw_pixel(color, x + i, y + j);
             }

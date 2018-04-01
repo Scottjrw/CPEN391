@@ -13,7 +13,7 @@ namespace Settings {
     constexpr unsigned MENU_ITEM_SPACE = 5;
 };
 
-Rectangle::Rectangle(SimpleGraphics &graphics, Point p1, Point p2, SimpleGraphics::rgba_t color):
+Rectangle::Rectangle(SimpleGraphics &graphics, Point p1, Point p2, rgba_t color):
     Drawable(graphics),
     m_p1(p1),
     m_p2(p2),
@@ -30,18 +30,18 @@ void Rectangle::draw() {
 void Rectangle::undraw() {
 
     // shows nothing on screen
-    SimpleGraphics::rgba_t opaque_Color= m_graphics.rgba(0,0,0,0);
+    rgba_t opaque_Color= rgba(0,0,0,0);
     m_graphics.draw_rect(opaque_Color, m_p1.x, m_p1.y, m_p2.x, m_p2.y);
 }
 
 
 
 
-Button::Button(SimpleGraphics &graphics, TouchControl &touch,
-        Point p1, Point p2, std::string text, SimpleGraphics::rgba_t text_color,
-        SimpleGraphics::rgba_t background_color):
+Button::Button(SimpleGraphics &graphics,
+        Point p1, Point p2, std::string text, rgba_t text_color,
+        rgba_t background_color):
 	Rectangle(graphics, p1, p2, background_color),
-    Touchable(touch),
+    Touchable(),
     m_text(text),
     m_text_color(text_color),
     m_cb(nullptr)
@@ -98,7 +98,7 @@ void Button::undraw(){
 
 	unsigned strStartYPos = (remaining_space_y/2) +  m_p1.y;
 
-	m_graphics.draw_string(m_graphics.rgba(0,0,0,0), strStartXPos, strStartYPos, m_text);
+	m_graphics.draw_string(rgba(0,0,0,0), strStartXPos, strStartYPos, m_text);
 
 	m_is_showing = false;
 }
@@ -107,7 +107,7 @@ bool Button::touch(Point P){
 
 	if (m_is_showing){
 		if(P.x > m_p1.x && P.x < m_p2.x && P.y > m_p1.y && P.y < m_p2.y) {
-			if (m_cb != nullptr) m_cb(this, P);
+			if (m_cb != nullptr) m_cb(P);
 			return true;
 		} else
 			return false;
@@ -119,14 +119,13 @@ void Button::onTouch(TouchCB callback){
 	m_cb = callback;
 }
 
-Slider::Slider(SimpleGraphics &graphics, TouchControl &touch,
-        Point p1, Point p2, SimpleGraphics::rgba_t text_color,
-        SimpleGraphics::rgba_t background_color, int min, int max):
+Slider::Slider(SimpleGraphics &graphics,
+        Point p1, Point p2, rgba_t text_color,
+        rgba_t background_color, int min, int max):
 	Rectangle(graphics, p1, p2, background_color),
-    Touchable(touch),
+    Touchable(),
     m_text("00"),
     m_text_color(text_color),
-    m_cb(nullptr),
     slider_p1(),
     slider_p2(),
     slider_bar_p1(),
@@ -171,7 +170,7 @@ void Slider::draw(){
     slider_bar_p2.x = m_p1.x + remaining_space_x - 4;
     slider_bar_p2.y = strStartYPos + 5;
 
-    Rectangle slider_bar(m_graphics, slider_bar_p1, slider_bar_p2, SimpleGraphics::rgba(255, 255, 255, 255));
+    Rectangle slider_bar(m_graphics, slider_bar_p1, slider_bar_p2, rgba(255, 255, 255, 255));
     slider_bar.draw();
 
     if (initial_state){
@@ -182,7 +181,7 @@ void Slider::draw(){
 		slider_p2.x = slider_bar_p1.x + 2;
 		slider_p2.y = m_p2.y - 2;
 
-		Rectangle slider(m_graphics, slider_p1, slider_p2, SimpleGraphics::rgba(0, 0, 0, 255));
+		Rectangle slider(m_graphics, slider_p1, slider_p2, rgba(0, 0, 0, 255));
 		slider.draw();
     }
 
@@ -212,7 +211,7 @@ void Slider::undraw(){
 
 	unsigned strStartYPos = (remaining_space_y/2) +  m_p1.y;
 
-	m_graphics.draw_string(m_graphics.rgba(0,0,0,0), strStartXPos, strStartYPos, m_text);
+	m_graphics.draw_string(rgba(0,0,0,0), strStartXPos, strStartYPos, m_text);
 
 	m_is_showing = false;
 }
@@ -251,38 +250,28 @@ bool Slider::touch(Point P){
 
 			m_graphics.draw_string(m_text_color, strStartXPos, strStartYPos, m_text);
 
-			Rectangle slider(m_graphics, slider_p1, slider_p2, SimpleGraphics::rgba(0, 0, 0, 255));
+			Rectangle slider(m_graphics, slider_p1, slider_p2, rgba(0, 0, 0, 255));
 			slider.draw();
+            return true;
 		}
-
-
-		if(P.x > m_p1.x && P.x < m_p2.x && P.y > m_p1.y && P.y < m_p2.y) {
-			if (m_cb != nullptr) m_cb(this, P);
-			return true;
-		} else
-			return false;
 	}
-	else return false;
-}
 
-void Slider::onTouch(TouchCB callback){
-	m_cb = callback;
+	return false;
 }
 
 
-DropdownMenu::DropdownMenu(SimpleGraphics &graphics, TouchControl &touch,
-        Expand direction, Point p1, Point p2, std::string text, SimpleGraphics::rgba_t text_color,
-        SimpleGraphics::rgba_t background_color):
+DropdownMenu::DropdownMenu(SimpleGraphics &graphics,
+        Point p1, Point p2, std::string text, rgba_t text_color,
+        rgba_t background_color):
     Drawable(graphics),
-    Touchable(touch),
-    m_expandDir(direction),
-    m_expander(graphics, touch, p1, p2, text, text_color, background_color),
+    Touchable(),
+    m_expander(graphics, p1, p2, text, text_color, background_color),
     m_buttons(),
     m_p1(p1),
     m_p2(p2),
     m_is_open(false)
 {
-	auto cb = [this] (Touchable *, Point) {
+	auto cb = [this] (auto) -> bool {
 		if (m_is_open) this->close();
 		else this->expand();
 	};
@@ -318,12 +307,8 @@ bool DropdownMenu::touch(Point p){
 void DropdownMenu::expand(){
 
     // for now we just consider on direction: downward dropdown menu
-    switch(m_expandDir){
-        case TOP:
-        case BOTTOM:
-            for(int i = 0; i < (int)m_buttons.size(); i++){
-                m_buttons[i].draw();
-            }
+    for(int i = 0; i < (int)m_buttons.size(); i++){
+        m_buttons[i].draw();
     }
     m_is_open = true;
 }
@@ -336,8 +321,8 @@ void DropdownMenu::close(){
     m_is_open = false;
 }
 
-void DropdownMenu::newItem(SimpleGraphics &graphics, TouchControl &touch, std::string text, SimpleGraphics::rgba_t text_color,
-        SimpleGraphics::rgba_t background_color, TouchCB callback){
+void DropdownMenu::newItem(SimpleGraphics &graphics, std::string text, rgba_t text_color,
+        rgba_t background_color, TouchCB callback){
 	int size = m_buttons.size();
 	Point new_p1;
 	int height = m_p2.y - m_p1.y;
@@ -347,7 +332,7 @@ void DropdownMenu::newItem(SimpleGraphics &graphics, TouchControl &touch, std::s
 	new_p2.x = m_p2.x;
 	new_p2.y = m_p2.y + ((size+1)*height);
 
-	Button button = Button(graphics, touch, new_p1, new_p2, text, text_color, background_color);
+	Button button = Button(graphics, new_p1, new_p2, text, text_color, background_color);
 	button.onTouch(callback);
 	m_buttons.push_back(button);
 }

@@ -17,13 +17,15 @@ public:
 
     /*
      * Wait for a hello from the HPS
+     * This needs to be called in the beginning
      */
     void hello();
 
     /*
      * Send a dot_location to the HPS
      */
-    void dot_location(unsigned x, unsigned y);
+    void dot_location(unsigned x, unsigned y, unsigned min_x, unsigned min_y, 
+                                              unsigned max_x, unsigned max_y);
 
     /*
      * Print to the HPS's Console, these are low level functions

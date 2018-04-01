@@ -1,93 +1,58 @@
-#include "GeometricRecognizer.h"
-
-#define MAX_DOUBLE std::numeric_limits<double>::max();
+#include "GeometricRecognizer.hpp"
+#include <cmath>
 
 namespace DollarRecognizer
 {
 	GeometricRecognizer::GeometricRecognizer()
 	{
-		//--- How many templates do we have to compare the user's gesture against?
-		//--- Can get ~97% accuracy with just one template per symbol to recognize
-		//numTemplates = 16;
-		//--- How many points do we use to represent a gesture
-		//--- Best results between 32-256
-		numPointsInGesture = 128;
-		//--- Before matching, we stretch the symbol across a square
-		//--- That way we don't have to worry about the symbol the user drew
-		//---  being smaller or larger than the one in the template
-		squareSize = 250;
-		//--- 1/2 max distance across a square, which is the maximum distance
-		//---  a point can be from the center of the gesture
-		halfDiagonal = 0.5 * sqrt((250.0 * 250.0) + (250.0 * 250.0));
-		//--- Before matching, we rotate the symbol the user drew so that the 
-		//---  start point is at degree 0 (right side of symbol). That's how 
-		//---  the templates are rotated so it makes matching easier
-		//--- Note: this assumes we want symbols to be rotation-invariant, 
-		//---  which we might not want. Using this, we can't tell the difference
-		//---  between squares and diamonds (which is just a rotated square)
+
 		setRotationInvariance(false);
-		anglePrecision = 2.0;
-		//--- A magic number used in pre-processing the symbols
-		goldenRatio    = 0.5 * (-1.0 + sqrt(5.0));
 	}
 
-	void GeometricRecognizer::loadTemplates()
+	void GeometricRecognizer::loadSamples()
 	{
-		SampleGestures samples;
-
-		addTemplate("Arrow", samples.getGestureArrow());
-		addTemplate("Caret", samples.getGestureCaret());
-		addTemplate("CheckMark", samples.getGestureCheckMark());
-		addTemplate("Circle", samples.getGestureCircle());
-		addTemplate("Delete", samples.getGestureDelete());
-		addTemplate("Diamond", samples.getGestureDiamond());
-		//addTemplate("LeftCurlyBrace", samples.getGestureLeftCurlyBrace());
-		addTemplate("LeftSquareBracket", samples.getGestureLeftSquareBracket());
-		addTemplate("LeftToRightLine", samples.getGestureLeftToRightLine());
-		addTemplate("LineDownDiagonal", samples.getGestureLineDownDiagonal());
-		addTemplate("Pigtail", samples.getGesturePigtail());
-		addTemplate("QuestionMark", samples.getGestureQuestionMark());
-		addTemplate("Rectangle", samples.getGestureRectangle());
-		//addTemplate("RightCurlyBrace", samples.getGestureRightCurlyBrace());
-		addTemplate("RightSquareBracket", samples.getGestureRightSquareBracket());
-		addTemplate("RightToLeftLine", samples.getGestureRightToLeftLine());
-		addTemplate("RightToLeftLine2", samples.getGestureRightToLeftLine2());
-		addTemplate("RightToLeftSlashDown", samples.getGestureRightToLeftSlashDown());
-		addTemplate("Spiral", samples.getGestureSpiral());
-		addTemplate("Star", samples.getGestureStar());
-		addTemplate("Triangle", samples.getGestureTriangle());
-		addTemplate("V", samples.getGestureV());
-		addTemplate("X", samples.getGestureX());
+		addTemplate("Arrow", Samples::getGestureArrow());
+		addTemplate("Caret", Samples::getGestureCaret());
+		addTemplate("CheckMark", Samples::getGestureCheckMark());
+		addTemplate("Circle", Samples::getGestureCircle());
+		addTemplate("Delete", Samples::getGestureDelete());
+		addTemplate("Diamond", Samples::getGestureDiamond());
+		//addTemplate("LeftCurlyBrace", Samples::getGestureLeftCurlyBrace());
+		addTemplate("LeftSquareBracket", Samples::getGestureLeftSquareBracket());
+		addTemplate("LeftToRightLine", Samples::getGestureLeftToRightLine());
+		addTemplate("LineDownDiagonal", Samples::getGestureLineDownDiagonal());
+		addTemplate("Pigtail", Samples::getGesturePigtail());
+		addTemplate("QuestionMark", Samples::getGestureQuestionMark());
+		addTemplate("Rectangle", Samples::getGestureRectangle());
+		//addTemplate("RightCurlyBrace", Samples::getGestureRightCurlyBrace());
+		addTemplate("RightSquareBracket", Samples::getGestureRightSquareBracket());
+		addTemplate("RightToLeftLine", Samples::getGestureRightToLeftLine());
+		addTemplate("RightToLeftLine2", Samples::getGestureRightToLeftLine2());
+		addTemplate("RightToLeftSlashDown", Samples::getGestureRightToLeftSlashDown());
+		addTemplate("Spiral", Samples::getGestureSpiral());
+		addTemplate("Star", Samples::getGestureStar());
+		addTemplate("Triangle", Samples::getGestureTriangle());
+		addTemplate("V", Samples::getGestureV());
+		addTemplate("X", Samples::getGestureX());
 	}
 
-	int GeometricRecognizer::addTemplate(string name, Path2D points)
+	void GeometricRecognizer::addTemplate(std::string name, Path2D points)
 	{
 		points = normalizePath(points);
 
 		templates.push_back(GestureTemplate(name, points));
-
-		//--- Let them know how many examples of this template we have now
-		int numInstancesOfGesture = 0;
-		// You know, i don't care so i'm just going to ignore this
-		//for (var i = 0; i < templates.size(); i++)
-		//{
-			//if (templates[i].Name == name)
-			//	numInstancesOfGesture++;
-		//}
-		//return numInstancesOfGesture;
-		return 0;
 	}
 
-	Rectangle GeometricRecognizer::boundingBox(Path2D points)
+	BoundingBox GeometricRecognizer::boundingBox(Path2D points)
 	{
-		double minX =  MAX_DOUBLE;
-		double maxX = -MAX_DOUBLE;
-		double minY =  MAX_DOUBLE; 
-		double maxY = -MAX_DOUBLE;
+		double minX =  std::numeric_limits<double>::max();
+		double maxX = -std::numeric_limits<double>::max();
+		double minY =  std::numeric_limits<double>::max(); 
+		double maxY = -std::numeric_limits<double>::max();
 
 		for (Path2DIterator i = points.begin(); i != points.end(); i++)
 		{
-			Point2D point = *i;
+			Point point = *i;
 			if (point.x < minX)
 				minX = point.x;
 			if (point.x > maxX)
@@ -97,25 +62,24 @@ namespace DollarRecognizer
 			if (point.y > maxY)
 				maxY = point.y;
 		}
-		Rectangle bounds(minX, minY, (maxX - minX), (maxY - minY));
-		return bounds;
+		return BoundingBox(minX, minY, (maxX - minX), (maxY - minY));
 	}
 
-	Point2D GeometricRecognizer::centroid(Path2D points)
+	Point GeometricRecognizer::centroid(Path2D points)
 	{
 		double x = 0.0, y = 0.0;
 		for (Path2DIterator i = points.begin(); i != points.end(); i++)
 		{
-			Point2D point = *i;
+			Point point = *i;
 			x += point.x;
 			y += point.y;
 		}
 		x /= points.size();
 		y /= points.size();
-		return Point2D(x, y);
+		return Point(x, y);
 	}	
 
-	double GeometricRecognizer::getDistance(Point2D p1, Point2D p2)
+	double GeometricRecognizer::getDistance(Point p1, Point p2)
 	{
 		double dx = p2.x - p1.x;
 		double dy = p2.y - p1.y;
@@ -135,18 +99,18 @@ namespace DollarRecognizer
 	{
 		double startRange = -angleRange;
 		double endRange   =  angleRange;
-		double x1 = goldenRatio * startRange + (1.0 - goldenRatio) * endRange;
+		double x1 = goldenRatio() * startRange + (1.0 - goldenRatio()) * endRange;
 		double f1 = distanceAtAngle(points, aTemplate, x1);
-		double x2 = (1.0 - goldenRatio) * startRange + goldenRatio * endRange;
+		double x2 = (1.0 - goldenRatio()) * startRange + goldenRatio() * endRange;
 		double f2 = distanceAtAngle(points, aTemplate, x2);
-		while (abs(endRange - startRange) > anglePrecision)
+		while (std::abs(endRange - startRange) > anglePrecision)
 		{
 			if (f1 < f2)
 			{
 				endRange = x2;
 				x2 = x1;
 				f2 = f1;
-				x1 = goldenRatio * startRange + (1.0 - goldenRatio) * endRange;
+				x1 = goldenRatio() * startRange + (1.0 - goldenRatio()) * endRange;
 				f1 = distanceAtAngle(points, aTemplate, x1);
 			}
 			else
@@ -154,11 +118,11 @@ namespace DollarRecognizer
 				startRange = x1;
 				x1 = x2;
 				f1 = f2;
-				x2 = (1.0 - goldenRatio) * startRange + goldenRatio * endRange;
+				x2 = (1.0 - goldenRatio()) * startRange + goldenRatio() * endRange;
 				f2 = distanceAtAngle(points, aTemplate, x2);
 			}
 		}
-		return min(f1, f2);
+		return std::min(f1, f2);
 	}
 
 	Path2D GeometricRecognizer::normalizePath(Path2D points)
@@ -233,7 +197,7 @@ namespace DollarRecognizer
 	
 		//--- Initialize best distance to the largest possible number
 		//--- That way everything will be better than that
-		double bestDistance = MAX_DOUBLE;
+		double bestDistance = std::numeric_limits<double>::max();
 		//--- We haven't found a good match yet
 		int indexOfBestMatch = -1;
 
@@ -257,13 +221,13 @@ namespace DollarRecognizer
 		//---  of the square we scaled everything too)
 		//--- Distance = hwo different they are
 		//--- Subtract that from 1 (100%) to get the similarity
-		double score = 1.0 - (bestDistance / halfDiagonal);
+		double score = 1.0 - (bestDistance / halfDiagonal());
 
 		//--- Make sure we actually found a good match
 		//--- Sometimes we don't, like when the user doesn't draw enough points
 		if (-1 == indexOfBestMatch)
 		{
-			cout << "Couldn't find a good match." << endl;
+            std::cout << "Couldn't find a good match." << std::endl;
 			return RecognitionResult("Unknown", 1);
 		}
 
@@ -281,14 +245,14 @@ namespace DollarRecognizer
 		newPoints.push_back(points.front());
 	    for(int i = 1; i < (int)points.size(); i++)
 		{
-			Point2D currentPoint  = points[i];
-			Point2D previousPoint = points[i-1];
+			Point currentPoint  = points[i];
+			Point previousPoint = points[i-1];
 			double d = getDistance(previousPoint, currentPoint);
 			if ((D + d) >= interval)
 			{
 				double qx = previousPoint.x + ((interval - D) / d) * (currentPoint.x - previousPoint.x);
 				double qy = previousPoint.y + ((interval - D) / d) * (currentPoint.y - previousPoint.y);
-				Point2D point(qx, qy);
+				Point point(qx, qy);
 				newPoints.push_back(point);
 				points.insert(points.begin() + i, point);
 				D = 0.0;
@@ -307,7 +271,7 @@ namespace DollarRecognizer
 
 	Path2D GeometricRecognizer::rotateBy(Path2D points, double rotation) 
 	{
-		Point2D c     = centroid(points);
+		Point c     = centroid(points);
 		//--- can't name cos; creates compiler error since VC++ can't
 		//---  tell the difference between the variable and function
 		double cosine = cos(rotation);	
@@ -316,17 +280,17 @@ namespace DollarRecognizer
 		Path2D newPoints;
 		for (Path2DIterator i = points.begin(); i != points.end(); i++)
 		{
-			Point2D point = *i;
+			Point point = *i;
 			double qx = (point.x - c.x) * cosine - (point.y - c.y) * sine   + c.x;
 			double qy = (point.x - c.x) * sine   + (point.y - c.y) * cosine + c.y;
-			newPoints.push_back(Point2D(qx, qy));
+			newPoints.push_back(Point(qx, qy));
 		}
 		return newPoints;
 	}
 
 	Path2D GeometricRecognizer::rotateToZero(Path2D points)
 	{
-		Point2D c = centroid(points);
+		Point c = centroid(points);
 		double rotation = atan2(c.y - points[0].y, c.x - points[0].x);
 		return rotateBy(points, -rotation);
 	}
@@ -334,11 +298,11 @@ namespace DollarRecognizer
 	Path2D GeometricRecognizer::scaleToSquare(Path2D points)
 	{
 		//--- Figure out the smallest box that can contain the path
-		DollarRecognizer::Rectangle box = boundingBox(points);
+		BoundingBox box = boundingBox(points);
 		Path2D newPoints;
 		for (Path2DIterator i = points.begin(); i != points.end(); i++)
 		{
-			Point2D point = *i;
+			Point point = *i;
 			//--- Scale the points to fit the main box
 			//--- So if we wanted everything 100x100 and this was 50x50,
 			//---  we'd multiply every point by 2
@@ -347,7 +311,7 @@ namespace DollarRecognizer
 			//--- Why are we adding them to a new list rather than 
 			//---  just scaling them in-place?
 			// TODO: try scaling in place (once you know this way works)
-			newPoints.push_back(Point2D(scaledX, scaledY));
+			newPoints.push_back(Point(scaledX, scaledY));
 		}
 		return newPoints;
 	}
@@ -377,14 +341,14 @@ namespace DollarRecognizer
 	 */
 	Path2D GeometricRecognizer::translateToOrigin(Path2D points)
 	{
-		Point2D c = centroid(points);
+		Point c = centroid(points);
 		Path2D newPoints;
 		for (Path2DIterator i = points.begin(); i != points.end(); i++)
 		{
-			Point2D point = *i;
+			Point point = *i;
 			double qx = point.x - c.x;
 			double qy = point.y - c.y;
-			newPoints.push_back(Point2D(qx, qy));
+			newPoints.push_back(Point(qx, qy));
 		}
 		return newPoints;
 	}

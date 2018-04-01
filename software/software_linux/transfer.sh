@@ -23,7 +23,7 @@ libs
 ../shared_libs
 nios
 arm_system.h
-sdram.dat
+nios.dat
 )
 
 tryaddresses() {

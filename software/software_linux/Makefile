@@ -1,6 +1,6 @@
 INCFLAGS := -Ilibs -Ilibs/UI -Ishared_libs -I. -Ilibs/GestureRecognition
 DEPFLAGS := -MMD
-CPPFLAGS := -g -Wall -std=c++14 -O3 $(INCFLAGS) $(DEPFLAGS)
+CPPFLAGS := -g -Wall -Werror -std=c++14 -O3 $(INCFLAGS) $(DEPFLAGS)
 
 #SRC_FILES := main.cpp
 SRC_FILES := testmain.cpp
