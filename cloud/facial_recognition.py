@@ -38,6 +38,7 @@ def auth_user(user):
     session.modified = True
     print('You are logged in as %s' % (session['username']))
     print('You have id %s' % (session['user_id']))
+    return 'Authenticated'
 
 def get_current_user():
 	print(session.get('logged_in'))
@@ -572,5 +573,5 @@ def applet():
 
 if __name__ == '__main__':
 	app.secret_key = "reds209ndsldssdsljdsldsdsljdsldksdksdsdfsfsfsfis"
-	app.run(host='104.198.97.189', port=6000)
+	app.run(host='0.0.0.0', port=6000)
 	
