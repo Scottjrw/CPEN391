@@ -35,7 +35,6 @@ def auth_user(user):
 	cursor = db.cursor()
 	cursor.execute('''DELETE FROM currentUser''')
 	currentUser.create(user_id = user.id, username_id = user.username)
-	return 'Authenticated'
 
 def get_current_user():
 	cursor = db.cursor()
