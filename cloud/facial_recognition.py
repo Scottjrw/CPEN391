@@ -557,7 +557,7 @@ def deleteApplet():
 		return 'Removed applet'
 
 
-@app.route('getUserApplets', methods=['GET'])
+@app.route('/getUserApplets', methods=['GET'])
 def getUserApplets():
 	if request.method == 'GET':
 		user_id = get_current_user()
