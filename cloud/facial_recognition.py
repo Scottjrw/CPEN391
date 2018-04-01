@@ -40,6 +40,7 @@ def auth_user(user):
 
 def get_current_user():
     if session.get('logged_in'):
+    	print(session['user_id'])
         return session['user_id']
 
 
@@ -546,6 +547,7 @@ def deleteApplet():
 		r = request.get_json()
 
 		user_id = get_current_user()
+		print(user_id)
 
 		cursor = db.cursor()
 
