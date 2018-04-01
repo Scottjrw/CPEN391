@@ -576,9 +576,7 @@ def getUserApplets():
 		return jsonify(list_of_applets)
 
 
-
-
-@app.route('/applet', methods=['POST'])
+@app.route('/runApplet', methods=['POST'])
 def applet():
 	if request.method == 'POST':
 	    # report = {}
@@ -588,6 +586,41 @@ def applet():
 		request_name = "https://maker.ifttt.com/trigger/{applet}/with/key/egyN_jF6pzR88s9b8rFg0jTYXbbIpEGH-rB_zGobz_i".format(applet=request.form['applet'])
 		requests.post(request_name)
 		return 'applet successful'
+
+
+@app.route('/getCurrentMapping', methods=['GET'])
+def getCurrentMapping():
+	if request.method == 'GET':
+		user_id = get_current_user()
+
+		cursor = db.cursor()
+		user_map = list()
+
+		cursor.execute("SELECT user_id, gesture, ifttt_descriptor,  FROM Mappings")
+		result_set = cursor.fetchall()
+		for row in result_set:
+			if (user_id == row[0]):
+				user_pair = list({row[1], row[2]})
+				user_map.append(user_id)
+
+		return jsonify(user_map)
+
+
+@app.route('/changeCurrentMapping', methods=['POST', 'OPTIONS'])
+def changeCurrentMapping():
+	if request.method == 'POST' or request.method == 'OPTIONS':
+		user_id = get_current_user()
+
+		cursor = db.cursor()
+
+		print(request.form['mapping'])
+
+		return 'ok'
+
+
+
+
+
 
 if __name__ == '__main__':
 	app.secret_key = "reds209ndsldssdsljdsldsdsljdsldksdksdsdfsfsfsfis"

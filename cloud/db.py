@@ -27,6 +27,10 @@ class currentUser(BaseModel):
 	user_id = IntegerField()
 	username_id = CharField()
 
+class Mappings(BaseModel):
+	user_id = IntegerField()
+	gesture = CharField()
+	ifttt_descriptor = CharField()
 
 # def addUser(user_id, photo_encoding):
 # 	t = Users.create(user_id=user_id, photo_encoding=photo_encoding)
@@ -34,4 +38,4 @@ class currentUser(BaseModel):
 
 def create_tables():
 	with db:
-		db.create_tables([Users, Applets, tempPicture, currentUser])
+		db.create_tables([Users, Applets, tempPicture, currentUser, Mappings])
