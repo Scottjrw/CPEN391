@@ -568,11 +568,12 @@ def getUserApplets():
 		cursor.execute("SELECT person_id, ifttt_descriptor FROM applets")
 		result_set = cursor.fetchall()
 		for row in result_set:
-			list_of_applets.append(row[1])
+			if (user_id == row[0]):
+				list_of_applets.append(row[1])
 
 		print(list_of_applets)
 
-		return list_of_applets
+		return jsonify(list_of_applets)
 
 
 
