@@ -168,9 +168,8 @@ void TouchControl::recv(uint8_t val) {
                         updown.y |= (val & 0x1F) << 7;
 
                         if (m_touchCB != nullptr && (!m_debounce || debounce_ok()))
-                            m_touchCB(this,
-                                    updown.x * m_x_max / TOUCH_MAX, 
-                                    updown.y * m_y_max / TOUCH_MAX);
+                            m_touchCB({updown.x * m_x_max / TOUCH_MAX, 
+                                    updown.y * m_y_max / TOUCH_MAX});
 
                         m_recv_buf.TYPE = INVALID;
                         m_recv_index = 0;
@@ -324,9 +323,4 @@ static void touch_print(response *response) {
 
 static void touch_print(touch_updown *msg) {
     std::cout << "X: " << msg->x << "\nY: " << msg->y << '\n';
-}
-
-int TouchControl::GetFd(){
-    int i = m_uart;
-    return i;
 }

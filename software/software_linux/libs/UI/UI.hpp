@@ -8,15 +8,10 @@
 #include <stdexcept>
 #include <utility>
 #include "SimpleGraphics.hpp"
-#include "touch.hpp"
-
+#include "GeometricTypes.hpp"
 
 namespace UI {
-
-/* Represents a x,y coordinate
- * first is x, second is y
- */
-typedef struct {unsigned x; unsigned y;} Point;
+    using rgba_t = SimpleGraphics::rgba_t;
 
 /* ------------------------------------------------------------------
  * An abstract class which represents anything that can be drawn
@@ -34,13 +29,6 @@ public:
      * Only implement this on classes where it makes sense to undraw
      */
     virtual void undraw() { throw std::logic_error("Undraw not implemented"); }
-
-    /*
-     * Move the object in the X or Y by amount pixels, sleeping sleep usec after each pixel
-     * May be useful to reduce redraws, but primarily for animation
-     */
-    virtual void translateX(int amount, unsigned sleepUs=0) { throw std::logic_error("Cannot be moved"); }
-    virtual void translateY(int amount, unsigned sleepUs=0) { throw std::logic_error("Cannot be moved"); }
 
     Drawable(SimpleGraphics &graphics):
         m_graphics(graphics),
@@ -63,7 +51,7 @@ public:
     /* Callback called everytime the object is touched
      * The object itself is provided along with the exact point of touch
      */
-    typedef std::function<void(Touchable *, Point)> TouchCB;
+    typedef std::function<void(Point p)> TouchCB;
 
     /* Check if object is touched
      * 
@@ -79,14 +67,11 @@ public:
      */
     virtual void onTouch(TouchCB callback) { throw std::logic_error("onTouch not implemented"); };
 
-    Touchable(TouchControl &touch):
-        m_touch(touch)
-    {}
+    Touchable() {}
 
-    virtual ~Touchable(){};
+    virtual ~Touchable(){}
 
 protected:
-    TouchControl &m_touch;
 };
 
 /* ------------------------------------------------------------------
@@ -97,13 +82,13 @@ public:
     virtual void draw();
     virtual void undraw();
 
-    Rectangle(SimpleGraphics &graphics, Point p1, Point p2, SimpleGraphics::rgba_t color);
+    Rectangle(SimpleGraphics &graphics, Point p1, Point p2, rgba_t color);
 
     virtual ~Rectangle(){};
 
 protected:
     Point m_p1, m_p2;
-    SimpleGraphics::rgba_t m_color;
+    rgba_t m_color;
 };
 
 /* ------------------------------------------------------------------
@@ -116,13 +101,13 @@ public:
     virtual bool touch(Point p);
     virtual void onTouch(TouchCB callback);
 
-    Button(SimpleGraphics &graphics, TouchControl &touch,
-            Point p1, Point p2, std::string text, SimpleGraphics::rgba_t text_color,
-            SimpleGraphics::rgba_t background_color);
+    Button(SimpleGraphics &graphics,
+            Point p1, Point p2, std::string text, rgba_t text_color,
+            rgba_t background_color);
 
 private:
     std::string m_text;
-    SimpleGraphics::rgba_t m_text_color;
+    rgba_t m_text_color;
     TouchCB m_cb;
 };
 
@@ -135,21 +120,19 @@ public:
     virtual void draw();
     virtual void undraw();
     virtual bool touch(Point p);
-    virtual void onTouch(TouchCB callback);
 
     int value() { return chosen_value; }
 
-    Slider(SimpleGraphics &graphics, TouchControl &touch,
-            Point p1, Point p2, SimpleGraphics::rgba_t text_color,
-            SimpleGraphics::rgba_t background_color, int min, int max);
+    Slider(SimpleGraphics &graphics, 
+            Point p1, Point p2, rgba_t text_color,
+            rgba_t background_color, int min, int max);
 
 private:
     std::string m_text;
-    SimpleGraphics::rgba_t m_text_color;
-    TouchCB m_cb;
+    rgba_t m_text_color;
     Point slider_p1, slider_p2;
     Point slider_bar_p1, slider_bar_p2;
-    SimpleGraphics::rgba_t m_background_color;
+    rgba_t m_background_color;
     bool initial_state;
     int chosen_value;
     int min, max;
@@ -177,16 +160,14 @@ public:
     /* 
      * Add a new button to the dropdown menu with text
      */
-    void newItem(SimpleGraphics &graphics, TouchControl &touch, std::string text, SimpleGraphics::rgba_t text_color,
-            SimpleGraphics::rgba_t background_color, TouchCB callback);
+    void newItem(SimpleGraphics &graphics, std::string text, rgba_t text_color,
+            rgba_t background_color, TouchCB callback);
 
-    enum Expand { TOP, BOTTOM };
-    DropdownMenu(SimpleGraphics &graphics, TouchControl &touch,
-            Expand direction, Point p1, Point p2, std::string text, SimpleGraphics::rgba_t text_color,
-            SimpleGraphics::rgba_t background_color);
+    DropdownMenu(SimpleGraphics &graphics,
+            Point p1, Point p2, std::string text, rgba_t text_color,
+            rgba_t background_color);
 
 private:
-    Expand m_expandDir;
     // Button which shows the menu
     Button m_expander;
     // List of buttons in the menu

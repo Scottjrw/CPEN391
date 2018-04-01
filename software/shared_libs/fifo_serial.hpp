@@ -105,7 +105,9 @@ public:
         m_recv_status_base(reinterpret_cast<uint32_t *>(recv_status_base)),
         m_send_base(reinterpret_cast<uint32_t *>(send_base)),
         m_send_status_base(reinterpret_cast<uint32_t *>(send_status_base))
-    { }
+    { 
+        clear();
+    }
 #else 
     {
         mem_fd = open("/dev/mem", (O_RDWR | O_SYNC));
@@ -127,6 +129,8 @@ public:
         m_send_status_page = mmap_regs(mem_fd, send_status_base, status_base_size, &m_send_status_base);
         if (m_send_status_page == MAP_FAILED)
             throw errno_error(errno, "FIFO_Serial: mmap send_status_base");
+
+        clear();
     }
 
     ~FIFO_Serial() {

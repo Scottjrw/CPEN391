@@ -93,6 +93,7 @@ module pixel_cluster_x_y_clusterer_tb();
 parameter N_CLUSTERS = 4;
 parameter X_Y_BITS = 16;
 parameter COUNTER_BITS = 16;
+parameter MAX_X_Y = 320;
 
 logic clk, reset;
 
@@ -104,11 +105,14 @@ logic [X_Y_BITS-1:0] range;
 
 logic [X_Y_BITS*N_CLUSTERS-1:0] X_clusters, Y_clusters;
 logic [COUNTER_BITS*N_CLUSTERS-1:0] cluster_counters;
+logic [X_Y_BITS*N_CLUSTERS-1:0] cluster_min_X, cluster_min_Y,
+                                cluster_max_X, cluster_max_Y;
 
 pixel_cluster_x_y_clusterer #(
     .N_CLUSTERS(N_CLUSTERS),
     .X_Y_BITS(X_Y_BITS),
-    .COUNTER_BITS(COUNTER_BITS)
+    .COUNTER_BITS(COUNTER_BITS),
+    .MAX_X_Y(MAX_X_Y)
 ) inst (
     .clk(clk),
     .reset(reset),
@@ -118,7 +122,11 @@ pixel_cluster_x_y_clusterer #(
     .range(range),
     .X_clusters(X_clusters),
     .Y_clusters(Y_clusters),
-    .cluster_counters(cluster_counters)
+    .cluster_counters(cluster_counters),
+    .cluster_min_X(cluster_min_X),
+    .cluster_min_Y(cluster_min_Y),
+    .cluster_max_X(cluster_max_X),
+    .cluster_max_Y(cluster_max_Y)
 );
 
 initial forever begin
@@ -126,18 +134,26 @@ initial forever begin
     clk = 1; #5;
 end
 
-parameter NUM_TESTS = 11;
-int ok = 0;
+int fail = 0;
 
 initial begin
     reset = 1; X = 0; Y = 0;
     valid = 0; range = 0;
     #10;
-    assert(cluster_counters == {16'd0, 16'd0, 16'd0, 16'd0}) ok++;
+    assert(cluster_counters == 0) else fail++;
+    assert(cluster_min_X == 0) else fail++;
+    assert(cluster_min_Y == 0) else fail++;
+    assert(cluster_max_X == 0) else fail++;
+    assert(cluster_max_Y == 0) else fail++;
 
     reset = 0;
     #10;
-    assert(cluster_counters == {16'd0, 16'd0, 16'd0, 16'd0}) ok++;
+    assert(cluster_counters == 0) else fail++;
+    assert(cluster_min_X == 0) else fail++;
+    assert(cluster_min_Y == 0) else fail++;
+    assert(cluster_max_X == 0) else fail++;
+    assert(cluster_max_Y == 0) else fail++;
+    $display("Section 0 Done");
 
     // Start test
     range = 50; valid = 1;
@@ -156,9 +172,14 @@ initial begin
 
     // Wait for pipeline
     #50;
-    assert(X_clusters == {16'd0, 16'd0, 16'd0, 16'd93}) ok++;
-    assert(Y_clusters == {16'd0, 16'd0, 16'd0, 16'd106}) ok++;
-    assert(cluster_counters == {16'd0, 16'd0, 16'd0, 16'd3}) ok++;
+    assert(X_clusters == {16'd0, 16'd0, 16'd0, 16'd93}) else fail++;
+    assert(Y_clusters == {16'd0, 16'd0, 16'd0, 16'd106}) else fail++;
+    assert(cluster_counters == {16'd0, 16'd0, 16'd0, 16'd3}) else fail++;
+    assert(cluster_min_X == {16'd0, 16'd0, 16'd0, 16'd75}) else fail++;
+    assert(cluster_min_Y == {16'd0, 16'd0, 16'd0, 16'd100}) else fail++;
+    assert(cluster_max_X == {16'd0, 16'd0, 16'd0, 16'd125}) else fail++;
+    assert(cluster_max_Y == {16'd0, 16'd0, 16'd0, 16'd125}) else fail++;
+    $display("Section 1 Done");
 
     valid = 1;
     X = 10; Y = 10;
@@ -170,9 +191,14 @@ initial begin
     valid = 0;
     
     #50;
-    assert(X_clusters == {16'd0, 16'd0, 16'd15, 16'd93}) ok++;
-    assert(Y_clusters == {16'd0, 16'd0, 16'd15, 16'd106}) ok++;
-    assert(cluster_counters == {16'd0, 16'd0, 16'd2, 16'd3}) ok++;
+    assert(X_clusters == {16'd0, 16'd0, 16'd15, 16'd93}) else fail++;
+    assert(Y_clusters == {16'd0, 16'd0, 16'd15, 16'd106}) else fail++;
+    assert(cluster_counters == {16'd0, 16'd0, 16'd2, 16'd3}) else fail++;
+    assert(cluster_min_X == {16'd0, 16'd0, 16'd10, 16'd75}) else fail++;
+    assert(cluster_min_Y == {16'd0, 16'd0, 16'd10, 16'd100}) else fail++;
+    assert(cluster_max_X == {16'd0, 16'd0, 16'd20, 16'd125}) else fail++;
+    assert(cluster_max_Y == {16'd0, 16'd0, 16'd20, 16'd125}) else fail++;
+    $display("Section 2 Done");
 
     valid = 1;
     X = 200; Y = 200;
@@ -187,15 +213,41 @@ initial begin
     valid = 0;
 
     #50;
-    assert(X_clusters == {16'd300, 16'd200, 16'd15, 16'd93}) ok++;
-    assert(Y_clusters == {16'd200, 16'd200, 16'd15, 16'd106}) ok++;
-    assert(cluster_counters == {16'd1, 16'd1, 16'd2, 16'd3}) ok++;
+    assert(X_clusters == {16'd300, 16'd200, 16'd15, 16'd93}) else fail++;
+    assert(Y_clusters == {16'd200, 16'd200, 16'd15, 16'd106}) else fail++;
+    assert(cluster_counters == {16'd1, 16'd1, 16'd2, 16'd3}) else fail++;
+    assert(cluster_min_X == {16'd300, 16'd200, 16'd10, 16'd75}) else fail++;
+    assert(cluster_min_Y == {16'd200, 16'd200, 16'd10, 16'd100}) else fail++;
+    assert(cluster_max_X == {16'd300, 16'd200, 16'd20, 16'd125}) else fail++;
+    assert(cluster_max_Y == {16'd200, 16'd200, 16'd20, 16'd125}) else fail++;
+    $display("Section 3 Done");
 
+    valid = 1;
+    X = 135; Y = 100;
+    #10;
 
-    if (ok == NUM_TESTS)
+    X = 114; Y = 60;
+    #10;
+
+    X = 100; Y = 100;
+    #10;
+
+    valid = 0;
+
+    #50;
+    assert(X_clusters == {16'd300, 16'd200, 16'd15, 16'd107}) else fail++;
+    assert(Y_clusters == {16'd200, 16'd200, 16'd15, 16'd90}) else fail++;
+    assert(cluster_counters == {16'd1, 16'd1, 16'd2, 16'd6}) else fail++;
+    assert(cluster_min_X == {16'd300, 16'd200, 16'd10, 16'd75}) else fail++;
+    assert(cluster_min_Y == {16'd200, 16'd200, 16'd10, 16'd60}) else fail++;
+    assert(cluster_max_X == {16'd300, 16'd200, 16'd20, 16'd135}) else fail++;
+    assert(cluster_max_Y == {16'd200, 16'd200, 16'd20, 16'd125}) else fail++;
+    $display("Section 4 Done");
+
+    if (fail == 0)
         $display("All Tests passed");
     else
-        $display("%d of %d tests passed", ok, NUM_TESTS);
+        $display("%d tests failed", fail);
 
     $stop;
 end

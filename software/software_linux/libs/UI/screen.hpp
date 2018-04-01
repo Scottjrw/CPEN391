@@ -15,11 +15,12 @@
 #include <utility>
 #include "UI.hpp"
 #include "cursor.hpp"
-//#include "PixelCluster.hpp"
+#include "event_loop.hpp"
+#include "touch.hpp"
 
 namespace UI {
 
-class Screen : public Drawable, public Touchable {
+class Screen : public Event_Loop, public Drawable, public Touchable {
 public:
 	/*
 	 * draw all elements part of the screen
@@ -28,9 +29,8 @@ public:
 
     virtual void undraw();
 
-    virtual bool touch(Point p) { throw std::logic_error("Cannot Touch Screen"); }
+    virtual bool touch(Point p);
 
-	void enable_touch();
 	/*
 	 * add an element to the screen
 	 */
@@ -38,26 +38,18 @@ public:
 
 	void addTouchable(Touchable* element);
 
-	int run(void);
-
-	void exit(int ret_code);
-
-    //void addPixelCluster(PixelCluster *pixel);
-
 	Screen(SimpleGraphics &graphics, TouchControl &touch);
 
+    ~Screen();
+
 private:
-	bool m_exited;
+    TouchControl &m_touch;
 	std::vector<Drawable*> m_drawables;
 	std::vector<Touchable*> m_touchables;
-    //PixelCluster *m_cluster;
-	int m_next_screen;
 	Cursor m_cursor;
     Cursor m_red_dot_cursor;
 
     static constexpr unsigned RED_DOT_POLL_MS = 50;
-
-    void touchCB(TouchControl *, unsigned x, unsigned y);
 
 };
 

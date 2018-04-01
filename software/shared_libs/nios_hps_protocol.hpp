@@ -53,6 +53,10 @@ namespace NIOS_HPS_Protocol {
         struct body {
             uint32_t dot_x;
             uint32_t dot_y;
+            uint32_t dot_min_x;
+            uint32_t dot_min_y;
+            uint32_t dot_max_x;
+            uint32_t dot_max_y;
         };
     };
 
@@ -146,9 +150,13 @@ namespace NIOS_HPS_Protocol {
         // Receive a message, returns if the call would block execution
         const message *recvAsync() {
             while (m_remaining_words == 0) {
-                m_recv_msg.application = static_cast<Application>(m_serial.read());
-                m_remaining_words = app_to_body_length(m_recv_msg.application);
-                m_recv_msg_pos = reinterpret_cast<uint32_t *>(&m_recv_msg) + 1;
+                unsigned cnt = m_serial.readAsync(reinterpret_cast<uint32_t *>(&m_recv_msg), 1);
+                if (cnt == 1) {
+                    m_remaining_words = app_to_body_length(m_recv_msg.application);
+                    m_recv_msg_pos = reinterpret_cast<uint32_t *>(&m_recv_msg) + 1;
+                } else {
+                    return nullptr;
+                }
             }
 
             unsigned num_read = m_serial.readAsync(m_recv_msg_pos, m_remaining_words);

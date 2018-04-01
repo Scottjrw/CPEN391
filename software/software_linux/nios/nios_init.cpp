@@ -7,6 +7,8 @@
 #include <err.h>
 #include "arm_system.h"
 
+constexpr const char *sdram_dat = "nios.dat";
+
 constexpr unsigned sdram_addr_width = 4;
 constexpr unsigned sdram_width = 2;
 
@@ -28,7 +30,7 @@ static void reset_nios(void *reset_base, bool reset) {
 }
 
 int main(void) {
-    std::ifstream datfile("sdram.dat", std::ios_base::in | std::ios_base::ate);
+    std::ifstream datfile(sdram_dat, std::ios_base::in | std::ios_base::ate);
 
     size_t datfile_size = datfile.tellg();
     datfile.seekg(0);

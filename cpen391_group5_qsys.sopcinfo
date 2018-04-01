@@ -5,11 +5,11 @@
  version="1.0"
  fabric="QSYS">
  <!-- Format version 15.0 145 (Future versions may contain additional information.) -->
- <!-- 2018.03.28.20:03:51 -->
+ <!-- 2018.03.31.12:04:56 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1522292616</value>
+  <value>1522523088</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -108,7 +108,7 @@
 the requested settings for a module instance. -->
   <parameter name="AUTO_GENERATION_ID">
    <type>java.lang.Integer</type>
-   <value>1522292616</value>
+   <value>1522523088</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -193,7 +193,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="AUTO_DMA_MASTER_ADDRESS_WIDTH">
    <type>com.altera.entityinterfaces.moduleext.AddressWidthType</type>
-   <value>com.altera.entityinterfaces.moduleext.AddressWidthType@717b8a65</value>
+   <value>com.altera.entityinterfaces.moduleext.AddressWidthType@548262bf</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -3042,7 +3042,7 @@ parameters are a RESULT of the module parameters. -->
 the requested settings for a module instance. -->
   <parameter name="AUTO_GENERATION_ID">
    <type>java.lang.Integer</type>
-   <value>1522292616</value>
+   <value>1522523088</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -98478,15 +98478,7 @@ parameters are a RESULT of the module parameters. -->
    path="pixel_cluster_0">
   <!-- Describes a single module. Module parameters are
 the requested settings for a module instance. -->
-  <parameter name="N_REGS">
-   <type>int</type>
-   <value>11</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="ADDR_BITS">
+  <parameter name="N_CLUSTERS">
    <type>int</type>
    <value>4</value>
    <derived>false</derived>
@@ -98497,6 +98489,14 @@ the requested settings for a module instance. -->
   <parameter name="REG_BITS">
    <type>int</type>
    <value>32</value>
+   <derived>false</derived>
+   <enabled>false</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="ADDR_BITS">
+   <type>int</type>
+   <value>4</value>
    <derived>false</derived>
    <enabled>false</enabled>
    <visible>true</visible>
@@ -98529,14 +98529,6 @@ the requested settings for a module instance. -->
   <parameter name="Y_MAX">
    <type>int</type>
    <value>240</value>
-   <derived>false</derived>
-   <enabled>false</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="N_CLUSTERS">
-   <type>int</type>
-   <value>4</value>
    <derived>false</derived>
    <enabled>false</enabled>
    <visible>true</visible>
@@ -99269,15 +99261,7 @@ parameters are a RESULT of the module parameters. -->
    path="pixel_cluster_1">
   <!-- Describes a single module. Module parameters are
 the requested settings for a module instance. -->
-  <parameter name="N_REGS">
-   <type>int</type>
-   <value>11</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="ADDR_BITS">
+  <parameter name="N_CLUSTERS">
    <type>int</type>
    <value>4</value>
    <derived>false</derived>
@@ -99288,6 +99272,14 @@ the requested settings for a module instance. -->
   <parameter name="REG_BITS">
    <type>int</type>
    <value>32</value>
+   <derived>false</derived>
+   <enabled>false</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="ADDR_BITS">
+   <type>int</type>
+   <value>4</value>
    <derived>false</derived>
    <enabled>false</enabled>
    <visible>true</visible>
@@ -99320,14 +99312,6 @@ the requested settings for a module instance. -->
   <parameter name="Y_MAX">
    <type>int</type>
    <value>240</value>
-   <derived>false</derived>
-   <enabled>false</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="N_CLUSTERS">
-   <type>int</type>
-   <value>4</value>
    <derived>false</derived>
    <enabled>false</enabled>
    <visible>true</visible>

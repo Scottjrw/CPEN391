@@ -15,10 +15,15 @@ void Hard_Processor_System::hello() {
     } while (msg->body.nios_cmd.command != NIOS_Control::NIOS_Cmd_Hello);
 }
 
-void Hard_Processor_System::dot_location(unsigned x, unsigned y) {
+void Hard_Processor_System::dot_location(unsigned x, unsigned y, unsigned min_x, unsigned min_y, 
+                                              unsigned max_x, unsigned max_y) {
     Dot_Location::body body = {
         .dot_x = x,
-        .dot_y = y
+        .dot_y = y,
+        .dot_min_x = min_x,
+        .dot_min_y = min_y,
+        .dot_max_x = max_x,
+        .dot_max_y = max_y
     };
 
     m_parser.send(App_Dot_Location, &body);

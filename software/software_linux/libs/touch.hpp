@@ -4,10 +4,10 @@
 #include <iostream>
 #include <unistd.h>
 #include <fcntl.h>
-// #include <sys/alt_irq.h>
-// #include <sys/alt_alarm.h>
 #include <chrono>
 #include "touch_uart.hpp"
+#include "GeometricTypes.hpp"
+#include "UI.hpp"
 
 // University program RS232 supports interrupts, but seems really unreliable
 //#define TOUCH_UP_RS232
@@ -15,7 +15,8 @@
 class TouchControl {
 public:
     typedef std::function<void(TouchControl *, TouchUart::message *)> MessageCB;
-    typedef std::function<void(TouchControl *, unsigned int x, unsigned int y)> TouchCB;
+    using Touchable = UI::Touchable;
+    using TouchCB = Touchable::TouchCB;
 
     // Commands
     void touch_enable();
@@ -37,17 +38,21 @@ public:
 
     // Setup callbacks
     void setMessageCB(MessageCB cb) { m_messageCB = cb; }
-    void setTouchCB(TouchCB cb) { m_touchCB = cb; }
+
+    // Set a touchable to receive the touch callbacks
+    void setTouchable(Touchable &t) {
+        m_touchCB = std::bind(&Touchable::touch, &t, std::placeholders::_1);
+    }
+
+    void clearTouchable() {
+        m_touchCB = nullptr;
+    }
 
     // Dump a message's contents completely
     static void print(TouchUart::message *msg);
-    // A print that can be passed as a MessageCB
-    static void printCB(TouchControl *, TouchUart::message *msg) { print(msg); }
 
     TouchControl(const char *uart_name, uint32_t alt_irq_id=-1, uint32_t alt_ic_id=-1,
             unsigned x_max=TOUCH_MAX, unsigned y_max=TOUCH_MAX, bool debounce=true);
-
-    int GetFd();
 
 private:
     int m_uart; // Uart FD
