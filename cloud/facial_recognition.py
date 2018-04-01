@@ -15,7 +15,6 @@ import requests
 from PIL import Image
 from datetime import timedelta
 from functools import update_wrapper
-print(sys.path)
 from flask_cors import CORS
 
 home = expanduser("~")
@@ -40,9 +39,8 @@ def auth_user(user):
     print('You have id %s' % (session['user_id']))
 
 def get_current_user():
-	print(session)
 	if session.get('logged_in'):
-		return session.get('user_id')
+		return Users.get(Users.id == session['user_id'])
 
 
 def hex_to_img(hex_string):
