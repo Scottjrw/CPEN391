@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cassert>
 #include <fstream>
+#include <algorithm>
 #include <unistd.h>
 #include <sys/mman.h>
 #include <fcntl.h>
@@ -9,6 +10,11 @@
 
 namespace NIOS_Processor_Init {
     static constexpr unsigned SDRAM_WIDTH = 2;
+
+    static void sdram_clear(void *sdram_base, unsigned sdram_span) {
+        std::uninitialized_fill_n(static_cast<uint32_t *>(sdram_base), 
+                sdram_span / sizeof(uint32_t), 0);
+    }
 
     static void sdram_write(void *sdram_base, uint32_t addr, uint16_t data) {
         uintptr_t byte_addr = reinterpret_cast<uintptr_t>(sdram_base) + addr * SDRAM_WIDTH;
@@ -59,8 +65,12 @@ int program_nios(const char *sdram_datfile,
 
     std::clog << "Starting..." << std::endl << std::hex;
 
-    std::clog << "Assert Reset on NIOS..." << std::endl;
+    std::clog << "Assert Reset on NIOS" << std::endl;
     nios_reset(reset_base, true);
+
+    std::clog << "Clearing the SDRAM... ";
+    sdram_clear(sdram_base, sdram_span);
+    std::clog << "Done" << std::endl;
 
     std::clog << "Writing Program to SDRAM..." << std::endl;
 
@@ -95,14 +105,14 @@ int program_nios(const char *sdram_datfile,
     }
     usleep(100000);
 
-    std::clog << "Release Reset on NIOS..." << std::endl;
+    std::clog << "Release Reset on NIOS" << std::endl;
     nios_reset(reset_base, false);
-    std::clog << "Done!" << std::endl;
 
     std::clog << std::dec;
     munmap(reset_base, mm_reset_span);
     munmap(sdram_base, sdram_span);
     close(fd);
+    std::clog << "Everything Done!" << std::endl;
     return 0;
 }
 

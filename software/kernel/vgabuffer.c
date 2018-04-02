@@ -175,7 +175,7 @@ static int cpen391_vgabuffer_fopen(struct inode *inode, struct file *filp) {
 
     // Directly enable the bridge, a todo would be to use the proper driver to enable it
     iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
-    wmb();
+    udelay(100);
     iowrite32(FPGA_SDRAM_BRIDGE_ENABLE, vgabuf.sdram_bridge_base);
     msleep(25);
 
@@ -191,6 +191,8 @@ static int cpen391_vgabuffer_fopen(struct inode *inode, struct file *filp) {
         printk(KERN_ERR DRV_NAME ": DMA Controller not responding, hard reset required\n");
         goto fail_free_framebuffer;
     }
+    video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_ENABLE);
+    udelay(100);
 
     vgabuf.in_use = true;
     printk(KERN_ALERT DRV_NAME ": opening file...\n");
@@ -198,10 +200,8 @@ static int cpen391_vgabuffer_fopen(struct inode *inode, struct file *filp) {
     return 0;
 
 fail_free_framebuffer:
-    video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_DISABLE);
-    msleep(25);
     iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
-    wmb();
+    udelay(100);
     iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
     __free_pages(vgabuf.framebuffer, vgabuf.framebuffer_order);
     vgabuf.framebuffer = NULL;
@@ -218,8 +218,10 @@ static int cpen391_vgabuffer_frelease(struct inode *inode, struct file *filp) {
     // Disable the sdram bridge and DMA Controller to prevent random memory from being read
     video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_DISABLE);
     msleep(25);
+    video_dma_write_reg(VIDEO_DMA_CONTROL_OFFSET, VIDEO_DMA_CTRL_DISABLE);
+    msleep(25);
     iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
-    wmb();
+    udelay(100);
     iowrite32(FPGA_SDRAM_BRIDGE_DISABLE, vgabuf.sdram_bridge_base);
     __free_pages(vgabuf.framebuffer, vgabuf.framebuffer_order);
     vgabuf.framebuffer = NULL;

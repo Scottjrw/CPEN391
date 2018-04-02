@@ -45,6 +45,8 @@ public:
 
     NIOS_Processor(FIFO_Serial &serial, std::ostream &print_stream = std::clog);
 
+    ~NIOS_Processor();
+
 private:
     NIOS_HPS_Protocol::Parser m_parser;
     DotLocationCB m_dot_location_cb;

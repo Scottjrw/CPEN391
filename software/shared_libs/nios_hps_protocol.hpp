@@ -51,12 +51,12 @@ namespace NIOS_HPS_Protocol {
     // Dot location from NIOS to HPS
     namespace Dot_Location {
         struct body {
-            uint32_t dot_x;
-            uint32_t dot_y;
-            uint32_t dot_min_x;
-            uint32_t dot_min_y;
-            uint32_t dot_max_x;
-            uint32_t dot_max_y;
+            uint32_t avg_x;
+            uint32_t avg_y;
+            uint32_t min_x;
+            uint32_t min_y;
+            uint32_t max_x;
+            uint32_t max_y;
         };
     };
 

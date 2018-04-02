@@ -639,7 +639,7 @@
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
   <parameter name="AUTO_DMA_MASTER_ADDRESS_MAP"><![CDATA[<address-map><slave name='hps_0_bridges.f2h_sdram0_data' start='0x0' end='0x100000000' /></address-map>]]></parameter>
-  <parameter name="AUTO_DMA_MASTER_ADDRESS_WIDTH">com.altera.entityinterfaces.moduleext.AddressWidthType@1f3331fd</parameter>
+  <parameter name="AUTO_DMA_MASTER_ADDRESS_WIDTH">com.altera.entityinterfaces.moduleext.AddressWidthType@6668769b</parameter>
   <parameter name="AUTO_GENERATION_ID" value="0" />
   <parameter name="AUTO_UNIQUE_ID">$${FILENAME}_Draw_Subsystem</parameter>
  </module>
@@ -1477,7 +1477,6 @@
   <parameter name="COUNTER_BITS" value="16" />
   <parameter name="N_CLUSTERS" value="4" />
   <parameter name="N_COLORS" value="3" />
-  <parameter name="N_REGS" value="11" />
   <parameter name="REG_BITS" value="32" />
   <parameter name="X_MAX" value="320" />
   <parameter name="X_Y_BITS" value="16" />
@@ -1489,7 +1488,6 @@
   <parameter name="COUNTER_BITS" value="16" />
   <parameter name="N_CLUSTERS" value="4" />
   <parameter name="N_COLORS" value="3" />
-  <parameter name="N_REGS" value="11" />
   <parameter name="REG_BITS" value="32" />
   <parameter name="X_MAX" value="320" />
   <parameter name="X_Y_BITS" value="16" />
@@ -2200,7 +2198,32 @@
    kind="reset"
    version="15.0"
    start="mm_reset_0.persistent_reset_0"
+   end="jtag_uart_0.reset" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.persistent_reset_0"
+   end="nios_hps_fifo.reset_in" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.persistent_reset_0"
+   end="hps_nios_fifo.reset_in" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.persistent_reset_0"
    end="nios2.reset_n" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.persistent_reset_0"
+   end="nios_hps_fifo.reset_out" />
+ <connection
+   kind="reset"
+   version="15.0"
+   start="mm_reset_0.persistent_reset_0"
+   end="hps_nios_fifo.reset_out" />
  <connection
    kind="reset"
    version="15.0"
@@ -2301,11 +2324,6 @@
    version="15.0"
    start="clocks.reset_source"
    end="nios_hps_fifo.reset_out" />
- <connection
-   kind="reset"
-   version="15.0"
-   start="mm_reset_0.timed_reset_0"
-   end="Draw_Subsystem.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />

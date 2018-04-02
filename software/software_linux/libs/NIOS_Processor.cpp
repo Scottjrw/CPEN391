@@ -15,6 +15,14 @@ NIOS_Processor::NIOS_Processor(FIFO_Serial &serial, std::ostream &print_stream):
     m_print_buf.reserve(PRINT_BUF_MAX);
 }
 
+NIOS_Processor::~NIOS_Processor() {
+    NIOS_Control::body body {
+        .command = NIOS_Control::NIOS_Cmd_Stop,
+    };
+
+    m_parser.send(App_NIOS_Control, &body);
+}
+
 int NIOS_Processor::hello(unsigned timeout_ms) {
     NIOS_Control::body body {
         .command = NIOS_Control::NIOS_Cmd_Hello,

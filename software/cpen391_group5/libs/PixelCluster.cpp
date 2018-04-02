@@ -13,6 +13,7 @@ PixelCluster::PixelCluster(uintptr_t base, int ic_id, int irq_id):
     m_cb(nullptr),
     m_cb_isr(false),
     m_call_cb(false),
+    m_isr_overflow(false),
     m_compare0_val(0),
     m_compare1_val(0),
     m_range_val(0)

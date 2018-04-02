@@ -13,6 +13,12 @@
 #include "Algorithms.hpp"
 #include "event_loop.hpp"
 
+static constexpr unsigned Width_Out = 640;
+static constexpr std::ratio<Width_Out, PixelCluster::Video_Width> Cluster_Scale;
+
+using NClusterData = PixelCluster::NClusterData;
+using ClusterData = PixelCluster::ClusterData;
+
 int main(int argc, const char * argv[]) {
     FIFO_Serial hps_serial(HPS_NIOS_FIFO_OUT_BASE, HPS_NIOS_FIFO_OUT_CSR_BASE,
             NIOS_HPS_FIFO_IN_BASE, NIOS_HPS_FIFO_IN_CSR_BASE);
@@ -46,18 +52,19 @@ int main(int argc, const char * argv[]) {
                 send_points = false;
             });
 
-    using NClusterData = PixelCluster::NClusterData;
     pixel_cluster_0.finish_cb([&hps, &send_points]
             (PixelCluster *, const NClusterData &data) {
                 if (send_points) {
                     auto cluster = Algorithms::max_count(data, 10);
 
-                    hps.dot_location(cluster->avg_x, cluster->avg_y,
-                            cluster->min_x, cluster->min_y,
-                            cluster->max_x, cluster->max_y);
+                    if (cluster != nullptr) {
+                        ClusterData c_scaled(*cluster, Cluster_Scale);
+                        hps.dot_location(c_scaled);
+                    }
                 }
             });
 
+    hps_serial.clear();
     hps.hello();
     hpsout << "Hello from NIOS!" << std::endl;
 

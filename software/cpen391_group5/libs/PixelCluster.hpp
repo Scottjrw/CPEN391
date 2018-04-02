@@ -4,11 +4,14 @@
 #include <functional>
 #include <iostream>
 #include <array>
+#include <ratio>
 #include <sys/alt_irq.h>
 #include <sys/alt_alarm.h>
 
 class PixelCluster {
 public:
+    static constexpr unsigned Video_Width = 320;
+    static constexpr unsigned Video_Height = 240;
     static constexpr unsigned N_Clusters = 4;
 
     struct ClusterData {
@@ -16,6 +19,17 @@ public:
         unsigned min_x, min_y; 
         unsigned max_x, max_y;
         unsigned count;
+
+        constexpr ClusterData():
+            avg_x(0), avg_y(0), min_x(0), min_y(0), 
+            max_x(0), max_y(0), count(0) {}
+
+        // Helper copy constructor which scales the cluster
+        template <std::intmax_t N, std::intmax_t D>
+        constexpr ClusterData(const ClusterData &d, std::ratio<N, D> r) :
+            avg_x(d.avg_x * r.num / r.den), avg_y(d.avg_y * r.num / r.den),
+            min_x(d.min_x * r.num / r.den), min_y(d.min_y * r.num / r.den),
+            max_x(d.max_x * r.num / r.den), max_y(d.max_y * r.num / r.den) {}
     };
 
     typedef std::array<ClusterData, N_Clusters> NClusterData;
@@ -75,6 +89,7 @@ public:
         compare_less_than(r, g, b, m_compare1_val, Compare1_Register);
     }
 
+    // scale = amount to multiply the output x-y values by
     PixelCluster(uintptr_t base, int ic_id, int irq_id);
 
 private:

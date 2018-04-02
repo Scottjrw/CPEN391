@@ -11,19 +11,31 @@ void Hard_Processor_System::hello() {
     const message *msg;
     do {
         msg = wait_for_msg(App_NIOS_Control);
-        handle_msg(*msg);
     } while (msg->body.nios_cmd.command != NIOS_Control::NIOS_Cmd_Hello);
 }
 
-void Hard_Processor_System::dot_location(unsigned x, unsigned y, unsigned min_x, unsigned min_y, 
+void Hard_Processor_System::dot_location(unsigned avg_x, unsigned avg_y, unsigned min_x, unsigned min_y, 
                                               unsigned max_x, unsigned max_y) {
     Dot_Location::body body = {
-        .dot_x = x,
-        .dot_y = y,
-        .dot_min_x = min_x,
-        .dot_min_y = min_y,
-        .dot_max_x = max_x,
-        .dot_max_y = max_y
+        .avg_x = avg_x,
+        .avg_y = avg_y,
+        .min_x = min_x,
+        .min_y = min_y,
+        .max_x = max_x,
+        .max_y = max_y
+    };
+
+    m_parser.send(App_Dot_Location, &body);
+}
+
+void Hard_Processor_System::dot_location(const PixelCluster::ClusterData &data) {
+    Dot_Location::body body = {
+        .avg_x = data.avg_x,
+        .avg_y = data.avg_y,
+        .min_x = data.min_x,
+        .min_y = data.min_y,
+        .max_x = data.max_x,
+        .max_y = data.max_y
     };
 
     m_parser.send(App_Dot_Location, &body);

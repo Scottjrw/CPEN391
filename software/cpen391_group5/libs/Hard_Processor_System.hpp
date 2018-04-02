@@ -6,6 +6,7 @@
 #include <cstring>
 #include "fifo_serial.hpp"
 #include "nios_hps_protocol.hpp"
+#include "PixelCluster.hpp"
 
 /* 
  * Hard Processor System Communication Handler
@@ -24,8 +25,10 @@ public:
     /*
      * Send a dot_location to the HPS
      */
-    void dot_location(unsigned x, unsigned y, unsigned min_x, unsigned min_y, 
-                                              unsigned max_x, unsigned max_y);
+    void dot_location(unsigned avg_x, unsigned avg_y, 
+            unsigned min_x, unsigned min_y, unsigned max_x, unsigned max_y);
+
+    void dot_location(const PixelCluster::ClusterData &data);
 
     /*
      * Print to the HPS's Console, these are low level functions
