@@ -22,7 +22,7 @@ Video::Video(const char* file) {
 	bufferLen = 0;
 
 	if (video_uart < 0) {
-		perror("failed to open video fd");
+		throw "fail to open uart";
 	}
 
 	TermiosUtil::SetSpeed(video_uart, B38K);//set baudrate
@@ -34,12 +34,12 @@ Video::Video(const char* file) {
 
     int fd = open("/dev/mem", (O_RDWR | O_SYNC));
     if (fd == -1) {
-        perror("Failed to open mem");
+        throw "fail to open mem";
     }
 
     base = reinterpret_cast<uint32_t *> (mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED, fd, base_addr));
     if (base == MAP_FAILED) {
-        perror("Failed to mmap video");
+        throw "fail to mmap video";
     }
     printf("camera memory initialized\n");
 }
@@ -83,176 +83,7 @@ bool Video::reset() {
 	return runCommand(VIDEO_RESET, args, 1, 5, true);
 }
 
-bool Video::motionDetected() {
-	if (readResponse(4) != 4) {
-		return false;
-	}
-	if (! verifyResponse(VIDEO_COMM_MOTION_DETECTED))
-		return false;
-
-	return true;
-}
-
-
-bool Video::setMotionStatus(int x, int d1, int d2) {
-	int args[] = {0x03, x, d1, d2};
-
-	return runCommand(VIDEO_MOTION_CTRL, args, sizeof(args), 5, true);
-}
-
-
-int Video::getMotionStatus(int x) {
-	int args[] = {0x01, x};
-
-	return runCommand(VIDEO_MOTION_STATUS, args, sizeof(args), 5, true);
-}
-
-
-bool Video::setMotionDetect(bool flag) {
-	if (! setMotionStatus(VIDEO_MOTIONCONTROL,
-				VIDEO_UARTMOTION, VIDEO_ACTIVATEMOTION))
-		return false;
-
-	int args[] = {0x01, flag};
-
-	return runCommand(VIDEO_COMM_MOTION_CTRL, args, sizeof(args), 5, true);
-}
-
-
-
-bool Video::getMotionDetect(void) {
-	int args[] = {0x0};
-
-	if (! runCommand(VIDEO_COMM_MOTION_STATUS, args, 1, 6, true))
-		return false;
-
-	return camerabuff[5];
-}
-
-int Video::getImageSize() {
-	int args[] = {0x4, 0x4, 0x1, 0x00, 0x19};
-	if (! runCommand(VIDEO_READ_DATA, args, sizeof(args), 6, true))
-		return -1;
-
-	return camerabuff[5];
-}
-
-bool Video::setImageSize(int x) {
-	int args[] = {0x05, 0x04, 0x01, 0x00, 0x19, x};
-
-	return runCommand(VIDEO_WRITE_DATA, args, sizeof(args), 5, true);
-}
-
-/****************** downsize image control */
-
-int Video::getDownsize(void) {
-	int args[] = {0x0};
-	if (! runCommand(VIDEO_DOWNSIZE_STATUS, args, 1, 6, true))
-		return -1;
-
-	return camerabuff[5];
-}
-
-bool Video::setDownsize(int newsize) {
-	int args[] = {0x01, newsize};
-
-	return runCommand(VIDEO_DOWNSIZE_CTRL, args, 2, 5, true);
-}
-
-/***************** other high level commands */
-
-char * Video::getVersion(void) {
-	int args[] = {0x01};
-
-	sendCommand(VIDEO_GEN_VERSION, args, 1);
-	// get reply
-	if (!readResponse(VIDEO_CAMERABUFFSIZ))
-		return 0;
-	camerabuff[bufferLen] = 0;  // end it!
-	return (char *)camerabuff;  // return it!
-}
-
-
-/***************** baud rate commands */
-
-char* Video::setBaud9600() {
-	int args[] = {0x03, 0x01, 0xAE, 0xC8};
-
-	sendCommand(VIDEO_SET_PORT, args, sizeof(args));
-	// get reply
-	if (!readResponse(VIDEO_CAMERABUFFSIZ))
-		return 0;
-	camerabuff[bufferLen] = 0;  // end it!
-	return (char *)camerabuff;  // return it!
-
-}
-
-char* Video::setBaud19200() {
-	int args[] = {0x03, 0x01, 0x56, 0xE4};
-
-	sendCommand(VIDEO_SET_PORT, args, sizeof(args));
-	// get reply
-	if (!readResponse(VIDEO_CAMERABUFFSIZ))
-		return 0;
-	camerabuff[bufferLen] = 0;  // end it!
-	return (char *)camerabuff;  // return it!
-}
-
-char* Video::setBaud38400() {
-	int args[] = {0x03, 0x01, 0x2A, 0xF2};
-
-	sendCommand(VIDEO_SET_PORT, args, sizeof(args));
-	// get reply
-	if (!readResponse(VIDEO_CAMERABUFFSIZ))
-		return 0;
-	camerabuff[bufferLen] = 0;  // end it!
-	return (char *)camerabuff;  // return it!
-}
-
-char* Video::setBaud57600() {
-	int args[] = {0x03, 0x01, 0x1C, 0x1C};
-
-	sendCommand(VIDEO_SET_PORT, args, sizeof(args));
-	// get reply
-	if (!readResponse(VIDEO_CAMERABUFFSIZ))
-		return 0;
-	camerabuff[bufferLen] = 0;  // end it!
-	return (char *)camerabuff;  // return it!
-}
-
-char* Video::setBaud115200() {
-	int args[] = {0x03, 0x01, 0x0D, 0xA6};
-
-	sendCommand(VIDEO_SET_PORT, args, sizeof(args));
-	// get reply
-	if (!readResponse(VIDEO_CAMERABUFFSIZ))
-		return 0;
-	camerabuff[bufferLen] = 0;  // end it!
-	return (char *)camerabuff;  // return it!
-}
-
 /****************** high level photo comamnds */
-
-bool Video::setCompression(int c) {
-	int args[] = {0x5, 0x1, 0x1, 0x12, 0x04, c};
-	return runCommand(VIDEO_WRITE_DATA, args, sizeof(args), 5, true);
-}
-
-int Video::getCompression(void) {
-	int args[] = {0x4, 0x1, 0x1, 0x12, 0x04};
-	runCommand(VIDEO_READ_DATA, args, sizeof(args), 6, true);
-	printBuff();
-	return camerabuff[5];
-}
-
-bool Video::takePicture() {
-	frameptr = 0;
-	return cameraFrameBuffCtrl(VIDEO_STOPCURRENTFRAME);
-}
-
-bool Video::resumeVideo() {
-	return cameraFrameBuffCtrl(VIDEO_RESUMEFRAME);
-}
 
 bool Video::TVon() {
 	int args[] = {0x1, 0x1};
@@ -261,55 +92,6 @@ bool Video::TVon() {
 bool Video::TVoff() {
 	int args[] = {0x1, 0x0};
 	return runCommand(VIDEO_TVOUT_CTRL, args, 2, 5, true);
-}
-
-bool Video::cameraFrameBuffCtrl(int command) {
-	int args[] = {0x1, command};
-	return runCommand(VIDEO_FBUF_CTRL, args, sizeof(args), 5, true);
-}
-
-int Video::frameLength(void) {
-	int args[] = {0x01, 0x00};
-
-	if (!runCommand(VIDEO_GET_FBUF_LEN, args, sizeof(args), 9, true))
-		return 0;
-
-	int len;
-	len = camerabuff[5];
-	len <<= 8;
-	len |= camerabuff[6];
-	len <<= 8;
-	len |= camerabuff[7];
-	len <<= 8;
-	len |= camerabuff[8];
-
-	return len;
-}
-
-
-int Video::available(void) {
-	return bufferLen;
-}
-
-
-int* Video::readPicture(int n) {
-	int args[] = {0x0C, 0x0, 0x0A,
-		0, 0, frameptr >> 8, frameptr & 0xFF,
-		0, 0, 0, n,
-		VIDEO_CAMERADELAY >> 8, VIDEO_CAMERADELAY & 0xFF};
-
-	if (! runCommand(VIDEO_READ_FBUF, args, sizeof(args), 5, false))
-		return 0;
-
-
-	// read into the buffer PACKETLEN!
-	if (readResponse(n+5) == 0)
-		return 0;
-
-
-	frameptr += n;
-
-	return camerabuff;
 }
 
 /**************** low level commands */

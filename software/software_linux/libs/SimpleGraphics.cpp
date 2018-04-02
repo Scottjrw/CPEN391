@@ -112,13 +112,13 @@ SimpleGraphics::SimpleGraphics(unsigned int width, unsigned int height):
 { 
     int fd = open("/dev/cpen391_vgabuffer", (O_RDWR|O_SYNC));
     if (fd == -1) {
-        assert(0);
+        throw "Failed to open vgabuffer";
     }
 
     unsigned size = m_width * m_height * sizeof(rgba_t);
     m_buffer_base = reinterpret_cast<SimpleGraphics::rgba_t *>(mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED, fd, 0));
     if (m_buffer_base == MAP_FAILED) {
-        assert(0);
+        throw "Failed to mmap SimpleGraphics";
     }
 
     m_max_addr = m_buffer_base + width * height;
