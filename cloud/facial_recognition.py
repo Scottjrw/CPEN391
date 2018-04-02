@@ -637,6 +637,12 @@ def getCurrentUser():
 		for row in result_set:
 			return row[1]
 
+@app.route('/logout', methods=['GET'])
+def logout():
+	cursor = db.cursor()
+	cursor.execute('''DELETE FROM currentUser''')
+	return 'Success'
+
 
 
 if __name__ == '__main__':
