@@ -601,7 +601,9 @@ def getCurrentMapping():
 		for row in result_set:
 			if (user_id == row[0]):
 				print(row)
-				user_pair = list({row[1], row[2]})
+				user_pair = list()
+				user_pair.append(row[1])
+				user_pair.append(row[2])
 				print(user_pair)
 				user_map.append(user_pair)
 
