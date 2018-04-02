@@ -600,14 +600,10 @@ def getCurrentMapping():
 		result_set = cursor.fetchall()
 		for row in result_set:
 			if (user_id == row[0]):
-				print(row)
 				user_pair = list()
 				user_pair.append(row[1])
 				user_pair.append(row[2])
-				print(user_pair)
 				user_map.append(user_pair)
-
-		print(user_map)
 
 		return jsonify(user_map)
 
@@ -632,7 +628,14 @@ def changeCurrentMapping():
 		return 'Success'
 
 
-
+@app.route('/getCurrentUser', methods=['GET'])
+def getCurrentUser():
+	if request.method == "GET":
+		cursor = db.cursor()
+		cursor.execute("SELECT user_id, username_id FROM currentUser")
+		result_set = cursor.fetchall()
+		for row in result_set:
+			return row[1]
 
 
 
