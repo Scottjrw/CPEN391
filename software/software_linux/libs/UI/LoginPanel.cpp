@@ -1,57 +1,57 @@
-#include "UI.hpp"
-#include "SimpleGraphics.hpp"
 #include "LoginPanel.hpp"
-#include "wifi.hpp"
 
 #define BUTTON_HEIGHT 50
 #define BUTTON_WIDTH 200
 #define STATUS_DEFAULT 5
-#define SERIALPORT "/dev/ttyAL1"
 #define PICTURE_HEIGHT 60
 #define PICTURE_WIDTH 80
+#define INPUT_FIELD_WIDTH 300
 #define INPUT_FIELD_HEIGHT 40
 
 namespace UI
 {
 
-LoginPanel::LoginPanel(SimpleGraphics &graphics, Wifi &wifi, Bluetooth &bt, GeometricRecognizer &gr,
-                       Point p1, Point p2, NIOS_Processor nios, Video &video
-                       SimpleGraphics::rgba_t background_color = rgba(0,0,0,255),
-                       SimpleGraphics::rgba_t btn_background_color = rgba(102,102,102,255),
-                       SimpleGraphics::rgba_t text_color = rgba(226,226,226,255),
-                       SimpleGraphics::rgba_t hint_color = rgba(156,156,156,255)):
-    Drawable(graphics),
-    m_graphics(graphics),
+LoginPanel::LoginPanel(SimpleGraphics &graphics, Wifi &wifi, Bluetooth &bt, GeometricRecognizer &gr, Video &video,
+            TouchControl &touch, Point p1, Point p2, NIOS_Processor &nios,
+            rgba_t background_color,
+            rgba_t btn_background_color,
+            rgba_t text_color,
+            rgba_t hint_color):
+    Rectangle(graphics, p1, p2, background_color),
+    Touchable(),
     m_wifi(wifi),
-    m_bluetooth(bt);
+    m_bluetooth(bt),
     m_geometricRecognizer(gr),
     m_nios(nios),
-    m_video(video);
+    m_video(video),
+    m_login_status_cb(nullptr),
     m_background_color(background_color),
     m_btn_background_color(btn_background_color),
     m_text_color(text_color),
     m_hint_color(hint_color),
-    Rectangle(graphics, p1, p2, m_background_color),
     // ############################################### //
     // ##  should be modified to clickable objects  ## //
-    m_username_field(graphics, {p1->x + (p2->x - p1->x - INPUT_FIELD_WIDTH)/2, p1->y + (p2->y - p1->y)/3}, 
-                     {p2->x - (p2->x - p1->x - INPUT_FIELD_WIDTH)/2, p1->y + (p2->y - p1->y)/3 + BUTTON_HEIGHT}, 
-                     "Username", m_hint_color, m_btn_background_color),
-    m_password_field(graphics, {p1->x + (p2->x - p1->x - INPUT_FIELD_WIDTH)/2, p1->y + (p2->y - p1->y)/3 + BUTTON_HEIGHT} + 20}, 
-                     {p2->x - (p2->x - p1->x - INPUT_FIELD_WIDTH)/2, p1->y + (p2->y - p1->y)/3 + 2*BUTTON_HEIGHT} + 20}, 
-                     "Password", m_hint_color, m_btn_background_color),
+    m_username_field(graphics, 
+            {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3}, 
+            {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT}, 
+            "Username", m_hint_color, m_btn_background_color),
+    m_password_field(graphics, 
+            {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT + 20}, 
+            {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + 2*BUTTON_HEIGHT + 20}, 
+            "Password", m_hint_color, m_btn_background_color),
     // ##                                           ## //
     // ############################################### //
-    m_login_button(graphics, {p2->x - (p2->x - p1->x - 2*BUTTON_WIDTH)/3) - BUTTON_WIDTH, p2->y - 3*BUTTON_HEIGHT/2}, 
-                   {p2->x - p1->x - 2*BUTTON_WIDTH)/3), p2->y - BUTTON_HEIGHT/2}, 
-                   "Login", m_text_color, m_btn_background_color),
-    m_switch_login_mode_button(graphics, {p1->x + (p2->x - p1->x - 2*BUTTON_WIDTH)/3), p2->y - 3*BUTTON_HEIGHT/2}
-                               {p1->x + (p2->x - p1->x - 2*BUTTON_WIDTH)/3) + BUTTON_WIDTH, p2->y - BUTTON_HEIGHT/2}
-                               "Switch Login Mode", m_text_color, m_btn_background_color),
-    m_login_status(STATUS_DEFAULT),
-    m_login_status_cb(nullptr),
+    m_login_button(graphics, 
+            {p2.x - (p2.x - p1.x - 2*BUTTON_WIDTH)/3 - BUTTON_WIDTH, p2.y - 3*BUTTON_HEIGHT/2}, 
+            {p2.x - (p2.x - p1.x - 2*BUTTON_WIDTH)/3, p2.y - BUTTON_HEIGHT/2},
+            "Login", m_text_color, m_btn_background_color),
+    m_switch_login_mode_button(graphics,
+            {p1.x + (p2.x - p1.x - 2*BUTTON_WIDTH)/3, p2.y - 3*BUTTON_HEIGHT/2},
+            {p1.x + (p2.x - p1.x - 2*BUTTON_WIDTH)/3 + BUTTON_WIDTH, p2.y - BUTTON_HEIGHT/2},
+            "Switch Login Mode", m_text_color, m_btn_background_color),
     m_login_page(false),
-    m_input_field_chose(false)
+    m_input_field_chose(false),
+    m_login_status(STATUS_DEFAULT)
 {
     // ############ add on touch functuon 
     
@@ -63,14 +63,19 @@ LoginPanel::LoginPanel(SimpleGraphics &graphics, Wifi &wifi, Bluetooth &bt, Geom
 
 void LoginPanel::draw(){
     Rectangle::draw();
-    us_draw();
-    m_login_button.draw();
-    m_switch_login_mode_button.draw();
+    if(m_login_page){
+        us_draw();
+        m_login_button.draw();
+        m_switch_login_mode_button.draw();
+    } else {
+        Rectangle::draw();
+        f_draw();
+        m_login_button.draw();
+        m_switch_login_mode_button.draw();
+    }
 }
 
 void LoginPanel::undraw(){
-    Rectangle::undraw();
-    
     m_login_button.undraw();
     m_switch_login_mode_button.undraw();
 
@@ -79,6 +84,12 @@ void LoginPanel::undraw(){
     }else{
         f_undraw();
     }
+    Rectangle::undraw();
+}
+
+bool LoginPanel::touch(Point p) {
+    return m_login_button.touch(p) || m_switch_login_mode_button.touch(p)
+        || m_username_field.touch(p) || m_password_field.touch(p);
 }
 
 void LoginPanel::us_draw(){
@@ -99,20 +110,10 @@ void LoginPanel::f_undraw(){
     m_graphics.clear();
 }
 void LoginPanel::switch_page(){
-    if(m_login_page){
-        // switch to user/password
-        draw();
-    }
-    else{
-        // switch to facial 
-        us_undraw();
-        Rectangle::draw();
-        f_draw();
-        m_login_button.draw();
-        m_switch_login_mode_button.draw();
-    }
-
     m_login_page = ~m_login_page;
+
+    draw();
+
 }
 
 void LoginPanel::usernameFieldChose(){
@@ -122,6 +123,7 @@ void LoginPanel::usernameFieldChose(){
 void LoginPanel::passwordFieldChose(){
     m_input_field_chose = 1;
 }
+
 void LoginPanel::updateInputField(){
 
     PAsswordFieldMsg("");
@@ -209,18 +211,18 @@ void LoginPanel::login()
 
     // in facial login page
     else{
-        string picResult;
+        std::string picResult;
 
         m_wifi.SendPicture(m_video.takeRawPicture());
 
         picResult = m_wifi.ReadResponse();
 
-        if(picResult = "done"){
+        if(picResult == "done"){
             m_login_status = 1;
             m_login_status_cb(m_login_status, m_username_input);
         }
 
-        else if(result == "fail"){
+        else if(picResult == "fail"){
             m_login_status = -1;
         }
     }
@@ -228,16 +230,16 @@ void LoginPanel::login()
 
 void LoginPanel::UsernameFieldMsg(std::string feedback)
 {
-    m_username_field = Button(m_graphics, {p1->x + (p2->x - p1->x - INPUT_FIELD_WIDTH)/2, p1->y + (p2->y - p1->y)/3}, 
-                     {p2->x - (p2->x - p1->x - INPUT_FIELD_WIDTH)/2, p1->y + (p2->y - p1->y)/3 + BUTTON_HEIGHT}, 
+    m_username_field = Button(m_graphics, {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3}, 
+                     {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT}, 
                      feedback, m_hint_color, m_btn_background_color);
     m_username_field.draw();
 }
 
 void LoginPanel::PAsswordFieldMsg(std::string feedback)
 {
-    m_password_field = Button(m_graphics, {p1->x + (p2->x - p1->x - INPUT_FIELD_WIDTH)/2, p1->y + (p2->y - p1->y)/3 + BUTTON_HEIGHT} + 20}, 
-                     {p2->x - (p2->x - p1->x - INPUT_FIELD_WIDTH)/2, p1->y + (p2->y - p1->y)/3 + 2*BUTTON_HEIGHT} + 20}, 
+    m_password_field = Button(m_graphics, {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT} + 20}, 
+                     {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + 2*BUTTON_HEIGHT} + 20}, 
                      feedback, m_hint_color, m_btn_background_color);
     m_password_field.draw();
 }

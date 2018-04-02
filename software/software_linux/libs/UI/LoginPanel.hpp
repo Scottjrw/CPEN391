@@ -8,12 +8,14 @@
 #include <stdexcept>
 #include <utility>
 #include "UI.hpp"
+#include "touch.hpp"
+#include "bluetooth.hpp"
+#include "NIOS_Processor.hpp"
+#include "wifi.hpp"
+#include "video.hpp"
 #include <map>
-#include "GeometricRecognizer.h"
-#include "GeometricRecognizerTypes.h"
-#include "SampleGestures.h"
-
-#define MAX_USER 50
+#include "GeometricRecognizer.hpp"
+#include "SimpleGraphics.hpp"
 
 namespace UI
 {
@@ -21,14 +23,16 @@ namespace UI
 class LoginPanel : public Rectangle, public Touchable
 {
 
+    using GeometricRecognizer = DollarRecognizer::GeometricRecognizer;
   public:
 
     virtual void draw();
     virtual void undraw();
+    virtual bool touch(Point p);
 
     // draw/undraw username and password input fields
     void us_draw();
-    void us_draw();
+    void us_undraw();
 
     // draw/undraw 
     void f_draw();
@@ -37,13 +41,15 @@ class LoginPanel : public Rectangle, public Touchable
     // switch between username/password page and facial login page
     void switch_page();
 
-    LoginPanel(SimpleGraphics &graphics, Wifi wifi, Bluetooth bt, GeometricRecognizer gr, Video video,
-               SimpleGraphics::rgba_t btn_background_color, SimpleGraphics::rgba_t background_color, 
-               SimpleGraphics::rgba_t text_color, SimpleGraphics::rgba_t hint_color,
-               TouchControl &touch, Point p1, Point p2, NIOS_Processor nios);
+    LoginPanel(SimpleGraphics &graphics, Wifi &wifi, Bluetooth &bt, GeometricRecognizer &gr, Video &video,
+               TouchControl &touch, Point p1, Point p2, NIOS_Processor &nios,
+               rgba_t background_color = rgba(0,0,0,255),
+               rgba_t btn_background_color = rgba(102,102,102,255),
+               rgba_t text_color = rgba(226,226,226,255),
+               rgba_t hint_color = rgba(156,156,156,255));
 
     // call back function
-    typedef std::function<void(int login_status, string user)> LoginStatusCB;
+    typedef std::function<void(int login_status, std::string user)> LoginStatusCB;
     void login_status_cb(LoginStatusCB cb) { m_login_status_cb = cb; }
 
 
@@ -57,8 +63,6 @@ class LoginPanel : public Rectangle, public Touchable
 
 
     void clear();
-
-
 
 
     /*
@@ -86,7 +90,7 @@ class LoginPanel : public Rectangle, public Touchable
     /* 
      * Feedback user whether or not login/register is successful
      */
-    void UsernameFieldMsg(string feedback);
+    void UsernameFieldMsg(std::string feedback);
 
     /*
      * Print * 
@@ -96,7 +100,7 @@ class LoginPanel : public Rectangle, public Touchable
     /*
      * Describe the reason of login/register failure
      */
-    void PAsswordFieldMsg(string feedback);
+    void PAsswordFieldMsg(std::string feedback);
 
     /*
      * Reset the login and password field
@@ -121,23 +125,22 @@ class LoginPanel : public Rectangle, public Touchable
     Bluetooth &m_bluetooth;
     GeometricRecognizer &m_geometricRecognizer;
     NIOS_Processor &m_nios;
-    Video m_video;
+    Video &m_video;
 
     LoginStatusCB m_login_status_cb;
 
-    SimpleGraphics m_graphics;
-    SimpleGraphics::rgba_t m_background_color = rgba(0,0,0,255);
-    SimpleGraphics::rgba_t m_btn_background_color = rgba(102,102,102,255);
-    SimpleGraphics::rgba_t m_text_color = rgba(226,226,226,255);
-    SimpleGraphics::rgba_t m_hint_color = rgba(156,156,156,255);
-    constexpr static SimpleGraphics::rgba_t m_picture_color = rgba(228,228,228,0);
+    rgba_t m_background_color;
+    rgba_t m_btn_background_color;
+    rgba_t m_text_color;
+    rgba_t m_hint_color;
+    constexpr static rgba_t m_picture_color = rgba(228,228,228,0);
 
     /*  Description:
      *      the input characters will be recorded into these vectors 
      *      one at a time
      */
-    string m_username_input;
-    string m_password_input;
+    std::string m_username_input;
+    std::string m_password_input;
 
     Button m_username_field;
     Button m_password_field;
@@ -158,7 +161,6 @@ class LoginPanel : public Rectangle, public Touchable
     
 
     // login() called when clicked
-    Button m_login_button;
  
     // determine whether in username/password page or facial page
     // false: username/password
