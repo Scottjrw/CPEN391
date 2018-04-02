@@ -600,6 +600,7 @@ def getCurrentMapping():
 		result_set = cursor.fetchall()
 		for row in result_set:
 			if (user_id == row[0]):
+				print(row[0])
 				user_pair = list({row[1], row[2]})
 				print(user_pair)
 				user_map.append(user_pair)
