@@ -603,6 +603,8 @@ def getCurrentMapping():
 				user_pair = list({row[1], row[2]})
 				user_map.append(user_pair)
 
+		print(user_map)
+
 		return jsonify(user_map)
 
 
@@ -622,8 +624,6 @@ def changeCurrentMapping():
 					gesture = mapping_list[i]
 					action = mapping_list[i+1]
 					Mappings.create(user_id = user_id, gesture = gesture, ifttt_descriptor = action)
-
-
 
 		return 'Success'
 
