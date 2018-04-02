@@ -23,6 +23,7 @@
 
     <!-- Custom styles for this template -->
     <link href="../css/user.css" rel="stylesheet">
+    <link href="../css/please-wait.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i" rel="stylesheet">
@@ -40,12 +41,19 @@
 
   <body class="text-center">
 
-    <div class="homepage">
-      <img src="../photos/logo.png" class="logo"></img>
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle btn-menu" type="button" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-menu-hamburger"></span></button>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li><a href="#" id="faq">Frequenty Asked Questions</a></li>
+        <li><a href="#" id="logout">Logout</a></li>
+      </ul>
+    </div>
 
-      <p>Welcome to your account!  Below you may add your specialized "IF THIS, THEN THAT" Services to be mapped to guestures to use on your Home Controller. For more information on how to make IFTT Services and how to get the URLs see here: </p>
-      <a href="https://ifttt.com/discover" target="_blank">IFTTT Webpage Home</a> //
-      <a href="https://help.ifttt.com/hc/en-us/articles/115010361388-How-do-I-create-an-Applet-" target="_blank">How to Create a Service</a>
+    <div class="homepage">
+      <img src="../photos/logo-mini.png" class="logo"></img>
+      <h1 id="welcome-message" class="welcome-message"></h1>
+      <hr>
 
       <div class="input-group input-bar">
         <input type="text" id="descriptor" class="form-control descriptor" placeholder="Descriptor . . ." required>
@@ -75,99 +83,70 @@
         </div>
       </div>
 
+      <div class="map">
+        <script>
+        function allowDrop(ev) {
+          ev.preventDefault();
+        }
 
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
 
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var new_child = document.getElementById(data).cloneNode(true)
+            if (ev.target.hasChildNodes()){
+              var old_child = ev.target.childNodes;
+              ev.target.replaceChild(new_child, old_child[0]);
+            }
+            else {
+              console.log("no child");
+              ev.target.appendChild(new_child);
+            }
+        }
+        </script>
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Gestures</th>
-            <th>IFTTT Services</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <select class="selectpicker" multiple title="Choose one of the following...">
-                <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option><option>K</option><option>L</option><option>M</option><option>N</option>
-                <option>O</option><option>P</option><option>Q</option><option>R</option><option>S</option><option>T</option><option>U</option><option>V</option><option>W</option><option>X</option><option>Y</option><option>Z</option>
-              </select>
-            </td>
-            <td>
-              <select class="selectpicker" multiple title="Choose one of the following...">
-                <option>Mustard</option>
-                <option>Ketchup</option>
-                <option>Relish</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <select class="selectpicker" multiple title="Choose one of the following...">
-                <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option><option>K</option><option>L</option><option>M</option><option>N</option>
-                <option>O</option><option>P</option><option>Q</option><option>R</option><option>S</option><option>T</option><option>U</option><option>V</option><option>W</option><option>X</option><option>Y</option><option>Z</option>
-              </select>
-            </td>
-            <td>
-              <select class="selectpicker" multiple title="Choose one of the following...">
-                <option>Mustard</option>
-                <option>Ketchup</option>
-                <option>Relish</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <select class="selectpicker" multiple title="Choose one of the following...">
-                <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option><option>K</option><option>L</option><option>M</option><option>N</option>
-                <option>O</option><option>P</option><option>Q</option><option>R</option><option>S</option><option>T</option><option>U</option><option>V</option><option>W</option><option>X</option><option>Y</option><option>Z</option>
-              </select>
-            </td>
-            <td>
-              <select class="selectpicker" multiple title="Choose one of the following...">
-                <option>Mustard</option>
-                <option>Ketchup</option>
-                <option>Relish</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <select class="selectpicker" multiple title="Choose one of the following...">
-                <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option><option>K</option><option>L</option><option>M</option><option>N</option>
-                <option>O</option><option>P</option><option>Q</option><option>R</option><option>S</option><option>T</option><option>U</option><option>V</option><option>W</option><option>X</option><option>Y</option><option>Z</option>
-              </select>
-            </td>
-            <td>
-              <select class="selectpicker" multiple title="Choose one of the following...">
-                <option>Mustard</option>
-                <option>Ketchup</option>
-                <option>Relish</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <select class="selectpicker" multiple title="Choose one of the following...">
-                <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option><option>K</option><option>L</option><option>M</option><option>N</option>
-                <option>O</option><option>P</option><option>Q</option><option>R</option><option>S</option><option>T</option><option>U</option><option>V</option><option>W</option><option>X</option><option>Y</option><option>Z</option>
-              </select>
-            </td>
-            <td>
-              <select class="selectpicker" multiple title="Choose one of the following...">
-                <option>Mustard</option>
-                <option>Ketchup</option>
-                <option>Relish</option>
-              </select>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <div class="col-sm-3 ">
+          <h4>Gesture List</h4>
+          <nav class="gesture-list">
+              <a id="a" draggable="true" ondragstart="drag(event)">A</a><br /><a id="b" draggable="true" ondragstart="drag(event)">B</a><br /><a id="c" draggable="true" ondragstart="drag(event)">C</a>
+              <br /><a id="d" draggable="true" ondragstart="drag(event)">D</a><br /><a id="e" draggable="true" ondragstart="drag(event)">E</a><br /><a id="f" draggable="true" ondragstart="drag(event)">F</a>
+              <br /><a id="g" draggable="true" ondragstart="drag(event)">G</a><br /><a id="h" draggable="true" ondragstart="drag(event)">H</a><br /><a id="i" draggable="true" ondragstart="drag(event)">I</a>
+              <br /><a id="j" draggable="true" ondragstart="drag(event)">J</a><br /><a id="k" draggable="true" ondragstart="drag(event)">K</a><br /><a id="l" draggable="true" ondragstart="drag(event)">L</a>
+              <br /><a id="m" draggable="true" ondragstart="drag(event)">M</a><br /><a id="n" draggable="true" ondragstart="drag(event)">N</a><br /><a id="o" draggable="true" ondragstart="drag(event)">O</a>
+              <br /><a id="p" draggable="true" ondragstart="drag(event)">P</a><br /><a id="q" draggable="true" ondragstart="drag(event)">Q</a><br /><a id="r" draggable="true" ondragstart="drag(event)">R</a>
+              <br /><a id="s" draggable="true" ondragstart="drag(event)">S</a><br /><a id="t" draggable="true" ondragstart="drag(event)">T</a><br /><a id="u" draggable="true" ondragstart="drag(event)">U</a>
+              <br /><a id="v" draggable="true" ondragstart="drag(event)">V</a><br /><a id="w" draggable="true" ondragstart="drag(event)">W</a><br /><a id="x" draggable="true" ondragstart="drag(event)">X</a>
+              <br /><a id="y" draggable="true" ondragstart="drag(event)">Y</a><br /><a id="z" draggable="true" ondragstart="drag(event)">Z</a>
+          </nav>
+        </div>
+        <div id="mappings" class="col-sm-6">
+          <div id="droppable-gestures" class="col-sm-6 droppable-gestures">
+            <h4>Gesture Map</h4>
+          </div>
+          <div id="droppable-actions" class="col-sm-6 droppable-actions">
+            <h4>Action Map</h4>
+          </div>
+          <input type="image" id="add-btn" class="btn add-btn col-sm-6" style="color: white" src="../photos/add.png" onclick="return false"/>
+          <input type="image" id="minus-btn" class="btn minus-btn col-sm-6" style="color: white" src="../photos/minus.png" onclick="return false"/>
+          <button id="submit-btn" class="submit-btn btn btn-lg btn-primary btn-block" type="button">Submit Map</button>
+        </div>
+
+        <div class="col-sm-3">
+          <h4>Action List</h4>
+          <nav id="action-list" class="action-list">
+
+          </nav>
+        </div>
+      </div>
     </div>
 
 
 
     <!-- Latest compiled JavaScript -->
+    <script type="text/javascript" src="../js/please-wait.min.js"></script>
     <script src="../js/user-database.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
