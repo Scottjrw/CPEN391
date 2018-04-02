@@ -28,12 +28,6 @@ public:
     /* Add a member function, pass in the "this" of the object and its member function
      */
     template <typename T>
-    void add(T *c, void (T::*trypoll)(void)) {
-        assert(trypoll != nullptr);
-        add(std::bind(trypoll, c));
-    }
-
-    template <typename T>
     void add(T *c, void (T::*trypoll)(Event_Loop *)) {
         assert(trypoll != nullptr);
         add(std::bind(trypoll, c, std::placeholders::_1));
@@ -53,6 +47,11 @@ public:
         assert(timer_cb != nullptr);
 
         m_timers.emplace(timer_cb, std::chrono::duration_cast<TimerDuration>(period));
+    }
+
+    template <typename T, class Rep, class Period> 
+    void add_timer(std::chrono::duration<Rep, Period> period, T *c, bool (T::*timer_cb)(Event_Loop *)) {
+        add_timer(period, std::bind(timer_cb, c, std::placeholders::_1));
     }
 
     /* Run the loop, which repeatedly calls the added trypoll functions
@@ -89,8 +88,8 @@ private:
     inline void checktimers() {
         if (m_timers.top().end <= std::chrono::high_resolution_clock::now()) {
             const Timer &t = m_timers.top();
-            t.cb(this);
-            m_timers.emplace(t.cb, t.period, t.end);
+            if (t.cb(this))
+                m_timers.emplace(t.cb, t.period, t.end);
             m_timers.pop();
         }
     }
