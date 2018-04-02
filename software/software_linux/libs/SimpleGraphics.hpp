@@ -16,11 +16,13 @@
 #include <errno.h>
 #include <initializer_list>
 #include "GeometricTypes.hpp"
+#include "SimpleGraphicsFonts.hpp"
 
 //#define HW_GRAPHICS
 
 class SimpleGraphics {
 public:
+    using FontType = SimpleGraphicsFonts::FontType;
     typedef uint32_t rgba_t;
 
     inline void draw_pixel(rgba_t color, unsigned x, unsigned y) {
@@ -46,29 +48,29 @@ public:
 		return 0;
 	}
 
-    void draw_rect(rgba_t color, Point &p1, Point &p2) {
+    inline void draw_rect(rgba_t color, Point p1, Point p2) {
         draw_rect(color, p1.x, p1.y, p2.x, p2.y);
     }
 
     void draw_rect(rgba_t color, unsigned x1, unsigned y1, unsigned x2, unsigned y2);
 
-    void draw_x(rgba_t color, Point &p, unsigned radius) {
-        draw_x(color, p.x, p.y, radius);
+    inline void draw_x(rgba_t color, Point center, unsigned radius) {
+        draw_x(color, center.x, center.y, radius);
     }
 
     void draw_x(rgba_t color, unsigned x, unsigned y, unsigned radius);
 
-    void draw_char(rgba_t color, Point &top_left, char c) {
-        draw_char(color, top_left.x, top_left.y, c);
+    inline void draw_char(rgba_t color, Point top_left, char c, FontType f) {
+        draw_char(color, top_left.x, top_left.y, c, f);
     }
 
-    void draw_char(rgba_t color, unsigned x, unsigned y, char c);
+    void draw_char(rgba_t color, unsigned x, unsigned y, char c, FontType f);
 
-    void draw_string(rgba_t color, Point &top_left, std::string str) {
-        draw_string(color, top_left.x, top_left.y , str);
+    inline void draw_string(rgba_t color, Point top_left, std::string str, FontType f) {
+        draw_string(color, top_left.x, top_left.y , str, f);
     }
 
-    void draw_string(rgba_t color, unsigned x, unsigned y, std::string str);
+    void draw_string(rgba_t color, unsigned x, unsigned y, std::string str, FontType f);
 
     void clear();
 
@@ -101,6 +103,22 @@ private:
     rgba_t *m_buffer_base;
     rgba_t *m_max_addr;
     const unsigned int m_width, m_height;
+
+    template <typename inttype, unsigned width, unsigned height>
+    inline void draw_char_helper(const inttype *char_bmap, rgba_t color, unsigned x, unsigned y) {
+        for (unsigned row = 0; row < height; row++) {
+            inttype pixels = char_bmap[row];
+            inttype column_mask = 1 << (std::min<unsigned>(width, 8*sizeof(inttype)) - 1);
+
+            for (unsigned column = 0; column < width; column++) {
+                if (pixels & column_mask)
+                    draw_pixel(color, x + column, y + row);
+
+                column_mask >>= 1;
+            }
+        }
+    }
+
 
 #ifdef HW_GRAPHICS
     char *const m_graphics_base;

@@ -1,5 +1,4 @@
 #include "SimpleGraphics.hpp"
-#include "SimpleGraphicsFonts.cpp"
 #include <cassert>
 
 #ifdef HW_GRAPHICS
@@ -35,30 +34,43 @@ void SimpleGraphics::draw_x(rgba_t color, unsigned int x, unsigned int y, unsign
     }
 }
 
-void SimpleGraphics::draw_char(rgba_t color, unsigned x, unsigned y, char c) {
+void SimpleGraphics::draw_char(rgba_t color, unsigned x, unsigned y, char c, FontType f) {
+    using namespace SimpleGraphicsFonts;
+    using namespace SimpleGraphicsFonts::FontData;
+
     if (x >= m_width - 10 || y >= m_height - 14)
         return;
 
     if (c >= ' ' && c <= '~') {
         unsigned font_index = c - ' ';
-        for (unsigned row = 0; row < 14; row ++) {
-            unsigned pixels = Font10x14[font_index][row] ;
-            unsigned bit = 0b1000000000;
 
-            for (unsigned column = 0; column < 10; column++)  {
-                if (pixels & bit)
-                    draw_pixel(color, x+column, y+row) ;
+        switch (f) {
+            case Font5x7:
+                draw_char_helper<unsigned char, 5, 7>(Font5X7[font_index], color, x, y);
+                break;
+            case Font10x14:
+                draw_char_helper<unsigned short, 10, 14>(Font10X14[font_index], color, x, y);
+                break;
+            case Font16x27:
+                draw_char_helper<unsigned short, 16, 27>(Font16X27 + 27*font_index, color, x, y);
+                break;
 
-                bit >>= 1;
-            }
+            case Font22x40:
+                draw_char_helper<unsigned int, 22, 40>(Font22X40 + 40*font_index, color, x, y);
+                break;
+
+            case Font38x59:
+                draw_char_helper<unsigned int, 38, 59>(Font38X59 + 59*font_index, color, x, y);
+                break;
         }
+        
     }
 }
 
-void SimpleGraphics::draw_string(rgba_t color, unsigned x, unsigned y, std::string str) {
+void SimpleGraphics::draw_string(rgba_t color, unsigned x, unsigned y, std::string str, FontType f) {
     for (unsigned i = 0; i < str.length(); i++) {
-        draw_char(color, x, y, str[i]);
-        x += 11;
+        draw_char(color, x, y, str[i], f);
+        x += f;
     }
 }
 

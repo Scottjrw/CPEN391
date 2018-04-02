@@ -19,6 +19,7 @@ FILES=(
 Makefile
 main.cpp
 testmain.cpp
+testsg.cpp
 libs
 ../shared_libs
 arm_system.h
