@@ -12,6 +12,7 @@
 
 namespace UI {
     using rgba_t = SimpleGraphics::rgba_t;
+    using FontType = SimpleGraphicsFonts::FontType;
 
 /* ------------------------------------------------------------------
  * An abstract class which represents anything that can be drawn
@@ -103,12 +104,13 @@ public:
 
     Button(SimpleGraphics &graphics,
             Point p1, Point p2, std::string text, rgba_t text_color,
-            rgba_t background_color);
+            rgba_t background_color, FontType f);
 
 private:
     std::string m_text;
     rgba_t m_text_color;
     TouchCB m_cb;
+    FontType m_font;
 };
 
 
@@ -125,17 +127,17 @@ public:
 
     Slider(SimpleGraphics &graphics, 
             Point p1, Point p2, rgba_t text_color,
-            rgba_t background_color, int min, int max);
+            rgba_t background_color, int min, int max, FontType f);
 
 private:
     std::string m_text;
     rgba_t m_text_color;
     Point slider_p1, slider_p2;
     Point slider_bar_p1, slider_bar_p2;
-    rgba_t m_background_color;
     bool initial_state;
     int chosen_value;
     int min, max;
+    FontType m_font;
 };
 
 
@@ -160,16 +162,14 @@ public:
     /* 
      * Add a new button to the dropdown menu with text
      */
-    void newItem(SimpleGraphics &graphics, std::string text, rgba_t text_color,
-            rgba_t background_color, TouchCB callback);
+    void newItem(SimpleGraphics &graphics, std::string text, TouchCB callback);
 
     DropdownMenu(SimpleGraphics &graphics,
             Point p1, Point p2, std::string text, rgba_t text_color,
-            rgba_t background_color);
+            rgba_t background_color, FontType f);
 
 private:
-    // Button which shows the menu
-    Button m_expander;
+
     // List of buttons in the menu
     std::vector<Button> m_buttons;
 
@@ -177,6 +177,10 @@ private:
     Point m_p1, m_p2;
 
     bool m_is_open;
+    
+    rgba_t m_background_colour;
+    rgba_t m_text_colour;
+    FontType m_font;
 };
 
 } // namespace UI
