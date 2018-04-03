@@ -3,18 +3,7 @@ DEPFLAGS := -MMD
 CPPFLAGS := -g -Wall -Werror -std=c++14 -O3 $(INCFLAGS) $(DEPFLAGS)
 
 #SRC_FILES := main.cpp
-SRC_FILES := testmain.cpp
-SRC_FILES += libs/SimpleGraphics.cpp
-SRC_FILES += libs/GestureRecognition/GeometricRecognizer.cpp
-SRC_FILES += libs/touch.cpp
-SRC_FILES += libs/TermiosUtil.cpp
 SRC_FILES += libs/UI/UI.cpp
-SRC_FILES += libs/UI/cursor.cpp
-SRC_FILES += libs/UI/screen.cpp
-SRC_FILES += libs/wifi.cpp
-SRC_FILES += libs/video.cpp
-SRC_FILES += libs/NIOS_Processor.cpp
-SRC_FILES += libs/NIOS_Processor_Init.cpp
 #SRC_FILES += ../shared_libs/
 
 OBJ_DIR := obj/software_linux

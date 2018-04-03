@@ -134,26 +134,36 @@ void Wand::recv(char val) {
     if (val == '1'){
         printf("\nwand change\n");
         if (m_current_wand == wandStart){
-            m_wandCommandCB(wandStop);
+            if (m_wandCommandCB != nullptr){
+                m_wandCommandCB(wandStop);
+            }
             m_current_wand = wandStop;
         }
         else if (m_current_wand == wandStop){
-            m_wandCommandCB(wandStart);
+            if (m_wandCommandCB != nullptr){
+                m_wandCommandCB(wandStart);
+            }
             m_current_wand = wandStart;
         }
     }
     else if (val == '2'){
         printf("\nmode change\n");
         if (m_current_mode == gestureMode){
-            m_modeCB(typingMode);
+            if (m_modeCB != nullptr){
+                m_modeCB(typingMode);
+            }
             m_current_mode = typingMode;
         }
         else if (m_current_mode == typingMode){
-            m_modeCB(cursorMode);
+            if (m_modeCB != nullptr){
+                m_modeCB(cursorMode);
+            }
             m_current_mode = cursorMode;
         }
         else if (m_current_mode == cursorMode){
-            m_modeCB(gestureMode);
+            if (m_modeCB != nullptr){
+                m_modeCB(gestureMode);
+            }
             m_current_mode = gestureMode;
         }
     }

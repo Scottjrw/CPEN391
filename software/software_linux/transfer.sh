@@ -20,10 +20,12 @@ Makefile
 main.cpp
 testmain.cpp
 testsg.cpp
+testanimation.cpp
 libs
 ../shared_libs
 arm_system.h
 nios.dat
+testAlphabetmain.cpp
 )
 
 tryaddresses() {
