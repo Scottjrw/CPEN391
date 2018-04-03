@@ -72,7 +72,11 @@ public:
 
     void draw_string(rgba_t color, unsigned x, unsigned y, std::string str, FontType f);
 
+    void draw_string_centered(rgba_t color, unsigned x, unsigned y, std::string str, FontType f);
+
     void clear();
+
+    void draw_logo(char * filename, unsigned x, unsigned y);
 
     void startIRQ();
 

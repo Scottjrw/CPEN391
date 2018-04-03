@@ -22,7 +22,7 @@ Video::Video(const char* file) {
 	bufferLen = 0;
 
 	if (video_uart < 0) {
-		throw "fail to open uart";
+		throw std::system_error(errno, std::system_category(), "fail to open uart");
 	}
 
 	TermiosUtil::SetSpeed(video_uart, B38K);//set baudrate
@@ -34,7 +34,7 @@ Video::Video(const char* file) {
 
     int fd = open("/dev/mem", (O_RDWR | O_SYNC));
     if (fd == -1) {
-        throw "fail to open mem";
+        throw std::system_error(errno, std::system_category(), "fail to mmap video");
     }
 
     base = reinterpret_cast<uint32_t *> (mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED, fd, base_addr));

@@ -74,8 +74,58 @@ void SimpleGraphics::draw_string(rgba_t color, unsigned x, unsigned y, std::stri
     }
 }
 
+void SimpleGraphics::draw_string_centered(rgba_t color, unsigned x, unsigned y, std::string str, FontType f){
+    unsigned start_x = x - str.length()/2 * f;
+
+    for (unsigned i = 0; i < str.length(); i++) {
+        draw_char(color, start_x, y, str[i], f);
+        start_x += f;
+    }
+}
+
 void SimpleGraphics::clear() {
     draw_rect(rgba(0, 0, 0, 0), 0, 0, m_width, m_height);
+}
+
+void SimpleGraphics::draw_logo(char * filename, unsigned x, unsigned y){
+    FILE* f = fopen(filename, "rb");
+    unsigned char info[54];
+    int status = fread(info, sizeof(unsigned char), 54, f); // read the 54-byte header
+    if(status < 0)
+        printf("fread fail\n");
+
+    // extract image height and width from header
+    int width = (int)((info[18])|(info[19]<<8)|(info[20]<<8*2)|(info[21]<<8*3));
+    int height = (int)((info[22])|(info[23]<<8)|(info[24]<<8*2)|(info[25]<<8*3));
+
+    //handle padding
+    while((width*6%4)!=0)
+        width++;
+
+    //optimize for logo
+    if(width==322)
+        width = 321;
+
+    int size = 3 * width * height;
+    unsigned char* data = new unsigned char[size]; // allocate 3 bytes per pixel
+    status = fread(data, sizeof(unsigned char), size, f); // read the rest of the data at once
+    if(status<0)
+        printf("fread fail\n");
+    fclose(f);
+
+    int k = 0;// k is the index to data
+    for(unsigned j=y+height; j>y; j--){
+        for(unsigned i=x; i<width+x; i++){
+            draw_pixel(rgba((uint8_t)data[k+2], (uint8_t)data[k+1], (uint8_t)data[k], 255), i, j);
+            k += 3;
+        }
+    }
+
+    //optimize for logo
+    if(width==321){
+        draw_rect(rgba(255,255,255,255),x,y,x+30,y+height);
+        draw_rect(rgba(255,255,255,255),x+30,y,x+60,y+32);
+    }
 }
 
 #ifdef HW_GRAPHICS
@@ -124,13 +174,13 @@ SimpleGraphics::SimpleGraphics(unsigned int width, unsigned int height):
 { 
     int fd = open("/dev/cpen391_vgabuffer", (O_RDWR|O_SYNC));
     if (fd == -1) {
-        throw "Failed to open vgabuffer";
+        throw std::system_error(errno, std::system_category(), "fail to open vgabuffer");
     }
 
     unsigned size = m_width * m_height * sizeof(rgba_t);
     m_buffer_base = reinterpret_cast<SimpleGraphics::rgba_t *>(mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED, fd, 0));
     if (m_buffer_base == MAP_FAILED) {
-        throw "Failed to mmap SimpleGraphics";
+        throw std::system_error(errno, std::system_category(), "fail to mmap SimpleGraphics");
     }
 
     m_max_addr = m_buffer_base + width * height;
