@@ -109,8 +109,8 @@ std::string Wifi::ReadResponse(){
 	return response;
 }
 
-std::map<std::string, std::string> Wifi::GetGestureMapping(){
-	std::map<std::string, std::string> gesture_mapping;
+void Wifi::LoadGestureMapping(){
+	gesture_map.clear();
 	std::string s= "get_gesture()\r\n";
 	const char * command = s.c_str();
 	if(write(wifi_uart, command, strlen(command))<0)
@@ -140,7 +140,7 @@ std::map<std::string, std::string> Wifi::GetGestureMapping(){
 				temp = fgetc(F);
 			}
 
-			gesture_mapping[key_string] = value_string;
+			gesture_map.insert({key_string,value_string});
 			key_string.clear();
 			value_string.clear();
 		}
@@ -149,7 +149,11 @@ std::map<std::string, std::string> Wifi::GetGestureMapping(){
 			break;
 	}
 	fclose(F);
-	return gesture_mapping;
+}
+
+std::unordered_map<std::string, std::string> Wifi::GetGestureMapping(){
+	std::unordered_map<std::string, std::string> map_copy(gesture_map);
+	return map_copy;
 }
 
 void Wifi::SendTriggeredGesture(std::string gesture){
@@ -163,9 +167,7 @@ Wifi::Wifi(const char name[]) {
 	wifi_uart = open(name, O_RDWR);
 
 	if (wifi_uart < 0) {
-		printf("Failed to open UART device\n");
-		while (1)
-			;
+		throw std::system_error(errno, std::system_category(), "fail to open wifi uart");
 	}
 	TermiosUtil::SetSpeed(wifi_uart, B115K);
 
