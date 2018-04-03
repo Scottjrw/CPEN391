@@ -8,31 +8,49 @@
 #include <queue>
 #include <iostream>
 
+#ifdef __hal__
+#define EV_NIOS
+#else
+#define EV_ARM
+#endif
+
 class Event_Loop {
 public:
     Event_Loop() :
-        m_run(false), m_callables(), m_timers() {}
+        m_run(false), m_is_timer(false), m_is_valid(false), m_ret(0), m_callables(), m_cur() {}
 
     typedef std::function<void(Event_Loop *)> Callable;
+    typedef std::vector<Callable>::const_iterator CallableRef;
 
     /* Add a regular function to call, function should not block when it has nothing to do
      */
-    void add(Callable trypoll, int pos=-1) {
+    CallableRef add(Callable trypoll) {
         assert(trypoll != nullptr);
-        if (pos < 0)
-            m_callables.push_back(trypoll);
-        else
-            m_callables.insert(m_callables.begin() + pos, trypoll);
+        m_callables.push_back(trypoll);
+        invalidate();
+        return m_callables.cend() - 1;
     }
 
     /* Add a member function, pass in the "this" of the object and its member function
      */
     template <typename T>
-    void add(T *c, void (T::*trypoll)(Event_Loop *)) {
+    CallableRef add(T *c, void (T::*trypoll)(Event_Loop *)) {
         assert(trypoll != nullptr);
-        add(std::bind(trypoll, c, std::placeholders::_1));
+        return add(std::bind(trypoll, c, std::placeholders::_1));
     }
 
+    template <typename T>
+    CallableRef add(T *c, void (T::*trypoll)(void)) {
+        assert(trypoll != nullptr);
+        return add(std::bind(trypoll, c, std::placeholders::_1));
+    }
+
+    void remove(CallableRef ref) {
+        m_callables.erase(ref);
+        invalidate();
+    }
+
+#ifdef EV_ARM
     typedef std::function<bool(Event_Loop *)> TimerCallable;
     typedef std::chrono::microseconds TimerDuration;
 
@@ -54,18 +72,28 @@ public:
         add_timer(period, std::bind(timer_cb, c, std::placeholders::_1));
     }
 
+    template <typename T, class Rep, class Period> 
+    void add_timer(std::chrono::duration<Rep, Period> period, T *c, bool (T::*timer_cb)(void)) {
+        add_timer(period, std::bind(timer_cb, c, std::placeholders::_1));
+    }
+#endif // EV_ARM
+
     /* Run the loop, which repeatedly calls the added trypoll functions
      * 
      * The loop returns when stop is called, and returns the value passed to stop
      */
     int run() {
+        assert(!m_run);
         m_run = true;
         while (1) {
-            for (Callable &c : m_callables) {
-                if (m_run) {
-                    c(this);
+            for (m_cur = m_callables.begin(); m_cur != m_end; m_cur++) {
+                if (m_run)
+                    (*m_cur)(this);
+                else return m_ret;
+
+                if (m_run)
                     checktimers();
-                } else return m_ret;
+                else return m_ret;
             }
 
             if (m_run) {
@@ -74,8 +102,63 @@ public:
         }
     }
 
+    /* Inside a trypoll this can be called to run the loop once. This is useful
+     * if implementing a polling wait without blocking loop execution.
+     *
+     * The event loop may be stopped during a call to cont. The return value of this
+     * call is whether or not the loop is still running. Most of the time this can
+     * be ignored.
+     *
+     * Trying to call this within a timer callback is a violation as is trying to
+     * call this when the event loop is not running.
+     */
+    bool cont() {
+        assert(m_run && !m_is_timer);
+        auto last_cur = m_cur;
+        m_is_valid = true;
+
+        for (m_cur = m_callables.begin(); m_cur != m_end; m_cur++) {
+            if (m_cur != last_cur) {
+                if (m_run)
+                    (*m_cur)(this);
+                else return false;
+            }
+
+            if (m_run)
+                checktimers();
+            else return false;
+        }
+
+        if (m_run) {
+            checktimers();
+        } else return false;
+
+        if (m_is_valid) {
+            m_cur = last_cur;
+        }
+
+        return m_run;
+    }
+
+#ifdef EV_ARM
+    /* A sleep which runs the event loop for period time
+     * This allows a function to block itself for awhile without
+     * blocking event loop execution.
+     * 
+     * Like cont(), this cannot be called in a timer or when the
+     * event loop is not running
+     */
+    template <class Rep, class Period> 
+    bool sleep(std::chrono::duration<Rep, Period> period) {
+        assert(m_run && !m_is_timer);
+        auto end_time = std::chrono::high_resolution_clock::now() + period;
+
+        while (end_time > std::chrono::high_resolution_clock::now() && cont());
+    }
+#endif // EV_ARM
+
     void stop(int ret) {
-        assert(m_run = true);
+        assert(m_run);
         m_run = false;
         m_ret = ret;
     }
@@ -83,17 +166,33 @@ public:
 
 private:
     bool m_run;
+    bool m_is_timer;
+    bool m_is_valid;
     int m_ret;
 
     inline void checktimers() {
-        if (m_timers.top().end <= std::chrono::high_resolution_clock::now()) {
-            const Timer &t = m_timers.top();
-            if (t.cb(this))
-                m_timers.emplace(t.cb, t.period, t.end);
-            m_timers.pop();
+#ifdef EV_ARM
+        if (!m_timers.empty()) {
+            if (m_timers.top().end <= std::chrono::high_resolution_clock::now()) {
+                const Timer &t = m_timers.top();
+                m_is_timer = true;
+                if (t.cb(this))
+                    m_timers.emplace(t.cb, t.period, t.end);
+                m_is_timer = false;
+                m_timers.pop();
+            }
         }
+#endif // EV_ARM
     }
 
+    // Invalidate any running loop when modifying the callables
+    inline void invalidate() {
+        m_end = m_callables.end();
+        m_cur = m_end;
+        m_is_valid = false;
+    }
+
+#ifdef EV_ARM
     typedef std::chrono::time_point<std::chrono::high_resolution_clock, TimerDuration> TimerPoint;
 
     struct Timer {
@@ -122,9 +221,12 @@ private:
             end(end + period)
         {}
     };
+    std::priority_queue<Timer> m_timers;
+#endif // EV_ARM
 
     std::vector<Callable> m_callables;
-    std::priority_queue<Timer> m_timers;
+    std::vector<Callable>::iterator m_cur;
+    std::vector<Callable>::iterator m_end;
 };
 
 #endif // EVENT_LOOP_HPP
