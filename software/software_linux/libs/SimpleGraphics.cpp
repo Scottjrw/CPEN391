@@ -96,6 +96,8 @@ void SimpleGraphics::draw_string_centered(rgba_t color, unsigned x, unsigned y, 
         case Font38x59:
             start_y = y - 29;
             break;
+        default:
+            assert(0);
     }
 
     draw_string(color, start_x, start_y, str, f);
