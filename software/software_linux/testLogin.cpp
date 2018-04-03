@@ -52,9 +52,16 @@ int main(void){
 
     Screen sc(sg, tc);
 
-    sc.addDrawable(&lp);
+    sc.addDrawable(&lp.m_username_field);
+    sc.addDrawable(&lp.m_password_field);
+    sc.addDrawable(&lp.m_login_button);
+    sc.addDrawable(&lp.m_switch_login_mode_button);
 
-    sc.addTouchable(&lp);
+    sc.addTouchable(&lp.m_username_field);
+    sc.addTouchable(&lp.m_password_field);
+    sc.addTouchable(&lp.m_login_button);
+    sc.addTouchable(&lp.m_switch_login_mode_button);
+
 
 
 

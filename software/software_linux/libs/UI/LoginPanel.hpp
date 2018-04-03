@@ -16,11 +16,12 @@
 #include <map>
 #include "GeometricRecognizer.hpp"
 #include "SimpleGraphics.hpp"
+#include "screen.hpp"
 
 namespace UI
 {
 
-class LoginPanel : public Rectangle, public Touchable
+class LoginPanel : public Screen, public Rectangle, public Touchable
 {
 
     using GeometricRecognizer = DollarRecognizer::GeometricRecognizer;
@@ -59,7 +60,7 @@ class LoginPanel : public Rectangle, public Touchable
      *      m_username_input should be updated with new inputs
      *      username field should display current inputs    
      */ 
-    void updateInputField();
+    void updateInputField(std::string str);
 
 
     void clear();
@@ -95,12 +96,12 @@ class LoginPanel : public Rectangle, public Touchable
     /*
      * Print * 
      */
-    void PasswordInputMsg();
+    void updatePasswordField();
 
     /*
      * Describe the reason of login/register failure
      */
-    void PAsswordFieldMsg(std::string feedback);
+    void PasswordFieldMsg(std::string feedback);
 
     /*
      * Reset the login and password field

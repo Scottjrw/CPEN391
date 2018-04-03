@@ -141,38 +141,73 @@ void LoginPanel::passwordFieldChose(){
     m_input_field_chose = 1;
 }
 
+// void LoginPanel::updateInputField(std::string str){
+
+//     PasswordFieldMsg("");
+    
+//     while(m_bluetooth.ReadResponse() != '1'){
+//         // doing nothing if no button click received
+//     }
+
+//     // now we get start button click
+//     // start reading the path
+//     Path2D newPath;
+
+//     while(m_bluetooth.ReadResponse() != '1'){
+//         m_nios.start();
+//         nios.dot_location_cb([&newPath](unsigned x, unsigned y){
+//             newPath.push_back(Point2D(x,y));
+//         });
+//     }
+    
+//     // now stop button is clicked
+//     // we recognize the path   
+//     m_nios.stop();  
+//     RecognitionResult result = m_geometricRecognizer.recognize(newPath);
+    
+//     // ############## 把两个input fields  从Button 改成 Textbox ##############//
+//     // ############## 根据哪个Textbox 被Cursor 选中，来update username or password ##############//
+
+//     // username field is chosen
+//     if(!m_input_field_chose){
+//         if(name == "Delete"){
+//             if(m_username_input.length() > 0){
+//                 m_username_input.pop_back();
+//             }
+//             return;
+//         }
+//         else{
+//             m_username_input += result->name;
+//             UsernameFieldMsg(m_username_input);
+//             return;
+//         }
+//     }
+//     // password field is chosen
+//     else{
+//         if(name == "Delete"){
+
+//             if(m_password_input.length() > 0){
+//                 m_password_input.pop_back();
+//             }
+//             return;
+//         }
+//         else{
+//             m_username_input += result->name;
+//             updatePasswordField();
+//             return;
+//         }
+//     }
+    
+//     while(true){
+//         m_nios.trypoll();
+//     }
+// }
 void LoginPanel::updateInputField(std::string str){
-
-    PasswordFieldMsg("");
-    
-    while(m_bluetooth.ReadResponse() != '1'){
-        // doing nothing if no button click received
-    }
-
-    // now we get start button click
-    // start reading the path
-    Path2D newPath;
-
-    while(m_bluetooth.ReadResponse() != '1'){
-        m_nios.start();
-        nios.dot_location_cb([&newPath](unsigned x, unsigned y){
-            newPath.push_back(Point2D(x,y));
-        });
-    }
-    
-    // now stop button is clicked
-    // we recognize the path   
-    m_nios.stop();  
-    RecognitionResult result = m_geometricRecognizer.recognize(newPath);
-    
-    // ############## 把两个input fields  从Button 改成 Textbox ##############//
-    // ############## 根据哪个Textbox 被Cursor 选中，来update username or password ##############//
-
     // username field is chosen
-    if(!m_input_field_chose){
-        if(name == "Delete"){
+     if(!m_input_field_chose){
+        if(str == "Delete"){
             if(m_username_input.length() > 0){
-                m_username_input.pop_back();
+            m_username_input.pop_back();
             }
             return;
         }
@@ -184,7 +219,7 @@ void LoginPanel::updateInputField(std::string str){
     }
     // password field is chosen
     else{
-        if(name == "Delete"){
+         if(str == "Delete"){
 
             if(m_password_input.length() > 0){
                 m_password_input.pop_back();
@@ -197,12 +232,7 @@ void LoginPanel::updateInputField(std::string str){
             return;
         }
     }
-    
-    while(true){
-        m_nios.trypoll();
-    }
 }
-
 void LoginPanel::login()
 {   
     // in username/password page
