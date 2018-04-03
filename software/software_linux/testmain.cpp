@@ -1,6 +1,9 @@
-#include <iostream>
-#include <unistd.h>
+
 #include <system_error>
+#include <unistd.h>
+#include <iostream>
+
+#include "video.hpp"
 #include "fifo_serial.hpp"
 #include "NIOS_Processor.hpp"
 #include "arm_system.h"
@@ -12,12 +15,35 @@
 #include "screen.hpp"
 #include "Close_Handler.hpp"
 #include "NIOS_Processor_Init.hpp"
+#include "wifi.hpp"
 
 using namespace UI;
 using namespace DollarRecognizer;
 
+void showStartScreen(SimpleGraphics & sg){
+
+}
+
+void showLoginPanel(SimpleGraphics &sg, Wifi &wifi, Video &video){
+    
+}
+
+void showHomePage(SimpleGraphics &sg, std::string username){
+
+    Screen sc;
+    
+    DropdownMenu homeMenu(sg, {40,40}, {240,100}, "Menu", rgba(0,0,0,255), rgba(159,159,159,255));
+    Button welcomeField(sg, {340, 40}, {600, 80}, "Welcome!" + username, rgba(255,255,255,255), rgba(159,159,159,255));
+
+    sc.addDrawable(homeMenu);
+    sc.addDrawable(welcomeField);
+    sc.addTouchable(homeMenu);
+
+    sc.draw();
+}
 
 int main(void) {
+
     SimpleGraphics sg(640, 480);
     sg.clear();
 
