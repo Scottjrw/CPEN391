@@ -44,9 +44,8 @@ public:
     
     void setMode(ModeCB cb){ m_modeCB = cb; };
     void setGesture(WandCommandCB cb){ m_wandCommandCB = cb; };
-    
-    int GetFd();
-    void closeFile();
+
+    Modes getMode() { return m_current_mode; }
     
     bool checkConnection();
     
