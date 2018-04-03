@@ -16,7 +16,9 @@ LoginPanel::LoginPanel(SimpleGraphics &graphics, Wifi &wifi, Bluetooth &bt, Geom
             rgba_t background_color,
             rgba_t btn_background_color,
             rgba_t text_color,
-            rgba_t hint_color):
+            rgba_t hint_color,
+            FontType buttonFont,
+            FontType hintFont):
     Rectangle(graphics, p1, p2, background_color),
     Touchable(),
     m_wifi(wifi),
@@ -34,21 +36,21 @@ LoginPanel::LoginPanel(SimpleGraphics &graphics, Wifi &wifi, Bluetooth &bt, Geom
     m_username_field(graphics, 
             {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3}, 
             {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT}, 
-            "Username", m_hint_color, m_btn_background_color),
+            "Username", m_hint_color, m_btn_background_color, hintFont),
     m_password_field(graphics, 
             {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT + 20}, 
             {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + 2*BUTTON_HEIGHT + 20}, 
-            "Password", m_hint_color, m_btn_background_color),
+            "Password", m_hint_color, m_btn_background_color, hintFont),
     // ##                                           ## //
     // ############################################### //
     m_login_button(graphics, 
             {p2.x - (p2.x - p1.x - 2*BUTTON_WIDTH)/3 - BUTTON_WIDTH, p2.y - 3*BUTTON_HEIGHT/2}, 
             {p2.x - (p2.x - p1.x - 2*BUTTON_WIDTH)/3, p2.y - BUTTON_HEIGHT/2},
-            "Login", m_text_color, m_btn_background_color),
+            "Login", m_text_color, m_btn_background_color, buttonFont),
     m_switch_login_mode_button(graphics,
             {p1.x + (p2.x - p1.x - 2*BUTTON_WIDTH)/3, p2.y - 3*BUTTON_HEIGHT/2},
             {p1.x + (p2.x - p1.x - 2*BUTTON_WIDTH)/3 + BUTTON_WIDTH, p2.y - BUTTON_HEIGHT/2},
-            "Switch Login Mode", m_text_color, m_btn_background_color),
+            "Switch Login Mode", m_text_color, m_btn_background_color, buttonFont),
     m_login_page(false),
     m_input_field_chose(false),
     m_login_status(STATUS_DEFAULT)
@@ -279,7 +281,7 @@ void LoginPanel::UsernameFieldMsg(std::string feedback)
 {
     m_username_field = Button(m_graphics, {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3}, 
                      {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT}, 
-                     feedback, m_hint_color, m_btn_background_color);
+                     feedback, m_hint_color, m_btn_background_color, hintFont);
     m_username_field.draw();
 }
 
@@ -305,7 +307,7 @@ void LoginPanel::PasswordFieldMsg(std::string feedback)
 {   
     m_password_field = Button(m_graphics, {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT} + 20}, 
                      {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + 2*BUTTON_HEIGHT} + 20}, 
-                     feedback, m_hint_color, m_btn_background_color);
+                     feedback, m_hint_color, m_btn_background_color, hintFont);
     m_password_field.draw();
 }
 

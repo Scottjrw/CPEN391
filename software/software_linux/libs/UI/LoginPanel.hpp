@@ -47,7 +47,9 @@ class LoginPanel : public Screen, public Rectangle, public Touchable
                rgba_t background_color = rgba(0,0,0,255),
                rgba_t btn_background_color = rgba(102,102,102,255),
                rgba_t text_color = rgba(226,226,226,255),
-               rgba_t hint_color = rgba(156,156,156,255));
+               rgba_t hint_color = rgba(156,156,156,255),
+               FontType buttonFont,
+               FontType hintFont);
 
     // call back function
     typedef std::function<void(int login_status, std::string user)> LoginStatusCB;
