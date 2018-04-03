@@ -120,7 +120,7 @@ $(document).ready( function() {
   $("#faq").click(function() {
     console.log("ok");
     $("#modal-title").text('Frequently Asked Questions');
-    $("#modal-body").html("<p>Welcome to your account!  Below you may add your specialized 'IF THIS, THEN THAT' Services to be mapped to guestures to use on your Home Controller. For more information on how to make IFTT Services and how to get the URLs see here: </p><a href='https://ifttt.com/discover' target='_blank'>IFTTT Webpage Home</a> //<a href='https://help.ifttt.com/hc/en-us/articles/115010361388-How-do-I-create-an-Applet-' target='_blank'>How to Create a Service</a>");
+    $("#modal-body").html("<h4>What is IFTTT?</h4><p>IFTTT is a free platform that helps you do more with all your apps and devices.</p><p>For more information about the platform, see here: </p><a href='https://ifttt.com/discover' target='_blank'>IFTTT Webpage Home</a><br/><hr><h4>How does your 'Home Controller' use IFTTT?</h4><p>Our service maps gestures from our system to your IFTTT applets.</p><hr><h4>How do I create applets to be mapped?</h4><p>Applets can be easily made on the IFTTT website with more detailed instructions here: </p><a href='https://help.ifttt.com/hc/en-us/articles/115010361388-How-do-I-create-an-Applet-' target='_blank'>How to Create a Service</a><br/><hr><h4>More Information</h4><p>To make your personalized map, drag and drop gestures into the 'Gesture Map' column and actions into the 'Action Map' column.</p><p>To add new applets to your account, provide a descriptor and a link to your applet URL gotten from the IFTTT Website</p>");
     $("#myModal").modal('toggle');
   });
 

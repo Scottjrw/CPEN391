@@ -4,7 +4,7 @@ html {
 }
 body {
   height: 100%;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   overflow:scroll;
 }
 
@@ -92,7 +92,7 @@ hr {
 }
 
 .modal {
-  padding-top: 20%;
+  /* padding-top: 20%; */
 }
 
 .btn-addIFTTT {
@@ -267,6 +267,6 @@ hr {
 
 @media only screen and (max-width: 1414px) {
   .homepage {
-    width: 600px;
+    width: 650px;
   }
 }
