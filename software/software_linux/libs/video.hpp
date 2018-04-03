@@ -23,7 +23,7 @@ public:
     bool colorControl(int mode);
     bool mirror_mode_on(void);
 
-    std::string takeRawPicture();
+    std::string takeRawPicture(int startX, int startY);
 
     Video(const char* file);
 private:

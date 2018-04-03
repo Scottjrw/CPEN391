@@ -41,6 +41,8 @@ public:
         m_touchCB = nullptr;
     }
 
+    void setTouchCB(TouchCB cb) {m_touchCB = cb;}
+
     // Dump a message's contents completely
     static void print(TouchUart::message *msg);
 

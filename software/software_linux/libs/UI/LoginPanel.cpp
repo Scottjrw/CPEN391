@@ -197,10 +197,6 @@ void LoginPanel::passwordFieldChose(){
 //             return;
 //         }
 //     }
-    
-//     while(true){
-//         m_nios.trypoll();
-//     }
 // }
 void LoginPanel::updateInputField(std::string str){
     // username field is chosen
@@ -233,6 +229,8 @@ void LoginPanel::updateInputField(std::string str){
         }
     }
 }
+
+
 void LoginPanel::login()
 {   
     // in username/password page
@@ -261,13 +259,14 @@ void LoginPanel::login()
     else{
         std::string picResult;
 
-        m_wifi.SendPicture(m_video.takeRawPicture());
+        m_wifi.SendPicture(m_video.takeRawPicture(280, 40));
 
         picResult = m_wifi.ReadResponse();
 
         if(picResult == "done"){
             m_login_status = 1;
-            m_login_status_cb(m_login_status, m_username_input);
+            //m_login_status_cb(m_login_status, m_username_input);
+            stop(0);
         }
 
         else if(picResult == "fail"){

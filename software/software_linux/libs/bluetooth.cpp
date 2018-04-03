@@ -105,10 +105,6 @@ std::vector<std::vector<std::string>> Wand::getAvailableDevices(std::string time
     return devices;
 }
 
-void Wand::closeFile(){
-    fclose(F);
-}
-
 int Wand::GetFd(){
     int i = bluetooth_uart;
     return i;

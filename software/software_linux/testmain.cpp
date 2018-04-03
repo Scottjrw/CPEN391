@@ -16,6 +16,7 @@
 #include "Close_Handler.hpp"
 #include "NIOS_Processor_Init.hpp"
 #include "wifi.hpp"
+#include "TermiosUtil.hpp"
 
 using namespace UI;
 using namespace DollarRecognizer;
@@ -37,15 +38,31 @@ void showStartScreen(SimpleGraphics & sg){
  *      username:  callback from login() is login successfully
  *      mistery class reference: implement on Tuesday
  */
-void showLoginPanel(SimpleGraphics &sg, Wifi &wifi, Video &video, std::string username){
+void showLoginPanel(SimpleGraphics &sg, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios){
 
+    // lp is a subclass of screen
+    LoginPanel lp(sg, wifi, wand, gr, {0,0}, {640,480}, nios, video);
 
-
+    lp.run();
 }
 
 void showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Processor &nios){
     
     Screen sc;
+
+    Wand wand("/dev/ttyAL3", B115K);
+
+    Modes wandMode;
+
+    WandCommands cmds;
+
+    wand.setMode([&wandMode](Mode m){
+        wandMode = m;
+    });
+
+    wand.setGesture([&cmds](WandCommands wc){
+        cmds = wc;
+    });
 
     DropdownMenu Menu(sg, {40,40}, {240,100}, "Menu", rgba(0,0,0,255), rgba(159,159,159,255));
 
@@ -61,8 +78,8 @@ void showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Pr
         sc.stop(5);
     });
 
-    Button startBtn(sg, {320,380}, {420, 450}, "Start", rgb(0,0,0), rgb(119,119,119));
-    Button endBtn(sg, {460,380}, {560, 450}, "End", rgb(0,0,0), rgb(119,119,119));
+    //Button startBtn(sg, {320,380}, {420, 450}, "Start", rgb(0,0,0), rgb(119,119,119));
+    //Button endBtn(sg, {460,380}, {560, 450}, "End", rgb(0,0,0), rgb(119,119,119));
 
 	Path2D newPath;
 
@@ -77,20 +94,38 @@ void showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Pr
         sg.draw_rect(rgba(0, 255, 0, 128), last_min, last_max);
     });
 
-    startBtn.onTouch([&nios](Point point){
-        nios.start();
-    });
+    // startBtn.onTouch([&nios](Point point){
+    //     nios.start();
+    // });
     
-    endBtn.onTouch([&nios, &newPath, &gr](Point point){
+    // endBtn.onTouch([&nios, &newPath, &gr](Point point){
+    //     std::cout << "Number of points: " << newPath.size() << std::endl;
+    //     nios.stop();        
+    //                                                                 //  #############################################  //
+    //     RecognitionResult result = gr.recognize(newPath);           //  this part will be replaced with mistery class  //
+    //                                                                 //  #############################################  //
+    //     std::cout << "the gesture input is: " << result.name << std::endl;
+    // });
+
+    if(wandMode == gestureMode && cmds == wandStart){}
+        nios.start();
+    }
+
+    else if(wandMode == gestureMode && cmds == wandStop){
         std::cout << "Number of points: " << newPath.size() << std::endl;
         nios.stop();        
                                                                     //  #############################################  //
         RecognitionResult result = gr.recognize(newPath);           //  this part will be replaced with mistery class  //
                                                                     //  #############################################  //
         std::cout << "the gesture input is: " << result.name << std::endl;
-    });
+    }
 
     std::cout << "Starting..." << std::endl;
+
+    while(true){
+         m_nios.trypoll();
+         wand.trypoll();
+    }
 
     sc.addTouchable(&Menu)
     sc.addTouchable(&startBtn);

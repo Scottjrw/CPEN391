@@ -33,7 +33,7 @@ int main(void){
 
     Video video("/dev/ttyAL2");
 
-    Bluetooth bt("/dev/ttyAL3");
+    Wand wand("/dev/ttyAL3", B115K);
 
     GeometricRecognizer gr;
 
@@ -47,6 +47,10 @@ int main(void){
     });
 
     LoginPanel lp(sg, wifi, bt, gr, {0,0}, {640,480}, nios, video);
+
+    // user click input fields they want to write to 
+    // between 2 wand clicks, updateLoginFields()
+    // login when button is clicked
 
     lp.draw();
 
@@ -62,7 +66,12 @@ int main(void){
     sc.addTouchable(&lp.m_login_button);
     sc.addTouchable(&lp.m_switch_login_mode_button);
 
+    while(1){
+        nios.trypoll();
+    }
+    sc.draw();
 
+    sc.run();
 
 
 

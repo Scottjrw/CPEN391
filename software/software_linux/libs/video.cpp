@@ -161,14 +161,14 @@ void Video::printBuff() {
 	printf("\n");
 }
 
-std::string Video::takeRawPicture(){
+std::string Video::takeRawPicture(int startX, int startY){
 	volatile uint32_t * data;
 	std::stringstream ss;
 	std::string output;
 
 	// hard coded the location (upper middle) to capture
-	for(int j=0; j<60; j++){
-		for(int i=120; i<200; i++){
+	for(int j=startY; j<startY+60; j++){
+		for(int i=startX; i<startX+80; i++){
 			data = base + (j * width + i);
 			ss << std::setw(6) << std::setfill('0') << std::hex <<*data;
 		}

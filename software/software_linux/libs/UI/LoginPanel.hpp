@@ -51,7 +51,7 @@ class LoginPanel : public Screen, public Rectangle, public Touchable
 
     // call back function
     typedef std::function<void(int login_status, std::string user)> LoginStatusCB;
-    void login_status_cb(LoginStatusCB cb) { m_login_status_cb = cb; }
+    void setLoginCB(LoginStatusCB cb) { m_login_status_cb = cb; }
 
 
     /* callded when each time an username input character is received
