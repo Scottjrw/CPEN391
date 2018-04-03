@@ -1,6 +1,9 @@
-#include <iostream>
-#include <unistd.h>
+
 #include <system_error>
+#include <unistd.h>
+#include <iostream>
+
+#include "video.hpp"
 #include "fifo_serial.hpp"
 #include "NIOS_Processor.hpp"
 #include "arm_system.h"
@@ -12,50 +15,54 @@
 #include "screen.hpp"
 #include "Close_Handler.hpp"
 #include "NIOS_Processor_Init.hpp"
+#include "wifi.hpp"
 
 using namespace UI;
 using namespace DollarRecognizer;
 
+enum Switch_Page_Commands{
+    to_Home = 0,
+    to_GestureMap = 2,
+    to_NewGesture = 3,
+    to_Setting = 4,
+    to_LoginPanel = 5
+}
 
-int main(void) {
-    SimpleGraphics sg(640, 480);
-    sg.clear();
+void showStartScreen(SimpleGraphics & sg){
 
-    FIFO_Serial nios_serial(NIOS_HPS_FIFO_BASE, NIOS_HPS_FIFO_STATUS_BASE,
-            HPS_NIOS_FIFO_BASE, HPS_NIOS_FIFO_STATUS_BASE);
+}
 
-    NIOS_Processor nios(nios_serial);
+/*
+ * @Param:
+ *      username:  callback from login() is login successfully
+ *      mistery class reference: implement on Tuesday
+ */
+void showLoginPanel(SimpleGraphics &sg, Wifi &wifi, Video &video, std::string username){
 
-    int err;
-    if ((err = NIOS_Processor_Init::program_nios(SDRAM_FILE, 
-                    SDRAM_BASE, SDRAM_SPAN, MM_RESET_BASE, MM_RESET_SPAN))) {
 
-        std::cerr << "Failed to program NIOS Processor" << std::endl;
-        return err;
-    }
 
-    std::clog << "NIOS Processor Programmed" << std::endl;
-    usleep(500000);
+}
 
-    std::clog << "Saying hello to the NIOS Processor..." << std::endl;
-    nios_serial.clear();
-    if (nios.hello(1000)) {
-        std::clog << "NIOS not responding... giving up" << std::endl;
+void showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Processor &nios){
+    
+    Screen sc;
 
-        return 1;
-    }
+    DropdownMenu Menu(sg, {40,40}, {240,100}, "Menu", rgba(0,0,0,255), rgba(159,159,159,255));
 
-    std::cout << "Received a Hello from the NIOS" << std::endl;
+    homeMenu.newItem(sg, "Home", rgba(80,80,80,255), rgba(180,180,180,255), [&sc](Point p){
+        sc.stop(0);
+    })
 
-    TouchControl tc("/dev/ttyAL0", sg.width(), sg.height(), true);
-    tc.touch_enable();
+    homeMenu.newItem(sg, "New Gesture", rgba(80,80,80,255), rgba(180,180,180,255), [&sc](Point p){
+        sc.stop(3);
+    });
 
-    Button startBtn(sg, {20,20}, {220, 120}, "Start", rgb(0,0,0), rgb(119,119,119));
-    Button endBtn(sg, {20,200}, {220, 300}, "End", rgb(0,0,0), rgb(119,119,119));
+    homeMenu.newItem(sg, "Log Out", rgba(80,80,80,255), rgba(180,180,180,255),  [&sc](Point p){
+        sc.stop(5);
+    });
 
-    GeometricRecognizer gr;
-
-	gr.loadSamples();
+    Button startBtn(sg, {320,380}, {420, 450}, "Start", rgb(0,0,0), rgb(119,119,119));
+    Button endBtn(sg, {460,380}, {560, 450}, "End", rgb(0,0,0), rgb(119,119,119));
 
 	Path2D newPath;
 
@@ -76,28 +83,104 @@ int main(void) {
     
     endBtn.onTouch([&nios, &newPath, &gr](Point point){
         std::cout << "Number of points: " << newPath.size() << std::endl;
-        nios.stop();
-        RecognitionResult result = gr.recognize(newPath);
+        nios.stop();        
+                                                                    //  #############################################  //
+        RecognitionResult result = gr.recognize(newPath);           //  this part will be replaced with mistery class  //
+                                                                    //  #############################################  //
         std::cout << "the gesture input is: " << result.name << std::endl;
     });
 
     std::cout << "Starting..." << std::endl;
 
-
-    Screen sc(sg, tc);
-
+    sc.addTouchable(&Menu)
     sc.addTouchable(&startBtn);
     sc.addTouchable(&endBtn);
+    sc.addDrawable(&Menu);
     sc.addDrawable(&startBtn);
     sc.addDrawable(&endBtn);
-    sc.add(&nios, &NIOS_Processor::trypoll);
-    sc.add(CloseHandler::make_exit_trypoll(0));
 
     sc.draw();
 
-    sc.run();
+    return sc.run();
+}
 
-    std::clog << "Stopping... " << std::endl;
+int showHomePage(SimpleGraphics &sg, std::string username){
+
+    Screen sc;
+    
+    DropdownMenu homeMenu(sg, {40,40}, {240,100}, "Menu", rgba(0,0,0,255), rgba(159,159,159,255));
+    Button welcomeField(sg, {340, 40}, {600, 80}, "Welcome!" + username, rgba(255,255,255,255), rgba(159,159,159,255));
+    
+    homeMenu.newItem(sg, "Gesture Map", rgba(80,80,80,255), rgba(180,180,180,255), [&sc](Point p){
+        sc.stop(2);
+    })
+
+    homeMenu.newItem(sg, "New Gesture", rgba(80,80,80,255), rgba(180,180,180,255), [&sc](Point p){
+        sc.stop(3);
+    });
+
+    homeMenu.newItem(sg, "Settings", rgba(80,80,80,255), rgba(180,180,180,255), [&sc](Point p){
+        sc.stop(4);
+    });
+
+    homeMenu.newItem(sg, "Log Out", rgba(80,80,80,255), rgba(180,180,180,255),  [&sc](Point p){
+        sc.stop(5);
+    });
+
+    sc.addDrawable(&homeMenu);
+    sc.addDrawable(&welcomeField);
+    sc.addTouchable(&homeMenu);
+    sc.addTouchable(&welcomeField);
+
+    sc.draw();
+
+    return sc.run();
+}
+
+int main(void) {
+
+    // Simplegraphics
+    SimpleGraphics sg(640, 480);
+    sg.clear();
+
+    // NIOS
+    FIFO_Serial nios_serial(NIOS_HPS_FIFO_BASE, NIOS_HPS_FIFO_STATUS_BASE,
+            HPS_NIOS_FIFO_BASE, HPS_NIOS_FIFO_STATUS_BASE);
+
+    NIOS_Processor nios(nios_serial);
+
+    // Touch
+    TouchControl tc("/dev/ttyAL0", sg.width(), sg.height(), true);
+    tc.touch_enable();
+    // Wifi
+    Wifi wifi("/dev/ttyAL1");
+    // Videp
+    Video video("/dev/ttyAL2");
+    // Bluetooth
+    Bluetooth bt("/dev/ttyAL3");
+    // Gesture Recognizer
+    GeometricRecognizer gr;
+	gr.loadSamples();
+
+    int scret = showStartScreen(sg);
+
+
+    while(1){
+        switch(scret):{
+            case to_Home:{
+                scret = showHomePage(sg, "group 5");
+                break;
+            } 
+            case to_LoginPanel:{
+                scret = showLoginPanel();
+                break;
+            } 
+            case to_GestureMap:{
+                scret = showGestureRecognition(sg, gr, nios);
+                break;
+            } 
+        }
+    }
 
     return 0;
 }
