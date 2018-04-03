@@ -76,9 +76,29 @@ void SimpleGraphics::draw_string(rgba_t color, unsigned x, unsigned y, std::stri
 
 void SimpleGraphics::draw_string_centered(rgba_t color, unsigned x, unsigned y, std::string str, FontType f){
     unsigned start_x = x - str.length()/2 * f;
+    unsigned start_y;
+    switch (f) {
+            case Font5x7:
+                start_y = y - 4;
+                break;
+            case Font10x14:
+                start_y = y - 7;
+                break;
+            case Font16x27:
+                start_y = y - 13;
+                break;
+
+            case Font22x40:
+                start_y = y - 20;
+                break;
+
+            case Font38x59:
+                start_y = y - 29;
+                break;
+        }
 
     for (unsigned i = 0; i < str.length(); i++) {
-        draw_char(color, start_x, y, str[i], f);
+        draw_char(color, start_x, start_y, str[i], f);
         start_x += f;
     }
 }
