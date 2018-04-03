@@ -46,7 +46,7 @@ Button::Button(SimpleGraphics &graphics,
 void Button::draw(){
 	Rectangle::draw();
     
-    m_graphics.draw_string_centered(m_text_color, (m_p2.x - m_p1.x)/2, ((m_p2.y - m_p1.y))/2, m_text, m_font);
+    m_graphics.draw_string_centered(m_text_color, (m_p2.x - m_p1.x)/2 + m_p1.x, ((m_p2.y - m_p1.y))/2 + m_p1.y, m_text, m_font);
 
     m_is_showing = true;
 
@@ -55,7 +55,7 @@ void Button::draw(){
 void Button::undraw(){
 	Rectangle::undraw();
 
-    m_graphics.draw_string_centered(rgba(0,0,0,0), (m_p2.x - m_p1.x)/2, ((m_p2.y - m_p1.y))/2, m_text, m_font);
+    m_graphics.draw_string_centered(rgba(0,0,0,0), (m_p2.x - m_p1.x)/2 + m_p1.x, ((m_p2.y - m_p1.y))/2 + m_p1.y, m_text, m_font);
 
 	m_is_showing = false;
 }
@@ -111,7 +111,7 @@ void Slider::draw(){
     slider_bar.draw();
 
     if (initial_state){
-		m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2, (m_p2.y - m_p1.y)/2, m_text, m_font);
+		m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + m_p1.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, m_font);
 
 		slider_p1.x = slider_bar_p1.x;
 		slider_p1.y = m_p1.y + 5;
@@ -129,7 +129,7 @@ void Slider::draw(){
 void Slider::undraw(){
 	Rectangle::undraw();
 
-    m_graphics.draw_string_centered(rgba(0,0,0,0), (m_p2.x - slider_bar_p2.x)/2, (m_p2.y - m_p1.y)/2, m_text, m_font);
+    m_graphics.draw_string_centered(rgba(0,0,0,0), (m_p2.x - slider_bar_p2.x)/2 + slider_bar_p2.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, m_font);
 
 	m_is_showing = false;
 }
@@ -156,7 +156,7 @@ bool Slider::touch(Point P){
 			m_text[0] = (int)(chosen_value)/10 + '0';
 			m_text[1] = (int)(chosen_value)%10 + '0';
 
-			m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2, (m_p2.y - m_p1.y)/2, m_text, m_font);
+			m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + m_p1.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, m_font);
 
 			Rectangle slider(m_graphics, slider_p1, slider_p2, rgba(0, 0, 0, 255));
 			slider.draw();
