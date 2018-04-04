@@ -26,6 +26,7 @@ libs
 arm_system.h
 nios.dat
 testAlphabetmain.cpp
+testRecognizer.cpp
 )
 
 tryaddresses() {

@@ -9,15 +9,11 @@
 #include <utility>
 #include "UI.hpp"
 #include "touch.hpp"
-#include "bluetooth.hpp"
-#include "NIOS_Processor.hpp"
 #include "wifi.hpp"
 #include "video.hpp"
-#include <map>
-#include "GeometricRecognizer.hpp"
 #include "SimpleGraphics.hpp"
 #include "screen.hpp"
-
+#include "WandControl.hpp"
 namespace UI
 {
 
@@ -42,12 +38,15 @@ class LoginPanel : public Screen, public Rectangle, public Touchable
     // switch between username/password page and facial login page
     void switch_page();
 
-    LoginPanel(SimpleGraphics &graphics, Wifi &wifi, Bluetooth &bt, GeometricRecognizer &gr, Video &video,
-               TouchControl &touch, Point p1, Point p2, NIOS_Processor &nios,
+    LoginPanel(SimpleGraphics &graphics, Wifi &wifi, Video &video,
+               WandControl &wc, Point p1, Point p2,
                rgba_t background_color = rgba(0,0,0,255),
                rgba_t btn_background_color = rgba(102,102,102,255),
                rgba_t text_color = rgba(226,226,226,255),
-               rgba_t hint_color = rgba(156,156,156,255));
+               rgba_t hint_color = rgba(156,156,156,255),
+               FontType buttonFont,
+               FontType hintFont
+    );
 
     // call back function
     typedef std::function<void(int login_status, std::string user)> LoginStatusCB;
@@ -60,7 +59,7 @@ class LoginPanel : public Screen, public Rectangle, public Touchable
      *      m_username_input should be updated with new inputs
      *      username field should display current inputs    
      */ 
-    void updateInputField(std::string str);
+    void updateInputField(char str);
 
 
     void clear();
@@ -123,9 +122,7 @@ class LoginPanel : public Screen, public Rectangle, public Touchable
   private:
 
     Wifi &m_wifi;
-    Bluetooth &m_bluetooth;
-    GeometricRecognizer &m_geometricRecognizer;
-    NIOS_Processor &m_nios;
+    WandControl &m_wandControl;
     Video &m_video;
 
     LoginStatusCB m_login_status_cb;

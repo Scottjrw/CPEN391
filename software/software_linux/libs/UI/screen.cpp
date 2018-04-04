@@ -11,11 +11,13 @@
 
 namespace UI {
 
-Screen::Screen(SimpleGraphics &graphics, TouchControl &touch):
+Screen::Screen(SimpleGraphics &graphics, TouchControl &touch,
+    WandControl &wc):
     Event_Loop(),
 	Drawable(graphics),
 	Touchable(),
     m_touch(touch),
+    m_wandControl(wc),
 	m_drawables(),
 	m_touchables(),
 	m_cursor(m_graphics, rgba(0, 255, 0, 255), 4),

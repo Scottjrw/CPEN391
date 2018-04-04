@@ -35,44 +35,18 @@ int main(void){
 
     Wand wand("/dev/ttyAL3", B115K);
 
-    GeometricRecognizer gr;
-
-	gr.loadSamples();
+    WandControl wc(wand, nios);
 
 	Path2D newPath;
 
-    nios.dot_location_cb([&newPath](unsigned x, unsigned y){
-        std::cout << "Point: " << x << ',' << y << std::endl;
-        newPath.push_back(Point(x,y));
-    });
-
-    LoginPanel lp(sg, wifi, bt, gr, {0,0}, {640,480}, nios, video);
+    LoginPanel lp(sg, wifi, video, wc, {0,0}, {640,480}, Font16x27, Font10x14 );
 
     // user click input fields they want to write to 
     // between 2 wand clicks, updateLoginFields()
     // login when button is clicked
-
     lp.draw();
 
-    Screen sc(sg, tc);
+    lp.run();
 
-    sc.addDrawable(&lp.m_username_field);
-    sc.addDrawable(&lp.m_password_field);
-    sc.addDrawable(&lp.m_login_button);
-    sc.addDrawable(&lp.m_switch_login_mode_button);
-
-    sc.addTouchable(&lp.m_username_field);
-    sc.addTouchable(&lp.m_password_field);
-    sc.addTouchable(&lp.m_login_button);
-    sc.addTouchable(&lp.m_switch_login_mode_button);
-
-    while(1){
-        nios.trypoll();
-    }
-    sc.draw();
-
-    sc.run();
-
-
-
+    return 0;
 }

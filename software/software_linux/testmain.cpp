@@ -22,7 +22,8 @@ using namespace UI;
 using namespace DollarRecognizer;
 using namespace SimpleGraphicsFonts;
 
-enum Switch_Page_Commands{
+enum Switch_Page_Commands
+{
     to_Home = 0,
     to_GestureMap = 2,
     to_NewGesture = 3,
@@ -44,68 +45,152 @@ void showStartScreen(SimpleGraphics &sg, TouchControl &tc, NIOS_Processor &nios)
         sg.draw_string(rgb(255, 255, 255), 100, 100, s.str(), Font38x59);
     };
 
+}
+
+void addDropDownMenu(SimpleGraphics &sg, screen &sc, FontType menuFont){
+    DropdownMenu homeMenu(sg, {40, 40}, {240, 100}, "Menu", rgba(0, 0, 0, 255), rgba(159, 159, 159, 255), menuFont);
+    homeMenu.newItem(sg, "Home", rgba(80, 80, 80, 255), rgba(180, 180, 180, 255), [&sc](Point p) {
+                sc.stop(0);
+    });
+
+    homeMenu.newItem(sg, "Gesture Map", rgba(80, 80, 80, 255), rgba(180, 180, 180, 255), [&sc](Point p) {
+                sc.stop(2);
+    });
+
+    homeMenu.newItem(sg, "New Gesture", rgba(80, 80, 80, 255), rgba(180, 180, 180, 255), [&sc](Point p) {
+                sc.stop(3);
+    });
+
+    homeMenu.newItem(sg, "Settings", rgba(80, 80, 80, 255), rgba(180, 180, 180, 255), [&sc](Point p) {
+                sc.stop(4);
+    });
+
+    homeMenu.newItem(sg, "Log Out", rgba(80, 80, 80, 255), rgba(180, 180, 180, 255), [&sc](Point p) {
+                sc.stop(5);
+    });
+
     NIOS_Processor_Init init(SDRAM_FILE, SDRAM_BASE, SDRAM_SPAN, 
             MM_RESET_BASE, MM_RESET_SPAN, doneCB, progressCB);
 
     init.run(screen);
 
     screen.run();
+    sc.addDrawable(homeMenu);
+    sc.addTouchable(homeMenu);
 }
-
 
 /*
  * @Param:
  *      username:  callback from login() is login successfully
  *      mistery class reference: implement on Tuesday
  */
-void showLoginPanel(SimpleGraphics &sg, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios){
+int showLoginPanel(SimpleGraphics &sg, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios)
+{
 
     // lp is a subclass of screen
-    LoginPanel lp(sg, wifi, wand, gr, {0,0}, {640,480}, nios, video);
+    LoginPanel lp(sg, wifi, video, wc, {0, 0}, {640, 480}, Font16x27, Font10x14);
 
-    lp.run();
+    return lp.run();
 }
 
-void showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Processor &nios){
-    
-    Screen sc;
+int showSetting(SimpleGraphics &sg, FontType buttonFont, FontType sliderFont, FontType menuFont, TouchControl &tc)
+{
+    screen sc(sg, tc, wc);
 
-    Wand wand("/dev/ttyAL3", B115K);
+    addDropDownMenu(sg, sc, FontType menuFont);
 
-    Modes wandMode;
+    int temp_brightness;
+    int temp_contrast;
+    int temp_saturation;
 
-    WandCommands cmds;
+    Slider brightness_slider(graphics, {30, 30}, {130, 45},
+                             SimpleGraphics::rgba(0, 0, 0, 255),
+                             SimpleGraphics::rgba(163, 163, 163, 255), 0, 100, sliderFont);
+    brightness_slider.onTouch([&temp_brightness, &brightness_slider](Touchable *, Point p) {
+        std::cout << "brightness changing" << std::endl;
+        temp_brightness = (float)(brightness_slider.chosen_value) / (float)(brightness_slider.max - brightness_slider.min) * 127;
 
-    wand.setMode([&wandMode](Mode m){
-        wandMode = m;
     });
 
-    wand.setGesture([&cmds](WandCommands wc){
-        cmds = wc;
+    Slider contrast_slider(graphics, {30, 60}, {130, 75},
+                           SimpleGraphics::rgba(0, 0, 0, 255),
+                           SimpleGraphics::rgba(163, 163, 163, 255), 0, 100, sliderFont);
+    contrast_slider.onTouch([&temp_contrast, &contrast_slider](Touchable *, Point p) {
+        std::cout << "contrast changing" << std::endl;
+        temp_contrast = (float)(contrast_slider.chosen_value) / (float)(contrast_slider.max - contrast_slider.min) * 255;
+
     });
 
-    DropdownMenu Menu(sg, {40,40}, {240,100}, "Menu", rgba(0,0,0,255), rgba(159,159,159,255));
-
-    homeMenu.newItem(sg, "Home", rgba(80,80,80,255), rgba(180,180,180,255), [&sc](Point p){
-        sc.stop(0);
-    })
-
-    homeMenu.newItem(sg, "New Gesture", rgba(80,80,80,255), rgba(180,180,180,255), [&sc](Point p){
-        sc.stop(3);
+    Slider saturation_slider(graphics, {30, 90}, {130, 105},
+                             SimpleGraphics::rgba(0, 0, 0, 255),
+                             SimpleGraphics::rgba(163, 163, 163, 255), 0, 100, sliderFont);
+    saturation_slider.onTouch([&temp_saturation, &saturation_slider](Touchable *, Point p) {
+        std::cout << "saturation changing" << std::endl;
+        temp_saturation = (float)(saturation_slider.chosen_value) / (float)(saturation_slider.max - saturation_slider.min) * 255;
     });
 
-    homeMenu.newItem(sg, "Log Out", rgba(80,80,80,255), rgba(180,180,180,255),  [&sc](Point p){
-        sc.stop(5);
+    // Button back(graphics, touch, {0, 0}, {27, 120}, "exit",
+    //             SimpleGraphics::rgba(255, 255, 255, 255),
+    //             SimpleGraphics::rgba(100, 100, 100, 255), buttonFont);
+
+    // back.onTouch([&sc](Point p) {
+    //     std::cout << "BACK" << std::endl;
+    //     sc.clear();
+    //     sc.exit(Current_Screen(HOME));
+
+    // });
+
+    Button save(graphics, {133, 0}, {160, 120}, "save",
+                SimpleGraphics::rgba(255, 140, 102, 255),
+                SimpleGraphics::rgba(100, 100, 100, 255), buttonFont);
+
+    save.onTouch([&temp_brightness, &temp_contrast, &temp_saturation, &sc](Point p) {
+        std::cout << "SAVE" << std::endl;
+        brightness = temp_brightness;
+        contrast = temp_contrast;
+        saturation = temp_saturation;
+        sc.stop(4);
     });
+
+    //	image_settings.addDrawable(&background);
+    sc.addDrawable(&brightness_slider);
+    sc.addTouchable(&brightness_slider);
+    sc.addDrawable(&contrast_slider);
+    sc.addTouchable(&contrast_slider);
+    sc.addDrawable(&saturation_slider);
+    sc.addTouchable(&saturation_slider);
+    sc.addDrawable(&back);
+    sc.addTouchable(&back);
+    sc.addDrawable(&save);
+    sc.addTouchable(&save);
+
+    sc.draw();
+
+    sc.enable_touch();
+
+    graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 43, 5, "IMAGE SETTINGS");
+
+    graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 55, 20, "BRIGHTNESS");
+    graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 60, 50, "CONTRAST");
+    graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 55, 80, "SATURATION");
+    return = sc.run()
+}
+
+int showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Processor &nios, TouchControl &tc, FontType menuFont)
+{
+
+    screen sc(sg, tc, wc);
+
+    addDropDownMenu(sg, sc, FontType menuFont);
 
     //Button startBtn(sg, {320,380}, {420, 450}, "Start", rgb(0,0,0), rgb(119,119,119));
     //Button endBtn(sg, {460,380}, {560, 450}, "End", rgb(0,0,0), rgb(119,119,119));
 
-	Path2D newPath;
+    Path2D newPath;
 
     Point last_min, last_max;
 
-    nios.dot_location_cb([&last_min, &last_max, &sg, &newPath](auto dot){
+    nios.dot_location_cb([&last_min, &last_max, &sg, &newPath](auto dot) {
         sg.draw_rect(rgba(0, 0, 0, 0), last_min, last_max);
         std::cout << "Point: " << dot.avg_x << ',' << dot.avg_y << std::endl;
         newPath.emplace_back(dot.avg_x, dot.avg_y);
@@ -117,38 +202,41 @@ void showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Pr
     // startBtn.onTouch([&nios](Point point){
     //     nios.start();
     // });
-    
+
     // endBtn.onTouch([&nios, &newPath, &gr](Point point){
     //     std::cout << "Number of points: " << newPath.size() << std::endl;
-    //     nios.stop();        
+    //     nios.stop();
     //                                                                 //  #############################################  //
     //     RecognitionResult result = gr.recognize(newPath);           //  this part will be replaced with mistery class  //
     //                                                                 //  #############################################  //
     //     std::cout << "the gesture input is: " << result.name << std::endl;
     // });
 
-    if(wandMode == gestureMode && cmds == wandStart){}
-        nios.start();
+    if (wandMode == gestureMode && cmds == wandStart)
+    {
     }
+    nios.start();
 
-    else if(wandMode == gestureMode && cmds == wandStop){
+    else if (wandMode == gestureMode && cmds == wandStop)
+    {
         std::cout << "Number of points: " << newPath.size() << std::endl;
-        nios.stop();        
-                                                                    //  #############################################  //
-        RecognitionResult result = gr.recognize(newPath);           //  this part will be replaced with mistery class  //
-                                                                    //  #############################################  //
+        nios.stop();
+        //  #############################################  //
+        RecognitionResult result = gr.recognize(newPath); //  this part will be replaced with mistery class  //
+                                                        //  #############################################  //
         std::cout << "the gesture input is: " << result.name << std::endl;
     }
 
     std::cout << "Starting..." << std::endl;
 
-    while(true){
-         m_nios.trypoll();
-         wand.trypoll();
+    while (true)
+    {
+        m_nios.trypoll();
+        wand.trypoll();
     }
 
     sc.addTouchable(&Menu)
-    sc.addTouchable(&startBtn);
+        sc.addTouchable(&startBtn);
     sc.addTouchable(&endBtn);
     sc.addDrawable(&Menu);
     sc.addDrawable(&startBtn);
@@ -159,28 +247,14 @@ void showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Pr
     return sc.run();
 }
 
-int showHomePage(SimpleGraphics &sg, std::string username){
+int showHomePage(SimpleGraphics &sg, TouchControl &tc, std::string username, FontType menuFont, FontType buttonFont)
+{
 
-    Screen sc;
-    
-    DropdownMenu homeMenu(sg, {40,40}, {240,100}, "Menu", rgba(0,0,0,255), rgba(159,159,159,255));
-    Button welcomeField(sg, {340, 40}, {600, 80}, "Welcome!" + username, rgba(255,255,255,255), rgba(159,159,159,255));
-    
-    homeMenu.newItem(sg, "Gesture Map", rgba(80,80,80,255), rgba(180,180,180,255), [&sc](Point p){
-        sc.stop(2);
-    })
+    screen sc(sg, tc, wc);;
 
-    homeMenu.newItem(sg, "New Gesture", rgba(80,80,80,255), rgba(180,180,180,255), [&sc](Point p){
-        sc.stop(3);
-    });
+    addDropDownMenu(sg, sc, FontType menuFont);
 
-    homeMenu.newItem(sg, "Settings", rgba(80,80,80,255), rgba(180,180,180,255), [&sc](Point p){
-        sc.stop(4);
-    });
-
-    homeMenu.newItem(sg, "Log Out", rgba(80,80,80,255), rgba(180,180,180,255),  [&sc](Point p){
-        sc.stop(5);
-    });
+    Button welcomeField(sg, {340, 40}, {600, 80}, "Welcome!" + username, rgba(255, 255, 255, 255), rgba(159, 159, 159, 255), buttonFont);
 
     sc.addDrawable(&homeMenu);
     sc.addDrawable(&welcomeField);
@@ -192,7 +266,8 @@ int showHomePage(SimpleGraphics &sg, std::string username){
     return sc.run();
 }
 
-int main(void) {
+int main(void)
+{
 
     // Simplegraphics
     SimpleGraphics sg(640, 480);
@@ -200,7 +275,7 @@ int main(void) {
 
     // NIOS
     FIFO_Serial nios_serial(NIOS_HPS_FIFO_BASE, NIOS_HPS_FIFO_STATUS_BASE,
-            HPS_NIOS_FIFO_BASE, HPS_NIOS_FIFO_STATUS_BASE);
+                            HPS_NIOS_FIFO_BASE, HPS_NIOS_FIFO_STATUS_BASE);
 
     NIOS_Processor nios(nios_serial);
 
@@ -215,26 +290,30 @@ int main(void) {
     Bluetooth bt("/dev/ttyAL3");
     // Gesture Recognizer
     GeometricRecognizer gr;
-	gr.loadSamples();
+    gr.loadSamples();
 
     int scret = showStartScreen(sg);
 
-
-    while(1){
-        switch(scret):{
-            case to_Home:{
+    while (1)
+    {
+        switch (scret):
+            {
+            case to_Home:
+            {
                 scret = showHomePage(sg, "group 5");
                 break;
-            } 
-            case to_LoginPanel:{
+            }
+            case to_LoginPanel:
+            {
                 scret = showLoginPanel();
                 break;
-            } 
-            case to_GestureMap:{
+            }
+            case to_GestureMap:
+            {
                 scret = showGestureRecognition(sg, gr, nios);
                 break;
-            } 
-        }
+            }
+            }
     }
 
     return 0;
