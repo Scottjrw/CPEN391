@@ -105,11 +105,6 @@ std::vector<std::vector<std::string>> Wand::getAvailableDevices(std::string time
     return devices;
 }
 
-int Wand::GetFd(){
-    int i = bluetooth_uart;
-    return i;
-}
-
 Wand::Wand(const char name[], Baudrate rate) {
     std::cout << "connecting" << std::endl;
     bluetooth_uart = open(name, O_RDWR | O_APPEND | O_NONBLOCK);

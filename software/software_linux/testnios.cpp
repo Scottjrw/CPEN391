@@ -49,6 +49,7 @@ int main(void) {
             assert(0);
         }
 
+        std::clog << "Done Programming NIOS" << std::endl;
         loadingScreen.stop(0);
     });
 
