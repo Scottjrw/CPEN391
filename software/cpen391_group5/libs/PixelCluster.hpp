@@ -15,10 +15,10 @@ public:
     static constexpr unsigned N_Clusters = 4;
 
     struct ClusterData {
-        unsigned avg_x, avg_y;
-        unsigned min_x, min_y; 
+        unsigned avg_x, avg_y; // center
+        unsigned min_x, min_y; // bounding box
         unsigned max_x, max_y;
-        unsigned count;
+        unsigned count;         // # of pixels
 
         constexpr ClusterData():
             avg_x(0), avg_y(0), min_x(0), min_y(0), 
