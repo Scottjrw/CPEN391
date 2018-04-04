@@ -76,7 +76,7 @@ LoginPanel::LoginPanel(SimpleGraphics &graphics, Wifi &wifi, Video &video,
         updateInputField(c);
     });
 
-    m_wandControl.setCursorClickCB([&this](Piint p){
+    m_wandControl.setCursorClickCB([&this](Point p){
         if(m_login_button.touch(p)) login();
         else if(m_switch_login_mode_button.touch(p)) switch_page();
         else if(m_username_field.touch(p)) usernameFieldChose();
