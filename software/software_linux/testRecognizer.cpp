@@ -17,7 +17,18 @@ int main(void) {
     TouchControl tc("/dev/ttyAL0", sg.width(), sg.height(), true);
     tc.touch_enable();
 
-    Screen sc(sg, tc);
+    // NIOS
+    FIFO_Serial nios_serial(NIOS_HPS_FIFO_BASE, NIOS_HPS_FIFO_STATUS_BASE,HPS_NIOS_FIFO_BASE, HPS_NIOS_FIFO_STATUS_BASE);
+
+    NIOS_Processor nios(nios_serial);
+
+     // Bluetooth
+    Wand wand("/dev/ttyAL3", B1115K);
+
+
+    WandControl wc(wand, nios);
+
+    Screen sc(sg, tc, wc);
 
     Button btn(sg, {40,40}, {140, 100}, "Recognize!", rgb(0,0,0), rgb(119,119,119), Font16x27);
     Button touchField(sg, {200, 40}, {600, 440}, "x", rgb(0,0,0), rgb(255,255,255), Font16x27);

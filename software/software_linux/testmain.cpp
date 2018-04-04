@@ -31,8 +31,11 @@ enum Switch_Page_Commands
     to_LoginPanel = 5
 };
 
-void showStartScreen(SimpleGraphics &sg, TouchControl &tc, NIOS_Processor &nios) {
-    Screen screen(sg, tc);
+void showStartScreen(SimpleGraphics &sg, TouchControl &tc, NIOS_Processor &nios, Wand &wand) {
+
+    WandControl wc(wand, nios);
+
+    Screen screen(sg, tc, wc);
 
     auto doneCB = [&screen] () {
         std::cout << "Done" << std::endl;
@@ -87,6 +90,8 @@ void addDropDownMenu(SimpleGraphics &sg, screen &sc, FontType menuFont){
 int showLoginPanel(SimpleGraphics &sg, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios)
 {
 
+    WandControl wc(wand, nios);
+
     // lp is a subclass of screen
     LoginPanel lp(sg, wifi, video, wc, {0, 0}, {640, 480}, Font16x27, Font10x14);
 
@@ -94,7 +99,9 @@ int showLoginPanel(SimpleGraphics &sg, Wifi &wifi, Wand &wand, GeometricRecogniz
 }
 
 int showSetting(SimpleGraphics &sg, FontType buttonFont, FontType sliderFont, FontType menuFont, TouchControl &tc)
-{
+{   
+    WandControl wc(wand, nios);
+
     screen sc(sg, tc, wc);
 
     addDropDownMenu(sg, sc, FontType menuFont);
@@ -114,19 +121,17 @@ int showSetting(SimpleGraphics &sg, FontType buttonFont, FontType sliderFont, Fo
 
 
     // when sliders are touched
-    brightness_slider.onTouch([&temp_brightness, &brightness_slider](Touchable *, Point p) {
+    brightness_slider.onTouch([&temp_brightness, &brightness_slider](Point p) {
         std::cout << "brightness changing" << std::endl;
         temp_brightness = (float)(brightness_slider.chosen_value) / (float)(brightness_slider.max - brightness_slider.min) * 127;
-
     });
 
-    contrast_slider.onTouch([&temp_contrast, &contrast_slider](Touchable *, Point p) {
+    contrast_slider.onTouch([&temp_contrast, &contrast_slider](Point p) {
         std::cout << "contrast changing" << std::endl;
         temp_contrast = (float)(contrast_slider.chosen_value) / (float)(contrast_slider.max - contrast_slider.min) * 255;
-
     });
 
-    saturation_slider.onTouch([&temp_saturation, &saturation_slider](Touchable *, Point p) {
+    saturation_slider.onTouch([&temp_saturation, &saturation_slider](Point p) {
         std::cout << "saturation changing" << std::endl;
         temp_saturation = (float)(saturation_slider.chosen_value) / (float)(saturation_slider.max - saturation_slider.min) * 255;
     });
@@ -135,7 +140,20 @@ int showSetting(SimpleGraphics &sg, FontType buttonFont, FontType sliderFont, Fo
     // when sliders are clicked //
     // ???????????????????????? //
     // ######################## //
-    
+    sc.m_wandControl.setCursorClickCB([&this, &temp_saturation, &saturation_slider](Point p){
+        if(brightness_slider.touch(p)) {
+            std::cout << "brightness changing" << std::endl;
+            temp_brightness = (float)(brightness_slider.chosen_value) / (float)(brightness_slider.max - brightness_slider.min) * 127;
+        }
+        else if(contrast_slider.touch(p){
+            std::cout << "contrast changing" << std::endl;
+            temp_contrast = (float)(contrast_slider.chosen_value) / (float)(contrast_slider.max - contrast_slider.min) * 255;
+        })  
+        else if(saturation_slider.touch(p)){
+            std::cout << "contrast changing" << std::endl;
+            temp_contrast = (float)(contrast_slider.chosen_value) / (float)(contrast_slider.max - contrast_slider.min) * 255;
+        }
+    });
 
     // Button back(graphics, touch, {0, 0}, {27, 120}, "exit",
     //             SimpleGraphics::rgba(255, 255, 255, 255),
@@ -181,8 +199,10 @@ int showSetting(SimpleGraphics &sg, FontType buttonFont, FontType sliderFont, Fo
     return sc.run();
 }
 
-int showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Processor &nios, TouchControl &tc, FontType menuFont)
+int showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Processor &nios, TouchControl &tc, Wand &wand, FontType menuFont)
 {
+
+    WandControl wc(wand, nios);
 
     screen sc(sg, tc, wc);
 
@@ -237,10 +257,12 @@ int showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Pro
     return sc.run();
 }
 
-int showHomePage(SimpleGraphics &sg, TouchControl &tc, std::string username, FontType menuFont, FontType buttonFont)
+int showHomePage(SimpleGraphics &sg, TouchControl &tc, Wand &wand, std::string username, FontType menuFont, FontType buttonFont)
 {
 
-    screen sc(sg, tc, wc);;
+    WandControl wc(wand, nios);
+
+    screen sc(sg, tc, wc);
 
     addDropDownMenu(sg, sc, FontType menuFont);
 
@@ -275,7 +297,7 @@ int main(void)
     // Videp
     Video video("/dev/ttyAL2");
     // Bluetooth
-    Bluetooth bt("/dev/ttyAL3");
+    Wand wand("/dev/ttyAL3");
     // Gesture Recognizer
     GeometricRecognizer gr;
     gr.loadSamples();
