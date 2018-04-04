@@ -49,7 +49,9 @@ void Cursor::undraw(){
 }
 
 void Cursor::update(Point center){
+    draw();
     m_center = center;
+    undraw();
 }
 
 }

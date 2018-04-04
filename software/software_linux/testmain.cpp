@@ -2,7 +2,6 @@
 #include <system_error>
 #include <unistd.h>
 #include <iostream>
-
 #include "video.hpp"
 #include "fifo_serial.hpp"
 #include "NIOS_Processor.hpp"
@@ -17,10 +16,11 @@
 #include "NIOS_Processor_Init.hpp"
 #include "wifi.hpp"
 #include "TermiosUtil.hpp"
+#include "LoginPanel.hpp"
 
 using namespace UI;
 using namespace DollarRecognizer;
-namespace SimpleGraphicsFonts;
+using namespace SimpleGraphicsFonts;
 
 enum Switch_Page_Commands
 {
@@ -29,6 +29,22 @@ enum Switch_Page_Commands
     to_NewGesture = 3,
     to_Setting = 4,
     to_LoginPanel = 5
+};
+
+void showStartScreen(SimpleGraphics &sg, TouchControl &tc, NIOS_Processor &nios) {
+    Screen screen(sg, tc);
+
+    auto doneCB = [&screen] () {
+        std::cout << "Done" << std::endl;
+        screen.stop(0);
+    };
+    auto progressCB = [&sg] (unsigned progress) {
+        sg.draw_rect(rgb(0, 0, 0), 100, 100, 500, 160);
+        std::ostringstream s;
+        s << "Progress: " << progress << '%';
+        sg.draw_string(rgb(255, 255, 255), 100, 100, s.str(), Font38x59);
+    };
+
 }
 
 void addDropDownMenu(SimpleGraphics &sg, screen &sc, FontType menuFont){
@@ -53,13 +69,14 @@ void addDropDownMenu(SimpleGraphics &sg, screen &sc, FontType menuFont){
                 sc.stop(5);
     });
 
+    NIOS_Processor_Init init(SDRAM_FILE, SDRAM_BASE, SDRAM_SPAN, 
+            MM_RESET_BASE, MM_RESET_SPAN, doneCB, progressCB);
+
+    init.run(screen);
+
+    screen.run();
     sc.addDrawable(homeMenu);
     sc.addTouchable(homeMenu);
-}
-void
-
-showStartScreen(SimpleGraphics &sg, Video &video, TouchControl &tc)
-{
 }
 
 /*

@@ -76,7 +76,7 @@ void SimpleGraphics::draw_string(rgba_t color, unsigned x, unsigned y, std::stri
 
 void SimpleGraphics::draw_string_centered(rgba_t color, unsigned x, unsigned y, std::string str, FontType f){
     using namespace SimpleGraphicsFonts;
-    unsigned start_x = x - str.length()/2 * f;
+    unsigned start_x = x - f * str.length()/2;
     unsigned start_y;
     switch (f) {
         case Font5x7:
