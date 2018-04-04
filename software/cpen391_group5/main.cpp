@@ -27,8 +27,10 @@ int main(int argc, const char * argv[]) {
 
     HPS_Print_Stream hpsout(hps);
 
+    bool done_0;
+    NClusterData data_0;
     PixelCluster pixel_cluster_0(PIXEL_CLUSTER_0_BASE,
-            PIXEL_CLUSTER_0_IRQ_INTERRUPT_CONTROLLER_ID, PIXEL_CLUSTER_0_IRQ);
+            PIXEL_CLUSTER_0_IRQ_INTERRUPT_CONTROLLER_ID, PIXEL_CLUSTER_0_IRQ, data_0);
 
     pixel_cluster_0.reset();
     pixel_cluster_0.compare0_enable(true, true, true);
@@ -37,8 +39,17 @@ int main(int argc, const char * argv[]) {
     pixel_cluster_0.compare1_enable(false, false, false);
     pixel_cluster_0.range(50);
 
+    bool done_1;
+    NClusterData data_1;
     PixelCluster pixel_cluster_1(PIXEL_CLUSTER_1_BASE,
-            PIXEL_CLUSTER_1_IRQ_INTERRUPT_CONTROLLER_ID, PIXEL_CLUSTER_1_IRQ);
+            PIXEL_CLUSTER_1_IRQ_INTERRUPT_CONTROLLER_ID, PIXEL_CLUSTER_1_IRQ, data_1);
+
+    pixel_cluster_1.reset();
+    pixel_cluster_1.compare0_enable(true, true, true);
+    pixel_cluster_1.compare0_value(60, 150, 60);
+    pixel_cluster_1.compare0_less_than(true, false, true);
+    pixel_cluster_1.compare1_enable(false, false, false);
+    pixel_cluster_1.range(50);
 
     bool send_points = false;
 
@@ -52,33 +63,42 @@ int main(int argc, const char * argv[]) {
                 send_points = false;
             });
 
-    pixel_cluster_0.finish_cb([&hps, &send_points]
-            (PixelCluster *, const NClusterData &data) {
-                if (send_points) {
-                    auto cluster = Algorithms::max_count(data, 10);
-
-                    if (cluster != nullptr) {
-                        ClusterData c_scaled(*cluster, Cluster_Scale);
-                        hps.dot_location(c_scaled);
-                    }
-                }
-            });
 
     hps_serial.clear();
     hps.hello();
     hpsout << "Hello from NIOS!" << std::endl;
 
     pixel_cluster_0.startIRQ();
+    pixel_cluster_1.startIRQ();
+    pixel_cluster_0.reset();
+    pixel_cluster_1.reset();
 
     Event_Loop ev;
 
-    ev.add(&pixel_cluster_0, &PixelCluster::trypoll);
-    ev.add(&hps, &Hard_Processor_System::trypoll);
-    ev.add([&pixel_cluster_0, &hpsout] (auto) {
-        if (pixel_cluster_0.irq_overflow()) {
+    ClusterData found_cluster;
+
+    ev.add([&done_0, &done_1, &pixel_cluster_0, &pixel_cluster_1,
+            &data_0, &data_1, &hpsout, &found_cluster, &hps, &send_points] (Event_Loop *ev) {
+        
+        if (!done_0) {
+            done_0 = pixel_cluster_0.is_done();
+        } else if (!done_1) {
+            done_1 = pixel_cluster_1.is_done();
+        } else {
+            if (send_points && Algorithms::dual_color(data_0, data_1, found_cluster)) {
+                found_cluster.scale(Cluster_Scale);
+                hps.dot_location(found_cluster);
+            }
+
+            pixel_cluster_0.ack();
+            pixel_cluster_1.ack();
+        }
+
+        if (pixel_cluster_0.irq_overflow() || pixel_cluster_1.irq_overflow()) {
             hpsout << "Algorithm cannot keep up with Pixel Cluster" << std::endl;
         }
     });
+    ev.add(&hps, &Hard_Processor_System::trypoll);
 
     ev.run();
 

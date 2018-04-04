@@ -30,11 +30,19 @@ public:
             avg_x(d.avg_x * r.num / r.den), avg_y(d.avg_y * r.num / r.den),
             min_x(d.min_x * r.num / r.den), min_y(d.min_y * r.num / r.den),
             max_x(d.max_x * r.num / r.den), max_y(d.max_y * r.num / r.den) {}
+
+        template <std::intmax_t N, std::intmax_t D>
+        constexpr void scale(std::ratio<N, D> r) {
+            avg_x = avg_x * r.num / r.den;
+            avg_y = avg_y * r.num / r.den;
+            min_x = min_x * r.num / r.den;
+            min_y = min_y * r.num / r.den;
+            max_x = max_x * r.num / r.den;
+            max_y = max_y * r.num / r.den;
+        }
     };
 
     typedef std::array<ClusterData, N_Clusters> NClusterData;
-
-    typedef std::function<void(PixelCluster *, const NClusterData&)> PixelClusterCB;
 
     void startIRQ();
     void stopIRQ();
@@ -42,15 +50,12 @@ public:
 
     void reset();
 
-    // Set callback, if use_isr is false, trypoll needs to be called to get a callback
-    void finish_cb(PixelClusterCB cb, bool use_isr=false);
-
     // Get average period at which the isr is triggered
     // reset will reset the period stats
     unsigned isr_period_ms(bool reset=true);
 
-    // Used for non-isr callbacks
-    void trypoll();
+    bool is_done();
+    void ack();
 
     /*  ----  Settings  ----  */
     // Range of clustering
@@ -90,22 +95,20 @@ public:
     }
 
     // scale = amount to multiply the output x-y values by
-    PixelCluster(uintptr_t base, int ic_id, int irq_id);
+    PixelCluster(uintptr_t base, int ic_id, int irq_id, NClusterData &data);
 
 private:
     uint32_t * const m_base;
     const alt_u32 m_ic_id;
     const alt_u32 m_irq_id;
 
-    NClusterData m_last_data;
+    NClusterData &m_last_data;
 
     unsigned m_last_isr_ticks;
     unsigned m_accumlate_isr_ticks;
     unsigned m_accumulate_count;
 
-    PixelClusterCB m_cb;
-    bool m_cb_isr;
-    bool m_call_cb;
+    bool m_acked;
     bool m_isr_overflow;
 
     uint32_t m_compare0_val;

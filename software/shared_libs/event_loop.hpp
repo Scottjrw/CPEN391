@@ -7,6 +7,7 @@
 #include <chrono>
 #include <queue>
 #include <iostream>
+#include <list>
 
 #ifdef __hal__
 #define EV_NIOS
@@ -14,21 +15,52 @@
 #define EV_ARM
 #endif
 
+/*
+ * Event Loop is a way to implement many asynchronous tasks without using multithreading.
+ *
+ * Generally we can register many functions called "trypolls" to be called continuously.
+ * These trypolls will check if they required to perform an action if not they return
+ * immediately.
+ * An examples would be checking for UART messages: the trypoll just checks if there are
+ * characters in the UART, if there are it will process them otherwise it just returns.
+ * Thus by following this pattern we can poll multiple UART ports at the same time in the same
+ * thread.
+ *
+ * We also provide a timer interface to efficiently make period or just single shot timers.
+ * These are disabled on the NIOS version as they are unnecessary and introduce more overhead.
+ *
+ */
 class Event_Loop {
+private:
+    struct _Callable {
+        std::function<void(Event_Loop *)> callable;
+        bool running;
+        bool dead;
+
+        _Callable(std::function<void(Event_Loop *)> callable):
+            callable(callable), running(true) {}
+    };
 public:
+
     Event_Loop() :
-        m_run(false), m_is_timer(false), m_is_valid(false), m_ret(0), m_callables(), m_cur() {}
+        m_run(false), m_is_timer(false), m_ret(0), 
+        m_callables(), m_cur(m_callables.begin()) {}
+
 
     typedef std::function<void(Event_Loop *)> Callable;
-    typedef std::vector<Callable>::const_iterator CallableRef;
-
+    typedef std::list<_Callable>::iterator CallableRef;
     /* Add a regular function to call, function should not block when it has nothing to do
+     *
+     * add() returns a reference to the callback. This refernce can be used in remove() to
+     * stop the trypoll. If one does not need to call remove the return value can be ignored.
      */
     CallableRef add(Callable trypoll) {
         assert(trypoll != nullptr);
-        m_callables.push_back(trypoll);
-        invalidate();
-        return m_callables.cend() - 1;
+        m_callables.emplace_back(trypoll);
+        auto end = m_callables.end();
+        end--;
+
+        return end;
     }
 
     /* Add a member function, pass in the "this" of the object and its member function
@@ -45,9 +77,12 @@ public:
         return add(std::bind(trypoll, c));
     }
 
+    /* Remove a callback, needs a reference to the callback
+     *
+     */
     void remove(CallableRef ref) {
-        m_callables.erase(ref);
-        invalidate();
+        ref->dead = true;
+        ref->running = false;
     }
 
 #ifdef EV_ARM
@@ -57,8 +92,9 @@ public:
     /* Add a new timer with period. The timer's first call will be at now() + period
      * A timer returns true to continue receiving callbacks otherwise the timer is stopped.
      *
-     * Timers generally don't achieve microsecond accuracy due to other callbacks being
-     * run in the event loop, but we can guarentee a timer will not drift off its period
+     * Timers are guarenteed to have no drift. But their accuracy isn't guarenteed. It is
+     * possible that some other trypoll/timer blocks a timer's execution so that it misses
+     * its expected time.
      */
     template <class Rep, class Period> 
     void add_timer(std::chrono::duration<Rep, Period> period, TimerCallable timer_cb) {
@@ -85,21 +121,18 @@ public:
     int run() {
         assert(!m_run);
         m_run = true;
-        while (1) {
-            for (m_cur = m_callables.begin(); m_cur != m_end; m_cur++) {
-                if (m_run)
-                    (*m_cur)(this);
-                else return m_ret;
+        m_is_timer = false;
+        unsigned count = 0;
 
-                if (m_run)
-                    checktimers();
-                else return m_ret;
+        while (m_run) {
+            runOnce();
+            
+            if (count++ >= 256) {
+                cleanup();
             }
-
-            if (m_run) {
-                checktimers();
-            } else return m_ret;
         }
+
+        return m_ret;
     }
 
     /* Inside a trypoll this can be called to run the loop once. This is useful
@@ -109,33 +142,24 @@ public:
      * call is whether or not the loop is still running. Most of the time this can
      * be ignored.
      *
-     * Trying to call this within a timer callback is a violation as is trying to
-     * call this when the event loop is not running.
+     * This should only be called inside a event loop
      */
-    bool cont() {
-        assert(m_run && !m_is_timer);
-        auto last_cur = m_cur;
-        m_is_valid = true;
+    inline bool cont() {
+        assert(m_run);
+        auto cur = m_cur;
+        bool cur_is_timer = m_is_timer;
 
-        for (m_cur = m_callables.begin(); m_cur != m_end; m_cur++) {
-            if (m_cur != last_cur) {
-                if (m_run)
-                    (*m_cur)(this);
-                else return false;
-            }
-
-            if (m_run)
-                checktimers();
-            else return false;
+        if (!cur_is_timer) {
+            cur->running = false;
         }
+        m_is_timer = false;
 
-        if (m_run) {
-            checktimers();
-        } else return false;
+        runOnce();
 
-        if (m_is_valid) {
-            m_cur = last_cur;
-        }
+        if (!cur_is_timer && !cur->dead)
+            cur->running = true;
+
+        m_cur = cur;
 
         return m_run;
     }
@@ -144,16 +168,19 @@ public:
     /* A sleep which runs the event loop for period time
      * This allows a function to block itself for awhile without
      * blocking event loop execution.
+     *
+     * Like cont(), this should only be called while running the
+     * event loop
      * 
-     * Like cont(), this cannot be called in a timer or when the
-     * event loop is not running
      */
     template <class Rep, class Period> 
     bool sleep(std::chrono::duration<Rep, Period> period) {
-        assert(m_run && !m_is_timer);
+        assert(m_run);
         auto end_time = std::chrono::high_resolution_clock::now() + period;
 
         while (end_time > std::chrono::high_resolution_clock::now() && cont());
+
+        return m_run;
     }
 #endif // EV_ARM
 
@@ -161,35 +188,50 @@ public:
         assert(m_run);
         m_run = false;
         m_ret = ret;
+        m_cur = m_callables.end();
     }
 
 
 private:
     bool m_run;
     bool m_is_timer;
-    bool m_is_valid;
     int m_ret;
+
+    inline void runOnce() {
+        for (m_cur = m_callables.begin(); m_cur != m_callables.end(); m_cur++) {
+            if (m_cur->running)
+                m_cur->callable(this);
+
+            checktimers();
+        }
+
+        checktimers();
+    }
+
+    inline void cleanup() {
+        auto cur = m_callables.begin();
+
+        while (cur != m_callables.end()) {
+            if (cur->dead)
+                cur = m_callables.erase(cur);
+            else
+                cur++;
+        }
+    }
 
     inline void checktimers() {
 #ifdef EV_ARM
-        if (!m_timers.empty()) {
+        if (m_run && !m_timers.empty()) {
             if (m_timers.top().end <= std::chrono::high_resolution_clock::now()) {
-                const Timer &t = m_timers.top();
+                Timer t = m_timers.top();
+                m_timers.pop();
                 m_is_timer = true;
                 if (t.cb(this))
                     m_timers.emplace(t.cb, t.period, t.end);
                 m_is_timer = false;
-                m_timers.pop();
             }
         }
 #endif // EV_ARM
-    }
-
-    // Invalidate any running loop when modifying the callables
-    inline void invalidate() {
-        m_end = m_callables.end();
-        m_cur = m_end;
-        m_is_valid = false;
     }
 
 #ifdef EV_ARM
@@ -221,12 +263,18 @@ private:
             end(end + period)
         {}
     };
+
+    /* Use a priority heap to implement timers. By doing so we can just check the top
+     * of the heap to determine if any timers need to be triggered. Heaps also provide
+     * better performance than sorted arrays/lists when only the top matters.
+     *
+     */
     std::priority_queue<Timer> m_timers;
 #endif // EV_ARM
 
-    std::vector<Callable> m_callables;
-    std::vector<Callable>::iterator m_cur;
-    std::vector<Callable>::iterator m_end;
+    std::list<_Callable> m_callables;
+    std::list<_Callable>::iterator m_cur;
+
 };
 
 #endif // EVENT_LOOP_HPP
