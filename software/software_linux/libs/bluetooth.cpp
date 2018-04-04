@@ -8,22 +8,11 @@
 #include <cassert>
 #include <err.h>
 
-
-void Wand::LedOn(){
-    char command[] = "1";
-    write(bluetooth_uart, command, strlen(command));
-}
-
-void Wand::LedOff(){
-    char command[] = "0";
-    write(bluetooth_uart, command, strlen(command));
-}
-
 void Wand::enterCommandMode(){
     char command[] = "$$$";
     int val = write(bluetooth_uart, command, strlen(command));
     
-    if (val != strlen(command)){
+    if (val != (int)strlen(command)){
         err(1, "command failed");
     }
     
@@ -33,7 +22,7 @@ void Wand::enterCommandMode(){
 void Wand::exitCommandMode() {
     char command[] = "---\n";
     int val = write(bluetooth_uart, command, strlen(command));
-    if (val != strlen(command)){
+    if (val != (int)strlen(command)){
         err(1, "command failed");
     }
     waitForResponse("END\n");
@@ -44,7 +33,7 @@ void Wand::setRemoteAddress(std::string address) {
     std::string s = "SR," + address + "\n";
     const char * command = s.c_str();
     int val = write(bluetooth_uart, command, strlen(command));
-    if (val != strlen(command)){
+    if (val != (int)strlen(command)){
         err(1, "command failed");
     }
     waitForResponse("AOK\n");
@@ -56,7 +45,7 @@ bool Wand::connectToAddress(std::string address) {
     std::string s = "C," + address + "\n";
     const char * command = s.c_str();
     int val = write(bluetooth_uart, command, strlen(command));
-    if (val != strlen(command)){
+    if (val != (int)strlen(command)){
         err(1, "command failed");
     }
     
@@ -70,7 +59,7 @@ void Wand::killConnection() {
         enterCommandMode();
         char command[] = "K,\n";
         int val = write(bluetooth_uart, command, strlen(command));
-        if (val != strlen(command)){
+        if (val != (int)strlen(command)){
             err(1, "command failed");
         }
     }
@@ -85,29 +74,24 @@ void Wand::setMode(std::string mode) {
     std::string s = "SM," + mode + "\n";
     const char * command = s.c_str();
     int val = write(bluetooth_uart, command, strlen(command));
-    if (val != strlen(command)){
+    if (val != (int)strlen(command)){
         err(1, "command failed");
     }
     waitForResponse("AOK\n");
     exitCommandMode();
 }
 
-std::vector<std::vector<std::string>> Wand::getAvailableDevices(std::string time_length) {
+std::vector<std::pair<std::string, std::string>> Wand::getAvailableDevices(std::string time_length) {
     enterCommandMode();
     std::string s = "I," + time_length + "\n";
     const char * command = s.c_str();
     int val = write(bluetooth_uart, command, strlen(command));
-    if (val != strlen(command)){
+    if (val != (int)strlen(command)){
         err(1, "command failed");
     }
-    std::vector<std::vector<std::string>> devices = waitForInquiry(time_length);
+    std::vector<std::pair<std::string, std::string>> devices = waitForInquiry(time_length);
     exitCommandMode();
     return devices;
-}
-
-int Wand::GetFd(){
-    int i = bluetooth_uart;
-    return i;
 }
 
 Wand::Wand(const char name[], Baudrate rate) {
@@ -117,6 +101,9 @@ Wand::Wand(const char name[], Baudrate rate) {
     assert(bluetooth_uart >= 0);
     
     TermiosUtil::SetSpeed(bluetooth_uart, rate);
+
+    m_current_wand = wandStop;
+    m_current_mode = gestureMode;
     
 }
 
@@ -191,7 +178,7 @@ bool Wand::waitForResponse(std::string response) {
     return true;
 }
 
-std::vector<std::vector<std::string>> Wand::waitForInquiry(std::string time_length) {
+std::vector<std::pair<std::string, std::string>> Wand::waitForInquiry(std::string time_length) {
     int num_rd;
     char buf[RECV_BYTES];
     std::string wait_string = "Inquiry,T=" + time_length + ",COD=0\n";
@@ -218,7 +205,7 @@ std::vector<std::vector<std::string>> Wand::waitForInquiry(std::string time_leng
                 printf("%c", buf[i]);
                 if (!response_picked){
                     if (buf[i] == error_string.at(0)){
-                        return std::vector<std::vector<std::string>>();
+                        return std::vector<std::pair<std::string, std::string>>();
                     }
                     else if (buf[i] == found_string.at(0)){
                         response = found_string;
@@ -253,7 +240,7 @@ devices_num_found:
     int new_lines_reached = 0;
     std::string seperator = ",";
     int commas_counted = 0;
-    std::vector<std::vector<std::string>> devices(num_devices_found, std::vector<std::string>(2,""));
+    std::vector<std::pair<std::string, std::string>> devices(num_devices_found, std::pair<std::string, std::string>("",""));
     bool devices_found = false;
     
     
@@ -279,10 +266,10 @@ devices_num_found:
                 }
                 else {
                     if (commas_counted == 0){
-                        devices[new_lines_reached][0] += buf[i];
+                        devices[new_lines_reached].first += buf[i];
                     }
                     else if (commas_counted == 1){
-                        devices[new_lines_reached][1] += buf[i];
+                        devices[new_lines_reached].second += buf[i];
                     }
                 }
             }
@@ -297,7 +284,7 @@ bool Wand::checkConnection() {
     std::string connection_status = "GK\n";
     const char * connection_command = connection_status.c_str();
     int val2 = write(bluetooth_uart, connection_command, strlen(connection_command));
-    if (val2 != strlen(connection_command)){
+    if (val2 != (int)strlen(connection_command)){
         err(1, "command failed");
     }
     

@@ -168,6 +168,21 @@ void Wifi::SendTriggeredGesture(std::string gesture){
 		printf("write failed\n");
 }
 
+void Wifi::SendGestureMapping(std::unordered_map<std::string, std::string> mapping){
+	for(std::unordered_map<std::string,std::string>::iterator i=mapping.begin(); i!=mapping.end(); i++){
+		std::string s= "add_gesture(\"" + i->first + "\",\"" + i->second + "\")\r\n";
+		const char * command = s.c_str();
+		if(write(wifi_uart, command, strlen(command))<0)
+			printf("write failed\n");
+		usleep(100000);
+	}
+
+	std::string s= "update_gesture_mapping()\r\n";
+	const char * command = s.c_str();
+	if(write(wifi_uart, command, strlen(command))<0)
+		printf("write failed\n");
+}
+
 void Wifi::Reset(){
 	std::string s= "node.restart()\r\n";
 	const char * command = s.c_str();

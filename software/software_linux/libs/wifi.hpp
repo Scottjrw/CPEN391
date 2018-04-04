@@ -27,6 +27,7 @@ class Wifi {
 		void LoadGestureMapping();
 		std::unordered_map<std::string, std::string> GetGestureMapping();
 		void SendTriggeredGesture(std::string gesture);
+		void SendGestureMapping(std::unordered_map<std::string, std::string>);
 
 	private:
 	 	int wifi_uart;
