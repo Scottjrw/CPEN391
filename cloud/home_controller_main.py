@@ -370,6 +370,17 @@ def applet():
 		return 'Success'
 
 
+
+
+@app.route('/changeCurrentMapping', methods=['POST', 'OPTIONS'])
+def changeCurrentMapping():
+	if request.method == 'POST' or request.method == 'OPTIONS':
+		r = request.get_json()
+		print(r.get('mapping'))
+		return 'test'
+
+
+
 # WEBSITE DECLARATIONS
 @app.route('/joinByRGB', methods=['GET', 'POST'])
 def joinByRGB():
@@ -520,8 +531,8 @@ def loginByPasswordWebsite():
 
 
 
-@app.route('/changeCurrentMapping', methods=['POST', 'OPTIONS'])
-def changeCurrentMapping():
+@app.route('/changeCurrentMappingWebsite', methods=['POST', 'OPTIONS'])
+def changeCurrentMappingWebsite():
 	if request.method == 'POST' or request.method == 'OPTIONS':
 		user_id = get_current_user()
 
@@ -538,7 +549,6 @@ def changeCurrentMapping():
 					Mappings.create(user_id = user_id, gesture = gesture, ifttt_descriptor = action)
 
 		return 'Success'
-
 
 
 
