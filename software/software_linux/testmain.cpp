@@ -103,31 +103,39 @@ int showSetting(SimpleGraphics &sg, FontType buttonFont, FontType sliderFont, Fo
     int temp_contrast;
     int temp_saturation;
 
-    Slider brightness_slider(graphics, {30, 30}, {130, 45},
-                             SimpleGraphics::rgba(0, 0, 0, 255),
-                             SimpleGraphics::rgba(163, 163, 163, 255), 0, 100, sliderFont);
+    Slider brightness_slider(graphics, {320, 120}, {600, 160},
+                             rgba(0, 0, 0, 255), rgba(163, 163, 163, 255), 0, 100, sliderFont);
+
+    Slider contrast_slider(graphics, {320, 200}, {600, 240},
+                           rgba(0, 0, 0, 255), rgba(163, 163, 163, 255), 0, 100, sliderFont);
+
+    Slider saturation_slider(graphics, {320, 280}, {600, 320},
+                             rgba(0, 0, 0, 255), rgba(163, 163, 163, 255), 0, 100, sliderFont);
+
+
+    // when sliders are touched
     brightness_slider.onTouch([&temp_brightness, &brightness_slider](Touchable *, Point p) {
         std::cout << "brightness changing" << std::endl;
         temp_brightness = (float)(brightness_slider.chosen_value) / (float)(brightness_slider.max - brightness_slider.min) * 127;
 
     });
 
-    Slider contrast_slider(graphics, {30, 60}, {130, 75},
-                           SimpleGraphics::rgba(0, 0, 0, 255),
-                           SimpleGraphics::rgba(163, 163, 163, 255), 0, 100, sliderFont);
     contrast_slider.onTouch([&temp_contrast, &contrast_slider](Touchable *, Point p) {
         std::cout << "contrast changing" << std::endl;
         temp_contrast = (float)(contrast_slider.chosen_value) / (float)(contrast_slider.max - contrast_slider.min) * 255;
 
     });
 
-    Slider saturation_slider(graphics, {30, 90}, {130, 105},
-                             SimpleGraphics::rgba(0, 0, 0, 255),
-                             SimpleGraphics::rgba(163, 163, 163, 255), 0, 100, sliderFont);
     saturation_slider.onTouch([&temp_saturation, &saturation_slider](Touchable *, Point p) {
         std::cout << "saturation changing" << std::endl;
         temp_saturation = (float)(saturation_slider.chosen_value) / (float)(saturation_slider.max - saturation_slider.min) * 255;
     });
+
+    // ######################## //
+    // when sliders are clicked //
+    // ???????????????????????? //
+    // ######################## //
+    
 
     // Button back(graphics, touch, {0, 0}, {27, 120}, "exit",
     //             SimpleGraphics::rgba(255, 255, 255, 255),
@@ -140,9 +148,8 @@ int showSetting(SimpleGraphics &sg, FontType buttonFont, FontType sliderFont, Fo
 
     // });
 
-    Button save(graphics, {133, 0}, {160, 120}, "save",
-                SimpleGraphics::rgba(255, 140, 102, 255),
-                SimpleGraphics::rgba(100, 100, 100, 255), buttonFont);
+    Button save(graphics, {520, 360}, {600, 400}, "Save",
+                rgba(255, 140, 102, 255), rgba(100, 100, 100, 255), buttonFont);
 
     save.onTouch([&temp_brightness, &temp_contrast, &temp_saturation, &sc](Point p) {
         std::cout << "SAVE" << std::endl;
@@ -159,21 +166,19 @@ int showSetting(SimpleGraphics &sg, FontType buttonFont, FontType sliderFont, Fo
     sc.addTouchable(&contrast_slider);
     sc.addDrawable(&saturation_slider);
     sc.addTouchable(&saturation_slider);
-    sc.addDrawable(&back);
-    sc.addTouchable(&back);
+    //sc.addDrawable(&back);
+    //sc.addTouchable(&back);
     sc.addDrawable(&save);
     sc.addTouchable(&save);
 
     sc.draw();
 
-    sc.enable_touch();
+    //graphics.draw_string(rgba(0, 0, 0, 255), 322, 100, "IMAGE SETTINGS", Font10x14);
+    graphics.draw_string(rgba(0, 0, 0, 255), 322, 100, "BRIGHTNESS", Font10x14);
+    graphics.draw_string(rgba(0, 0, 0, 255), 322, 180, "CONTRAST", Font10x14);
+    graphics.draw_string(rgba(0, 0, 0, 255), 322, 260, "SATURATION", Font10x14);
 
-    graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 43, 5, "IMAGE SETTINGS");
-
-    graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 55, 20, "BRIGHTNESS");
-    graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 60, 50, "CONTRAST");
-    graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 55, 80, "SATURATION");
-    return = sc.run()
+    return sc.run();
 }
 
 int showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Processor &nios, TouchControl &tc, FontType menuFont)
@@ -183,21 +188,21 @@ int showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Pro
 
     addDropDownMenu(sg, sc, FontType menuFont);
 
-    //Button startBtn(sg, {320,380}, {420, 450}, "Start", rgb(0,0,0), rgb(119,119,119));
-    //Button endBtn(sg, {460,380}, {560, 450}, "End", rgb(0,0,0), rgb(119,119,119));
+    Button startBtn(sg, {320,380}, {420, 450}, "Start", rgb(0,0,0), rgb(119,119,119));
+    Button endBtn(sg, {460,380}, {560, 450}, "End", rgb(0,0,0), rgb(119,119,119));
 
     Path2D newPath;
 
-    Point last_min, last_max;
+    //Point last_min, last_max;
 
-    nios.dot_location_cb([&last_min, &last_max, &sg, &newPath](auto dot) {
-        sg.draw_rect(rgba(0, 0, 0, 0), last_min, last_max);
-        std::cout << "Point: " << dot.avg_x << ',' << dot.avg_y << std::endl;
-        newPath.emplace_back(dot.avg_x, dot.avg_y);
-        last_min = {dot.min_x, dot.min_y};
-        last_max = {dot.max_x, dot.max_y};
-        sg.draw_rect(rgba(0, 255, 0, 128), last_min, last_max);
-    });
+    // nios.dot_location_cb([&last_min, &last_max, &sg, &newPath](auto dot) {
+    //     sg.draw_rect(rgba(0, 0, 0, 0), last_min, last_max);
+    //     std::cout << "Point: " << dot.avg_x << ',' << dot.avg_y << std::endl;
+    //     newPath.emplace_back(dot.avg_x, dot.avg_y);
+    //     last_min = {dot.min_x, dot.min_y};
+    //     last_max = {dot.max_x, dot.max_y};
+    //     sg.draw_rect(rgba(0, 255, 0, 128), last_min, last_max);
+    // });
 
     // startBtn.onTouch([&nios](Point point){
     //     nios.start();
@@ -212,21 +217,6 @@ int showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Pro
     //     std::cout << "the gesture input is: " << result.name << std::endl;
     // });
 
-    if (wandMode == gestureMode && cmds == wandStart)
-    {
-    }
-    nios.start();
-
-    else if (wandMode == gestureMode && cmds == wandStop)
-    {
-        std::cout << "Number of points: " << newPath.size() << std::endl;
-        nios.stop();
-        //  #############################################  //
-        RecognitionResult result = gr.recognize(newPath); //  this part will be replaced with mistery class  //
-                                                        //  #############################################  //
-        std::cout << "the gesture input is: " << result.name << std::endl;
-    }
-
     std::cout << "Starting..." << std::endl;
 
     while (true)
@@ -236,7 +226,7 @@ int showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Pro
     }
 
     sc.addTouchable(&Menu)
-        sc.addTouchable(&startBtn);
+    sc.addTouchable(&startBtn);
     sc.addTouchable(&endBtn);
     sc.addDrawable(&Menu);
     sc.addDrawable(&startBtn);

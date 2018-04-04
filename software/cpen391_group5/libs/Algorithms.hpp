@@ -47,7 +47,7 @@ namespace Algorithms {
      *      **  ONLY CENTER POINT UPDATED  **
      *      *********************************
      */
-    const ClusterData *dual_color(const NClusterData &data0, const NClusterData &data1) {
+    const ClusterData dual_color(const NClusterData &data0, const NClusterData &data1) {
 
         for (unsigned d_0 = 0; d_0 < data0.size(); d_0++) {
             for (unsigned d_1 = 0; d_1 < data1.size(); d_1++) {

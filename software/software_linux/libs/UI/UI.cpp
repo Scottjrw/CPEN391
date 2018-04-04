@@ -155,7 +155,7 @@ bool Slider::touch(Point P){
 
 			m_text[0] = (int)(chosen_value)/10 + '0';
 			m_text[1] = (int)(chosen_value)%10 + '0';
-
+            
 			m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + m_p1.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, m_font);
 
 			Rectangle slider(m_graphics, slider_p1, slider_p2, rgba(0, 0, 0, 255));
