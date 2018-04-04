@@ -72,9 +72,21 @@ public:
 
     void draw_string(rgba_t color, unsigned x, unsigned y, std::string str, FontType f);
 
+    void draw_string_centered(rgba_t color, Point center, std::string str, FontType f) {
+        draw_string_centered(color, center.x, center.y, str, f);
+    }
+
     void draw_string_centered(rgba_t color, unsigned x, unsigned y, std::string str, FontType f);
 
+    void draw_string_bg_centered(rgba_t color, Point center, std::string str, FontType f) {
+        draw_string_bg_centered(color, center.x, center.y, str, f);
+    }
+
+    void draw_string_bg_centered(rgba_t color, unsigned x, unsigned y, std::string str, FontType f);
+
     void clear();
+
+    void fill(rgba_t color);
 
     void draw_logo(char * filename, unsigned x, unsigned y);
 

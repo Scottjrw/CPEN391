@@ -9,11 +9,6 @@
 
 static constexpr unsigned SDRAM_WIDTH = 2;
 
-static void sdram_clear(void *sdram_base, unsigned sdram_span) {
-    std::uninitialized_fill_n(static_cast<uint32_t *>(sdram_base), 
-            sdram_span / sizeof(uint32_t), 0);
-}
-
 static void sdram_write(void *sdram_base, uint32_t addr, uint16_t data) {
     uintptr_t byte_addr = reinterpret_cast<uintptr_t>(sdram_base) + addr * SDRAM_WIDTH;
 
@@ -34,10 +29,9 @@ static void nios_reset(void *reset_base, bool reset) {
 
 NIOS_Processor_Init::NIOS_Processor_Init(const char *sdram_datfile, 
         uintptr_t sdram_base_addr, unsigned sdram_span,
-        uintptr_t mm_reset_base_addr, unsigned mm_reset_span,
-        DoneCB doneCB, ProgressCB progressCB):
+        uintptr_t mm_reset_base_addr, unsigned mm_reset_span):
     m_datfile(sdram_datfile, std::ios_base::in | std::ios_base::ate),
-    m_doneCB(doneCB), m_progressCB(progressCB),
+    m_doneCB(nullptr), m_progressCB(nullptr), m_printCB(nullptr),
     m_sdram_base_addr(sdram_base_addr),
     m_sdram_span(sdram_span),
     m_reset_base_addr(mm_reset_base_addr),
@@ -82,19 +76,37 @@ void NIOS_Processor_Init::run(Event_Loop &ev) {
 void NIOS_Processor_Init::trypoll(Event_Loop *ev) {
     switch (m_state) {
         case RESET1:
-            std::clog << "Starting..." << std::endl;
+            if (m_printCB)
+                m_printCB("Programming the NIOS Processor...");
 
-            std::clog << "Assert Reset on NIOS" << std::endl;
             nios_reset(m_reset_base, true);
 
-            std::clog << "Clearing the SDRAM... ";
-            sdram_clear(m_sdram_base, m_sdram_span);
-            std::clog << "Done" << std::endl;
-
-            std::clog << "Writing Program to SDRAM..." << std::endl;
-            m_state = RUN;
+            ev->sleep(std::chrono::milliseconds(100));
+            m_cur_addr = 0;
+            m_cur_percent = 0;
+            m_state = CLEAR;
+            if (m_printCB)
+                m_printCB("Clearing the SDRAM...");
             break;
 
+        case CLEAR:
+            sdram_write(m_sdram_base, m_cur_addr, 0);
+            m_cur_addr += SDRAM_WIDTH;
+
+            if (100*m_cur_addr / m_sdram_span >= m_cur_percent) {
+                if (m_progressCB)
+                    m_progressCB(m_cur_percent / 2);
+
+                m_cur_percent += 1;
+            }
+
+            if (m_cur_addr >= m_sdram_span) {
+                m_cur_percent = 0;
+                m_state = RUN;
+                if (m_printCB)
+                    m_printCB("Writing Program to the NIOS...");
+            }
+            break;
         case RUN:
             if (m_datfile && m_datfile.peek() != -1) {
                 assert(m_datfile.peek() == '@');
@@ -113,47 +125,34 @@ void NIOS_Processor_Init::trypoll(Event_Loop *ev) {
 
                 if (100*m_datfile.tellg() / m_datfile_size >= m_cur_percent) {
                     if (m_progressCB)
-                        m_progressCB(m_cur_percent);
+                        m_progressCB(m_cur_percent / 2 + 50);
 
-                    std::clog << "Progress: " << m_cur_percent << '%' << std::endl;
-                    m_cur_percent += 10;
+                    m_cur_percent += 1;
                 }
             } else {
-                m_state = WAIT1;
+                m_state = WAIT;
             }
             break;
 
-        // Block less by breaking the long sleep into smaller ones
-        case WAIT1:
-            usleep(25000);
-            m_state = WAIT2;
-            break;
-
-        case WAIT2:
-            usleep(25000);
-            m_state = WAIT3;
-            break;
-
-        case WAIT3:
-            usleep(25000);
-            m_state = WAIT4;
-            break;
-
-        case WAIT4:
-            usleep(25000);
+        case WAIT:
+            if (m_printCB)
+                m_printCB("Release Reset on NIOS");
+            ev->sleep(std::chrono::milliseconds(100));
             m_state = RESET2;
             break;
 
         case RESET2:
-            std::clog << "Release Reset on NIOS" << std::endl;
             nios_reset(m_reset_base, false);
 
             m_state = DONE;
             break;
 
         case DONE:
+            if (m_printCB)
+                m_printCB("NIOS is Programmed");
             ev->remove(m_ref);
-            m_doneCB();
+            if (m_doneCB)
+                m_doneCB();
             break;
     }
 }

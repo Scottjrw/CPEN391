@@ -3,16 +3,17 @@ DEPFLAGS := -MMD
 CPPFLAGS := -g -Wall -Werror -std=c++14 -O1 $(INCFLAGS) $(DEPFLAGS)
 
 #SRC_FILES := main.cpp
-SRC_FILES := testRecognizer.cpp
-#SRC_FILES += libs/bluetooth.cpp
-#SRC_FILES += libs/NIOS_Processor.cpp
-#SRC_FILES += libs/NIOS_Processor_Init.cpp
+#SRC_FILES := testRecognizer.cpp
+SRC_FILES := testnios.cpp
+SRC_FILES += libs/bluetooth.cpp
+SRC_FILES += libs/NIOS_Processor.cpp
+SRC_FILES += libs/NIOS_Processor_Init.cpp
 SRC_FILES += libs/SimpleGraphics.cpp
 SRC_FILES += libs/SimpleGraphicsFonts.cpp
 SRC_FILES += libs/TermiosUtil.cpp
 SRC_FILES += libs/touch.cpp
 #SRC_FILES += libs/video.cpp
-#SRC_FILES += libs/WandControl.cpp
+SRC_FILES += libs/WandControl.cpp
 #SRC_FILES += libs/wifi.cpp
 
 SRC_FILES += libs/UI/cursor.cpp

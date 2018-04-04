@@ -65,7 +65,7 @@ private:
     static constexpr unsigned TOUCH_MAX = 4095;
 
     // Number of ms to debounce
-    static constexpr unsigned TOUCH_DEBOUNCE_MS = 300;
+    static constexpr unsigned TOUCH_DEBOUNCE_MS = 50;
 
     inline bool debounce_ok() {
         std::chrono::time_point<std::chrono::high_resolution_clock> now = std::chrono::high_resolution_clock::now();

@@ -5,6 +5,7 @@
     #include <sys/alt_irq.h>
 #endif
 
+using namespace SimpleGraphicsFonts;
 #ifndef HW_GRAPHICS
 void SimpleGraphics::draw_rect(rgba_t color, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2) {
     for (unsigned int i = x1; i < x2; i++)
@@ -75,7 +76,6 @@ void SimpleGraphics::draw_string(rgba_t color, unsigned x, unsigned y, std::stri
 }
 
 void SimpleGraphics::draw_string_centered(rgba_t color, unsigned x, unsigned y, std::string str, FontType f){
-    using namespace SimpleGraphicsFonts;
     unsigned start_x = x - f * str.length()/2;
     unsigned start_y;
     switch (f) {
@@ -103,8 +103,43 @@ void SimpleGraphics::draw_string_centered(rgba_t color, unsigned x, unsigned y, 
     draw_string(color, start_x, start_y, str, f);
 }
 
+void SimpleGraphics::draw_string_bg_centered(rgba_t color, unsigned x, unsigned y, std::string str, FontType f) {
+    unsigned start_x = x - f * str.length()/2 - 1;
+    unsigned end_x = x - f * str.length()/2 + 1;
+    unsigned start_y = y;
+    unsigned end_y;
+
+    switch (f) {
+        case Font5x7:
+            end_y = y + 7;
+            break;
+        case Font10x14:
+            end_y = y + 14;
+            break;
+        case Font16x27:
+            end_y = y + 27;
+            break;
+        case Font22x40:
+            end_y = y + 40;
+            break;
+
+        case Font38x59:
+            end_y = y + 59;
+            break;
+        default:
+            assert(0);
+
+    }
+
+    draw_rect(color, start_x, start_y, end_x, end_y);
+}
+
 void SimpleGraphics::clear() {
-    draw_rect(rgba(0, 0, 0, 0), 0, 0, m_width, m_height);
+    fill(rgba(0, 0, 0, 0));
+}
+
+void SimpleGraphics::fill(rgba_t color) {
+    draw_rect(color, 0, 0, m_width, m_height);
 }
 
 void SimpleGraphics::draw_logo(char * filename, unsigned x, unsigned y){
