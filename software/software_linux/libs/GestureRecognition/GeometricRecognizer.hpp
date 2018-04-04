@@ -19,6 +19,7 @@ namespace DollarRecognizer
 		void addTemplate(std::string name, const Path2D &points);
 		RecognitionResult recognize(const Path2D &points);
 		void loadSamples();
+        void loadCharData(char c);
 
 	private:
 		BoundingBox boundingBox(const Path2D &points);
@@ -71,6 +72,8 @@ namespace DollarRecognizer
 		static constexpr double anglePrecision = 2.0;
 		//--- A magic number used in pre-processing the symbols
 		static constexpr double goldenRatio() { return 0.5 * (-1.0 + ct_sqrt(5.0)); }
+
+        static constexpr const char *chardatafolder = "chardata/";
 
 		double angleRange;
 

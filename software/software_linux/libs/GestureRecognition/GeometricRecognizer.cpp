@@ -1,5 +1,6 @@
 #include "GeometricRecognizer.hpp"
 #include <cmath>
+#include <fstream>
 
 namespace DollarRecognizer
 {
@@ -8,6 +9,26 @@ namespace DollarRecognizer
 
 		setRotationInvariance(false);
 	}
+
+    void GeometricRecognizer::loadCharData(char c) {
+        std::string dataname = chardatafolder;
+        dataname += c;
+        dataname += ".txt";
+
+        std::ifstream data(dataname.c_str(), std::ios_base::in);
+        Path2D path;
+
+        while (!data.eof()) {
+            int x, y;
+            char comma;
+            data >> x >> comma >> y;
+
+            path.emplace_back(x, y);
+        }
+
+        addTemplate(std::string(1, c), path);
+
+    }
 
 	void GeometricRecognizer::loadSamples()
 	{

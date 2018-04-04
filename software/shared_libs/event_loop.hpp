@@ -42,7 +42,7 @@ public:
     template <typename T>
     CallableRef add(T *c, void (T::*trypoll)(void)) {
         assert(trypoll != nullptr);
-        return add(std::bind(trypoll, c, std::placeholders::_1));
+        return add(std::bind(trypoll, c));
     }
 
     void remove(CallableRef ref) {
@@ -74,7 +74,7 @@ public:
 
     template <typename T, class Rep, class Period> 
     void add_timer(std::chrono::duration<Rep, Period> period, T *c, bool (T::*timer_cb)(void)) {
-        add_timer(period, std::bind(timer_cb, c, std::placeholders::_1));
+        add_timer(period, std::bind(timer_cb, c));
     }
 #endif // EV_ARM
 

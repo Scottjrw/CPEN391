@@ -1,10 +1,26 @@
 INCFLAGS := -Ilibs -Ilibs/UI -Ishared_libs -I. -Ilibs/GestureRecognition
 DEPFLAGS := -MMD
-CPPFLAGS := -g -Wall -Werror -std=c++14 -O3 $(INCFLAGS) $(DEPFLAGS)
+CPPFLAGS := -g -Wall -Werror -std=c++14 -O1 $(INCFLAGS) $(DEPFLAGS)
 
 #SRC_FILES := main.cpp
+SRC_FILES := testRecognizer.cpp
+#SRC_FILES += libs/bluetooth.cpp
+#SRC_FILES += libs/NIOS_Processor.cpp
+#SRC_FILES += libs/NIOS_Processor_Init.cpp
+SRC_FILES += libs/SimpleGraphics.cpp
+SRC_FILES += libs/SimpleGraphicsFonts.cpp
+SRC_FILES += libs/TermiosUtil.cpp
+SRC_FILES += libs/touch.cpp
+#SRC_FILES += libs/video.cpp
+#SRC_FILES += libs/WandControl.cpp
+#SRC_FILES += libs/wifi.cpp
+
+SRC_FILES += libs/UI/cursor.cpp
+SRC_FILES += libs/UI/screen.cpp
 SRC_FILES += libs/UI/UI.cpp
-#SRC_FILES += ../shared_libs/
+#SRC_FILES += libs/UI/LoginPanel.cpp
+
+SRC_FILES += libs/GestureRecognition/GeometricRecognizer.cpp
 
 OBJ_DIR := obj/software_linux
 
