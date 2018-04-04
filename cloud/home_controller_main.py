@@ -376,8 +376,22 @@ def applet():
 def changeCurrentMapping():
 	if request.method == 'POST' or request.method == 'OPTIONS':
 		r = request.get_json()
-		print(r.get('mapping'))
-		return 'test'
+
+		user_id = get_current_user()
+
+		mapping_list = r.get('mapping')
+
+		cursor = db.cursor()
+		cursor.execute('''DELETE FROM Mappings WHERE user_id=?''', (user_id,))
+
+		for i in range(0, len(mapping_list)):
+			gesture = mapping_list[i][0]
+			action = mapping_list[i][1]
+			Mappings.create(user_id = user_id, gesture = gesture, ifttt_descriptor = action)
+
+		return 'Success'
+
+
 
 
 
