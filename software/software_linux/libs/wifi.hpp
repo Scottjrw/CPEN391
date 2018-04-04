@@ -23,16 +23,20 @@ class Wifi {
 		void LightOff();
 		void SendUsername(std::string username, std::string password);
 		void SendPicture(std::string picture);
-		std::string ReadResponse();
+		bool ReadResponse();
 		void LoadGestureMapping();
 		std::unordered_map<std::string, std::string> GetGestureMapping();
 		void SendTriggeredGesture(std::string gesture);
 
 	private:
 	 	int wifi_uart;
+	 	FILE * F;
 	 	std::unordered_map<std::string, std::string> gesture_map;
 	 	static constexpr int subpicture_length = 160;
 	 	static constexpr int pixel_length = 6;
+
+	 	// flush previous output; need time for wifi to reconnect
+		void Reset();
 
 };
 

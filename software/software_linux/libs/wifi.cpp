@@ -89,14 +89,14 @@ void Wifi::SendPicture(std::string picture){
 		printf("write failed\n");
 }
 
-std::string Wifi::ReadResponse(){
+bool Wifi::ReadResponse(){
 	//not sure working correctly
 	std::string response;
-	FILE * F = fdopen(wifi_uart, "r+");
+	//FILE * F = fdopen(wifi_uart, "r+");
 
 	while(1){
 		char temp = fgetc(F);
-		printf("%c",temp);//for debug only
+		//printf("%c",temp);//for debug only
 		//responses starts by $, and is always 4 chars
 		if(temp=='$'){
 			for(int i=0; i<4; i++){
@@ -105,8 +105,14 @@ std::string Wifi::ReadResponse(){
 			break;
 		}
 	}
-	fclose(F);
-	return response;
+
+	if(response=="fail"){
+		//Reset();
+		return false;
+	}
+	else{
+		return true;
+	}
 }
 
 void Wifi::LoadGestureMapping(){
@@ -116,7 +122,7 @@ void Wifi::LoadGestureMapping(){
 	if(write(wifi_uart, command, strlen(command))<0)
 		printf("write failed\n");
 
-	FILE * F = fdopen(wifi_uart, "r+");
+	//FILE * F = fdopen(wifi_uart, "r+");
 	std::string key_string;
 	std::string value_string;
 
@@ -148,7 +154,6 @@ void Wifi::LoadGestureMapping(){
 		if(temp=='^')
 			break;
 	}
-	fclose(F);
 }
 
 std::unordered_map<std::string, std::string> Wifi::GetGestureMapping(){
@@ -163,6 +168,14 @@ void Wifi::SendTriggeredGesture(std::string gesture){
 		printf("write failed\n");
 }
 
+void Wifi::Reset(){
+	std::string s= "node.restart()\r\n";
+	const char * command = s.c_str();
+	if(write(wifi_uart, command, strlen(command))<0)
+		printf("write failed\n");
+	usleep(500000);
+}
+
 Wifi::Wifi(const char name[]) {
 	wifi_uart = open(name, O_RDWR);
 
@@ -170,6 +183,7 @@ Wifi::Wifi(const char name[]) {
 		throw std::system_error(errno, std::system_category(), "fail to open wifi uart");
 	}
 	TermiosUtil::SetSpeed(wifi_uart, B115K);
+	F = fdopen(wifi_uart, "r+");
 
 }
 
