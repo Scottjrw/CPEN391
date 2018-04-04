@@ -11,8 +11,8 @@
 namespace UI
 {
 
-LoginPanel::LoginPanel(SimpleGraphics &graphics, Wifi &wifi, Bluetooth &bt, GeometricRecognizer &gr, Video &video,
-            TouchControl &touch, Point p1, Point p2, NIOS_Processor &nios,
+LoginPanel::LoginPanel(SimpleGraphics &graphics, Wifi &wifi, Video &video,
+            WandControl &wc, Point p1, Point p2,
             rgba_t background_color,
             rgba_t btn_background_color,
             rgba_t text_color,
@@ -22,10 +22,8 @@ LoginPanel::LoginPanel(SimpleGraphics &graphics, Wifi &wifi, Bluetooth &bt, Geom
     Rectangle(graphics, p1, p2, background_color),
     Touchable(),
     m_wifi(wifi),
-    m_bluetooth(bt),
-    m_geometricRecognizer(gr),
-    m_nios(nios),
     m_video(video),
+    m_wandControl(wc)
     m_login_status_cb(nullptr),
     m_background_color(background_color),
     m_btn_background_color(btn_background_color),
@@ -67,14 +65,23 @@ LoginPanel::LoginPanel(SimpleGraphics &graphics, Wifi &wifi, Bluetooth &bt, Geom
     addTouchable(m_password_field);
     addTouchable(m_username_field);
 
-    // ############ add on touch functuon 
+    // events triggered by clicking and touching buttons
     
     m_login_button.onTouch(std::bind(&LoginPanel::login, this));
     m_switch_login_mode_button.onTouch(std::bind(&LoginPanel::switch_page, this));
     m_username_field.onTouch(std::bind(&LoginPanel::usernameFieldChose, this));
     m_password_field.onTouch(std::bind(&LoginPanel::passwordFieldChose, this));
 
+    m_wandControl.setTypingCB([&this](char c)]{
+        updateInputField(c);
+    });
 
+    m_wandControl.setCursorClickCB([&this](Piint p){
+        if(m_login_button.touch(p)) login();
+        else if(m_switch_login_mode_button.touch(p)) switch_page();
+        else if(m_username_field.touch(p)) usernameFieldChose();
+        else if(m_password_field.touch(p)) passwordFieldChose();
+    });
 }
 
 void LoginPanel::draw(){
@@ -200,7 +207,7 @@ void LoginPanel::passwordFieldChose(){
 //         }
 //     }
 // }
-void LoginPanel::updateInputField(std::string str){
+void LoginPanel::updateInputField(char str){
     // username field is chosen
      if(!m_input_field_chose){
         if(str == "Delete"){
@@ -246,7 +253,7 @@ void LoginPanel::login()
         if(result == "done"){
             UsernameFieldMsg("Login Complete!");
             m_login_status = 1;
-            //m_login_status_cb(m_login_status, m_username_input);
+            //m_login_status_cb(m_login_status, m_username_input)
             stop(0);
         }
 
@@ -283,6 +290,8 @@ void LoginPanel::UsernameFieldMsg(std::string feedback)
                      {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT}, 
                      feedback, m_hint_color, m_btn_background_color, hintFont);
     m_username_field.draw();
+
+    std::cout << feedback << std::endl;
 }
 
 void LoginPanel::updatePasswordField(){

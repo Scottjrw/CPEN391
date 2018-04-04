@@ -57,7 +57,8 @@ void addDropDownMenu(SimpleGraphics &sg, screen &sc, FontType menuFont){
     sc.addTouchable(homeMenu);
 }
 void
-showStartScreen(SimpleGraphics &sg, Video &video)
+
+showStartScreen(SimpleGraphics &sg, Video &video, TouchControl &tc)
 {
 }
 
@@ -66,18 +67,18 @@ showStartScreen(SimpleGraphics &sg, Video &video)
  *      username:  callback from login() is login successfully
  *      mistery class reference: implement on Tuesday
  */
-void showLoginPanel(SimpleGraphics &sg, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios)
+int showLoginPanel(SimpleGraphics &sg, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios)
 {
 
     // lp is a subclass of screen
-    LoginPanel lp(sg, wifi, wand, gr, {0, 0}, {640, 480}, nios, video);
+    LoginPanel lp(sg, wifi, video, wc, {0, 0}, {640, 480}, Font16x27, Font10x14);
 
-    lp.run();
+    return lp.run();
 }
 
-void showSetting(SimpleGraphics &sg, FontType buttonFont, FontType sliderFont, FontType menuFont)
+int showSetting(SimpleGraphics &sg, FontType buttonFont, FontType sliderFont, FontType menuFont, TouchControl &tc)
 {
-    screen sc;
+    screen sc(sg, tc, wc);
 
     addDropDownMenu(sg, sc, FontType menuFont);
 
@@ -155,13 +156,13 @@ void showSetting(SimpleGraphics &sg, FontType buttonFont, FontType sliderFont, F
     graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 55, 20, "BRIGHTNESS");
     graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 60, 50, "CONTRAST");
     graphics.draw_string(SimpleGraphics::rgba(0, 0, 0, 255), 55, 80, "SATURATION");
-    s = sc.run()
+    return = sc.run()
 }
 
-void showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Processor &nios, FontType menuFont)
+int showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Processor &nios, TouchControl &tc, FontType menuFont)
 {
 
-    Screen sc;
+    screen sc(sg, tc, wc);
 
     addDropDownMenu(sg, sc, FontType menuFont);
 
@@ -198,42 +199,41 @@ void showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Pr
     {
     }
     nios.start();
+
+    else if (wandMode == gestureMode && cmds == wandStop)
+    {
+        std::cout << "Number of points: " << newPath.size() << std::endl;
+        nios.stop();
+        //  #############################################  //
+        RecognitionResult result = gr.recognize(newPath); //  this part will be replaced with mistery class  //
+                                                        //  #############################################  //
+        std::cout << "the gesture input is: " << result.name << std::endl;
+    }
+
+    std::cout << "Starting..." << std::endl;
+
+    while (true)
+    {
+        m_nios.trypoll();
+        wand.trypoll();
+    }
+
+    sc.addTouchable(&Menu)
+        sc.addTouchable(&startBtn);
+    sc.addTouchable(&endBtn);
+    sc.addDrawable(&Menu);
+    sc.addDrawable(&startBtn);
+    sc.addDrawable(&endBtn);
+
+    sc.draw();
+
+    return sc.run();
 }
 
-else if (wandMode == gestureMode && cmds == wandStop)
+int showHomePage(SimpleGraphics &sg, TouchControl &tc, std::string username, FontType menuFont, FontType buttonFont)
 {
-    std::cout << "Number of points: " << newPath.size() << std::endl;
-    nios.stop();
-    //  #############################################  //
-    RecognitionResult result = gr.recognize(newPath); //  this part will be replaced with mistery class  //
-                                                      //  #############################################  //
-    std::cout << "the gesture input is: " << result.name << std::endl;
-}
 
-std::cout << "Starting..." << std::endl;
-
-while (true)
-{
-    m_nios.trypoll();
-    wand.trypoll();
-}
-
-sc.addTouchable(&Menu)
-    sc.addTouchable(&startBtn);
-sc.addTouchable(&endBtn);
-sc.addDrawable(&Menu);
-sc.addDrawable(&startBtn);
-sc.addDrawable(&endBtn);
-
-sc.draw();
-
-return sc.run();
-}
-
-int showHomePage(SimpleGraphics &sg, std::string username, FontType menuFont, FontType buttonFont)
-{
-
-    Screen sc;
+    screen sc(sg, tc, wc);;
 
     addDropDownMenu(sg, sc, FontType menuFont);
 

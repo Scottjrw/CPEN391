@@ -17,6 +17,7 @@
 #include "cursor.hpp"
 #include "event_loop.hpp"
 #include "touch.hpp"
+#include "WandControl.hpp"
 
 namespace UI {
 
@@ -38,12 +39,14 @@ public:
 
 	void addTouchable(Touchable* element);
 
-	Screen(SimpleGraphics &graphics, TouchControl &touch);
+	Screen(SimpleGraphics &graphics, TouchControl &touch, 
+			WandControl &wc);
 
     ~Screen();
 
 private:
     TouchControl &m_touch;
+	WandControl &m_wandControl;
 	std::vector<Drawable*> m_drawables;
 	std::vector<Touchable*> m_touchables;
 	Cursor m_cursor;
