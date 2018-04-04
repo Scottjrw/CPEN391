@@ -246,9 +246,7 @@ int showHomePage(SimpleGraphics &sg, TouchControl &tc, std::string username, Fon
 
     Button welcomeField(sg, {340, 40}, {600, 80}, "Welcome!" + username, rgba(255, 255, 255, 255), rgba(159, 159, 159, 255), buttonFont);
 
-    sc.addDrawable(&homeMenu);
     sc.addDrawable(&welcomeField);
-    sc.addTouchable(&homeMenu);
     sc.addTouchable(&welcomeField);
 
     sc.draw();
