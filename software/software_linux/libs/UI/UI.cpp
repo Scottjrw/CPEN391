@@ -81,6 +81,7 @@ Slider::Slider(SimpleGraphics &graphics,
         rgba_t background_color, int min, int max, FontType f):
 	Rectangle(graphics, p1, p2, background_color),
     Touchable(),
+    m_cb(nullptr),
     m_text("00"),
     m_text_color(text_color),
     slider_p1(),
@@ -101,17 +102,17 @@ void Slider::draw(){
 	printf("%d\n", initial_state);
 	Rectangle::draw();
     
-    slider_bar_p1.x = m_p1.x + 5;
-    slider_bar_p1.y = (m_p2.y - m_p1.y)/3;
+    slider_bar_p1.x = m_p1.x + 10;
+    slider_bar_p1.y = (m_p2.y - m_p1.y)/3 + m_p1.y;
     
     slider_bar_p2.x = m_p2.x - 48;
-    slider_bar_p2.y = 2*(m_p2.y - m_p1.y)/3;
+    slider_bar_p2.y = 2*(m_p2.y - m_p1.y)/3 + m_p1.y;
 
-    Rectangle slider_bar(m_graphics, slider_bar_p1, slider_bar_p2, rgba(255, 255, 255, 255));
+    Rectangle slider_bar(m_graphics, slider_bar_p1, slider_bar_p2, rgba(150, 150, 150, 255));
     slider_bar.draw();
 
     if (initial_state){
-		m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + m_p1.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, m_font);
+		m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + slider_bar_p2.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, m_font);
 
 		slider_p1.x = slider_bar_p1.x;
 		slider_p1.y = m_p1.y + 5;
@@ -153,23 +154,32 @@ bool Slider::touch(Point P){
 
 			chosen_value = ratio*range;
 
-			m_text[0] = (int)(chosen_value)/10 + '0';
-			m_text[1] = (int)(chosen_value)%10 + '0';
             
-			m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + m_p1.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, m_font);
+			m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + slider_bar_p2.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, m_font);
 
 			Rectangle slider(m_graphics, slider_p1, slider_p2, rgba(0, 0, 0, 255));
 			slider.draw();
-            return true;
+
+
 		}
+
+        if(P.x > m_p1.x && P.x < m_p2.x && P.y > m_p1.y && P.y < m_p2.y) {
+            if (m_cb != nullptr) m_cb(P);
+                return true;
+        } else
+            return false;
 	}
 
 	return false;
 }
 
+void Slider::onTouch(TouchCB callback){
+    m_cb = callback;
+}
+
 
 DropdownMenu::DropdownMenu(SimpleGraphics &graphics,
-        Point p1, Point p2, std::string text, rgba_t text_color,
+        Point p1, Point p2, rgba_t text_color,
         rgba_t background_color, FontType f):
     Drawable(graphics),
     Touchable(),

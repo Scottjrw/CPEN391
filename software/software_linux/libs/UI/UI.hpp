@@ -128,8 +128,12 @@ public:
     Slider(SimpleGraphics &graphics, 
             Point p1, Point p2, rgba_t text_color,
             rgba_t background_color, int min, int max, FontType f);
+    virtual void onTouch(TouchCB callback);
 
+    int getMin() { return min; }
+    int getMax() { return max; }
 private:
+    TouchCB m_cb;
     std::string m_text;
     rgba_t m_text_color;
     Point slider_p1, slider_p2;
@@ -165,8 +169,10 @@ public:
     void newItem(SimpleGraphics &graphics, std::string text, TouchCB callback);
 
     DropdownMenu(SimpleGraphics &graphics,
-            Point p1, Point p2, std::string text, rgba_t text_color,
+            Point p1, Point p2, rgba_t text_color,
             rgba_t background_color, FontType f);
+
+    bool isOpen() { return m_is_open; }
 
 private:
 
