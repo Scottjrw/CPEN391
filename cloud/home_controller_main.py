@@ -287,7 +287,7 @@ def loginByFaceHexSegments():
 		im.putdata(list_of_pixels)
 		im.save('/home/dchau/img.png')
 
-		picture_of_me = face_recognition.load_image_file('/home/dchau/img.png')
+		picture_of_me = face_recognition.load_image_file('/home/dchau/img10.png')
 
 		try:
 			my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
@@ -485,7 +485,7 @@ def loginByRGB():
 
 		im = Image.new('RGB', (width,height))
 		im.putdata(list_of_pixels)
-		im.save('/home/dchau/img.png')
+		im.save('/home/dchau/img10.png')
 
 		picture_of_me = face_recognition.load_image_file('/home/dchau/img.png')
 
