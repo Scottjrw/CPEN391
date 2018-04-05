@@ -12,7 +12,7 @@
 
 namespace UI {
     using rgba_t = SimpleGraphics::rgba_t;
-    using FontType = SimpleGraphicsFonts::FontType;
+    using namespace SimpleGraphicsFonts;
 
 /* ------------------------------------------------------------------
  * An abstract class which represents anything that can be drawn
@@ -127,7 +127,7 @@ public:
 
     Slider(SimpleGraphics &graphics, 
             Point p1, Point p2, rgba_t text_color,
-            rgba_t background_color, int min, int max, FontType f);
+            rgba_t background_color, int min, int max);
     virtual void onTouch(TouchCB callback);
 
     int getMin() { return min; }
@@ -138,10 +138,10 @@ private:
     rgba_t m_text_color;
     Point slider_p1, slider_p2;
     Point slider_bar_p1, slider_bar_p2;
-    bool initial_state;
     int chosen_value;
     int min, max;
-    FontType m_font;
+
+    static constexpr FontType font = Font16x27;
 };
 
 

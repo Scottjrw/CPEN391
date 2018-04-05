@@ -2,9 +2,7 @@ INCFLAGS := -Ilibs -Ilibs/UI -Ishared_libs -I. -Ilibs/GestureRecognition
 DEPFLAGS := -MMD
 CPPFLAGS := -g -Wall -std=c++14 -O3 $(INCFLAGS) $(DEPFLAGS)
 
-#SRC_FILES := main.cpp
-#SRC_FILES := testRecognizer.cpp
-SRC_FILES := testmain.cpp
+SRC_FILES := main.cpp
 SRC_FILES += libs/bluetooth.cpp
 SRC_FILES += libs/NIOS_Processor.cpp
 SRC_FILES += libs/NIOS_Processor_Init.cpp
@@ -19,7 +17,6 @@ SRC_FILES += libs/wifi.cpp
 SRC_FILES += libs/UI/cursor.cpp
 SRC_FILES += libs/UI/screen.cpp
 SRC_FILES += libs/UI/UI.cpp
-#SRC_FILES += libs/UI/LoginPanel.cpp
 
 SRC_FILES += libs/GestureRecognition/GeometricRecognizer.cpp
 

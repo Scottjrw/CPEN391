@@ -78,7 +78,7 @@ void Button::onTouch(TouchCB callback){
 
 Slider::Slider(SimpleGraphics &graphics,
         Point p1, Point p2, rgba_t text_color,
-        rgba_t background_color, int min, int max, FontType f):
+        rgba_t background_color, int min, int max):
 	Rectangle(graphics, p1, p2, background_color),
     Touchable(),
     m_cb(nullptr),
@@ -88,18 +88,13 @@ Slider::Slider(SimpleGraphics &graphics,
     slider_p2(),
     slider_bar_p1(),
     slider_bar_p2(),
-    initial_state(),
     chosen_value(min),
     min(min),
-    max(max),
-    m_font(f)
-{
-	initial_state = true;
-}
+    max(max)
+{ }
 
 
 void Slider::draw(){
-	printf("%d\n", initial_state);
 	Rectangle::draw();
     
     slider_bar_p1.x = m_p1.x + 10;
@@ -108,20 +103,16 @@ void Slider::draw(){
     slider_bar_p2.x = m_p2.x - 48;
     slider_bar_p2.y = 2*(m_p2.y - m_p1.y)/3 + m_p1.y;
 
-    Rectangle slider_bar(m_graphics, slider_bar_p1, slider_bar_p2, rgba(150, 150, 150, 255));
-    slider_bar.draw();
+    m_graphics.draw_rect(rgba(150, 150, 150, 255), slider_bar_p1, slider_bar_p2);
 
-    if (initial_state){
-		m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + slider_bar_p2.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, m_font);
+    m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + slider_bar_p2.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, font);
 
-		slider_p1.x = slider_bar_p1.x;
-		slider_p1.y = m_p1.y + 5;
-		slider_p2.x = slider_bar_p1.x + 20;
-		slider_p2.y = m_p2.y - 5;
+    slider_p1.x = slider_bar_p1.x;
+    slider_p1.y = m_p1.y + 5;
+    slider_p2.x = slider_bar_p1.x + 20;
+    slider_p2.y = m_p2.y - 5;
 
-		Rectangle slider(m_graphics, slider_p1, slider_p2, rgba(0, 0, 0, 255));
-		slider.draw();
-    }
+    m_graphics.draw_rect(rgba(0, 0, 0, 255), slider_p1, slider_p2);
 
     m_is_showing = true;
 
@@ -130,15 +121,12 @@ void Slider::draw(){
 void Slider::undraw(){
 	Rectangle::undraw();
 
-    m_graphics.draw_string_centered(rgba(0,0,0,0), (m_p2.x - slider_bar_p2.x)/2 + slider_bar_p2.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, m_font);
-
 	m_is_showing = false;
 }
 
 bool Slider::touch(Point P){
 	if (m_is_showing){
 		if(P.x > slider_bar_p1.x && P.x < slider_bar_p2.x && P.y > m_p1.y && P.y < m_p2.y) {
-			initial_state = false;
             
 			draw();
 
@@ -155,10 +143,9 @@ bool Slider::touch(Point P){
 			chosen_value = ratio*range;
 
             
-			m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + slider_bar_p2.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, m_font);
+			m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + slider_bar_p2.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, font);
 
-			Rectangle slider(m_graphics, slider_p1, slider_p2, rgba(0, 0, 0, 255));
-			slider.draw();
+            m_graphics.draw_rect(rgba(0, 0, 0, 255), slider_p1, slider_p2);
 
 
 		}
