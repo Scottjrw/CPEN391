@@ -3,15 +3,13 @@
 using namespace NIOS_HPS_Protocol;
 
 WandControl::WandControl(Wand &wand, NIOS_Processor &nios):
+    Touchable(),
+    m_mode(wand.getMode()),
     m_wand(wand),
     m_nios(nios),
     m_points(),
     m_last_location(0, 0),
     m_recv_points(false),
-    m_mode(wand.getMode()),
-    m_clickDownCB(nullptr),
-    m_clickUpCB(nullptr),
-    m_cursorCB(nullptr),
     m_typeCB(nullptr),
     m_gestureCB(nullptr)
 {
@@ -29,21 +27,20 @@ WandControl::~WandControl() {
 void WandControl::mode_cb(Wand::Modes mode) {
     m_mode = mode;
     m_recv_points = false;
+    cursorModeChange(mode);
 }
 
 void WandControl::startstop_cb(Wand::WandCommands command) {
     switch (command) {
         case Wand::wandStart:
             if (m_mode == Wand::cursorMode) {
-                if (m_clickDownCB)
-                    m_clickDownCB(m_last_location);
+                touch(m_last_location);
             } else
                 m_recv_points = true;
             break;
         case Wand::wandStop:
             if (m_mode == Wand::cursorMode) {
-                if (m_clickUpCB)
-                    m_clickUpCB(m_last_location);
+                touch(m_last_location);
             } else {
                 m_recv_points = false;
 
@@ -68,9 +65,7 @@ void WandControl::dot_location_cb(const Dot_Location::body &body) {
                 m_points.emplace_back(m_last_location);
             }
         case Wand::cursorMode:
-            if (m_cursorCB) {
-                m_cursorCB(m_last_location);
-            }
+            updateCursor(m_last_location);
 
             break;
     }

@@ -43,55 +43,47 @@ enum Switch_Page_Commands
     to_LoginPanel = 5
 };
 
-// void showStartScreen(SimpleGraphics &sg, TouchControl &tc, NIOS_Processor &nios, Wand &wand) {
+ void showStartScreen(SimpleGraphics &sg, TouchControl &tc, NIOS_Processor &nios, Wand &wand) {
 
-//     WandControl wc(wand, nios);
+     NIOS_Processor_Init nios_init(SDRAM_FILE, SDRAM_BASE, SDRAM_SPAN,
+             MM_RESET_BASE, MM_RESET_SPAN);
 
-//     Screen screen(sg, tc, wc);
+     nios_init.printCB([&sg] (std::string str) {
+         sg.draw_string_bg_centered(rgb(255, 255, 255), sg.width() / 2, 400, 36, Font16x27);
+         sg.draw_string_centered(rgb(0, 0, 255), sg.width() / 2, 400, str, Font16x27);
+     });
+     nios_init.progressCB([&sg] (unsigned progress) {
+         std::cout << "Progress: " << progress << '%' << std::endl;
+         sg.draw_rect(rgb(255, 0, 0), {220, 300}, {2 * progress + 220, 340});
+         sg.draw_rect(rgb(0, 0, 0), {2*progress + 220, 300}, {420, 340});
+     });
 
-//     auto doneCB = [&screen] () {
-//         std::cout << "Done" << std::endl;
-//         screen.stop(0);
-//     };
-//     auto progressCB = [&sg] (unsigned progress) {
-//         sg.draw_rect(rgb(0, 0, 0), 100, 100, 500, 160);
-//         std::ostringstream s;
-//         s << "Progress: " << progress << '%';
-//         sg.draw_string(rgb(255, 255, 255), 100, 100, s.str(), Font38x59);
-//     };
+     Screen screen(sg, tc, wand, nios);
 
-// }
+     nios_init.doneCB([&nios, &sg, &screen] () {
+        if(nios.hello(250)) {
+            std::clog << "Cannot initialize NIOS" << std::endl;
+            assert(0);
+        }
+        sg.clear();
 
-// void addDropDownMenu(SimpleGraphics &sg, Screen &sc, FontType menuFont){
-//     DropdownMenu homeMenu(sg, {40, 40}, {240, 100}, "Menu", rgba(0, 0, 0, 255), rgba(159, 159, 159, 255), menuFont);
-//     homeMenu.newItem(sg, "Home", [&sc](Point p) {
-//                 sc.stop(0);
-//     });
+        screen.stop(0);
+     });
 
-//     homeMenu.newItem(sg, "Gesture Map", [&sc](Point p) {
-//                 sc.stop(2);
-//     });
+     screen.add_timer(std::chrono::milliseconds(250), [&sg, &nios_init] (Event_Loop *ev) -> bool {
+         sg.fill(rgb(255, 255, 255));
+         sg.draw_logo("logo.bmp", 160, 100);
 
-//     homeMenu.newItem(sg, "New Gesture", [&sc](Point p) {
-//                 sc.stop(3);
-//     });
+         nios_init.run(*ev);
 
-//     homeMenu.newItem(sg, "Settings", [&sc](Point p) {
-//                 sc.stop(4);
-//     });
+         return false;
+     });
 
-//     homeMenu.newItem(sg, "Log Out", [&sc](Point p) {
-//                 sc.stop(5);
-//     });
+     screen.add(&nios, &NIOS_Processor::trypoll);
+     screen.draw();
+     screen.run();
+ }
 
-//     // NIOS_Processor_Init init(SDRAM_FILE, SDRAM_BASE, SDRAM_SPAN, 
-//     //         MM_RESET_BASE, MM_RESET_SPAN, doneCB, progressCB);
-
-//     //init.run(screen);
-
-//     sc.addDrawable(&homeMenu);
-//     sc.addTouchable(&homeMenu);
-//}
 
 /*
  * @Param:
@@ -643,13 +635,12 @@ int main(void)
     // Wifi
     Wifi wifi("/dev/ttyAL1");
     // Videp
-    Video video("/dev/ttyAL2");
-    //video.mirror_mode_on();
+    Video video("/dev/ttyAL2", VIDEO_FRAMEBUFFER_BASE, VIDEO_FRAMEBUFFER_SPAN);
+    video.imageSettings(0, 0x80, 0x80, 0, 130);
+    video.mirror_mode_on();
+
     // Bluetooth
     Wand wand("/dev/ttyAL3", B115K);
-    // Gesture Recognizer
-    GeometricRecognizer gr;
-    gr.loadSamples();
 
     int scret = showHomePage(sg, nios, tc, wand, "", Font22x40, Font16x27);
     std::string username_input = "";

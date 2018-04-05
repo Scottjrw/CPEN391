@@ -1,36 +1,31 @@
-/*
- * screen.cpp
- *
- *  Created on: Feb 11, 2018
- *      Author: Daniel
- */
-
 #include "screen.hpp"
 #include <stdio.h>
 #include <chrono>
+#include <algorithm>
 
 namespace UI {
 
-Screen::Screen(SimpleGraphics &graphics, TouchControl &touch,
-    WandControl &wc):
+Screen::Screen(SimpleGraphics &graphics, TouchControl &touch, 
+        Wand &wand, NIOS_Processor &nios,
+        Cursor &gesture, Cursor &typing, Cursor &mouse):
     Event_Loop(),
 	Drawable(graphics),
-	Touchable(),
+    WandControl(wand, nios),
     m_touch(touch),
-    m_wandControl(wc),
 	m_drawables(),
 	m_touchables(),
-	m_cursor(m_graphics, rgba(0, 255, 0, 255), 4),
-    m_red_dot_cursor(m_graphics, rgba(0, 0, 255, 255), 4)
+    m_gestureCursor(gesture),
+    m_typingCursor(typing),
+    m_mouseCursor(mouse)
 {
     add(&m_touch, &TouchControl::trypoll);
     m_touch.setTouchable(*this);
-    m_wandControl.setCursorClickCB(std::bind(&Screen::touch, this, std::placeholders::_1), 
-        std::bind(&Screen::touch, this, std::placeholders::_1));
+    add_timer(std::chrono::milliseconds(1000/12), this, &Screen::redraw_cursor);
 }
 
 Screen::~Screen() {
     m_touch.clearTouchable();
+    m_graphics.clear();
 }
 
 void Screen::draw() {
@@ -51,19 +46,13 @@ void Screen::undraw() {
 
 bool Screen::touch(Point p) {
 
-    // undraw previous cursor
-    // restore the image that previous cursor covers
-
-    // draw new cursor at Point p
-
-    m_cursor.undraw();
+    undraw_cursor();
 
     for (auto touch : m_touchables) {
         if (touch->touch(p)) break;
     }
 
-    m_cursor.update(p);
-    m_cursor.draw();
+    draw_cursor();
 
     return true;
 }
@@ -77,6 +66,62 @@ void Screen::addTouchable(Touchable* element) {
 	m_touchables.push_back(element);
 }
 
-};
+void Screen::remDrawable(Drawable *element) {
+    std::remove(m_drawables.begin(), m_drawables.end(), element);
+}
 
+void Screen::remTouchable(Touchable* *element) {
+    std::remove(m_touchables.begin(), m_touchables.end(), element);
+}
 
+void Screen::updateCursor(Point p) {
+    m_mouseCursor.update(p);
+    m_typingCursor.update(p);
+    m_gestureCursor.update(p);
+}
+
+void Screen::cursorModeChange(Wand::Modes old_mode) {
+    undraw_cursor(old_mode);
+    draw_cursor();
+}
+
+bool Screen::redraw_cursor() {
+    undraw_cursor();
+
+    draw_cursor();
+    return true;
+}
+
+void Screen::draw_cursor(Wand::Modes mode) {
+    switch(mode) {
+        case Wand::cursorMode:
+            m_mouseCursor.draw();
+            break;
+
+        case Wand::gestureMode:
+            m_gestureCursor.draw();
+            break;
+
+        case Wand::typingMode:
+            m_typingCursor.draw();
+            break;
+    }
+}
+
+void Screen::undraw_cursor(Wand::Modes mode) {
+    switch(mode) {
+        case Wand::cursorMode:
+            m_mouseCursor.undraw();
+            break;
+
+        case Wand::gestureMode:
+            m_gestureCursor.undraw();
+            break;
+
+        case Wand::typingMode:
+            m_typingCursor.undraw();
+            break;
+    }
+}
+
+}

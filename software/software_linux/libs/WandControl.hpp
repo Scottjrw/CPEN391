@@ -5,13 +5,14 @@
 #include "bluetooth.hpp"
 #include "GeometricRecognizer.hpp"
 #include "NIOS_Processor.hpp"
+#include "UI.hpp"
 
 /* A class that essentially glues together GestureRecognizer, Wand and NIOS_Processor
  *
  * This class determines what mode the wand is in and uses that info
  * to determine what to do with points received by the NIOS_Processor
  */
-class WandControl {
+class WandControl : public UI::Touchable {
 public:
     using GeometricRecognizer = DollarRecognizer::GeometricRecognizer;
     using RecognitionResult = DollarRecognizer::RecognitionResult;
@@ -19,18 +20,6 @@ public:
     WandControl(Wand &wand, NIOS_Processor &nios);
 
     ~WandControl();
-
-    // Receive clicks, down = click is pressed, up = click is released
-    // If a class only cares to get clicks they can leave up as nullptr
-    typedef std::function<void(Point p)> CursorClickCB;
-    void setCursorClickCB(CursorClickCB down, CursorClickCB up=nullptr) {
-        m_clickDownCB = down;
-        m_clickUpCB = up;
-    }
-
-    // Receive cursor movements
-    typedef std::function<void(Point p)> CursorUpdateCB;
-    void setCursorCB(CursorUpdateCB cb) { m_cursorCB = cb; }
 
     // Receive Typing
     typedef std::function<void(char c)> TypingLetterCB;
@@ -40,6 +29,11 @@ public:
     typedef std::function<void(std::string gesture)> GestureCB;
     void setGestureCB(GestureCB cb) { m_gestureCB = cb; }
 
+protected:
+    virtual void updateCursor(Point p) = 0;
+    virtual void cursorModeChange(Wand::Modes old_mode) = 0;
+    Wand::Modes m_mode;
+
 private:
     GeometricRecognizer m_recognizer;
     Wand &m_wand;
@@ -47,10 +41,6 @@ private:
     std::vector<PointD> m_points;
     Point m_last_location;
     bool m_recv_points;
-    Wand::Modes m_mode;
-    CursorClickCB m_clickDownCB;
-    CursorClickCB m_clickUpCB;
-    CursorUpdateCB m_cursorCB;
     TypingLetterCB m_typeCB;
     GestureCB m_gestureCB;
     std::unordered_map<std::string, std::string> m_gesture_map;
