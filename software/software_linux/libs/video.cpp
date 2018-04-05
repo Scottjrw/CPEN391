@@ -114,12 +114,24 @@ void Video::sendCommand(int cmd, int args[], int command_length) {
 		string_out[3+i] = args[i];
 	}
 
-	if(write(video_uart, string_out, command_length+3)<0)
+    std::cout << "Write" << std::endl;
+	if(write(video_uart, string_out, command_length+3) != command_length+3)
 		printf("video write failed\n");
 }
 
 int Video::readResponse(int numbytes) {
-	return read(video_uart, camerabuff, numbytes);
+    int read_num = 0;
+    while (read_num < numbytes) {
+        read_num += read(video_uart, camerabuff + read_num, numbytes);
+    }
+
+    std::cout << std::hex;
+    for (int i = 0; i < read_num; i++) {
+        std::cout  << (int) camerabuff[i] << std::endl;
+    }
+    std::cout << std::dec;
+
+	return read_num;
 }
 
 bool Video::verifyResponse(int command) {

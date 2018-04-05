@@ -79,7 +79,8 @@ int main(void) {
         });
         std::clog << "Starting Points" << std::endl;
         nios.start();
-        video.imageSettings(0, 0x80, 0x80, 0, 102);
+        video.imageSettings(0, 0x80, 0x80, 0, 130);
+        video.mirror_mode_on();
         std::clog << "Start Done" << std::endl;
     });
 
@@ -87,9 +88,6 @@ int main(void) {
 
 
     nios.dot_location_cb([&sg, &last_min_x, &last_min_y, &last_max_x, &last_max_y] (const NIOS_HPS_Protocol::Dot_Location::body &dot) {
-
-        std::cout << "Dot: " << dot.avg_x << ',' << dot.avg_y << std::endl;
-
         sg.draw_rect(rgba(0, 0, 0, 0), last_min_x, last_min_y, last_max_x, last_max_y);
         sg.draw_rect(rgba(0, 0, 255, 100), dot.min_x, dot.min_y, dot.max_x, dot.max_y);
 
