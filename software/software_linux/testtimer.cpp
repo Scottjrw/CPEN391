@@ -33,7 +33,8 @@ int main(void) {
 
     unsigned count = 0;
 
-    ev.add_timer(10ms, [&count] (auto)->bool {
+    ev.add_timer(100ms, [&count] (auto)->bool {
+        std::cout << "10ms" << std::endl;
         if (++count == 100) {
             std::cout << "Every 10ms" << std::endl;
             count = 0;
@@ -41,19 +42,34 @@ int main(void) {
         return true;
     });
 
+
+    ev.add_timer(1s, [](Event_Loop *evp)->bool {
+        std::cout << "Start" << std::endl;
+        auto start = std::chrono::system_clock::now();
+        evp->sleep(500ms);
+        std::chrono::microseconds t = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - start);
+
+        std::cout << "Microseconds " << t.count() << std::endl;
+        return true;
+    });
+
+    unsigned count2 = 0;
+    Event_Loop::CallableRef ref;
+
+    ref = ev.add([&ref, &count2](Event_Loop *evp) {
+        if (count2++ <= 5) {
+            std::cout << "Wait..." << std::endl;
+            auto start = std::chrono::system_clock::now();
+            evp->sleep(750ms);
+            std::chrono::microseconds t = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now() - start);
+
+            std::cout << "Wait Microseconds " << t.count() << std::endl;
+
+        } else {
+            std::cout << "Removing!" << std::endl;
+            evp->remove(ref);
+        }
+    });
+
     ev.run();
-
-#if 0
-    std::cout << "Test: " << (1s + 1000ms).count() << std::endl;
-
-    auto t = std::chrono::high_resolution_clock::now();
-
-    t += 1s;
-
-    while(std::chrono::high_resolution_clock::now() < t) {
-        std::cout << std::chrono::high_resolution_clock::now().time_since_epoch().count() / 1000000 << std::endl;
-        usleep(100000);
-    }
-
-#endif
 }

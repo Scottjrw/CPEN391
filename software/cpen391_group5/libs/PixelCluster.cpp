@@ -2,17 +2,15 @@
 #include "io.h"
 #include <cassert>
 
-PixelCluster::PixelCluster(uintptr_t base, int ic_id, int irq_id):
+PixelCluster::PixelCluster(uintptr_t base, int ic_id, int irq_id, NClusterData &data):
     m_base(reinterpret_cast<uint32_t *>(base)),
     m_ic_id(ic_id),
     m_irq_id(irq_id),
-    m_last_data(),
+    m_last_data(data),
     m_last_isr_ticks(0),
     m_accumlate_isr_ticks(0),
     m_accumulate_count(0),
-    m_cb(nullptr),
-    m_cb_isr(false),
-    m_call_cb(false),
+    m_acked(true),
     m_isr_overflow(false),
     m_compare0_val(0),
     m_compare1_val(0),
@@ -53,10 +51,6 @@ bool PixelCluster::irq_overflow() {
     }
 }
 
-void PixelCluster::finish_cb(PixelClusterCB cb, bool use_isr) {
-    m_cb = cb;
-}
-
 void PixelCluster::reset() {
     IOWR(m_base, Control_Register, 0);
 }
@@ -73,6 +67,14 @@ unsigned PixelCluster::isr_period_ms(bool reset) {
     }
 
     return ms;
+}
+
+bool PixelCluster::is_done() {
+    return !m_acked;
+}
+
+void PixelCluster::ack() {
+    m_acked = true;
 }
 
 void PixelCluster::range(uint16_t range) {
@@ -115,13 +117,6 @@ void PixelCluster::compare_less_than(bool r, bool g, bool b,
     IOWR(m_base, reg_num, reg);
 }
 
-void PixelCluster::trypoll() {
-    if (!m_cb_isr && m_call_cb) {
-        if (m_cb != nullptr)
-            m_cb(this, m_last_data);
-        m_call_cb = false;
-    }
-}
 
 void PixelCluster::interrupt_handler(void *pxcluster) {
 
@@ -132,6 +127,9 @@ void PixelCluster::interrupt_handler(void *pxcluster) {
     pixel->m_accumlate_isr_ticks += ticks_diff;
     pixel->m_accumulate_count++;
     pixel->m_last_isr_ticks = alt_nticks();
+
+    if (!pixel->m_acked)
+        pixel->m_isr_overflow = true;
 
     // Retrieve data
     for (unsigned i = 0; i < N_Clusters; i++) {
@@ -152,12 +150,7 @@ void PixelCluster::interrupt_handler(void *pxcluster) {
         cur.count = IORD(pixel->m_base, Count_Register(i));
     }
 
-    if (!pixel->m_cb_isr && pixel->m_call_cb)
-        pixel->m_isr_overflow = true;
-    pixel->m_call_cb = true;
-
-    if (pixel->m_cb_isr && pixel->m_cb != nullptr)
-        pixel->m_cb(pixel, pixel->m_last_data);
+    pixel->m_acked = false;
 
     pixel->reset();
 

@@ -33,14 +33,12 @@ public:
     
     
     void setValidModes(std::vector<Modes> modes);
-    
-    void LedOn();
-    void LedOff();
+
     void setRemoteAddress(std::string address);
     bool connectToAddress(std::string address);
     void killConnection();
     void setMode(std::string mode);
-    std::vector<std::vector<std::string>> getAvailableDevices(std::string time_length);
+    std::vector<std::pair<std::string, std::string>> getAvailableDevices(std::string time_length);
     
     void setMode(ModeCB cb){ m_modeCB = cb; };
     void setGesture(WandCommandCB cb){ m_wandCommandCB = cb; };
@@ -65,7 +63,7 @@ private:
     
     void recv(char val);
     bool waitForResponse(std::string response);
-    std::vector<std::vector<std::string>> waitForInquiry(std::string time_length);
+    std::vector<std::pair<std::string, std::string>> waitForInquiry(std::string time_length);
     
     void enterCommandMode();
     void exitCommandMode();
