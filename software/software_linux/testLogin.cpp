@@ -37,8 +37,6 @@ int main(void){
 
     WandControl wc(wand, nios);
 
-	Path2D newPath;
-
     LoginPanel lp(sg, wifi, video, wc, {0,0}, {640,480}, Font16x27, Font10x14 );
 
     // user click input fields they want to write to 

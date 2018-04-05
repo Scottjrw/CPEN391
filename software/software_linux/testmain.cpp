@@ -31,27 +31,8 @@ enum Switch_Page_Commands
     to_LoginPanel = 5
 };
 
-void showStartScreen(SimpleGraphics &sg, TouchControl &tc, NIOS_Processor &nios, Wand &wand) {
-
-    WandControl wc(wand, nios);
-
-    Screen screen(sg, tc, wc);
-
-    auto doneCB = [&screen] () {
-        std::cout << "Done" << std::endl;
-        screen.stop(0);
-    };
-    auto progressCB = [&sg] (unsigned progress) {
-        sg.draw_rect(rgb(0, 0, 0), 100, 100, 500, 160);
-        std::ostringstream s;
-        s << "Progress: " << progress << '%';
-        sg.draw_string(rgb(255, 255, 255), 100, 100, s.str(), Font38x59);
-    };
-
-}
-
 void addDropDownMenu(SimpleGraphics &sg, screen &sc, FontType menuFont){
-    DropdownMenu homeMenu(sg, {40, 40}, {240, 100}, "Menu", rgba(0, 0, 0, 255), rgba(159, 159, 159, 255), menuFont);
+    DropdownMenu homeMenu(sg, {40, 40}, {180, 100}, "Menu", rgba(0, 0, 0, 255), rgba(159, 159, 159, 255), menuFont);
     homeMenu.newItem(sg, "Home", rgba(80, 80, 80, 255), rgba(180, 180, 180, 255), [&sc](Point p) {
                 sc.stop(0);
     });
@@ -72,14 +53,35 @@ void addDropDownMenu(SimpleGraphics &sg, screen &sc, FontType menuFont){
                 sc.stop(5);
     });
 
+    // what does this do ???????????
     NIOS_Processor_Init init(SDRAM_FILE, SDRAM_BASE, SDRAM_SPAN, 
             MM_RESET_BASE, MM_RESET_SPAN, doneCB, progressCB);
 
-    init.run(screen);
+    init.run(sc);
 
-    screen.run();
+    
     sc.addDrawable(homeMenu);
     sc.addTouchable(homeMenu);
+
+    sc.run();
+}
+
+void showStartScreen(SimpleGraphics &sg, TouchControl &tc, NIOS_Processor &nios, Wand &wand) {
+
+    WandControl wc(wand, nios);
+
+    Screen screen(sg, tc, wc);
+
+    auto doneCB = [&screen] () {
+        std::cout << "Done" << std::endl;
+        screen.stop(0);
+    };
+    auto progressCB = [&sg] (unsigned progress) {
+        sg.draw_rect(rgb(0, 0, 0), 100, 100, 500, 160);
+        std::ostringstream s;
+        s << "Progress: " << progress << '%';
+        sg.draw_string(rgb(255, 255, 255), 100, 100, s.str(), Font38x59);
+    };
 }
 
 /*
@@ -87,9 +89,8 @@ void addDropDownMenu(SimpleGraphics &sg, screen &sc, FontType menuFont){
  *      username:  callback from login() is login successfully
  *      mistery class reference: implement on Tuesday
  */
-int showLoginPanel(SimpleGraphics &sg, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios)
+int showLoginPanel(SimpleGraphics &sg, TouchControl &tc, NIOS_Processor &nios, Wand &wand, Wifi &wifi, GeometricRecognizer &gr, Video &video)
 {
-
     WandControl wc(wand, nios);
 
     // lp is a subclass of screen
@@ -98,7 +99,7 @@ int showLoginPanel(SimpleGraphics &sg, Wifi &wifi, Wand &wand, GeometricRecogniz
     return lp.run();
 }
 
-int showSetting(SimpleGraphics &sg, FontType buttonFont, FontType sliderFont, FontType menuFont, TouchControl &tc)
+int showSetting(SimpleGraphics &sg, TouchControl &tc, NIOS_Processor &nios, Wand &wand, FontType sliderFont, FontType menuFont)
 {   
     WandControl wc(wand, nios);
 
@@ -199,65 +200,98 @@ int showSetting(SimpleGraphics &sg, FontType buttonFont, FontType sliderFont, Fo
     return sc.run();
 }
 
-int showGestureRecognition(SimpleGraphics &sg, GeometricRecognizer &gr, NIOS_Processor &nios, TouchControl &tc, Wand &wand, FontType menuFont)
+int showGestureMapping(SimpleGraphics &sg, TouchControl &tc, NIOS_Processor &nios, Wand &wand, Wifi &wifi, FontType menuFont, FontType buttonfont)
 {
-
     WandControl wc(wand, nios);
 
     screen sc(sg, tc, wc);
 
-    addDropDownMenu(sg, sc, FontType menuFont);
+    std::unordered_map<std::string, std::string> service_map(wifi.GetGestureMapping());
+    std::unordered_map<std::string, std::string> local_map(wifi.GetGestureMapping());
+    std::vector<Button> service_list;
 
-    Button startBtn(sg, {320,380}, {420, 450}, "Start", rgb(0,0,0), rgb(119,119,119));
-    Button endBtn(sg, {460,380}, {560, 450}, "End", rgb(0,0,0), rgb(119,119,119));
+    bool select_service = false;
+    bool receive_gesture = true;
 
-    Path2D newPath;
+    int i = 0;
+    int service_btn_height = 40;
+    int top_service_btn_ul_y = 100;
 
-    //Point last_min, last_max;
+    char rcv_char = '';
 
-    // nios.dot_location_cb([&last_min, &last_max, &sg, &newPath](auto dot) {
-    //     sg.draw_rect(rgba(0, 0, 0, 0), last_min, last_max);
-    //     std::cout << "Point: " << dot.avg_x << ',' << dot.avg_y << std::endl;
-    //     newPath.emplace_back(dot.avg_x, dot.avg_y);
-    //     last_min = {dot.min_x, dot.min_y};
-    //     last_max = {dot.max_x, dot.max_y};
-    //     sg.draw_rect(rgba(0, 255, 0, 128), last_min, last_max);
-    // });
+    // put all service we have into vector<Button>
+    for(std::map<std::string, std::string>::iterator it = service_map.begin(); it != service_map.end(); ++it){
 
-    // startBtn.onTouch([&nios](Point point){
-    //     nios.start();
-    // });
+        Button btn(sg, {500, top_service_btn_ul_y + i*service_btn_height}, 
+                   {600, top_service_btn_ul_y + (i+1)*service_btn_height}, it->second,
+                   rgba(53,53,53,255), rgba(191,191,191,255), Font16x27 = 14,);
 
-    // endBtn.onTouch([&nios, &newPath, &gr](Point point){
-    //     std::cout << "Number of points: " << newPath.size() << std::endl;
-    //     nios.stop();
-    //                                                                 //  #############################################  //
-    //     RecognitionResult result = gr.recognize(newPath);           //  this part will be replaced with mistery class  //
-    //                                                                 //  #############################################  //
-    //     std::cout << "the gesture input is: " << result.name << std::endl;
-    // });
-
-    std::cout << "Starting..." << std::endl;
-
-    while (true)
-    {
-        m_nios.trypoll();
-        wand.trypoll();
+        service_list.push_back(btn);  
+        i++;
     }
+    
+    Button service1 = service_list.back(); service_list.pop_back();
+    Button service2 = service_list.back(); service_list.pop_back();
+    Button service3 = service_list.back(); service_list.pop_back();
+    Button service4 = service_list.back(); service_list.pop_back();
+    Button service5 = service_list.back(); service_list.pop_back();
 
-    sc.addTouchable(&Menu)
-    sc.addTouchable(&startBtn);
-    sc.addTouchable(&endBtn);
-    sc.addDrawable(&Menu);
-    sc.addDrawable(&startBtn);
-    sc.addDrawable(&endBtn);
+    Button finish_gesture_and_sel_service(sg, {220, 380}, {320, 430}, "Confirm Gesture", 
+                                          rgba(53,53,53,255), rgba(191,191,191,255), Font16x27);
+    Button retype_gesture(sg, {360, 380}, {460, 430}, "Retype Gesture", 
+                          rgba(53,53,53,255), rgba(191,191,191,255), Font16x27);
+    Button input_recognition_field(sg, {220, 310}, {460, 350}, "Input Gesture: ", 
+                                   rgba(53,53,53,255), rgba(255,255,255,255), Font16x27);
+    Button touch_field(sg, {220, 60}, {460, 280}}, "", 
+                            rgba(53,53,53,255), rgba(255,255,255,255), Font16x27);
+
+    
+    // sc.setTypingCB([&input_recognition_field, &rcv_char](char c){
+
+    //     rcv_char = c; 
+    //     input_recognition_field = Button(sg, {220, 310}, {460, 350}, "Input Gesture: " + rcv_char, 
+    //                                rgba(53,53,53,255), rgba(255,255,255,255), Font16x27);
+    // });
+
+    touch_field.onTouch([&sg, &receive_gesture](Point p){
+        if(receive_gesture)
+            sg.draw_rect(rgba(255,0,0,255), {point.x, point.y}, {point.x+2, point.y+2});
+    });
+
+
+    sc.addDrawable(service1);
+    sc.addDrawable(service2);
+    sc.addDrawable(service3);
+    sc.addDrawable(service4);
+    sc.addDrawable(service5);
+    
+    sc.addDrawable(finish_gesture_and_sel_service);
+    sc.addDrawable(retype_gesture);
+    sc.addDrawable(input_recognition_field);  
+    sc.addDrawable(touch_field);    
+
+    sc.addTouchable(service1);
+    sc.addTouchable(service2);
+    sc.addTouchable(service3);
+    sc.addTouchable(service4);
+    sc.addTouchable(service5);
+    
+    sc.addTouchable(finish_gesture_and_sel_service);
+    sc.addTouchable(retype_gesture);
+    sc.addTouchable(input_recognition_field);  
+    sc.addTouchable(touch_field);    
+
+    
+
 
     sc.draw();
-
+    
     return sc.run();
 }
 
-int showHomePage(SimpleGraphics &sg, TouchControl &tc, Wand &wand, std::string username, FontType menuFont, FontType buttonFont)
+
+
+int showHomePage(SimpleGraphics &sg, TouchControl &tc, NIOS_Processor &nios, Wand &wand, std::string username, FontType menuFont, FontType buttonFont)
 {
 
     WandControl wc(wand, nios);
@@ -307,23 +341,27 @@ int main(void)
     while (1)
     {
         switch (scret):
-            {
+        {
             case to_Home:
             {
-                scret = showHomePage(sg, "group 5");
+                scret = showHomePage(sg, tc, wand, "Group 5", Font22x40, Font16x27);
                 break;
             }
             case to_LoginPanel:
             {
-                scret = showLoginPanel();
+                scret = showLoginPanel(sg, tc, nios, wand, wifi, gr, video);
                 break;
             }
             case to_GestureMap:
             {
-                scret = showGestureRecognition(sg, gr, nios);
+                scret = showGestureMapping(sg, tc, nios, wand, gr, Font22x40);
                 break;
             }
+            case to_Setting:
+            {
+                scret = showSetting(sg, tc, nios, wand, Font16x27, Font22x40);
             }
+        }
     }
 
     return 0;

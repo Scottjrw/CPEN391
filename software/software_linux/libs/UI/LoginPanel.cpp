@@ -244,20 +244,23 @@ void LoginPanel::login()
 {   
     // in username/password page
     if(!m_login_page){
-        string result;
+        bool result;
 
         /* WIFI connection goes here */
         m_wifi.SendUsername(m_username_input, m_password_input);
         result = m_wifi.ReadResponse();
 
-        if(result == "done"){
+        if(result){
             UsernameFieldMsg("Login Complete!");
             m_login_status = 1;
+
+            // load Gesture Mapping
+            m_wifi.LoadGestureMapping();
             //m_login_status_cb(m_login_status, m_username_input)
             stop(0);
         }
 
-        else if(result == "fail"){
+        else{
             UsernameFieldMsg("Login Failed.");
             PasswordFieldMsg("Wrong Password.");
             m_login_status = -1;
