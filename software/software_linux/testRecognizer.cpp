@@ -23,7 +23,7 @@ int main(void) {
     NIOS_Processor nios(nios_serial);
 
      // Bluetooth
-    Wand wand("/dev/ttyAL3", B1115K);
+    Wand wand("/dev/ttyAL3", B115K);
 
 
     WandControl wc(wand, nios);

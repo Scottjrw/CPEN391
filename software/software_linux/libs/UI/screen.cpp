@@ -25,6 +25,8 @@ Screen::Screen(SimpleGraphics &graphics, TouchControl &touch,
 {
     add(&m_touch, &TouchControl::trypoll);
     m_touch.setTouchable(*this);
+    m_wandControl.setCursorClickCB(std::bind(&Screen::touch, this, std::placeholders::_1), 
+        std::bind(&Screen::touch, this, std::placeholders::_1));
 }
 
 Screen::~Screen() {
