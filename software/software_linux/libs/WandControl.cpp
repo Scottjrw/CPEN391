@@ -17,11 +17,15 @@ WandControl::WandControl(GeometricRecognizer &geo, Wand &wand, NIOS_Processor &n
     using std::placeholders::_1;
 
     m_wand.setMode(std::bind(&WandControl::mode_cb, this, _1));
+    m_wand.setGesture(std::bind(&WandControl::startstop_cb, this, _1));
     m_nios.dot_location_cb(std::bind(&WandControl::dot_location_cb, this, _1));
+    m_nios.start();
 }
 
 WandControl::~WandControl() {
-    m_wand.setMode(std::function<void(Wand::Modes)>(nullptr));
+    m_nios.stop();
+    m_wand.setMode(Wand::ModeCB(nullptr));
+    m_wand.setGesture(Wand::WandCommandCB(nullptr));
     m_nios.dot_location_cb(nullptr);
 }
 

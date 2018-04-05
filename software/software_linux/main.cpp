@@ -1,4 +1,3 @@
-
 #include <system_error>
 #include <unistd.h>
 #include <iostream>
@@ -20,19 +19,11 @@
 #include "Animation.hpp"
 #include "bluetooth.hpp"
 #include "cursor.hpp"
-//#include "LoginPanel.hpp"
 
 using namespace UI;
 using namespace DollarRecognizer;
 using namespace SimpleGraphicsFonts;
 
-#define BUTTON_HEIGHT 50
-#define BUTTON_WIDTH 200
-#define STATUS_DEFAULT 5
-#define PICTURE_HEIGHT 120
-#define PICTURE_WIDTH 160
-#define INPUT_FIELD_WIDTH 300
-#define INPUT_FIELD_HEIGHT 40
 
 enum Switch_Page_Commands : int
 {
@@ -85,23 +76,6 @@ void showStartScreen(SimpleGraphics &sg, TouchControl &tc, GeometricRecognizer &
  }
 
 
-/*
- * @Param:
- *      username:  callback from login() is login successfully
- *      mistery class reference: implement on Tuesday
- */
-// int showLoginPanel(SimpleGraphics &sg, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios)
-// {
-
-//     WandControl wc(wand, nios);
-
-//     // lp is a subclass of screen
-//     LoginPanel lp(sg, wifi, video, wc, {0, 0}, {640, 480},rgba(0,0,0,255),rgba(102,102,102,255),
-//         rgba(226,226,226,255),rgba(156,156,156,255), Font16x27, Font10x14);
-
-//     return lp.run();
-// }
-
 int showSetting(SimpleGraphics &sg, TouchControl &tc, GeometricRecognizer &geo, Wand &wand, NIOS_Processor &nios, Cursor &gesture_cursor, Cursor &typing_cursor, Cursor &mouse_cursor, Video &video)
 {   
 
@@ -139,17 +113,6 @@ int showSetting(SimpleGraphics &sg, TouchControl &tc, GeometricRecognizer &geo, 
     saturation_slider.onTouch([&temp_saturation, &saturation_slider](Point p) {
         temp_saturation = (float)(saturation_slider.value()) / (float)(saturation_slider.getMax() - saturation_slider.getMin()) * 255;
     });
-
-    // Button back(graphics, touch, {0, 0}, {27, 120}, "exit",
-    //             SimpleGraphics::rgba(255, 255, 255, 255),
-    //             SimpleGraphics::rgba(100, 100, 100, 255), buttonFont);
-
-    // back.onTouch([&sc](Point p) {
-    //     std::cout << "BACK" << std::endl;
-    //     sc.clear();
-    //     sc.exit(Current_Screen(HOME));
-
-    // });
 
     Button save(sg, {sg.width()/3, 400}, {2*sg.width()/3, sg.height()-30}, "Save",
                 rgba(255, 140, 102, 255), rgba(100, 100, 100, 255), Font16x27);
@@ -380,6 +343,10 @@ int showLoginPanel(SimpleGraphics &sg, TouchControl &tc, GeometricRecognizer &gr
     Point p1(0,0);
     Point p2(640,480);
 
+    static constexpr int BUTTON_HEIGHT = 50;
+    static constexpr int BUTTON_WIDTH = 200;
+    static constexpr int INPUT_FIELD_WIDTH = 300;
+
     Point u_f_p1 = {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3};
     Point u_f_p2 = {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT};
 
@@ -517,6 +484,10 @@ int showFacialLoginPanel(SimpleGraphics &sg, TouchControl &tc, GeometricRecogniz
 
 
     Screen sc(sg, tc, geo, wand, nios, gesture_cursor, mouse_cursor, typing_cursor);
+
+    static constexpr int BUTTON_HEIGHT = 50;
+    static constexpr int PICTURE_HEIGHT = 120;
+    static constexpr int PICTURE_WIDTH = 160;
 
     Point p1(0,0);
     Point p2(640,480);
