@@ -34,7 +34,7 @@ int main(int argc, const char * argv[]) {
 
     pixel_cluster_0.reset();
     pixel_cluster_0.compare0_enable(true, true, true);
-    pixel_cluster_0.compare0_value(150, 60, 60);
+    pixel_cluster_0.compare0_value(120, 60, 60);
     pixel_cluster_0.compare0_less_than(false, true, true);
     pixel_cluster_0.compare1_enable(false, false, false);
     pixel_cluster_0.range(50);
@@ -46,8 +46,8 @@ int main(int argc, const char * argv[]) {
 
     pixel_cluster_1.reset();
     pixel_cluster_1.compare0_enable(true, true, true);
-    pixel_cluster_1.compare0_value(80, 100, 80);
-    pixel_cluster_1.compare0_less_than(true, false, true);
+    pixel_cluster_1.compare0_value(20, 110, 100);
+    pixel_cluster_1.compare0_less_than(true, true, false);
     pixel_cluster_1.compare1_enable(false, false, false);
     pixel_cluster_1.range(50);
 

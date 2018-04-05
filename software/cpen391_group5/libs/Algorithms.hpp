@@ -22,7 +22,7 @@ namespace Algorithms {
      * Finds the cluster with the largest count, greater than min_count
      *
      */
-    const ClusterData *max_count(const NClusterData &data, unsigned min_count=1) {
+    inline const ClusterData *max_count(const NClusterData &data, unsigned min_count=1) {
         const ClusterData *max = nullptr;
         unsigned max_count = min_count - 1;
 
@@ -37,17 +37,17 @@ namespace Algorithms {
     }
 
     constexpr int EXPECTED_DISTANCE = 25;
-    constexpr int MAX_DISTANCE = 60;
+    constexpr int MAX_DISTANCE = 100;
 
     constexpr int EXPECTED_INTENSITY = 50;
-    constexpr std::pair<int, int> INTENSITY_RANGE = {50, 200};
+    constexpr std::pair<int, int> INTENSITY_RANGE = {1, 4000};
 
     constexpr int EXPECTED_WH = 50;
-    constexpr std::pair<int, int> WH_RANGE = {25, 75};
+    constexpr std::pair<int, int> WH_RANGE = {5, 200};
 
     constexpr unsigned MIN_SCORE = 10;
 
-    bool dual_color(const NClusterData &data0, const NClusterData &data1, ClusterData &found_cluster) {
+    inline bool dual_color(const NClusterData &data0, const NClusterData &data1, ClusterData &found_cluster) {
         unsigned best_score = 0;
 
         for (const ClusterData &d_0 : data0) {
@@ -58,7 +58,7 @@ namespace Algorithms {
                     int dy = static_cast<int>(d_0.avg_y) - static_cast<int>(d_1.avg_y);
                     int dsq = dx * dx + dy* dy;
 
-                    if (dsq < MAX_DISTANCE * MAX_DISTANCE) {
+                    if (dsq <= MAX_DISTANCE * MAX_DISTANCE) {
                         unsigned min_x = std::min(d_0.min_x, d_1.min_x);
                         unsigned min_y = std::min(d_0.min_y, d_1.min_y);
                         unsigned max_x = std::max(d_0.max_x, d_1.max_x);
@@ -70,11 +70,11 @@ namespace Algorithms {
                         if (WH_RANGE.first <= width && width <= WH_RANGE.second &&
                                 WH_RANGE.first <= height && height <= WH_RANGE.second) {
 
-                            unsigned score =
-                                  std::abs(intensity - EXPECTED_INTENSITY) * 2
-                                + std::abs(dsq - EXPECTED_DISTANCE) * 4
-                                + std::abs(width - EXPECTED_WH)
-                                + std::abs(height - EXPECTED_WH);
+                            unsigned score = MAX_DISTANCE * MAX_DISTANCE - dsq;
+                                //  std::abs(intensity - EXPECTED_INTENSITY) * 2
+                                //+ std::abs(dsq - EXPECTED_DISTANCE) * 4
+                                //+ std::abs(width - EXPECTED_WH)
+                                //+ std::abs(height - EXPECTED_WH);
 
                             if (score > best_score) {
                                 best_score = score;

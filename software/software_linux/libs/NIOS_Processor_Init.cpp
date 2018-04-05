@@ -95,23 +95,21 @@ void NIOS_Processor_Init::trypoll(Event_Loop *ev) {
         {
             unsigned count = 0;
             while (count++ < (m_sdram_span / 100)) {
-                if (100 - (400 * std::distance(m_sdram_pos, m_sdram_end) / m_sdram_span) >= m_cur_percent) {
-                    if (m_cur_percent == 100) {
-                        m_cur_percent = 0;
-                        m_state = RUN;
-                        if (m_printCB)
-                            m_printCB("Writing Program to the NIOS...");
-                    } else {
-                        if (m_progressCB)
-                            m_progressCB(m_cur_percent / 2);
+                if (m_sdram_pos == m_sdram_end) {
+                    m_cur_percent = 0;
+                    m_state = RUN;
+                    if (m_printCB)
+                        m_printCB("Writing Program to the NIOS...");
+                    return;
+                } else if ((500 * (m_sdram_pos - reinterpret_cast<uint32_t *>(m_sdram_base)) / m_sdram_span) >= m_cur_percent) {
+                    if (m_progressCB)
+                        m_progressCB(m_cur_percent / 2 * 5 / 3);
 
-                        m_cur_percent += 1;
-                    }
+                    m_cur_percent += 1;
                 }
 
-                *m_sdram_pos = 0;
+                (*m_sdram_pos) = 0;
                 m_sdram_pos++;
-                assert(m_sdram_pos < m_sdram_end);
             }
 
             break;
