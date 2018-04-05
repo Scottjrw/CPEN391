@@ -4,7 +4,7 @@ CPPFLAGS := -g -Wall -std=c++14 -O3 $(INCFLAGS) $(DEPFLAGS)
 
 #SRC_FILES := main.cpp
 #SRC_FILES := testRecognizer.cpp
-SRC_FILES := testmain.cpp
+SRC_FILES := test.cpp
 SRC_FILES += libs/bluetooth.cpp
 SRC_FILES += libs/NIOS_Processor.cpp
 SRC_FILES += libs/NIOS_Processor_Init.cpp
@@ -19,7 +19,7 @@ SRC_FILES += libs/wifi.cpp
 SRC_FILES += libs/UI/cursor.cpp
 SRC_FILES += libs/UI/screen.cpp
 SRC_FILES += libs/UI/UI.cpp
-SRC_FILES += libs/UI/LoginPanel.cpp
+#SRC_FILES += libs/UI/LoginPanel.cpp
 
 SRC_FILES += libs/GestureRecognition/GeometricRecognizer.cpp
 
@@ -37,6 +37,8 @@ run: prog
 $(OBJ_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)
 	g++ $(CPPFLAGS) $(CXXFLAGS) -c -o $@ $<
+
+obj-only: $(OBJ_FILES)
 
 dat:
 	$(MAKE) -C ../cpen391_group5 dat

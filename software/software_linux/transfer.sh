@@ -29,6 +29,8 @@ testAlphabetmain.cpp
 testRecognizer.cpp
 testnios.cpp
 logo.bmp
+test.cpp
+red_arrow_cursor.txt
 )
 
 tryaddresses() {

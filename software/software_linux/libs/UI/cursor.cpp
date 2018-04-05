@@ -4,25 +4,36 @@
 
 namespace UI {
 
-Cursor::Cursor(SimpleGraphics &graphics, cursor_bitmap bitmap):
+Cursor::Cursor(SimpleGraphics &graphics, rgba_t bitmap[size][size]):
 	Drawable(graphics),
     m_center(),
-    m_bitmap(bitmap)
-{}
+    m_bitmap()
+{
+    for (unsigned y = 0; y < size; y++) {
+        for (unsigned x = 0; x < size; x++) {
+            m_bitmap[x][y] = bitmap[y][x];
+        }
+    }
+}
+
 
 void Cursor::draw(){
-    for (int y = 0; y < m_saved.size(); y++) {
-        for (int x = 0; x < m_saved.size(); x++) {
-            m_saved[x][y] = m_graphics.read_pixel(m_center.x + x, m_center.y + y);
+    for (unsigned y = 0; y < size; y++) {
+        for (unsigned x = 0; x < size; x++) {
+            if ((m_bitmap[x][y] & 0xFF000000) == 0xFF000000) {
+                m_saved[x][y] = m_graphics.read_pixel(m_center.x + x, m_center.y + y);
+                m_graphics.draw_pixel(m_bitmap[x][y], m_center.x + x, m_center.y + y);
+            }
         }
 
     }
 }
 
 void Cursor::undraw(){
-    for (int y = 0; y < m_saved.size(); y++) {
-        for (int x = 0; x < m_saved.size(); x++) {
-            m_graphics.draw_pixel(m_saved[x][y], m_center.x + x, m_center.y + y);
+    for (unsigned y = 0; y < size; y++) {
+        for (unsigned x = 0; x < size; x++) {
+            if ((m_bitmap[x][y] & 0xFF000000) == 0xFF000000)
+                m_graphics.draw_pixel(m_saved[x][y], m_center.x + x, m_center.y + y);
         }
     }
 }

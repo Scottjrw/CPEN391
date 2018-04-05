@@ -19,6 +19,7 @@
 #include "TermiosUtil.hpp"
 #include "Animation.hpp"
 #include "bluetooth.hpp"
+#include "cursor.hpp"
 //#include "LoginPanel.hpp"
 
 using namespace UI;
@@ -42,6 +43,7 @@ enum Switch_Page_Commands
     to_Setting = 4,
     to_LoginPanel = 5
 };
+
 
  void showStartScreen(SimpleGraphics &sg, TouchControl &tc, NIOS_Processor &nios, Wand &wand) {
 
@@ -641,6 +643,24 @@ int main(void)
 
     // Bluetooth
     Wand wand("/dev/ttyAL3", B115K);
+
+    SimpleGraphics::rgba_t gesture_bitmap[Cursor::size][Cursor::size] =
+#include "red_arrow_cursor.txt"
+    ;
+
+    SimpleGraphics::rgba_t cursor_bitmap[Cursor::size][Cursor::size] =
+#include "black_arrow_cursor.txt"
+    ;
+
+    SimpleGraphics::rgba_t typing_bitmap[Cursor::size][Cursor::size] =
+#include "typing_cursor.txt"
+    ;
+
+    Cursor gesture_cursor(sg, gesture_bitmap);
+
+    Cursor cursor_cursor(sg, cursor_bitmap);
+
+    Cursor typing_cursor(sg, typing_bitmap);
 
     int scret = showHomePage(sg, nios, tc, wand, "", Font22x40, Font16x27);
     std::string username_input = "";

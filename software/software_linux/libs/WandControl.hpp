@@ -17,7 +17,7 @@ public:
     using GeometricRecognizer = DollarRecognizer::GeometricRecognizer;
     using RecognitionResult = DollarRecognizer::RecognitionResult;
 
-    WandControl(Wand &wand, NIOS_Processor &nios);
+    WandControl(GeometricRecognizer &geo, Wand &wand, NIOS_Processor &nios);
 
     ~WandControl();
 
@@ -35,7 +35,7 @@ protected:
     Wand::Modes m_mode;
 
 private:
-    GeometricRecognizer m_recognizer;
+    GeometricRecognizer &m_recognizer;
     Wand &m_wand;
     NIOS_Processor &m_nios;
     std::vector<PointD> m_points;

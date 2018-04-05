@@ -41,10 +41,10 @@ public:
 
     void remDrawable(Drawable *element);
 
-    void remTouchable(Touchable* *element);
+    void remTouchable(Touchable *element);
 
 	Screen(SimpleGraphics &graphics, TouchControl &touch, 
-            Wand &wand, NIOS_Processor &nios,
+            GeometricRecognizer &geo, Wand &wand, NIOS_Processor &nios,
             Cursor &gesture, Cursor &typing, Cursor &mouse);
 
     ~Screen();

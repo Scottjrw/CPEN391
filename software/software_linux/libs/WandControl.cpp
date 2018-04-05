@@ -2,9 +2,10 @@
 
 using namespace NIOS_HPS_Protocol;
 
-WandControl::WandControl(Wand &wand, NIOS_Processor &nios):
+WandControl::WandControl(GeometricRecognizer &geo, Wand &wand, NIOS_Processor &nios):
     Touchable(),
     m_mode(wand.getMode()),
+    m_recognizer(geo),
     m_wand(wand),
     m_nios(nios),
     m_points(),

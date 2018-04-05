@@ -6,11 +6,11 @@
 namespace UI {
 
 Screen::Screen(SimpleGraphics &graphics, TouchControl &touch, 
-        Wand &wand, NIOS_Processor &nios,
+        GeometricRecognizer &geo, Wand &wand, NIOS_Processor &nios,
         Cursor &gesture, Cursor &typing, Cursor &mouse):
     Event_Loop(),
 	Drawable(graphics),
-    WandControl(wand, nios),
+    WandControl(geo, wand, nios),
     m_touch(touch),
 	m_drawables(),
 	m_touchables(),
@@ -67,11 +67,11 @@ void Screen::addTouchable(Touchable* element) {
 }
 
 void Screen::remDrawable(Drawable *element) {
-    std::remove(m_drawables.begin(), m_drawables.end(), element);
+    std::remove<std::vector<Drawable*>::iterator, Drawable *>(m_drawables.begin(), m_drawables.end(), element);
 }
 
-void Screen::remTouchable(Touchable* *element) {
-    std::remove(m_touchables.begin(), m_touchables.end(), element);
+void Screen::remTouchable(Touchable *element) {
+    std::remove<std::vector<Touchable*>::iterator, Touchable *>(m_touchables.begin(), m_touchables.end(), element);
 }
 
 void Screen::updateCursor(Point p) {
