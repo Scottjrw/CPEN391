@@ -2,6 +2,7 @@
 #include <system_error>
 #include <unistd.h>
 #include <iostream>
+#include <memory>
 #include "video.hpp"
 #include "fifo_serial.hpp"
 #include "NIOS_Processor.hpp"
@@ -17,6 +18,7 @@
 #include "wifi.hpp"
 #include "TermiosUtil.hpp"
 #include "Animation.hpp"
+#include "bluetooth.hpp"
 //#include "LoginPanel.hpp"
 
 using namespace UI;
@@ -34,8 +36,9 @@ using namespace SimpleGraphicsFonts;
 enum Switch_Page_Commands
 {
     to_Home = 0,
-    to_GestureMap = 2,
-    to_NewGesture = 3,
+    to_Bluetooth = 1,
+    to_FacialLogin = 2,
+    to_UsernameLogin = 3,
     to_Setting = 4,
     to_LoginPanel = 5
 };
@@ -166,14 +169,14 @@ int showSetting(SimpleGraphics &sg, Wand &wand, NIOS_Processor &nios, FontType b
         contrast = temp_contrast;
         saturation = temp_saturation;
         video.imageSettings(brightness, contrast, 0, 0, saturation);
-        sc.stop(4);
+        sc.stop(to_Home);
     });
 
     // Exit Button
     Button exit(sg, {2*sg.width()/3+130, sg.height()-40}, {sg.width()-10, sg.height()-10}, "Exit", rgba(255, 255, 255, 255), rgba(204, 63, 63, 255), Font16x27);
     
     exit.onTouch([&sc](Point p) {
-        sc.stop(4);
+        sc.stop(to_Home);
     });
 
 
@@ -263,6 +266,108 @@ int showSetting(SimpleGraphics &sg, Wand &wand, NIOS_Processor &nios, FontType b
 //     return sc.run();
 // }
 
+int showBluetoothPage(SimpleGraphics &sg, Wand &wand, NIOS_Processor nios, TouchControl &tc){
+    WandControl wc(wand, nios);
+
+    Screen sc(sg, tc, wc);
+    
+    std::string selected_device_str = "";
+    
+    std::vector<std::pair<std::string, std::string>> available_devices;
+    std::vector<std::pair<std::unique_ptr<Button>,std::unique_ptr<Button>>> device_buttons;
+
+    Rectangle background_colour(sg, {0,0}, {640,480}, rgba(255, 255, 255, 255));
+    
+    // Page Label: Bluetooth Settings
+    Button title(sg, {10,10}, {400,40}, "Bluetooth Settings", rgba(0, 0, 0, 255), rgba(255, 255, 255, 255), Font22x40);
+    
+    // Button to find available bluetooth devices
+    Button findDevices(sg, {10, 60}, {sg.width()/2, 100}, "Find Available Devices", rgba(255, 255, 255, 255), rgba(58, 60, 193, 255), Font16x27);
+    
+    // Slide in animation
+    Animation<> fade_in(160, 180+20*available_devices.size(), 5);
+    
+    fade_in.cb([&sg, &sc, &fade_in] (int val, bool end) {
+        sg.draw_rect(rgba(0, 0, 0, 40), {10, 160}, {sg.width()-10, (unsigned)val});
+        
+        if (end) {
+            std::cout << "Slide In Done" << std::endl;
+        }
+    });
+    
+    findDevices.onTouch([&available_devices, &wand, &sg, &fade_in, &sc, &selected_device_str, &device_buttons](Point p) {
+        
+        
+        available_devices = wand.getAvailableDevices("7");
+        
+        fade_in.run(sc);
+        
+        // Available bluetooth devices
+        for (int i = 0; i < (int)available_devices.size(); i++) {
+            Button *b1 = new Button(sg, {10, 160+20*(unsigned)i}, {sg.width()/2, 180+20*(unsigned)i}, available_devices[i].first, rgba(0, 0, 0, 255), rgba(0, 0, 0, 40), Font10x14);
+
+            Button *b2 = new Button(sg, {sg.width()/2, 160+20*(unsigned)i}, {sg.width()-10, 180+20*(unsigned)i}, available_devices[i].second, rgba(0, 0, 0, 255), rgba(0, 0, 0, 40), Font10x14);
+
+            device_buttons.emplace_back(std::unique_ptr<Button>(b1), std::unique_ptr<Button>(b2));
+            
+            sc.addDrawable(device_buttons[i].second.get());
+            sc.addTouchable(device_buttons[i].second.get());
+            sc.addDrawable(device_buttons[i].first.get());
+            
+            device_buttons[i].first->draw();
+            device_buttons[i].second->draw();
+            
+            device_buttons[i].second->onTouch([&sg, &selected_device_str, &available_devices, &i, &sc](Point p) {
+                selected_device_str = available_devices[i].second;
+                Button *device = new Button(sg, {282,sg.height()-40}, {2*sg.width()/3,sg.height()-10}, selected_device_str, rgba(0, 0, 0, 255), rgba(255, 255, 255, 255), Font16x27);
+
+                device->draw();
+
+                sc.addDrawable(device);
+            });
+        }
+        
+    });
+    
+    // Table Headers
+    Button name(sg, {10,120}, {sg.width()/2,136}, "Name", rgba(0, 0, 0, 255), rgba(255, 255, 255, 255), Font16x27);
+    Button address(sg, {sg.width()/2,120}, {sg.width(),136}, "Address", rgba(0, 0, 0, 255), rgba(255, 255, 255, 255), Font16x27);
+    
+    // Label: Selected Device:
+    Button selectedDevice(sg, {10,sg.height()-40}, {282,sg.height()-10}, "Selected Device: ", rgba(0, 0, 0, 255), rgba(255, 255, 255, 255), Font16x27);
+    
+    // Connect Button
+    Button connect(sg, {2*sg.width()/3, sg.height()-40}, {2*sg.width()/3+120, sg.height()-10}, "Connect", rgba(255, 255, 255, 255), rgba(204, 63, 63, 255), Font16x27);
+    
+    connect.onTouch([&wand, &selected_device_str](Point p) {
+        wand.connectToAddress(selected_device_str);
+    });
+    
+    // Exit Button
+    Button exit(sg, {2*sg.width()/3+130, sg.height()-40}, {sg.width()-10, sg.height()-10}, "Exit", rgba(255, 255, 255, 255), rgba(204, 63, 63, 255), Font16x27);
+    
+    exit.onTouch([&sc](Point p) {
+        sc.stop(to_Home);
+    });
+
+
+    sc.addDrawable(&background_colour);
+    sc.addDrawable(&title);
+    sc.addDrawable(&name);
+    sc.addDrawable(&address);
+    sc.addDrawable(&selectedDevice);
+    sc.addTouchable(&findDevices);
+    sc.addDrawable(&findDevices);
+    sc.addTouchable(&connect);
+    sc.addDrawable(&connect);
+    sc.addTouchable(&exit);
+    sc.addDrawable(&exit);
+
+    sc.draw();
+    
+    return sc.run();
+}
+
 int showHomePage(SimpleGraphics &sg, NIOS_Processor &nios, TouchControl &tc, Wand &wand, std::string username, FontType menuFont, FontType buttonFont)
 {
 
@@ -275,23 +380,23 @@ int showHomePage(SimpleGraphics &sg, NIOS_Processor &nios, TouchControl &tc, Wan
     //addDropDownMenu(sg, sc, menuFont);
     DropdownMenu homeMenu(sg, {0, 60}, {240, 110}, rgba(0, 0, 0, 255), rgba(159, 159, 159, 255), menuFont);
     homeMenu.newItem(sg, "Home", [&sc](Point p) {
-                sc.stop(0);
+                sc.stop(to_Home);
     });
 
-    homeMenu.newItem(sg, "Gesture Map", [&sc](Point p) {
-                sc.stop(2);
+    homeMenu.newItem(sg, "Bluetooth", [&sc](Point p) {
+                sc.stop(to_Bluetooth);
     });
 
-    homeMenu.newItem(sg, "New Gesture", [&sc](Point p) {
-                sc.stop(3);
+    homeMenu.newItem(sg, "Facial login", [&sc](Point p) {
+                sc.stop(to_FacialLogin);
+    });
+
+    homeMenu.newItem(sg, "Username login", [&sc](Point p) {
+                sc.stop(to_UsernameLogin);
     });
 
     homeMenu.newItem(sg, "Settings", [&sc](Point p) {
-                sc.stop(4);
-    });
-
-    homeMenu.newItem(sg, "Log Out", [&sc](Point p) {
-                sc.stop(5);
+                sc.stop(to_Setting);
     });
 
     // NIOS_Processor_Init init(SDRAM_FILE, SDRAM_BASE, SDRAM_SPAN, 
@@ -344,7 +449,8 @@ int showHomePage(SimpleGraphics &sg, NIOS_Processor &nios, TouchControl &tc, Wan
     return sc.run();
 }
 
-int showLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios)
+int showLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios,
+                   std::string &username_input, std::string &password_input, std::string &password_display, bool &input_field_chosen)
 {
 
     WandControl wc(wand, nios);
@@ -354,46 +460,103 @@ int showLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand,
     Point p1(0,0);
     Point p2(640,480);
 
-    std::string username_input = "danielchau";
-    std::string password_input = "hello";
+    Point u_f_p1 = {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3};
+    Point u_f_p2 = {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT};
 
-    Button username_field(sg, 
-            {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3}, 
-            {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT}, 
-            "Username", rgb(90,90,90), rgb(198,198,198), Font10x14);
-    Button password_field(sg, 
-            {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT + 20}, 
-            {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + 2*BUTTON_HEIGHT + 20}, 
-            "Password", rgb(90,90,90), rgb(198,198,198), Font10x14);
+    Point p_f_p1 = {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT + 20};
+    Point p_f_p2 = {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + 2*BUTTON_HEIGHT + 20};
 
+    Button label(sg, {0,0}, {640,90},"Username login", rgba(0,0,0,255), rgba(255,255,255,255), Font22x40);
+
+    Button username_field(sg, u_f_p1, u_f_p2, "Username", rgb(90,90,90), rgb(198,198,198), Font10x14);
+    Button password_field(sg, p_f_p1, p_f_p2, "Password", rgb(90,90,90), rgb(198,198,198), Font10x14);
     Button login_button(sg, 
             {p2.x - (p2.x - p1.x - 2*BUTTON_WIDTH)/3 - BUTTON_WIDTH, p2.y - 3*BUTTON_HEIGHT/2}, 
             {p2.x - (p2.x - p1.x - 2*BUTTON_WIDTH)/3, p2.y - BUTTON_HEIGHT/2},
-            "Login", rgb(20,20,20), rgb(198,198,198), Font16x27);
+            "Login", rgb(20,20,20), rgb(230,0,0), Font16x27);
     Button facial_login_button(sg,
             {p1.x + (p2.x - p1.x - 2*BUTTON_WIDTH)/3, p2.y - 3*BUTTON_HEIGHT/2},
             {p1.x + (p2.x - p1.x - 2*BUTTON_WIDTH)/3 + BUTTON_WIDTH, p2.y - BUTTON_HEIGHT/2},
             "Facial Login", rgb(20,20,20), rgb(198,198,198), Font16x27);
+    Button username_update(sg, u_f_p1, u_f_p2, username_input, rgb(90,90,90), rgb(198,198,198), Font10x14);
+    Button password_update(sg, p_f_p1, p_f_p2, password_display, rgb(90,90,90), rgb(198,198,198), Font10x14);
 
-    //LoginPanel lp(sg, wifi, video, wc, p1, p2, Font16x27, Font10x14);
 
-    login_button.onTouch([&wifi, &username_input, &password_input, &sc](Point p){
+    //  update input fields with wand click
+    sc.onTouch([&password_update, &username_update, &sc, &input_field_chosen, &username_input, &password_input, &password_display, &u_f_p1, &u_f_p2, &p_f_p1, &p_f_p2, &sg](char c){
 
-        std::cout << "login by username" << std::endl;
+        // username field is chosen
+        if(!input_field_chosen){
+            username_input += c;
+            username_update.undraw();
+            username_update.draw();
+        }
+        // password field is chosen
+        else{
+            if(password_input.length()==0){
+                password_display += c;
+            }
+            else if(password_input.length()>0){
+                for(int i = 0; i < (int)password_input.length(); i++){
+                    password_display += "*";
+                }
+                password_display += c;
+            }
+            password_input += c;
+
+            password_update.undraw();
+            password_update.draw();
+            
+        }
+    });
+
+    login_button.onTouch([&sc, &wifi, &username_input, &password_input](Point p){
+
         wifi.SendUsername(username_input, password_input);
+
+        username_input = "";
+        password_input = "";
 
         if(wifi.ReadResponse()){
             std::cout << "login successfully" << std::endl;
-            sc.stop(0);
+            sc.stop(to_Home);
         }
         // else clear username and password input fields
     });
+
+    facial_login_button.onTouch([&sc, &username_input, &password_input](Point p){
+
+        username_input = "";
+        password_input = "";
+        sc.stop(to_FacialLogin);
+    });
+
+
+    sc.onTouch([&input_field_chosen, &u_f_p1, &u_f_p2, &p_f_p1, &p_f_p2](Point p){
+
+        if(p.x > u_f_p1.x && p.x < u_f_p2.x && p.y > u_f_p1.y && p.y < u_f_p2.y){
+            input_field_chosen = false; //  username field ready for input
+        }
+
+        else if(p.x > p_f_p1.x && p.x < p_f_p2.x && p.y > p_f_p1.y && p.y < p_f_p2.y){
+            input_field_chosen = true; //  username field ready for input
+        }
+    });
+
+
 
 
     sc.addDrawable(&login_button);
     sc.addDrawable(&facial_login_button);
     sc.addDrawable(&password_field);
     sc.addDrawable(&username_field);
+    sc.addDrawable(&label);
+
+    sc.addDrawable(&username_update);
+    sc.addTouchable(&username_update);
+    sc.addDrawable(&password_update);
+    sc.addTouchable(&password_update);
+
 
     sc.addTouchable(&login_button);
     sc.addTouchable(&facial_login_button);
@@ -414,14 +577,17 @@ int showFacialLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand 
     Point p1(0,0);
     Point p2(640,480);
 
+    Button label(sg, {0,0}, {640,90},"Facial login", rgba(0,0,0,255), rgba(255,255,255,255), Font22x40);
     Button picture_boarder(sg, {240-2,170-2}, {240+PICTURE_WIDTH+2, 170+PICTURE_HEIGHT+2},
             "", rgb(20,20,20), rgba(0,0,0,255), Font16x27);
     Button picture_field(sg, {240,170}, {240+PICTURE_WIDTH, 170+PICTURE_HEIGHT},
             "", rgb(20,20,20), rgba(198,198,198,0), Font16x27);
     Button login_button(sg, {420, 440 - BUTTON_HEIGHT}, {520, 440},
-            "Login", rgb(20,20,20), rgb(198,198,198), Font16x27);
+            "Login", rgb(20,20,20), rgb(230,0,0), Font16x27);
     Button Un_Pwd_login_button(sg, {120, 440 - BUTTON_HEIGHT},  {380, 440},
             "Username Login", rgb(20,20,20), rgb(198,198,198), Font16x27);
+    Button exit_button(sg, {540, 440 - BUTTON_HEIGHT}, {620, 440},
+            "Exit", rgb(20,20,20), rgb(230,0,0), Font16x27);
 
     
     login_button.onTouch([&sc, &wifi, &video](Point p){
@@ -431,20 +597,28 @@ int showFacialLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand 
 
         if(wifi.ReadResponse()){
             std::cout << "login successfully" << std::endl;
-            sc.stop(0);
+            sc.stop(to_Home);
         }
+        sc.stop(to_FacialLogin);
     });
 
     Un_Pwd_login_button.onTouch([&sc](Point p){
-        sc.stop(5);
+        sc.stop(to_UsernameLogin);
     });
 
+    exit_button.onTouch([&sc](Point p){
+        sc.stop(to_Home);
+    });
+
+    sc.addDrawable(&label);
     sc.addDrawable(&picture_boarder);
     sc.addDrawable(&picture_field);
     sc.addDrawable(&login_button);
     sc.addTouchable(&login_button);
     sc.addDrawable(&Un_Pwd_login_button);
     sc.addTouchable(&Un_Pwd_login_button);
+    sc.addDrawable(&exit_button);
+    sc.addTouchable(&exit_button);
     sc.draw();
 
     return sc.run();
@@ -477,30 +651,45 @@ int main(void)
     GeometricRecognizer gr;
     gr.loadSamples();
 
-    //int scret = showHomePage(sg, nios, tc, wand, "", Font22x40, Font16x27);
+    int scret = showHomePage(sg, nios, tc, wand, "", Font22x40, Font16x27);
+    std::string username_input = "";
+    std::string password_input = "";
+    std::string password_display = "";
+    bool input_field_chosen = false;
 
     while (1)
     {
-        // switch (scret){
-        //     case to_Home:
-        //     {
-        //         scret = showHomePage(sg, nios, tc, wand, "", Font22x40, Font16x27);
-        //         break;
-        //     }
-        //     case to_LoginPanel:
-        //     {
-        //         scret = showHomePage(sg, nios, tc, wand, "", Font22x40, Font16x27);
-        //         break;
-        //     }
-        //     case to_GestureMap:
-        //     {
-        //         scret = showHomePage(sg, nios, tc, wand, "", Font22x40, Font16x27);
-        //         break;
-        //     }
-        // }
+        switch (scret){
+            case to_Home:
+            {
+                scret = showHomePage(sg, nios, tc, wand, "", Font22x40, Font16x27);
+                break;
+            }
+            case to_Bluetooth:
+            {
+                scret = showBluetoothPage(sg, wand, nios, tc);
+                break;
+            }
+            case to_FacialLogin:
+            {
+                scret = showFacialLoginPanel(sg, tc, wifi, wand, gr, video, nios);
+                break;
+            }
+            case to_UsernameLogin:
+            {
+                scret = showLoginPanel(sg, tc, wifi, wand, gr, video, nios, username_input, password_input, password_display, input_field_chosen);
+                break;
+            }
+            case to_Setting:
+            {
+                scret = showSetting(sg, wand, nios, Font22x40, Font10x14, Font16x27, tc, video);
+                break;
+            }
+        }
         //showHomePage(sg, nios, tc, wand, "", Font22x40, Font16x27);
         //showSetting(sg, wand, nios, Font22x40, Font10x14, Font16x27, tc, video);
-        showLoginPanel(sg, tc, wifi, wand, gr, video, nios);
+        //showLoginPanel(sg, tc, wifi, wand, gr, video, nios);
+        //showBluetoothPage(sg, wand, nios, tc);
         //showFacialLoginPanel(sg, tc, wifi, wand, gr, video, nios);
     }
 

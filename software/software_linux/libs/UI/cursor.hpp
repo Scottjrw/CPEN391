@@ -19,13 +19,14 @@ namespace UI {
 
 class Cursor : public Drawable {
 public:
+    typedef std::array<std::array<SimpleGraphics::rgba_t, 50>, 50> cursor_bitmap;
 
     virtual void draw();
     virtual void undraw();
 
-    void draw_cursor(SimpleGraphics::rgba_t color, Point p, int radius);
+    void draw_cursor(Point p);
 
-    Cursor(SimpleGraphics &graphics, SimpleGraphics::rgba_t color, int radius);
+    Cursor(SimpleGraphics &graphics, cursor_bitmap bitmap);
 
     void update(Point center);
 
@@ -37,9 +38,9 @@ private:
     } ColourPoint;
 
     Point m_center;
-    SimpleGraphics::rgba_t m_color;
-    int m_radius;
     std::vector<ColourPoint> m_ColourPixels;
+    
+    cursor_bitmap m_bitmap;
 
 };
 
