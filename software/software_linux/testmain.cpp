@@ -104,11 +104,11 @@ enum Switch_Page_Commands
 //     return lp.run();
 // }
 
-int showSetting(SimpleGraphics &sg, Wand &wand, NIOS_Processor &nios, FontType buttonFont, FontType sliderFont, FontType menuFont, TouchControl &tc, Video &video)
+int showSetting(SimpleGraphics &sg, Wand &wand, NIOS_Processor &nios, FontType buttonFont, FontType sliderFont, FontType menuFont, TouchControl &tc, Video &video,
+     Cursor &gesture_cursor, Cursor &cursor_cursor, Cursor &typing_cursor)
 {   
-    WandControl wc(wand, nios);
 
-    Screen sc(sg, tc, wc);
+    Screen sc(sg, tc, gr, wand, nios, gesture_cursor, cursor_cursor, typing_cursor);
 
     int temp_brightness;
     int temp_contrast;
@@ -260,10 +260,10 @@ int showSetting(SimpleGraphics &sg, Wand &wand, NIOS_Processor &nios, FontType b
 //     return sc.run();
 // }
 
-int showBluetoothPage(SimpleGraphics &sg, Wand &wand, NIOS_Processor nios, TouchControl &tc){
-    WandControl wc(wand, nios);
+int showBluetoothPage(SimpleGraphics &sg, Wand &wand, NIOS_Processor nios, TouchControl &tc, 
+    Cursor &gesture_cursor, Cursor &cursor_cursor, Cursor &typing_cursor){
 
-    Screen sc(sg, tc, wc);
+    Screen sc(sg, tc, gr, wand, nios, gesture_cursor, cursor_cursor, typing_cursor);
     
     std::string selected_device_str = "";
     
@@ -362,12 +362,11 @@ int showBluetoothPage(SimpleGraphics &sg, Wand &wand, NIOS_Processor nios, Touch
     return sc.run();
 }
 
-int showHomePage(SimpleGraphics &sg, NIOS_Processor &nios, TouchControl &tc, Wand &wand, std::string username, FontType menuFont, FontType buttonFont)
+int showHomePage(SimpleGraphics &sg, NIOS_Processor &nios, TouchControl &tc, Wand &wand, std::string username, FontType menuFont, FontType buttonFont, 
+    Cursor &gesture_cursor, Cursor &cursor_cursor, Cursor &typing_cursor)
 {
 
-    WandControl wc(wand, nios);
-
-    Screen sc(sg, tc, wc);
+    Screen sc(sg, tc, gr, wand, nios, gesture_cursor, cursor_cursor, typing_cursor);
 
 
 
@@ -444,12 +443,13 @@ int showHomePage(SimpleGraphics &sg, NIOS_Processor &nios, TouchControl &tc, Wan
 }
 
 int showLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios,
-                   std::string &username_input, std::string &password_input, std::string &password_display, bool &input_field_chosen)
+                   std::string &username_input, std::string &password_input, std::string &password_display, bool &input_field_chosen, 
+                   Cursor &gesture_cursor, Cursor &cursor_cursor, Cursor &typing_cursor)
 {
 
-    WandControl wc(wand, nios);
+    //WandControl wc(wand, nios);
 
-    Screen sc(sg, tc, wc);
+    Screen sc(sg, tc, gr, wand, nios, gesture_cursor, cursor_cursor, typing_cursor);
 
     Point p1(0,0);
     Point p2(640,480);
@@ -475,9 +475,9 @@ int showLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand,
     Button username_update(sg, u_f_p1, u_f_p2, username_input, rgb(90,90,90), rgb(198,198,198), Font10x14);
     Button password_update(sg, p_f_p1, p_f_p2, password_display, rgb(90,90,90), rgb(198,198,198), Font10x14);
 
-
+    int i = 0;
     //  update input fields with wand click
-    sc.onTouch([&password_update, &username_update, &sc, &input_field_chosen, &username_input, &password_input, &password_display, &u_f_p1, &u_f_p2, &p_f_p1, &p_f_p2, &sg](char c){
+    sc.setTypingCB([&password_update, &username_update, &sc, &input_field_chosen, &username_input, &password_input, &password_display, &i](char c){
 
         // username field is chosen
         if(!input_field_chosen){
@@ -491,7 +491,8 @@ int showLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand,
                 password_display += c;
             }
             else if(password_input.length()>0){
-                for(int i = 0; i < (int)password_input.length(); i++){
+                password_display = "";
+                for(i = 0; i < (int)password_input.length(); i++){
                     password_display += "*";
                 }
                 password_display += c;
@@ -503,6 +504,29 @@ int showLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand,
             
         }
     });
+
+    sc.setGestureCB([&i, &password_update, &username_update, &input_field_chosen, &username_input, &password_input, &password_display](std::string gesture){
+
+        if(!input_field_chosen && username_input.length() > 0 && gesture == "Delete"){
+            username_input.pop_back();
+            username_update.undraw();
+            username_update.draw();
+        }
+
+        else if (input_field_chosen && password_input.length() > 0 && gesture == "Delete"){
+            password_input.pop_back();
+            password_display = "";
+
+            for(i=0; i < (int)password_input.length(); i++){
+
+                password_display += "*";
+            }
+
+            password_update.undraw();
+            password_update.draw();
+        }
+    });
+
 
     login_button.onTouch([&sc, &wifi, &username_input, &password_input](Point p){
 
@@ -516,6 +540,7 @@ int showLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand,
             sc.stop(to_Home);
         }
         // else clear username and password input fields
+        sc.stop(to_UsernameLogin);
     });
 
     facial_login_button.onTouch([&sc, &username_input, &password_input](Point p){
@@ -526,19 +551,19 @@ int showLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand,
     });
 
 
-    sc.onTouch([&input_field_chosen, &u_f_p1, &u_f_p2, &p_f_p1, &p_f_p2](Point p){
-
-        if(p.x > u_f_p1.x && p.x < u_f_p2.x && p.y > u_f_p1.y && p.y < u_f_p2.y){
-            input_field_chosen = false; //  username field ready for input
-        }
-
-        else if(p.x > p_f_p1.x && p.x < p_f_p2.x && p.y > p_f_p1.y && p.y < p_f_p2.y){
-            input_field_chosen = true; //  username field ready for input
-        }
+    username_field.onTouch([&input_field_chosen](Point p){
+        input_field_chosen = false;
+    });
+    password_field.onTouch([&input_field_chosen](Point p){
+        input_field_chosen = true;
     });
 
-
-
+    username_update.onTouch([&input_field_chosen](Point p){
+        input_field_chosen = false;
+    });
+    password_update.onTouch([&input_field_chosen](Point p){
+        input_field_chosen = true;
+    });
 
     sc.addDrawable(&login_button);
     sc.addDrawable(&facial_login_button);
@@ -562,11 +587,11 @@ int showLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand,
     return sc.run();
 }
 
-int showFacialLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios){
+int showFacialLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios, 
+    Cursor &gesture_cursor, Cursor &cursor_cursor, Cursor &typing_cursor){
 
-    WandControl wc(wand, nios);
 
-    Screen sc(sg, tc, wc);
+    Screen sc(sg, tc, gr, wand, nios, gesture_cursor, cursor_cursor, typing_cursor);
 
     Point p1(0,0);
     Point p2(640,480);
@@ -673,27 +698,29 @@ int main(void)
         switch (scret){
             case to_Home:
             {
-                scret = showHomePage(sg, nios, tc, wand, "", Font22x40, Font16x27);
+                scret = showHomePage(sg, nios, tc, wand, "", Font22x40, Font16x27, gesture_cursor, cursor_cursor, typing_cursor);
                 break;
             }
             case to_Bluetooth:
             {
-                scret = showBluetoothPage(sg, wand, nios, tc);
+                scret = showBluetoothPage(sg, wand, nios, tc, gesture_cursor, cursor_cursor, typing_cursor);
                 break;
             }
             case to_FacialLogin:
             {
-                scret = showFacialLoginPanel(sg, tc, wifi, wand, gr, video, nios);
+                scret = showFacialLoginPanel(sg, tc, wifi, wand, gr, video, nios, gesture_cursor, cursor_cursor, typing_cursor);
                 break;
             }
             case to_UsernameLogin:
             {
-                scret = showLoginPanel(sg, tc, wifi, wand, gr, video, nios, username_input, password_input, password_display, input_field_chosen);
+                scret = showLoginPanel(sg, tc, wifi, wand, gr, video, nios, username_input, password_input, password_display, 
+                    input_field_chosen, gesture_cursor, cursor_cursor, typing_cursor);
                 break;
             }
             case to_Setting:
             {
-                scret = showSetting(sg, wand, nios, Font22x40, Font10x14, Font16x27, tc, video);
+                scret = showSetting(sg, wand, nios, Font22x40, Font10x14, Font16x27, tc, video, 
+                    gesture_cursor, cursor_cursor, typing_cursor);
                 break;
             }
         }
