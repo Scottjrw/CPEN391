@@ -40,10 +40,10 @@ namespace Algorithms {
     constexpr int MAX_DISTANCE = 60;
 
     constexpr int EXPECTED_INTENSITY = 50;
-    constexpr std::pair<unsigned, unsigned> INTENSITY_RANGE = {50, 200};
+    constexpr std::pair<int, int> INTENSITY_RANGE = {50, 200};
 
     constexpr int EXPECTED_WH = 50;
-    constexpr std::pair<unsigned, unsigned> WH_RANGE = {25, 75};
+    constexpr std::pair<int, int> WH_RANGE = {25, 75};
 
     constexpr unsigned MIN_SCORE = 10;
 

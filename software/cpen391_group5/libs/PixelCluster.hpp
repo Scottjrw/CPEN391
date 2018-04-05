@@ -32,7 +32,7 @@ public:
             max_x(d.max_x * r.num / r.den), max_y(d.max_y * r.num / r.den) {}
 
         template <std::intmax_t N, std::intmax_t D>
-        constexpr void scale(std::ratio<N, D> r) {
+        void scale(std::ratio<N, D> r) {
             avg_x = avg_x * r.num / r.den;
             avg_y = avg_y * r.num / r.den;
             min_x = min_x * r.num / r.den;
@@ -152,5 +152,23 @@ private:
         return Registers_Per_Cluster*cluster + Clusters_Start + 3;
     }
 };
+
+// Print overloads for clusters
+inline std::ostream& operator<<(std::ostream& os, const PixelCluster::ClusterData& c)  {  
+    os << "Cluster:\n"
+        << "AVG: " << c.avg_x << ',' << c.avg_y << '\n'
+        << "MIN: " << c.min_x << ',' << c.min_y << '\n'
+        << "MAX: " << c.max_x << ',' << c.max_y << '\n';
+    return os;  
+}  
+
+inline std::ostream& operator<<(std::ostream& os, const PixelCluster::NClusterData& c)  {  
+    os << "Begin Cluster Array\n";
+    for (unsigned i = 0; i < c.size(); i++) {
+        os << i << ':' << c[i];
+    }
+    os << "\nEnd Cluster Array\n";
+    return os;  
+}  
 
 #endif

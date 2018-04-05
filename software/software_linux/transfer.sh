@@ -27,6 +27,8 @@ arm_system.h
 nios.dat
 testAlphabetmain.cpp
 testRecognizer.cpp
+testnios.cpp
+logo.bmp
 )
 
 tryaddresses() {
@@ -45,7 +47,9 @@ tryaddresses() {
 }
 
 fixtime() {
-    ssh -t "$DE1USER@$DE1ADDR" sudo date +%Y%m%d -s "$(date +%Y%m%d)" '&&' sudo date +%T -s "$(date +%T)"
+    if ssh "$DE1USER@$DE1ADDR" test '$('date +%Y')' != 2018 ; then
+        ssh -t "$DE1USER@$DE1ADDR" sudo date +%Y%m%d -s "$(date +%Y%m%d)" '&&' sudo date +%T -s "$(date +%T)"
+    fi
 }
 
 if tryaddresses; then

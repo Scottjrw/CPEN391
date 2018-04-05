@@ -46,7 +46,7 @@ int main(int argc, const char * argv[]) {
 
     pixel_cluster_1.reset();
     pixel_cluster_1.compare0_enable(true, true, true);
-    pixel_cluster_1.compare0_value(60, 150, 60);
+    pixel_cluster_1.compare0_value(80, 100, 80);
     pixel_cluster_1.compare0_less_than(true, false, true);
     pixel_cluster_1.compare1_enable(false, false, false);
     pixel_cluster_1.range(50);
@@ -64,15 +64,6 @@ int main(int argc, const char * argv[]) {
             });
 
 
-    hps_serial.clear();
-    hps.hello();
-    hpsout << "Hello from NIOS!" << std::endl;
-
-    pixel_cluster_0.startIRQ();
-    pixel_cluster_1.startIRQ();
-    pixel_cluster_0.reset();
-    pixel_cluster_1.reset();
-
     Event_Loop ev;
 
     ClusterData found_cluster;
@@ -85,6 +76,7 @@ int main(int argc, const char * argv[]) {
         } else if (!done_1) {
             done_1 = pixel_cluster_1.is_done();
         } else {
+            //hpsout << data_0 << data_1;
             if (send_points && Algorithms::dual_color(data_0, data_1, found_cluster)) {
                 found_cluster.scale(Cluster_Scale);
                 hps.dot_location(found_cluster);
@@ -99,6 +91,15 @@ int main(int argc, const char * argv[]) {
         }
     });
     ev.add(&hps, &Hard_Processor_System::trypoll);
+
+    hps_serial.clear();
+    hps.hello();
+    hpsout << "Hello from NIOS!" << std::endl;
+    pixel_cluster_0.startIRQ();
+    pixel_cluster_1.startIRQ();
+    pixel_cluster_0.reset();
+    pixel_cluster_1.reset();
+    hpsout << "Hello2 from NIOS!" << std::endl;
 
     ev.run();
 

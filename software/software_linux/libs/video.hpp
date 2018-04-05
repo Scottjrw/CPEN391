@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string>
 #include <sstream>
+#include "SimpleGraphics.hpp"
 
 
 // Used to be a C library, give it a namespace for cleanliness
@@ -23,9 +24,15 @@ public:
     bool colorControl(int mode);
     bool mirror_mode_on(void);
 
+    // Read a pixel from the video frame buffer
+    SimpleGraphics::rgba_t getPixel(unsigned x, unsigned y) {
+        assert(0 <= x && x < width && 0 <= y && y < height);
+        return *((volatile uint32_t *) (base + (y * width + x)));
+    }
+
     std::string takeRawPicture(int startX, int startY);
 
-    Video(const char* file);
+    Video(const char* file, uintptr_t frame_base, unsigned frame_span);
 private:
     int  serialNum;
 	int  camerabuff[VIDEO_CAMERABUFFSIZ+1];

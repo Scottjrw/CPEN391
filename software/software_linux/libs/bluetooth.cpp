@@ -106,7 +106,6 @@ std::vector<std::vector<std::string>> Wand::getAvailableDevices(std::string time
 }
 
 Wand::Wand(const char name[], Baudrate rate) {
-    std::cout << "connecting" << std::endl;
     bluetooth_uart = open(name, O_RDWR | O_APPEND | O_NONBLOCK);
     
     assert(bluetooth_uart >= 0);

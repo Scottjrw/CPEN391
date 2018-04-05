@@ -57,7 +57,7 @@ private:
     void *m_reset_base;
 
     static constexpr unsigned PRINT_BUF_MAX = 4 * NIOS_HPS_Protocol::NIOS_Print_Data::max_length;
-    static constexpr const char *NIOS_PRINT_HEADER = "[NIOS]: ";
+    static constexpr const char *NIOS_PRINT_HEADER = "";
     static constexpr unsigned SDRAM_WIDTH = 2;
 
     const NIOS_HPS_Protocol::message *wait_for_msg(NIOS_HPS_Protocol::Application app,

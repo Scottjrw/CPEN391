@@ -38,13 +38,12 @@ private:
         bool dead;
 
         _Callable(std::function<void(Event_Loop *)> callable):
-            callable(callable), running(true) {}
+            callable(callable), running(true), dead(false) {}
     };
 public:
 
     Event_Loop() :
-        m_run(false), m_is_timer(false), m_ret(0), 
-        m_callables(), m_cur(m_callables.begin()) {}
+        m_run(false),  m_ret(0), m_callables() {}
 
 
     typedef std::function<void(Event_Loop *)> Callable;
@@ -121,114 +120,86 @@ public:
     int run() {
         assert(!m_run);
         m_run = true;
-        m_is_timer = false;
+
         unsigned count = 0;
 
         while (m_run) {
-            runOnce();
-            
+            for (auto cur = m_callables.begin(); cur != m_callables.end(); cur++) {
+                if (m_run && cur->running)
+                    cur->callable(this);
+                if (cur->dead)
+                    cur = m_callables.erase(cur);
+
+                checktimers();
+
+            }
+
+            checktimers();
+
             if (count++ >= 256) {
-                cleanup();
+                m_callables.remove_if([] (const _Callable &i) -> bool {
+                    return i.dead;
+                });
+
+                count = 0;
             }
         }
 
         return m_ret;
     }
 
-    /* Inside a trypoll this can be called to run the loop once. This is useful
-     * if implementing a polling wait without blocking loop execution.
-     *
-     * The event loop may be stopped during a call to cont. The return value of this
-     * call is whether or not the loop is still running. Most of the time this can
-     * be ignored.
-     *
-     * This should only be called inside a event loop
-     */
-    inline bool cont() {
-        assert(m_run);
-        auto cur = m_cur;
-        bool cur_is_timer = m_is_timer;
+    // Sleep and cont are removed due to issues
+    //inline bool cont() {
+    //    assert(m_run);
+    //    auto cur = m_cur;
+    //    bool cur_is_timer = m_is_timer;
 
-        if (!cur_is_timer) {
-            cur->running = false;
-        }
-        m_is_timer = false;
+    //    if (!cur_is_timer) {
+    //        cur->running = false;
+    //    }
+    //    m_is_timer = false;
 
-        runOnce();
+    //    runOnce();
 
-        if (!cur_is_timer && !cur->dead)
-            cur->running = true;
+    //    if (!cur_is_timer && !cur->dead)
+    //        cur->running = true;
 
-        m_cur = cur;
+    //    m_cur = cur;
 
-        return m_run;
-    }
+    //    return m_run;
+    //}
 
 #ifdef EV_ARM
-    /* A sleep which runs the event loop for period time
-     * This allows a function to block itself for awhile without
-     * blocking event loop execution.
-     *
-     * Like cont(), this should only be called while running the
-     * event loop
-     * 
-     */
-    template <class Rep, class Period> 
-    bool sleep(std::chrono::duration<Rep, Period> period) {
-        assert(m_run);
-        auto end_time = std::chrono::high_resolution_clock::now() + period;
+    //template <class Rep, class Period> 
+    //bool sleep(std::chrono::duration<Rep, Period> period) {
+    //    assert(m_run);
+    //    auto end_time = std::chrono::high_resolution_clock::now() + period;
 
-        while (end_time > std::chrono::high_resolution_clock::now() && cont());
+    //    while (end_time > std::chrono::high_resolution_clock::now() && cont());
 
-        return m_run;
-    }
+    //    return m_run;
+    //}
 #endif // EV_ARM
 
     void stop(int ret) {
         assert(m_run);
         m_run = false;
         m_ret = ret;
-        m_cur = m_callables.end();
     }
 
 
 private:
     bool m_run;
-    bool m_is_timer;
     int m_ret;
-
-    inline void runOnce() {
-        for (m_cur = m_callables.begin(); m_cur != m_callables.end(); m_cur++) {
-            if (m_cur->running)
-                m_cur->callable(this);
-
-            checktimers();
-        }
-
-        checktimers();
-    }
-
-    inline void cleanup() {
-        auto cur = m_callables.begin();
-
-        while (cur != m_callables.end()) {
-            if (cur->dead)
-                cur = m_callables.erase(cur);
-            else
-                cur++;
-        }
-    }
 
     inline void checktimers() {
 #ifdef EV_ARM
         if (m_run && !m_timers.empty()) {
             if (m_timers.top().end <= std::chrono::high_resolution_clock::now()) {
-                Timer t = m_timers.top();
-                m_timers.pop();
-                m_is_timer = true;
+                const Timer &t = m_timers.top();
                 if (t.cb(this))
                     m_timers.emplace(t.cb, t.period, t.end);
-                m_is_timer = false;
+                m_timers.pop();
             }
         }
 #endif // EV_ARM
@@ -273,7 +244,6 @@ private:
 #endif // EV_ARM
 
     std::list<_Callable> m_callables;
-    std::list<_Callable>::iterator m_cur;
 
 };
 

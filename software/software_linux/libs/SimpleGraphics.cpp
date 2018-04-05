@@ -75,6 +75,36 @@ void SimpleGraphics::draw_string(rgba_t color, unsigned x, unsigned y, std::stri
     }
 }
 
+void SimpleGraphics::draw_string_bg(rgba_t color, unsigned x, unsigned y, int str_len, FontType f) {
+    unsigned start_x = x;
+    unsigned end_x = x + f * str_len + 1;
+    unsigned start_y = y;
+    unsigned end_y;
+
+    switch (f) {
+        case Font5x7:
+            end_y = y + 7;
+            break;
+        case Font10x14:
+            end_y = y + 14;
+            break;
+        case Font16x27:
+            end_y = y + 27;
+            break;
+        case Font22x40:
+            end_y = y + 40;
+            break;
+        case Font38x59:
+            end_y = y + 59;
+            break;
+        default:
+            assert(0);
+
+    }
+
+    draw_rect(color, start_x, start_y, end_x, end_y);
+}
+
 void SimpleGraphics::draw_string_centered(rgba_t color, unsigned x, unsigned y, std::string str, FontType f){
     unsigned start_x = x - f * str.length()/2;
     unsigned start_y;
@@ -103,28 +133,32 @@ void SimpleGraphics::draw_string_centered(rgba_t color, unsigned x, unsigned y, 
     draw_string(color, start_x, start_y, str, f);
 }
 
-void SimpleGraphics::draw_string_bg_centered(rgba_t color, unsigned x, unsigned y, std::string str, FontType f) {
-    unsigned start_x = x - f * str.length()/2 - 1;
-    unsigned end_x = x - f * str.length()/2 + 1;
-    unsigned start_y = y;
+void SimpleGraphics::draw_string_bg_centered(rgba_t color, unsigned x, unsigned y, int str_len, FontType f) {
+    unsigned start_x = x - f * str_len/2 - 1;
+    unsigned end_x = x + f * str_len/2 + 1;
+    unsigned start_y;
     unsigned end_y;
 
     switch (f) {
         case Font5x7:
-            end_y = y + 7;
+            start_y = y - 4;
+            end_y = y + 4;
             break;
         case Font10x14:
-            end_y = y + 14;
+            start_y = y - 7;
+            end_y = y + 7;
             break;
         case Font16x27:
-            end_y = y + 27;
+            start_y = y - 14;
+            end_y = y + 14;
             break;
         case Font22x40:
-            end_y = y + 40;
+            start_y = y - 20;
+            end_y = y + 20;
             break;
-
         case Font38x59:
-            end_y = y + 59;
+            start_y = y - 30;
+            end_y = y + 30;
             break;
         default:
             assert(0);
@@ -142,8 +176,8 @@ void SimpleGraphics::fill(rgba_t color) {
     draw_rect(color, 0, 0, m_width, m_height);
 }
 
-void SimpleGraphics::draw_logo(char * filename, unsigned x, unsigned y){
-    FILE* f = fopen(filename, "rb");
+void SimpleGraphics::draw_logo(std::string filename, unsigned x, unsigned y){
+    FILE* f = fopen(filename.c_str(), "rb");
     unsigned char info[54];
     int status = fread(info, sizeof(unsigned char), 54, f); // read the 54-byte header
     if(status < 0)
@@ -181,6 +215,8 @@ void SimpleGraphics::draw_logo(char * filename, unsigned x, unsigned y){
         draw_rect(rgba(255,255,255,255),x,y,x+30,y+height);
         draw_rect(rgba(255,255,255,255),x+30,y,x+60,y+32);
     }
+
+    delete [] data;
 }
 
 #ifdef HW_GRAPHICS

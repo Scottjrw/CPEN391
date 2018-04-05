@@ -9,7 +9,8 @@
 
 static constexpr unsigned SDRAM_WIDTH = 2;
 
-static void sdram_write(void *sdram_base, uint32_t addr, uint16_t data) {
+// Note that addr is a SDRAM_WIDTH addr, so +1 is actually +2 bytes
+static inline void sdram_write(void *sdram_base, uint32_t addr, uint16_t data) {
     uintptr_t byte_addr = reinterpret_cast<uintptr_t>(sdram_base) + addr * SDRAM_WIDTH;
 
     volatile uint8_t *pos = reinterpret_cast<uint8_t *>(byte_addr);
@@ -70,7 +71,6 @@ NIOS_Processor_Init::~NIOS_Processor_Init() {
 void NIOS_Processor_Init::run(Event_Loop &ev) {
     m_state = RESET1;
     m_ref = ev.add(this, &NIOS_Processor_Init::trypoll);
-
 }
 
 void NIOS_Processor_Init::trypoll(Event_Loop *ev) {
@@ -81,8 +81,10 @@ void NIOS_Processor_Init::trypoll(Event_Loop *ev) {
 
             nios_reset(m_reset_base, true);
 
-            ev->sleep(std::chrono::milliseconds(100));
-            m_cur_addr = 0;
+            usleep(25000);
+            m_sdram_pos = reinterpret_cast<uint32_t *>(m_sdram_base);
+            m_sdram_end = reinterpret_cast<uint32_t *>(reinterpret_cast<uintptr_t>(m_sdram_base) + m_sdram_span);
+            std::cout << std::hex << "Begin addr: " << (unsigned long) m_sdram_pos << "\nEnd addr: " << m_sdram_end << std::endl << std::dec;
             m_cur_percent = 0;
             m_state = CLEAR;
             if (m_printCB)
@@ -90,23 +92,30 @@ void NIOS_Processor_Init::trypoll(Event_Loop *ev) {
             break;
 
         case CLEAR:
-            sdram_write(m_sdram_base, m_cur_addr, 0);
-            m_cur_addr += SDRAM_WIDTH;
+        {
+            unsigned count = 0;
+            while (count++ < (m_sdram_span / 100)) {
+                if (100 - (400 * std::distance(m_sdram_pos, m_sdram_end) / m_sdram_span) >= m_cur_percent) {
+                    if (m_cur_percent == 100) {
+                        m_cur_percent = 0;
+                        m_state = RUN;
+                        if (m_printCB)
+                            m_printCB("Writing Program to the NIOS...");
+                    } else {
+                        if (m_progressCB)
+                            m_progressCB(m_cur_percent / 2);
 
-            if (100*m_cur_addr / m_sdram_span >= m_cur_percent) {
-                if (m_progressCB)
-                    m_progressCB(m_cur_percent / 2);
+                        m_cur_percent += 1;
+                    }
+                }
 
-                m_cur_percent += 1;
+                *m_sdram_pos = 0;
+                m_sdram_pos++;
+                assert(m_sdram_pos < m_sdram_end);
             }
 
-            if (m_cur_addr >= m_sdram_span) {
-                m_cur_percent = 0;
-                m_state = RUN;
-                if (m_printCB)
-                    m_printCB("Writing Program to the NIOS...");
-            }
             break;
+        }
         case RUN:
             if (m_datfile && m_datfile.peek() != -1) {
                 assert(m_datfile.peek() == '@');
@@ -137,11 +146,12 @@ void NIOS_Processor_Init::trypoll(Event_Loop *ev) {
         case WAIT:
             if (m_printCB)
                 m_printCB("Release Reset on NIOS");
-            ev->sleep(std::chrono::milliseconds(100));
+            usleep(25000);
             m_state = RESET2;
             break;
 
         case RESET2:
+            usleep(25000);
             nios_reset(m_reset_base, false);
 
             m_state = DONE;

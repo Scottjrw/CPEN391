@@ -72,6 +72,16 @@ public:
 
     void draw_string(rgba_t color, unsigned x, unsigned y, std::string str, FontType f);
 
+    void draw_string_bg(rgba_t color, Point center, std::string str, FontType f) {
+        draw_string_bg(color, center.x, center.y, str, f);
+    }
+
+    void draw_string_bg(rgba_t color, unsigned x, unsigned y, std::string str, FontType f) {
+        draw_string_bg(color, x, y, str.length(), f);
+    }
+
+    void draw_string_bg(rgba_t color, unsigned x, unsigned y, int str_len, FontType f);
+
     void draw_string_centered(rgba_t color, Point center, std::string str, FontType f) {
         draw_string_centered(color, center.x, center.y, str, f);
     }
@@ -82,13 +92,17 @@ public:
         draw_string_bg_centered(color, center.x, center.y, str, f);
     }
 
-    void draw_string_bg_centered(rgba_t color, unsigned x, unsigned y, std::string str, FontType f);
+    void draw_string_bg_centered(rgba_t color, unsigned x, unsigned y, std::string str, FontType f) {
+        draw_string_bg_centered(color, x, y, str.length(), f);
+    }
+
+    void draw_string_bg_centered(rgba_t color, unsigned x, unsigned y, int str_len, FontType f);
 
     void clear();
 
     void fill(rgba_t color);
 
-    void draw_logo(char * filename, unsigned x, unsigned y);
+    void draw_logo(std::string filename, unsigned x, unsigned y);
 
     void startIRQ();
 
@@ -176,6 +190,10 @@ constexpr SimpleGraphics::rgba_t rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a
             | (r << 2*pixel_bits/4) 
             | (g << 1*pixel_bits/4) 
             | (b << 0*pixel_bits/4));
+}
+
+constexpr std::tuple<uint8_t, uint8_t, uint8_t> rgbReverse(SimpleGraphics::rgba_t color) {
+    return std::make_tuple((color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF);
 }
 
 constexpr SimpleGraphics::rgba_t rgb(uint8_t r, uint8_t g, uint8_t b) {

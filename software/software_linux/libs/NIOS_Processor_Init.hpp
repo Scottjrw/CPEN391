@@ -53,7 +53,8 @@ private:
     size_t m_datfile_size;
     unsigned m_cur_percent;
     Event_Loop::CallableRef m_ref;
-    long m_cur_addr;
+    volatile uint32_t *m_sdram_pos;
+    volatile uint32_t *m_sdram_end;
     
     enum State {
         RESET1,

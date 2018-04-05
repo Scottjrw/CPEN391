@@ -15,7 +15,7 @@
 #include <iomanip>
 
 
-Video::Video(const char* file) {
+Video::Video(const char* file, uintptr_t frame_base, unsigned frame_span) {
 	video_uart = open(file, O_RDWR);
 	serialNum = 0x00;
 	frameptr  = 0;
@@ -27,21 +27,15 @@ Video::Video(const char* file) {
 
 	TermiosUtil::SetSpeed(video_uart, B38K);//set baudrate
 
-	const uint32_t hpsfpga_bridge = 0xC0000000;
-    //const uint32_t lw_bridge = 0xFF200000;
-    const uint32_t base_addr = hpsfpga_bridge;
-	unsigned size = 320 * 240 * 4;
-
     int fd = open("/dev/mem", (O_RDWR | O_SYNC));
     if (fd == -1) {
-        throw std::system_error(errno, std::system_category(), "fail to mmap video");
+        throw std::system_error(errno, std::system_category(), "fail to open memory");
     }
 
-    base = reinterpret_cast<uint32_t *> (mmap(NULL, size, (PROT_READ|PROT_WRITE), MAP_SHARED, fd, base_addr));
+    base = reinterpret_cast<uint32_t *> (mmap(NULL, frame_span, (PROT_READ|PROT_WRITE), MAP_SHARED, fd, frame_base));
     if (base == MAP_FAILED) {
-        throw "fail to mmap video";
+        throw std::system_error(errno, std::system_category(), "fail to mmap video");
     }
-    printf("camera memory initialized\n");
 }
 
 bool Video::imageSettings(int brightness, int contrast, int off_contrast, int hue, int saturation) {
@@ -125,21 +119,7 @@ void Video::sendCommand(int cmd, int args[], int command_length) {
 }
 
 int Video::readResponse(int numbytes) {
-	bufferLen = 0;
-	int i;
-	FILE * f = fdopen(video_uart, "r+");
-
-	for(i = 0; i < numbytes; i++) {
-		camerabuff[bufferLen++] = fgetc(f);
-	}
-
-	//  	for (i = 0; i < 5; i++) {
-	//  		printf("%i ", camerabuff[i]);
-	//  	}
-	//  	printf("\n");
-
-	fclose(f);
-	return bufferLen;
+	return read(video_uart, camerabuff, numbytes);
 }
 
 bool Video::verifyResponse(int command) {
