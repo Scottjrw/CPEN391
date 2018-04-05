@@ -19,7 +19,7 @@ namespace UI {
 
 class Cursor : public Drawable {
 public:
-    static constexpr unsigned size = 50;
+    static constexpr unsigned size = 32;
     typedef std::array<std::array<SimpleGraphics::rgba_t, size>, size> cursor_bitmap;
     using rgba_t = SimpleGraphics::rgba_t;
 
