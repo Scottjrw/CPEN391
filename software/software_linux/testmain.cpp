@@ -23,6 +23,14 @@ using namespace UI;
 using namespace DollarRecognizer;
 using namespace SimpleGraphicsFonts;
 
+#define BUTTON_HEIGHT 50
+#define BUTTON_WIDTH 200
+#define STATUS_DEFAULT 5
+#define PICTURE_HEIGHT 120
+#define PICTURE_WIDTH 160
+#define INPUT_FIELD_WIDTH 300
+#define INPUT_FIELD_HEIGHT 40
+
 enum Switch_Page_Commands
 {
     to_Home = 0,
@@ -93,7 +101,8 @@ enum Switch_Page_Commands
 //     WandControl wc(wand, nios);
 
 //     // lp is a subclass of screen
-//     LoginPanel lp(sg, wifi, video, wc, {0, 0}, {640, 480}, Font16x27, Font10x14);
+//     LoginPanel lp(sg, wifi, video, wc, {0, 0}, {640, 480},rgba(0,0,0,255),rgba(102,102,102,255),
+//         rgba(226,226,226,255),rgba(156,156,156,255), Font16x27, Font10x14);
 
 //     return lp.run();
 // }
@@ -335,6 +344,112 @@ int showHomePage(SimpleGraphics &sg, NIOS_Processor &nios, TouchControl &tc, Wan
     return sc.run();
 }
 
+int showLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios)
+{
+
+    WandControl wc(wand, nios);
+
+    Screen sc(sg, tc, wc);
+
+    Point p1(0,0);
+    Point p2(640,480);
+
+    std::string username_input = "danielchau";
+    std::string password_input = "hello";
+
+    Button username_field(sg, 
+            {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3}, 
+            {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT}, 
+            "Username", rgb(90,90,90), rgb(198,198,198), Font10x14);
+    Button password_field(sg, 
+            {p1.x + (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + BUTTON_HEIGHT + 20}, 
+            {p2.x - (p2.x - p1.x - INPUT_FIELD_WIDTH)/2, p1.y + (p2.y - p1.y)/3 + 2*BUTTON_HEIGHT + 20}, 
+            "Password", rgb(90,90,90), rgb(198,198,198), Font10x14);
+
+    Button login_button(sg, 
+            {p2.x - (p2.x - p1.x - 2*BUTTON_WIDTH)/3 - BUTTON_WIDTH, p2.y - 3*BUTTON_HEIGHT/2}, 
+            {p2.x - (p2.x - p1.x - 2*BUTTON_WIDTH)/3, p2.y - BUTTON_HEIGHT/2},
+            "Login", rgb(20,20,20), rgb(198,198,198), Font16x27);
+    Button facial_login_button(sg,
+            {p1.x + (p2.x - p1.x - 2*BUTTON_WIDTH)/3, p2.y - 3*BUTTON_HEIGHT/2},
+            {p1.x + (p2.x - p1.x - 2*BUTTON_WIDTH)/3 + BUTTON_WIDTH, p2.y - BUTTON_HEIGHT/2},
+            "Facial Login", rgb(20,20,20), rgb(198,198,198), Font16x27);
+
+    //LoginPanel lp(sg, wifi, video, wc, p1, p2, Font16x27, Font10x14);
+
+    login_button.onTouch([&wifi, &username_input, &password_input, &sc](Point p){
+
+        std::cout << "login by username" << std::endl;
+        wifi.SendUsername(username_input, password_input);
+
+        if(wifi.ReadResponse()){
+            std::cout << "login successfully" << std::endl;
+            sc.stop(0);
+        }
+        // else clear username and password input fields
+    });
+
+
+    sc.addDrawable(&login_button);
+    sc.addDrawable(&facial_login_button);
+    sc.addDrawable(&password_field);
+    sc.addDrawable(&username_field);
+
+    sc.addTouchable(&login_button);
+    sc.addTouchable(&facial_login_button);
+    sc.addTouchable(&password_field);
+    sc.addTouchable(&username_field);
+
+    sc.draw();
+
+    return sc.run();
+}
+
+int showFacialLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand &wand, GeometricRecognizer &gr, Video &video, NIOS_Processor &nios){
+
+    WandControl wc(wand, nios);
+
+    Screen sc(sg, tc, wc);
+
+    Point p1(0,0);
+    Point p2(640,480);
+
+    Button picture_boarder(sg, {240-2,170-2}, {240+PICTURE_WIDTH+2, 170+PICTURE_HEIGHT+2},
+            "", rgb(20,20,20), rgba(0,0,0,255), Font16x27);
+    Button picture_field(sg, {240,170}, {240+PICTURE_WIDTH, 170+PICTURE_HEIGHT},
+            "", rgb(20,20,20), rgba(198,198,198,0), Font16x27);
+    Button login_button(sg, {420, 440 - BUTTON_HEIGHT}, {520, 440},
+            "Login", rgb(20,20,20), rgb(198,198,198), Font16x27);
+    Button Un_Pwd_login_button(sg, {120, 440 - BUTTON_HEIGHT},  {380, 440},
+            "Username Login", rgb(20,20,20), rgb(198,198,198), Font16x27);
+
+    
+    login_button.onTouch([&sc, &wifi, &video](Point p){
+        std::cout<<"start sending picture"<<std::endl;
+        wifi.SendPicture(video.takeRawPicture(280, 200));
+        std::cout<<"send finish"<<std::endl;
+
+        if(wifi.ReadResponse()){
+            std::cout << "login successfully" << std::endl;
+            sc.stop(0);
+        }
+    });
+
+    Un_Pwd_login_button.onTouch([&sc](Point p){
+        sc.stop(5);
+    });
+
+    sc.addDrawable(&picture_boarder);
+    sc.addDrawable(&picture_field);
+    sc.addDrawable(&login_button);
+    sc.addTouchable(&login_button);
+    sc.addDrawable(&Un_Pwd_login_button);
+    sc.addTouchable(&Un_Pwd_login_button);
+    sc.draw();
+
+    return sc.run();
+}
+
 int main(void)
 {
 
@@ -384,7 +499,9 @@ int main(void)
         //     }
         // }
         //showHomePage(sg, nios, tc, wand, "", Font22x40, Font16x27);
-        showSetting(sg, wand, nios, Font22x40, Font10x14, Font16x27, tc, video);
+        //showSetting(sg, wand, nios, Font22x40, Font10x14, Font16x27, tc, video);
+        showLoginPanel(sg, tc, wifi, wand, gr, video, nios);
+        //showFacialLoginPanel(sg, tc, wifi, wand, gr, video, nios);
     }
 
     return 0;
