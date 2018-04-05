@@ -586,6 +586,8 @@ int showFacialLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand 
             "Login", rgb(20,20,20), rgb(230,0,0), Font16x27);
     Button Un_Pwd_login_button(sg, {120, 440 - BUTTON_HEIGHT},  {380, 440},
             "Username Login", rgb(20,20,20), rgb(198,198,198), Font16x27);
+    Button exit_button(sg, {540, 440 - BUTTON_HEIGHT}, {620, 440},
+            "Exit", rgb(20,20,20), rgb(230,0,0), Font16x27);
 
     
     login_button.onTouch([&sc, &wifi, &video](Point p){
@@ -597,10 +599,15 @@ int showFacialLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand 
             std::cout << "login successfully" << std::endl;
             sc.stop(to_Home);
         }
+        sc.stop(to_FacialLogin);
     });
 
     Un_Pwd_login_button.onTouch([&sc](Point p){
         sc.stop(to_UsernameLogin);
+    });
+
+    exit_button.onTouch([&sc](Point p){
+        sc.stop(to_Home);
     });
 
     sc.addDrawable(&label);
@@ -610,6 +617,8 @@ int showFacialLoginPanel(SimpleGraphics &sg, TouchControl &tc, Wifi &wifi, Wand 
     sc.addTouchable(&login_button);
     sc.addDrawable(&Un_Pwd_login_button);
     sc.addTouchable(&Un_Pwd_login_button);
+    sc.addDrawable(&exit_button);
+    sc.addTouchable(&exit_button);
     sc.draw();
 
     return sc.run();
