@@ -134,6 +134,10 @@ void Wand::recv(char val) {
     }
     else if (val == '2'){
         printf("\nmode change\n");
+        if (m_current_wand != wandStop) {
+            m_current_wand = wandStop;
+            m_wandCommandCB(wandStop);
+        }
         if (m_current_mode == gestureMode){
             if (m_modeCB != nullptr){
                 m_modeCB(typingMode);

@@ -16,11 +16,16 @@ Screen::Screen(SimpleGraphics &graphics, TouchControl &touch,
 	m_touchables(),
     m_gestureCursor(gesture),
     m_typingCursor(typing),
-    m_mouseCursor(mouse)
+    m_mouseCursor(mouse),
+    m_is_drawing(false)
 {
     add(&m_touch, &TouchControl::trypoll);
+    add(&nios, &NIOS_Processor::trypoll);
+    add(&wand, &Wand::trypoll);
     m_touch.setTouchable(*this);
     add_timer(std::chrono::milliseconds(1000/12), this, &Screen::redraw_cursor);
+
+    updateCursor({m_graphics.width() / 2, m_graphics.height() / 2});
 }
 
 Screen::~Screen() {
@@ -34,6 +39,8 @@ void Screen::draw() {
 	for (unsigned i = 0; i < m_drawables.size(); i++) {
 		m_drawables[i]->draw();
 	}
+
+    draw_cursor();
 }
 
 void Screen::undraw() {
@@ -45,9 +52,11 @@ void Screen::undraw() {
 }
 
 bool Screen::touch(Point p) {
+    std::cout << "Touch" << std::endl;
 
     undraw_cursor();
 
+    updateCursor(p);
     for (auto touch : m_touchables) {
         if (touch->touch(p)) break;
     }
@@ -78,6 +87,9 @@ void Screen::updateCursor(Point p) {
     m_mouseCursor.update(p);
     m_typingCursor.update(p);
     m_gestureCursor.update(p);
+
+    if (m_is_drawing)
+        m_graphics.draw_rect(rgba(0, 0, 255, 128), {p.x-4, p.y-4}, {p.x+4, p.y+4});
 }
 
 void Screen::cursorModeChange(Wand::Modes old_mode) {
@@ -122,6 +134,19 @@ void Screen::undraw_cursor(Wand::Modes mode) {
             m_typingCursor.undraw();
             break;
     }
+}
+
+void Screen::startDrawPath() {
+    m_is_drawing = true;
+}
+
+void Screen::stopDrawPath() {
+    m_is_drawing = false;
+}
+
+void Screen::clearDrawPath() {
+    m_graphics.clear();
+    draw();
 }
 
 }

@@ -5,6 +5,7 @@
  *      Author: Jingrui
  */
 
+#include <chrono>
 #include <string.h>
 #include "wifi.hpp"
 #include <iostream>
@@ -93,12 +94,15 @@ bool Wifi::ReadResponse(){
 	//not sure working correctly
 	std::string response;
 	//FILE * F = fdopen(wifi_uart, "r+");
+    auto end = std::chrono::system_clock::now() + std::chrono::seconds(20);
 
-	while(1){
-		char temp = fgetc(F);
+	while(std::chrono::system_clock::now() < end){
+        char val;
+        unsigned r = read(wifi_uart, &val, 1);
+        
 		//printf("%c",temp);//for debug only
 		//responses starts by $, and is always 4 chars
-		if(temp=='$'){
+		if(r == 1 && val=='$'){
 			for(int i=0; i<4; i++){
 				response += fgetc(F);
 			}
@@ -106,7 +110,8 @@ bool Wifi::ReadResponse(){
 		}
 	}
 
-	if(response=="fail"){
+    std::cout << "ReadReponse: " << response << std::endl;
+	if(response=="Fail" || response=="fail"){
 		//Reset();
 		return false;
 	}

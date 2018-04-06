@@ -7,6 +7,7 @@ namespace UI {
 Cursor::Cursor(SimpleGraphics &graphics, rgba_t bitmap[size][size]):
 	Drawable(graphics),
     m_center(),
+    m_saved_center(),
     m_bitmap()
 {
     for (unsigned y = 0; y < size; y++) {
@@ -18,6 +19,7 @@ Cursor::Cursor(SimpleGraphics &graphics, rgba_t bitmap[size][size]):
 
 
 void Cursor::draw(){
+    m_saved_center = m_center;
     for (unsigned y = 0; y < size; y++) {
         for (unsigned x = 0; x < size; x++) {
             if ((m_bitmap[x][y] & 0xFF000000) == 0xFF000000) {
@@ -33,7 +35,7 @@ void Cursor::undraw(){
     for (unsigned y = 0; y < size; y++) {
         for (unsigned x = 0; x < size; x++) {
             if ((m_bitmap[x][y] & 0xFF000000) == 0xFF000000)
-                m_graphics.draw_pixel(m_saved[x][y], m_center.x + x, m_center.y + y);
+                m_graphics.draw_pixel(m_saved[x][y], m_saved_center.x + x, m_saved_center.y + y);
         }
     }
 }

@@ -1,8 +1,7 @@
 #include "UI.hpp"
 #include "SimpleGraphics.hpp"
-#include <stdio.h>
-
-
+#include <cstdio>
+#include <sstream>
 
 namespace UI {
 
@@ -91,26 +90,27 @@ Slider::Slider(SimpleGraphics &graphics,
     chosen_value(min),
     min(min),
     max(max)
-{ }
-
-
-void Slider::draw(){
-	Rectangle::draw();
-    
+{
     slider_bar_p1.x = m_p1.x + 10;
     slider_bar_p1.y = (m_p2.y - m_p1.y)/3 + m_p1.y;
     
     slider_bar_p2.x = m_p2.x - 48;
     slider_bar_p2.y = 2*(m_p2.y - m_p1.y)/3 + m_p1.y;
 
-    m_graphics.draw_rect(rgba(150, 150, 150, 255), slider_bar_p1, slider_bar_p2);
-
-    m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + slider_bar_p2.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, font);
-
     slider_p1.x = slider_bar_p1.x;
     slider_p1.y = m_p1.y + 5;
     slider_p2.x = slider_bar_p1.x + 20;
     slider_p2.y = m_p2.y - 5;
+}
+
+
+void Slider::draw(){
+	Rectangle::draw();
+    
+    m_graphics.draw_rect(rgba(150, 150, 150, 255), slider_bar_p1, slider_bar_p2);
+
+    m_graphics.draw_string_bg_centered(rgba(150, 150, 150, 255), (m_p2.x - slider_bar_p2.x)/2 + slider_bar_p2.x, (m_p2.y - m_p1.y)/2 + m_p1.y, 3, font);
+    m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + slider_bar_p2.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, font);
 
     m_graphics.draw_rect(rgba(0, 0, 0, 255), slider_p1, slider_p2);
 
@@ -127,13 +127,12 @@ void Slider::undraw(){
 bool Slider::touch(Point P){
 	if (m_is_showing){
 		if(P.x > slider_bar_p1.x && P.x < slider_bar_p2.x && P.y > m_p1.y && P.y < m_p2.y) {
-            
-			draw();
 
 			slider_p1.x = P.x - 10;
 			slider_p1.y = m_p1.y + 5;
 			slider_p2.x = P.x + 10;
 			slider_p2.y = m_p2.y - 5;
+
 
 			float slider_width = slider_bar_p2.x - slider_bar_p1.x;
 			float relative_touch = P.x - slider_bar_p1.x;
@@ -142,12 +141,11 @@ bool Slider::touch(Point P){
 
 			chosen_value = ratio*range;
 
-            
-			m_graphics.draw_string_centered(m_text_color, (m_p2.x - slider_bar_p2.x)/2 + slider_bar_p2.x, (m_p2.y - m_p1.y)/2 + m_p1.y, m_text, font);
+            std::ostringstream val;
+            val << chosen_value;
+            m_text = val.str();
 
-            m_graphics.draw_rect(rgba(0, 0, 0, 255), slider_p1, slider_p2);
-
-
+			draw();
 		}
 
         if(P.x > m_p1.x && P.x < m_p2.x && P.y > m_p1.y && P.y < m_p2.y) {

@@ -32,6 +32,7 @@ public:
 
 private:
     Point m_center;
+    Point m_saved_center;
     
     cursor_bitmap m_saved;
     cursor_bitmap m_bitmap;

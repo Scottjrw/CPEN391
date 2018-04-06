@@ -31,6 +31,8 @@ testnios.cpp
 logo.bmp
 test.cpp
 red_arrow_cursor.txt
+typing_cursor.txt
+black_arrow_cursor.txt
 )
 
 tryaddresses() {

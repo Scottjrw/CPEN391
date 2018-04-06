@@ -52,6 +52,9 @@ public:
 protected:
     virtual void updateCursor(Point p);
     virtual void cursorModeChange(Wand::Modes old_mode);
+    virtual void startDrawPath();
+    virtual void stopDrawPath();
+    virtual void clearDrawPath();
 private:
     TouchControl &m_touch;
 	std::vector<Drawable*> m_drawables;
@@ -59,6 +62,7 @@ private:
     Cursor &m_gestureCursor;
     Cursor &m_typingCursor;
     Cursor &m_mouseCursor;
+    bool m_is_drawing;
 
     void update_cursor_pos(Point p);
     bool redraw_cursor();

@@ -21,6 +21,8 @@ public:
 
     ~WandControl();
 
+    void start() { m_nios.start(); }
+
     // Receive Typing
     typedef std::function<void(char c)> TypingLetterCB;
     void setTypingCB(TypingLetterCB cb) { m_typeCB = cb; }
@@ -32,6 +34,9 @@ public:
 protected:
     virtual void updateCursor(Point p) = 0;
     virtual void cursorModeChange(Wand::Modes old_mode) = 0;
+    virtual void startDrawPath() = 0;
+    virtual void stopDrawPath() = 0;
+    virtual void clearDrawPath() = 0;
     Wand::Modes m_mode;
 
 private:
@@ -43,10 +48,13 @@ private:
     bool m_recv_points;
     TypingLetterCB m_typeCB;
     GestureCB m_gestureCB;
-    std::unordered_map<std::string, std::string> m_gesture_map;
 
-    static constexpr double MIN_SIMILARITY = 0.5;
-    static constexpr double MIN_POINTS = 20;
+    static constexpr double MIN_SIMILARITY = 0.0;
+    static constexpr double MIN_POINTS = 10;
+    static constexpr unsigned AVG_POINTS = 16;
+
+    std::array<Point, AVG_POINTS> m_last_points;
+    std::array<Point, AVG_POINTS>::iterator m_cur_point;
 
     void handle_result(RecognitionResult result);
 

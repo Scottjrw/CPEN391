@@ -114,7 +114,6 @@ void Video::sendCommand(int cmd, int args[], int command_length) {
 		string_out[3+i] = args[i];
 	}
 
-    std::cout << "Write" << std::endl;
 	if(write(video_uart, string_out, command_length+3) != command_length+3)
 		printf("video write failed\n");
 }
@@ -124,12 +123,6 @@ int Video::readResponse(int numbytes) {
     while (read_num < numbytes) {
         read_num += read(video_uart, camerabuff + read_num, numbytes);
     }
-
-    std::cout << std::hex;
-    for (int i = 0; i < read_num; i++) {
-        std::cout  << (int) camerabuff[i] << std::endl;
-    }
-    std::cout << std::dec;
 
 	return read_num;
 }
@@ -154,19 +147,16 @@ void Video::printBuff() {
 }
 
 std::string Video::takeRawPicture(int startX, int startY){
-	volatile uint32_t * data;
 	std::stringstream ss;
 	std::string output;
 
 	// hard coded the location (upper middle) to capture
 	for(int j=startY; j<startY+60; j++){
 		for(int i=startX; i<startX+80; i++){
-			data = base + (j * width + i);
-			ss << std::setw(6) << std::setfill('0') << std::hex <<*data;
+			ss << std::setw(6) << std::setfill('0') << std::hex << getPixel(i, j);
 		}
 	}
 	output = ss.str();
-	printf("string done, size is %u\n", output.length());
 	return output;
 }
 

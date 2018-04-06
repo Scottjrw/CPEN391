@@ -49,10 +49,15 @@ namespace DollarRecognizer
 	{
 	public:
         std::string name;
+        std::string name2;
 		double score;
+        double score2;
 
 		RecognitionResult(std::string name, double score):
-            name(name), score(score) {}
+            name(name), name2(), score(score), score2(0) {}
+		RecognitionResult(std::string name, double score,
+                std::string name2, double score2):
+            name(name), name2(name2), score(score), score2(score2) {}
 	};
 }
 #endif

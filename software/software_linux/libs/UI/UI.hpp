@@ -102,6 +102,8 @@ public:
     virtual bool touch(Point p);
     virtual void onTouch(TouchCB callback);
 
+    void setString(std::string str) {m_text = str;}
+
     Button(SimpleGraphics &graphics,
             Point p1, Point p2, std::string text, rgba_t text_color,
             rgba_t background_color, FontType f);

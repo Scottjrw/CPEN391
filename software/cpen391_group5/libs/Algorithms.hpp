@@ -78,8 +78,8 @@ namespace Algorithms {
 
                             if (score > best_score) {
                                 best_score = score;
-                                found_cluster.avg_x = max_x - min_x;
-                                found_cluster.avg_y = max_y - min_y;
+                                found_cluster.avg_x = (d_0.avg_x + d_1.avg_x)/2;
+                                found_cluster.avg_y = (d_0.avg_y + d_1.avg_y)/2;
                                 found_cluster.min_x = min_x;
                                 found_cluster.max_x = max_x;
                                 found_cluster.min_y = min_y;

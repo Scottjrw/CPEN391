@@ -216,7 +216,7 @@ namespace DollarRecognizer
 		if (templates.empty())
 		{
 			std::cout << "No templates loaded so no symbols to match." << std::endl;
-			return RecognitionResult("Unknown", 0.0);
+			return RecognitionResult("", 0);
 		}
 
 		Path2D points2 = normalizePath(points);
@@ -224,8 +224,10 @@ namespace DollarRecognizer
 		//--- Initialize best distance to the largest possible number
 		//--- That way everything will be better than that
 		double bestDistance = std::numeric_limits<double>::max();
+		double bestDistance2 = std::numeric_limits<double>::max();
 		//--- We haven't found a good match yet
 		int indexOfBestMatch = -1;
+        int indexOfBestMatch2 = -1;
 
 		//--- Check the shape passed in against every shape in our database
 		for (int i = 0; i < (int)templates.size(); i++)
@@ -237,7 +239,9 @@ namespace DollarRecognizer
 			double distance = distanceAtBestAngle(points2, templates[i]);
 			if (distance < bestDistance)
 			{
+                bestDistance2    = bestDistance;
 				bestDistance     = distance;
+                indexOfBestMatch2 = indexOfBestMatch;
 				indexOfBestMatch = i;
 			}
 		}
@@ -248,17 +252,18 @@ namespace DollarRecognizer
 		//--- Distance = hwo different they are
 		//--- Subtract that from 1 (100%) to get the similarity
 		double score = 1.0 - (bestDistance / halfDiagonal());
+		double score2 = 1.0 - (bestDistance2 / halfDiagonal());
 
 		//--- Make sure we actually found a good match
 		//--- Sometimes we don't, like when the user doesn't draw enough points
-		if (-1 == indexOfBestMatch)
-		{
-            std::cout << "Couldn't find a good match." << std::endl;
-			return RecognitionResult("Unknown", 1);
-		}
+		if (indexOfBestMatch == -1)
+			return RecognitionResult("", 0);
 
-		RecognitionResult bestMatch(templates[indexOfBestMatch].name, score);
-		return bestMatch;
+        if (indexOfBestMatch2 == -1)
+            return RecognitionResult(templates[indexOfBestMatch].name, score);
+
+        return RecognitionResult(templates[indexOfBestMatch].name, score,
+                templates[indexOfBestMatch2].name, score2);
 	};
 
 	Path2D GeometricRecognizer::resample(Path2D points)
