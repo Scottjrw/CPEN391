@@ -293,7 +293,7 @@ def loginByFaceHexSegments():
 			my_face_encoding = face_recognition.face_encodings(picture_of_me)[0]
 		except:
 			print('no face appeared')
-			return 'login failed'
+			return 'Fail'
 
 		# my_face_encoding now contains a universal 'encoding' of my facial features that can be compared to any other picture of a face!
 
@@ -306,11 +306,9 @@ def loginByFaceHexSegments():
 			if results[0] == True:
 				user = Users.get(Users.username == row[0])
 				auth_user(user)
-				return 'It is a picture of ' + str(row[0])
-			else:
-				print ('It is not a picture of ' + str(row[0]))
+				return 'Success'
 
-		return 'No user found.'
+		return 'Fail'
 
 
 
@@ -485,7 +483,7 @@ def loginByRGB():
 
 		im = Image.new('RGB', (width,height))
 		im.putdata(list_of_pixels)
-		im.save('/home/dchau/img10.png')
+		im.save('/home/dchau/img.png')
 
 		picture_of_me = face_recognition.load_image_file('/home/dchau/img.png')
 
