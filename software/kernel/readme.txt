@@ -13,10 +13,11 @@ File breakdown:
 linux-4.5/ - folder containing the Linux 4.5 kernel, downloaded from kernel.org
 linux-4.5/.config - config from Terasic kernel
 utsrelease.h - special auto-generated file, linked to from linux-4.5/include/generated/utsrelease.h. The version in this file is very important as it must match the de1 soc kernel exactly, we force it to since we are actually using a different kernel version.
-Makefile - fancy "kernel style" makefile to compile our module
+Makefile - KBuild makefile to compile our module
 transfer.sh - small script used to copy files back and forth to de1 soc over network via rsync (Need ssh to be set up)
 vgabuffer.c - HPS ram for VGA buffer
 cpen391_vgabuffer.ko - Latest compilation of the kernel module, included as a convenience
+testvga.c, testuart.c, testregs.c - test userspace programs
 
 boot/ - stuff to do with the boot process of the HPS
 boot/socfpga_cyclone5.dts - device tree for the HPS, it is modified from the original device tree binary that Terasic provided.
