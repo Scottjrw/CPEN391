@@ -306,8 +306,10 @@ def loginByFaceHexSegments():
 			if results[0] == True:
 				user = Users.get(Users.username == row[0])
 				auth_user(user)
+				print('Success')
 				return 'Success'
 
+		print('Fail')
 		return 'Fail'
 
 
