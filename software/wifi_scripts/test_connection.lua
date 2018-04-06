@@ -26,6 +26,8 @@ header = 'Content-Type: application/json\r\n'
 URL = 'https://use1-wap.tplinkcloud.com/?token=2d2c8422-A6AWd80Sco51JaW7L7yQ5B0'
 
 raw_picture = ''
+gesture_mapping = {}
+gesture_index = 1
 
 function led_on()
 
@@ -112,16 +114,17 @@ function send_username(username, password)
 
     http.request(url,"POST",header,data,
         function(code, data)
+--        print(data)
         -- print some space to flush the previous outputs
-        if data=="Success" then
-            for i = 1,255 do 
-                print()
-            end
+        if data==username then
+--            for i = 1,255 do 
+--                print()
+--            end
             print("$done")
         else
-            for i = 1,255 do 
-                print()
-            end
+--            for i = 1,255 do 
+--                print()
+--            end
             print("$fail")
         end
     end)
@@ -163,15 +166,76 @@ end
 -- send to local server; 
 -- for debugging only
 function send_test()
-    url = "http://192.168.43.79:8080/Servlet/login"
+--    url = "http://192.168.43.79:8080/Servlet/login"
+--    header = "Content-Type:application/json\r\n"
+--    data ='{"hex_string":"'..raw_picture..'"}'
+--
+--    http.request(url,"POST",header,data,
+--        function(code, data)
+--          print(code, data)
+--    end)
+--
+--    raw_picture = ''
+
+    t = cjson.decode('{"key1":"value1", "key2":"value2"}')
+    for k,v in pairs(t) do 
+        print("%" .. k .. "%")
+        print("&" .. v .. "&") 
+    end
+    print("^")
+    
+end
+
+function get_gesture()
+    url = "http://104.198.97.189:6000/getCurrentMapping"
     header = "Content-Type:application/json\r\n"
-    data ='{"hex_string":"'..raw_picture..'"}'
+    data = ''
+    --ok, data = pcall(cjson.code, {some_name = gesture})
+
+    http.request(url,"GET",header,data,
+        function(code, data)
+            t = cjson.decode(data)
+            for i=1,#t do
+                print("%" .. t[i][1] .. "%")
+                print("&" .. t[i][2] .. "&")
+            end
+            print("^")
+    end)
+    
+end
+
+function send_gesture(gesture)
+    url = "http://104.198.97.189:6000/runApplet"
+    header = "Content-Type:application/json\r\n"
+    ok, data = pcall(cjson.encode, {descriptor = gesture})
 
     http.request(url,"POST",header,data,
         function(code, data)
-          print(code, data)
-    end)
-
-    raw_picture = ''
-    
+    end)    
 end
+
+function add_gesture(key, value)
+    gesture_mapping[gesture_index] = {}
+    gesture_mapping[gesture_index][1] = key
+    gesture_mapping[gesture_index][2] = value
+    gesture_index = gesture_index + 1
+end
+
+function update_gesture_mapping()
+    url = "http://104.198.97.189:6000/changeCurrentMapping"
+    header = "Content-Type:application/json\r\n"
+    ok, data = pcall(cjson.encode, {mapping = gesture_mapping})
+    --print(data)
+
+    http.request(url,"POST",header,data,
+        function(code, data)
+            print(code, data)
+    end)
+    gesture_mapping = {}
+    gesture_index = 1
+end
+
+
+
+
+
